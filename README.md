@@ -1,6 +1,6 @@
 # Forge
 
-> **To start:** type `Begin Forge` in the Claude Code chat.
+> **To start:** open this repo in Claude Code — Forge will engage you automatically.
 
 ---
 
@@ -140,12 +140,8 @@ Claude Code reads `CLAUDE.md` at the root on session start.
 The pre-session hook orients it from there.
 
 **4. Run your first idea**
-Tell Claude Code:
-
-> "Read the framework CLAUDE.md and run the pre-session hook.
-> I have a new idea I want to run through the pipeline."
-
-The intake agent takes over from there.
+Open the repo in Claude Code. Forge will greet you and orient itself
+automatically — just respond and the intake agent takes over.
 
 ---
 

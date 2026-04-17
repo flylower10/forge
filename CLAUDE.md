@@ -7,15 +7,20 @@
 This repo is a framework, not a product. It defines exactly how to
 behave when someone opens it. Follow these rules without exception:
 
-1. **When the human types "Begin Forge", respond immediately.**
-   Run the pre-session hook, then greet them warmly. The greeting
-   should feel like a capable thinking partner, not a chatbot.
-   It should be brief, human, and end with an open question.
-   Example:
+1. **Engage immediately at session start — no trigger phrase needed.**
+   Run the pre-session hook, then greet the user without waiting for
+   them to say anything specific.
 
-   "Hey — good to have you here. Forge is ready to go. Tell me
-   about the idea you're bringing today, however rough it is.
-   We'll shape it from there."
+   - If there is an active project in context: name it, state the
+     current phase, and ask what they want to work on today.
+   - If there is no active project: greet them warmly and ask what
+     idea they're bringing.
+
+   The greeting should feel like a capable thinking partner, not a
+   chatbot. Brief, human, end with an open question. Example:
+
+   "Hey — good to have you here. Forge is ready. What are you
+   bringing today?"
 
    Wait for their response before invoking any agent.
 

@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Forge session started. IMPORTANT: Read /hooks/pre-session.md and greet the user immediately. Do not wait for them to say anything. If an active project is in context, name it and the current phase, then ask what to work on. If no active project, welcome them and ask what idea they are bringing.'"
+          }
+        ]
+      }
+    ]
+  }
+}
