@@ -1,6 +1,6 @@
 # Forge
 
-> **To start:** open this repo in Claude Code — Forge will engage you automatically.
+> **To start:** run `./start.sh` from the repo root.
 
 ---
 
@@ -76,7 +76,7 @@ Sprint signal feeds back into discovery. If an assumption is invalidated, the re
 
 **Agents are optional by default.** No agent runs unless the intake step selects it. The full pipeline is a maximum, not a standard. A personal tool might invoke three agents. A consumer product invokes all of them.
 
-**The framework is extensible.** New agents drop into `/agents/` or `/build-team/`. The intake agent discovers them automatically. No other files need updating.
+**The framework is extensible.** New agents drop into `/product-team/` or `/build-team/`. The intake agent discovers them automatically. No other files need updating.
 
 **Conversation over approval.** Human involvement is not about sign-offs. It is about thinking alongside agents, holding positions, and making judgement calls that no agent should make unilaterally.
 
@@ -92,7 +92,7 @@ Sprint signal feeds back into discovery. If an assumption is invalidated, the re
 forge/
   CLAUDE.md                    ← framework root — read this first
 
-  agents/
+  product-team/
     00-intake.md               ← always runs first
     01-pm-agent.md             ← The Interrogator
     02-design-agent.md         ← The Anthropologist
@@ -140,8 +140,8 @@ Claude Code reads `CLAUDE.md` at the root on session start.
 The pre-session hook orients it from there.
 
 **4. Run your first idea**
-Open the repo in Claude Code. Forge will greet you and orient itself
-automatically — just respond and the intake agent takes over.
+Run `./start.sh` from the repo root. Forge will greet you immediately
+and the intake agent takes over from there.
 
 ---
 
@@ -149,7 +149,7 @@ automatically — just respond and the intake agent takes over.
 
 Forge is built to grow. The current agent library covers product and software development. Future domain libraries — legal, research, business cases — can be added as subdirectories without changing anything else.
 
-To add a new agent: create a markdown file in `/agents/` or `/build-team/` following the conventions in existing agent files. The intake agent discovers it automatically on the next run.
+To add a new agent: create a markdown file in `/product-team/` or `/build-team/` following the conventions in existing agent files. The intake agent discovers it automatically on the next run.
 
 To add a new domain: create a subdirectory (e.g. `/agents/legal/`) with its own specialist agents. Update the intake agent's orienting question to include the new domain.
 

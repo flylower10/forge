@@ -67,7 +67,7 @@ If the answer is a product or software build — proceed to Step 1.
 ## Step 1 · Scan available agents
 
 Before asking anything, read:
-- All files in `/agents/` (discovery and ceremony agents)
+- All files in `/product-team/` (discovery and ceremony agents)
 - All files in `/build-team/` (execution agents)
 - All files in `/skills/` (available domain knowledge)
 
@@ -181,7 +181,7 @@ which discovery pipeline was used and why.
 
 These rules govern how the framework grows over time:
 
-**New agents can always be added.** Drop a file into `/agents/`
+**New agents can always be added.** Drop a file into `/product-team/`
 or `/build-team/`. The intake step discovers it automatically
 on the next run. No other files need updating.
 
@@ -192,7 +192,7 @@ define all possible types in advance.
 
 **Specialist agents are first-class citizens.** An agent drafted
 for one idea (e.g. a Quant Agent for algorithmic trading) can be
-saved to `/agents/` and become available to all future ideas.
+saved to `/product-team/` and become available to all future ideas.
 The intake step will consider it for any idea where it seems relevant.
 
 **The intake step itself is versioned.** If the five questions

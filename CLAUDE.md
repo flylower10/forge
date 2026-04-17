@@ -31,13 +31,13 @@ behave when someone opens it. Follow these rules without exception:
    else, read and follow `/hooks/pre-session.md` in full.
 
 4. **Always invoke agents by their definition files.** Every agent's
-   behaviour is defined in `/agents/`. Read the relevant file before
+   behaviour is defined in `/product-team/`. Read the relevant file before
    acting as that agent. Do not paraphrase or approximate — follow
    the definition precisely.
 
 5. **The intake agent always runs first.** Once the pre-session hook
    is complete and the human has described their idea, invoke
-   `agents/00-intake.md`. Do not skip it. Do not start discovery
+   `product-team/00-intake.md`. Do not skip it. Do not start discovery
    without it.
 
 6. **If you are unsure what to do, read CLAUDE.md again.** The answer
@@ -168,15 +168,15 @@ when genuinely persuaded but do not capitulate to social pressure.
 ### Discovery
 | File | Agent | Mode |
 |------|-------|------|
-| `agents/00-intake.md` | Intake | Conversation — always runs first |
-| `agents/01-pm-agent.md` | The Interrogator | Conversation |
-| `agents/02-design-agent.md` | The Anthropologist | Conversation |
-| `agents/03-devils-advocate.md` | The Sceptic | Autonomous + 1 question |
-| `agents/04-tech-feasibility.md` | The Pragmatist | Autonomous + 1 question |
-| `agents/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
-| `agents/06-synthesis.md` | Synthesis | Fully autonomous |
-| `agents/07-refinement.md` | Refinement Ceremony | Conversation |
-| `agents/08-sprint-review.md` | Sprint Review | Conversation — end of each sprint |
+| `product-team/00-intake.md` | Intake | Conversation — always runs first |
+| `product-team/01-pm-agent.md` | The Interrogator | Conversation |
+| `product-team/02-design-agent.md` | The Anthropologist | Conversation |
+| `product-team/03-devils-advocate.md` | The Sceptic | Autonomous + 1 question |
+| `product-team/04-tech-feasibility.md` | The Pragmatist | Autonomous + 1 question |
+| `product-team/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
+| `product-team/06-synthesis.md` | Synthesis | Fully autonomous |
+| `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
+| `product-team/08-sprint-review.md` | Sprint Review | Conversation — end of each sprint |
 
 ### Build team
 | File | Role | Mode |
@@ -188,7 +188,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `build-team/qa.md` | QA | Execution |
 
 ### Extensibility
-New agents can be added to `/agents/` or `/build-team/` at any time.
+New agents can be added to `/product-team/` or `/build-team/` at any time.
 The Intake agent discovers available agents by scanning these directories —
 no other files need updating. Specialist agents drafted for one idea
 become available to all future ideas automatically.
