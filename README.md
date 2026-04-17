@@ -1,8 +1,5 @@
 # Forge
 
-> **To start:** run `./start.sh` from the repo root.
-
----
 
 A structured multi-agent framework for turning ideas into shipped products. Runs discovery, stress-tests assumptions, and hands off a Claude Code-ready brief — then orchestrates the build.
 
@@ -140,8 +137,7 @@ Claude Code reads `CLAUDE.md` at the root on session start.
 The pre-session hook orients it from there.
 
 **4. Run your first idea**
-Run `./start.sh` from the repo root. Forge will greet you immediately
-and the intake agent takes over from there.
+Open Claude Code in the repo root. Describe your idea and the intake agent takes over from there.
 
 ---
 
@@ -151,7 +147,7 @@ Forge is built to grow. The current agent library covers product and software de
 
 To add a new agent: create a markdown file in `/product-team/` or `/build-team/` following the conventions in existing agent files. The intake agent discovers it automatically on the next run.
 
-To add a new domain: create a subdirectory (e.g. `/agents/legal/`) with its own specialist agents. Update the intake agent's orienting question to include the new domain.
+To add a new domain: create a subdirectory (e.g. `/product-team/legal/`) with its own specialist agents. Update the intake agent's orienting question to include the new domain.
 
 ---
 
