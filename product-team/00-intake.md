@@ -34,7 +34,7 @@ automatically based on the orienting question below.
 
 0. Ask the orienting question
 1. Scan the available agents for the relevant domain
-2. Ask five questions about the problem's shape
+2. Ask seven questions about the problem's shape
 3. Reason explicitly about the right pipeline
 4. Propose a configuration and explain it
 5. Get confirmation before anything proceeds
@@ -77,7 +77,7 @@ you do not assume every tool is needed.
 
 ---
 
-## Step 2 · Five intake questions
+## Step 2 · Seven intake questions
 
 Ask these questions one at a time. Listen carefully. The answers
 determine everything that follows.
@@ -106,6 +106,21 @@ abbreviated. If it's unclear, more discovery is warranted.)
 of something you've built or thought through before?**
 (Prior experience compresses the pipeline — known problems don't
 need the same depth of discovery as unknown ones)
+
+**6. What's your connection to this problem space — domain
+knowledge, a relevant network, or genuine personal passion?
+And do you expect to still care about this in six months?**
+(Builder fit and sustained drive are signals for how much
+discovery the pipeline needs to do. Strong fit on both compresses
+the PM and User Researcher stages. Weak fit on either means the
+Devil's Advocate should probe it explicitly.)
+
+**7. Is there any evidence that others have this problem —
+competitors building something similar, workarounds people use
+today, or communities of people with this pain?**
+(Strong demand signals compress the "evidence of pain" section
+of the PM Agent. Weak or absent signals mean more discovery is
+warranted before any build begins.)
 
 ---
 
