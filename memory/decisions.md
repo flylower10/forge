@@ -39,4 +39,26 @@ reversed, a new ADR is written to record the reversal and why.
 
 ## Decision log
 
-[ADRs are appended below as they are created]
+# ADR 001: Absorb brainstorming capability into PM Agent natively
+
+**Date:** 2026-04-18
+**Project:** Forge (framework)
+**Status:** Decided
+
+## Context
+The structured discovery conversation that Forge relies on is currently provided by the external `superpowers:brainstorming` skill. A user who does not have that skill installed receives no structured exploration — Claude either improvises inconsistently or skips discovery entirely. This creates a dependency on an external plugin for a core framework capability.
+
+## Decision
+Absorb the brainstorming conversation flow natively into `product-team/01-pm-agent.md` so the framework is self-contained and works without the superpowers plugin.
+
+## Rationale
+The PM Agent is already responsible for problem framing and structured discovery. Building the brainstorming flow into it directly makes the framework robust and self-contained. Users should not need to install external plugins to get the core discovery experience.
+
+## Alternatives considered
+- **Document the dependency**: Adds a note to CLAUDE.md listing the skill as required. Fragile — still breaks if the skill is unavailable.
+- **Detect and degrade gracefully**: PM Agent checks for the skill and falls back to its own flow. Adds complexity and still means maintaining two places where brainstorming logic lives.
+
+## Consequences
+- PM Agent becomes the single source of truth for structured discovery conversation
+- Framework works out of the box without superpowers plugin
+- If the brainstorming skill evolves, changes must be manually reflected in the PM Agent — no automatic inheritance

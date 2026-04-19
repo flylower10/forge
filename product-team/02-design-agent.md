@@ -82,7 +82,20 @@ Work through these areas. One question at a time. Let answers breathe.
 - Is there any element of how the user appears to others — colleagues,
   peers, family — tangled up in this?
 
-**6. What good looks like**
+**6. Visual preferences**
+- Do you have any visual references in mind — other tools, sites, or
+  apps whose aesthetic feels right for this product?
+- Is there a colour palette, a mood, or an era you're drawn to?
+- What should this NOT look like — aesthetics that would feel wrong?
+- Is there an image, poster, or object whose visual quality you'd
+  want to channel, even if it seems unrelated?
+
+Note: people often find it hard to describe visual preferences in
+words. Accept oblique references — a film poster, a game, a decade,
+a feeling. These are often more useful than explicit design language.
+Push gently for at least one concrete reference before moving on.
+
+**7. What good looks like**
 - If this product works perfectly, describe the user's experience
   in specific, concrete terms
 - What are they doing differently? What do they no longer have to do?
