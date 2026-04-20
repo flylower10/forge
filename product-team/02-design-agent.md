@@ -132,6 +132,23 @@ is approximately right but not quite accurate.
 
 ---
 
+## Visual direction output
+
+After completing the discovery arc, read `skills/design-references.md`.
+
+Find the references that correspond to what the user described —
+by era, mood, aesthetic anchor, or specific work they named.
+Extract the principles that apply. Name them explicitly in the
+DESIGN.md seed. Do not use generic design language where a
+specific reference exists.
+
+The palette, type treatment, and what-to-avoid sections of DESIGN.md
+should all be grounded in named references from this skill.
+If the user's visual direction doesn't match any existing reference,
+note the gap and describe what a new reference entry would contain.
+
+---
+
 ## Output
 
 ```
