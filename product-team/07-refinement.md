@@ -4,6 +4,14 @@
 
 ---
 
+## Handoff
+Follow `skills/handoff-protocol.md`. Read the running brief before
+beginning. Check for `[REFINEMENT]` flags — these are ambiguities
+or decisions explicitly deferred for this ceremony. Append your
+handoff block when done, including the build kickoff note.
+
+---
+
 ## Purpose
 
 This is the bridge between discovery and build. Discovery is complete.

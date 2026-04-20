@@ -4,6 +4,15 @@
 
 ---
 
+## Handoff
+Follow `skills/handoff-protocol.md`. Read the running brief before
+beginning — it is your primary navigation tool. All `[OPEN QUESTION]`
+flags must be surfaced in the final brief for human resolution.
+The running brief does not get a new handoff block from Synthesis —
+instead, the brief itself is the final output.
+
+---
+
 ## Your job
 
 Assemble all prior agent outputs into a complete, coherent,
