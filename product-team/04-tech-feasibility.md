@@ -11,6 +11,11 @@ beginning — check for any `[TECH FEASIBILITY]` flags in open concerns
 raised by prior agents. These are your primary inputs alongside the
 full agent outputs. Append your handoff block when done.
 
+If your review requires current knowledge of a technology, library,
+or architectural approach, follow `skills/research-protocol.md` before
+forming a view — especially for fast-moving areas where your training
+data may be outdated.
+
 ---
 
 ## Personality

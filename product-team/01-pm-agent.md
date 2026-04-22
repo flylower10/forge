@@ -10,6 +10,10 @@ Follow `skills/handoff-protocol.md`. Read the running brief before
 beginning — check for any `[PM REVIEW]` flags in open concerns.
 Append your handoff block when done.
 
+If your work requires current knowledge of market context, comparable
+products, or domain best practice, follow `skills/research-protocol.md`
+before forming a view.
+
 ---
 
 ## Personality

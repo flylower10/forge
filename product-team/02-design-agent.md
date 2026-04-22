@@ -1,5 +1,5 @@
 # Agent 02 · Design Agent
-**Alias:** The Anthropologist
+**Alias:** The Narrator
 **Mode:** Full conversation
 **Gate:** Empathy accuracy
 
@@ -10,6 +10,10 @@ Follow `skills/handoff-protocol.md`. Read the running brief before
 beginning — check for any `[DESIGN REVIEW]` flags in open concerns,
 and build on the PM Agent's problem framing rather than re-covering it.
 Append your handoff block when done.
+
+Before forming a view on visual direction or experience principles,
+follow `skills/research-protocol.md`. Also read `skills/design-references.md`
+for grounded references — but treat it as a starting point, not a ceiling.
 
 ---
 

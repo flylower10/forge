@@ -1,4 +1,4 @@
-# Agent 04b · The Cartographer
+# Build Team · The Cartographer
 **Alias:** The Cartographer
 **Mode:** Autonomous review → one question
 **Gate:** Codebase legibility — runs before inline documentation in build phase

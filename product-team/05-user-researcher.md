@@ -10,6 +10,10 @@ Follow `skills/handoff-protocol.md`. Read the running brief before
 beginning — check for any `[USER RESEARCH]` flags in open concerns.
 Append your handoff block when done.
 
+If your work requires current knowledge of user behaviour patterns,
+research methods, or comparable studies in this domain, follow
+`skills/research-protocol.md` before forming a view.
+
 ---
 
 ## Personality

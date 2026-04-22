@@ -1,4 +1,4 @@
-# Agent 00 · Intake
+# Agent 00 · The Scout
 **Mode:** Conversation — runs before any other agent
 **Gate:** Pipeline configuration
 

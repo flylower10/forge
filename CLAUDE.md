@@ -168,20 +168,23 @@ when genuinely persuaded but do not capitulate to social pressure.
 ### Discovery
 | File | Agent | Mode |
 |------|-------|------|
-| `product-team/00-intake.md` | Intake | Conversation — always runs first |
+| `product-team/00-intake.md` | The Scout | Conversation — always runs first |
 | `product-team/01-pm-agent.md` | The Interrogator | Conversation |
-| `product-team/02-design-agent.md` | The Anthropologist | Conversation |
+| `product-team/02-design-agent.md` | The Narrator | Conversation |
 | `product-team/03-devils-advocate.md` | The Sceptic | Autonomous + 1 question |
 | `product-team/04-tech-feasibility.md` | The Pragmatist | Autonomous + 1 question |
 | `product-team/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
 | `product-team/06-synthesis.md` | Synthesis | Fully autonomous |
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
 | `product-team/08-sprint-review.md` | Sprint Review | Conversation — end of each sprint |
+| `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
 
 ### Build team
 | File | Role | Mode |
 |------|------|------|
 | `build-team/delivery-manager.md` | The Conductor | Conversation |
+| `build-team/ux-agent.md` | The Specifier | Autonomous with review — runs at build kickoff |
+| `build-team/cartographer.md` | The Cartographer | Autonomous + 1 question — codebase documentation brief |
 | `build-team/architect.md` | Architect | Consulted only |
 | `build-team/engineer.md` | Engineer | Execution |
 | `build-team/reviewer.md` | Reviewer | Execution |
@@ -208,6 +211,8 @@ become available to all future ideas automatically.
 | `skills/linear-schema.md` | Epic and issue structure for Linear |
 | `skills/artefact-templates.md` | Standardised output formats |
 | `skills/design-md.md` | How to write a well-formed DESIGN.md |
+| `skills/design-references.md` | Benchmark products, designers, and platforms — used by The Narrator and UX Agent |
+| `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative |
 
 ---
 

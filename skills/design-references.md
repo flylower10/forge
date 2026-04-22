@@ -231,3 +231,98 @@ When writing the visual direction section of DESIGN.md:
    briefs have a productive contradiction: "data-dense but not
    overwhelming", "retro but functional", "serious but exciting".
    This gives the designer (human or AI) something to solve.
+
+---
+
+## Benchmark products — for the UX Agent
+
+When the UX Agent specifies a screen, it should name at least one
+benchmark product and what it is drawing from it. These are the
+benchmarks most likely to be relevant to data and analytics products.
+
+### Linear
+The benchmark for fast, opinionated product UI.
+- **Speed as a design constraint:** Every interaction is instant or
+  communicates clearly that it isn't. Latency is never hidden — it is shown.
+- **Keyboard-first:** Primary actions are reachable without a mouse.
+  The product assumes a power user.
+- **Typographic hierarchy:** Labels, values, and metadata have distinct
+  and consistent visual weights. Nothing competes.
+- **No decorative motion:** Transitions serve navigation, not aesthetics.
+Apply when: specifying any view where the user has a specific thing they
+came to do and needs to do it fast.
+
+### Stripe Dashboard
+Financial data at scale, made readable.
+- **Information architecture:** Dense data is grouped, not compressed.
+  The user always knows what section they are in.
+- **Table design:** Rows breathe. Column alignment is precise. The most
+  important column is visually dominant.
+- **Typographic consistency:** One type scale, applied without exception.
+  The system is felt before it is seen.
+Apply when: specifying any table-heavy view or multi-column data display.
+
+### Vercel Dashboard
+Data density without visual collapse.
+- **Progressive disclosure:** Summary at the top, detail below.
+  The user can stop reading at any level and have something useful.
+- **Status communication:** States (deploying, failed, ready) are
+  communicated with colour and icon — never ambiguous.
+- **Dark mode discipline:** High contrast between data and surface
+  without the surface competing for attention.
+Apply when: specifying screens with many simultaneous data points,
+status indicators, or pipeline/process states.
+
+---
+
+## Designers — for the UX Agent
+
+### Rasmus Andersson (Figma, Linear)
+Systematic reduction. Every element earns its place. No decoration
+without function. Reference when deciding component structure and
+when in doubt about whether something should exist.
+
+### Emil Kowalski
+Interaction and motion done with restraint. Core principle: motion
+should communicate state change, not decorate. If something moves,
+it is because data changed or an action completed — not because the
+page loaded. Reference when specifying any animated or interactive
+behaviour.
+
+### Paco Perez
+Typography and layout. Reference for spacing systems, typographic
+scale decisions, and how to create hierarchy without colour.
+
+---
+
+## Platforms — staying current
+
+**Mobbin** — the best library of real product UI screenshots,
+organised by pattern and platform. Use before specifying any screen
+type to find real-world examples of how others have solved the same
+problem. mobbin.com
+
+**Godly** — curated high-quality web design and product UI.
+Useful for visual direction and layout. godly.website
+
+**Awwwards** — broader and noisier than Godly. Filter for tools and
+data products, not marketing sites. awwwards.com
+
+**Sidebar.io** — daily curated design links. Useful for staying current
+with trends without noise. sidebar.io
+
+**Fonts In Use** — documents real-world type applications. Use when
+making or reviewing typography decisions. fontsinuse.com
+
+---
+
+## How to keep this file current
+
+Update this file when:
+- You encounter a product that solves a screen-level problem unusually well
+- A designer publishes work worth referencing
+- A benchmark product releases a significant redesign
+- A new tool or platform becomes the standard for its category
+
+This file is a living reference. It should feel more current each
+time you open it, not more stale.
