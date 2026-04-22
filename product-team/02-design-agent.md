@@ -90,7 +90,20 @@ Work through these areas. One question at a time. Let answers breathe.
 - Is there any element of how the user appears to others — colleagues,
   peers, family — tangled up in this?
 
-**6. Visual preferences**
+**6. Design tooling**
+- Which tool will generate the UI? (Claude Design, Google Stitch,
+  Figma AI, hand-coded, other)
+- Has the user worked with this tool before? Do they know what
+  inputs it responds well to?
+- Based on the tool: adjust the DESIGN.md output accordingly.
+  - **Google Stitch / Claude Design:** mood and references work better
+    than hex values and rigid systems. Bring anchors, not a full spec.
+  - **Hand-coded / engineer:** precise hex values, spacing tokens,
+    and component descriptions are essential.
+  - **Unknown / multiple:** write both — the mood section for AI tools,
+    the precise palette for engineers.
+
+**7. Visual preferences**
 - Do you have any visual references in mind — other tools, sites, or
   apps whose aesthetic feels right for this product?
 - Is there a colour palette, a mood, or an era you're drawn to?
