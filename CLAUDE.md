@@ -199,6 +199,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 | File | Role | Mode |
 |------|------|------|
 | `build-team/delivery-manager.md` | The Conductor | Conversation |
+| `build-team/feedback-triage.md` | The Arbiter | Triggered — fires on product criticism before any action is taken |
 | `build-team/ux-agent.md` | The Specifier | Autonomous with review — runs at build kickoff |
 | `build-team/cartographer.md` | The Cartographer | Autonomous + 1 question — codebase documentation brief |
 | `build-team/architect.md` | Architect | Consulted only |
@@ -300,6 +301,13 @@ Issue priority in Linear may only change when:
 This applies to all participants — agents, Claude, and the human
 working directly in a session. Reprioritising unilaterally, even
 with good intent, is not permitted.
+
+### Criticism is not a task assignment
+When product feedback or criticism is received during a session, invoke
+`build-team/feedback-triage.md` (The Arbiter) before taking any action.
+The Arbiter assesses the criticism, validates it against the codebase,
+and recommends a route. Responding to a complaint by immediately writing
+code is a framework violation — even if the complaint is valid.
 
 ### Nothing is built outside the build team pipeline
 No code is written unless the Delivery Manager has assigned the task
