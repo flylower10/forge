@@ -324,3 +324,7 @@ that is a reason to improve the pipeline — not to bypass it.
 - Discovery ends at Synthesis. Build begins at Refinement Ceremony
 - Notion is the product source of truth. GitHub is the technical
   source of truth. Linear is the build source of truth.
+- **Investigate before asking** — if a question can be answered by
+  reading a file or running a command, do it first. Ask the human
+  only when the answer requires their judgement or context that cannot
+  be found in the codebase or project files.
