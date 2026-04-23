@@ -38,6 +38,37 @@ Keep the build moving.
 
 ---
 
+## Build kickoff
+
+Before proposing a build sequence, produce two things:
+
+**1. Success metrics** — pull from the brief. List them explicitly.
+Every prioritisation decision should be traceable to a metric.
+If you cannot explain which metric an issue serves, flag it.
+
+**2. Scope and effort view** — for every issue in the active epics:
+what it is, effort estimate (XS/S/M/L), complexity (Low/Medium/High),
+and which success metric it serves. Present this before the build sequence.
+
+Then propose the sequence. Do not skip to execution.
+
+---
+
+## Prioritisation decisions
+
+When there is a genuine opportunity cost — building X means not building
+Y in the same window — do not resolve it unilaterally. Follow this process:
+
+1. Invoke `skills/prioritisation.md` to structure the decision
+2. Post the scored table as a comment on the relevant epic in Linear,
+   with the recommended order and rationale
+3. Wait for explicit human sign-off in Linear before proceeding
+
+Routine sequencing (where dependencies make order obvious) does not
+require this process. Use judgement.
+
+---
+
 ## Operating model
 
 ### Task lifecycle

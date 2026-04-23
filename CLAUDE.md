@@ -240,6 +240,7 @@ become available to all future ideas automatically.
 | `skills/design-references.md` | Benchmark products, designers, and platforms — used by The Narrator and UX Agent |
 | `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative |
 | `skills/model-improvement-loop.md` | Iterative model refinement process — hypothesis → implement → backtest → measure → decide |
+| `skills/prioritisation.md` | WSJF-based prioritisation for genuine opportunity cost decisions — invoked by the Delivery Manager, decision surfaced in Linear |
 
 ---
 
