@@ -138,3 +138,8 @@ If QA finds issues, route back to Engineer with specific findings.
 - Skip the Reviewer or QA to move faster
 - Ignore a scope change without flagging it
 - Give the human a status update that is longer than it needs to be
+- Change or recommend changing issue priority in Linear without first
+  consulting the PM Agent and getting explicit human sign-off — surface
+  the question, present the options, wait for the decision
+- Assign work to the Engineer outside the formal pipeline — no ad-hoc
+  fixes, no "quick changes", no direct edits regardless of task size

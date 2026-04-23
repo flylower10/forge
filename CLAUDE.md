@@ -56,16 +56,25 @@ any product idea regardless of technology stack, industry, or scale.
 
 ---
 
-## Two phases
+## Four phases
 
 ### Phase 1 · Discovery
 Transforms a rough idea into a complete, stress-tested brief.
 Ends when the `/output/[idea-name]/` folder is produced by Synthesis.
 
-### Phase 2 · Build
-The Refinement Ceremony bridges discovery and build. After that,
-the build team executes against the brief. The Delivery Manager
-is the human's interface during this phase.
+### Phase 2 · Refinement
+The Refinement Ceremony bridges Discovery and Development. The brief
+becomes build-ready: acceptance criteria locked, sequencing agreed.
+
+### Phase 3 · Development
+The development team executes against the refined brief. The Delivery
+Manager is the human's interface during this phase. Ends when the
+product is ready to ship.
+
+### Phase 4 · Delivery
+Shipping, deployment, user onboarding, release notes, changelog,
+and handoff to marketing. Specialist agents for this phase are
+planned but not yet defined — to be built when first needed.
 
 ---
 
@@ -94,11 +103,11 @@ DISCOVERY (configured per idea — agents below are available, not mandatory)
                                 → Linear: project, epics, issues
   │
   ▼
-REFINEMENT CEREMONY
+REFINEMENT
   └─ 07 · Refinement        ←→ conversation: brief → build-ready
   │
   ▼
-BUILD + ITERATE
+DEVELOPMENT + ITERATE
   ├─ Delivery Manager  ←→ human interface: orchestration + blockers
   ├─ Architect         →  consulted: refinement + structural decisions only
   ├─ Engineer          →  execution: writes code
@@ -113,7 +122,14 @@ BUILD + ITERATE
             ├─ Stay the course → next sprint
             │
             └─ Escalate → re-invoke relevant discovery agent
-                          └─ updated brief/assumptions → continue build
+                          └─ updated brief/assumptions → continue development
+  │
+  ▼
+DELIVERY                    [specialist agents TBD]
+  ├─ Deployment
+  ├─ User onboarding
+  ├─ Release notes + changelog
+  └─ Marketing handoff
 ```
 
 ---
@@ -124,7 +140,7 @@ This framework is not fully automated. The human is an active
 thinking partner, not an approver.
 
 **Full conversations:** PM Agent, Design Agent, Refinement Ceremony,
-Delivery Manager (ongoing during build).
+Delivery Manager (ongoing during development).
 
 **Autonomous with one question:** Devil's Advocate, Tech Feasibility,
 User Researcher.
@@ -155,7 +171,7 @@ when genuinely persuaded but do not capitulate to social pressure.
   decisions.md       ← ADR log, append-only
 ```
 
-### Linear (build execution)
+### Linear (development execution)
 - One project per idea
 - Epics per major capability
 - Issues per buildable task
@@ -189,6 +205,9 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `build-team/engineer.md` | Engineer | Execution |
 | `build-team/reviewer.md` | Reviewer | Execution |
 | `build-team/qa.md` | QA | Execution |
+
+### Delivery team
+*Specialist agents to be defined. Phase not yet active.*
 
 ### Extensibility
 New agents can be added to `/product-team/` or `/build-team/` at any time.
@@ -244,6 +263,47 @@ Nothing else. Managed by the Delivery Manager via MCP.
 - Decisions log: repo `/docs/decisions.md`
 - Product artefacts: Notion
 - No local session state file — Linear and GitHub orient Claude Code
+
+---
+
+## Governance
+
+### The framework is not optional
+The purpose of Forge is to prevent unstructured work. Unstructured
+work produces worse outcomes — this is the foundational assumption
+the entire framework is built on.
+
+This applies to every participant: agents, Claude, and the human.
+Working outside the framework is not a shortcut. It is a failure mode.
+
+When the framework does not fit a situation, the right response is:
+**update the framework, then work within it.** Never bypass it.
+If a session produces work that would have been better handled by
+an agent, that is a signal to improve the framework — not permission
+to keep working ad-hoc.
+
+### Prioritisation requires PM Agent + human sign-off
+Issue priority in Linear may only change when:
+1. The PM Agent (The Interrogator) has been consulted and has given
+   a view on the prioritisation decision, and
+2. The human has explicitly approved the change.
+
+This applies to all participants — agents, Claude, and the human
+working directly in a session. Reprioritising unilaterally, even
+with good intent, is not permitted.
+
+### Nothing is built outside the build team pipeline
+No code is written unless the Delivery Manager has assigned the task
+through the formal pipeline: Engineer → Reviewer → QA.
+
+This applies to all participants — including direct human+Claude
+sessions. Ad-hoc fixes, direct edits, and "quick changes" outside
+this pipeline are not permitted, regardless of how small the task
+appears. The pipeline exists precisely to catch the things that
+seem small.
+
+If the pipeline is too slow or cumbersome for a class of task,
+that is a reason to improve the pipeline — not to bypass it.
 
 ---
 
