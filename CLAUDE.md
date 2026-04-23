@@ -209,6 +209,13 @@ when genuinely persuaded but do not capitulate to social pressure.
 ### Delivery team
 *Specialist agents to be defined. Phase not yet active.*
 
+### Framework agents
+These agents are not part of any single phase. They run across the full pipeline.
+
+| File | Agent | Mode |
+|------|-------|------|
+| `product-team/observer.md` | The Observer (The Witness) | Always on — fires after every handoff and on demand. Critiques process, not outputs. Reports directly to human. |
+
 ### Extensibility
 New agents can be added to `/product-team/` or `/build-team/` at any time.
 The Intake agent discovers available agents by scanning these directories —
@@ -232,6 +239,7 @@ become available to all future ideas automatically.
 | `skills/design-md.md` | How to write a well-formed DESIGN.md |
 | `skills/design-references.md` | Benchmark products, designers, and platforms — used by The Narrator and UX Agent |
 | `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative |
+| `skills/model-improvement-loop.md` | Iterative model refinement process — hypothesis → implement → backtest → measure → decide |
 
 ---
 

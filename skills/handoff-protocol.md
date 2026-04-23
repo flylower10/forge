@@ -108,7 +108,9 @@ to this agent. Do not re-cover settled ground.
 
 **At the end:** Append your handoff block. If you have raised
 concerns that belong to another agent, flag them with the correct
-tag in the open concerns section.
+tag in the open concerns section. Then invoke The Observer
+(`product-team/observer.md`) — read its definition and deliver
+its note to the human before the next agent begins.
 
 ---
 
