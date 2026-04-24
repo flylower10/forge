@@ -194,6 +194,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
 | `product-team/08-sprint-review.md` | Sprint Review | Conversation — end of each sprint |
 | `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
+| `product-team/ux-agent.md` | The Specifier | Autonomous with review — bridges discovery and build; runs once at build kickoff, consulted when new screens are added |
 
 ### Marketing team
 Agents focused on commercialisation: pricing, go-to-market, acquisition, retention. Not bound to a specific pipeline phase — The Scout selects them when an idea requires commercial thinking, whether during discovery, refinement, or delivery.
@@ -208,7 +209,6 @@ Agents focused on commercialisation: pricing, go-to-market, acquisition, retenti
 |------|------|------|
 | `build-team/delivery-manager.md` | The Conductor | Conversation |
 | `build-team/feedback-triage.md` | The Arbiter | Triggered — fires on product criticism before any action is taken |
-| `build-team/ux-agent.md` | The Specifier | Autonomous with review — runs at build kickoff |
 | `build-team/cartographer.md` | The Cartographer | Autonomous + 1 question — codebase documentation brief |
 | `build-team/architect.md` | Architect | Consulted only |
 | `build-team/engineer.md` | Engineer | Execution |

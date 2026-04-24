@@ -1,4 +1,4 @@
-# Build Team · UX Agent
+# Agent · UX Agent
 **Alias:** The Specifier
 **Mode:** Autonomous with review — runs once at build kickoff, consulted when new screens are added
 **Gate:** DESIGN.md exists and is approved
