@@ -194,6 +194,8 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
 | `product-team/08-sprint-review.md` | Sprint Review | Conversation — end of each sprint |
 | `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
+| `product-team/monetisation-agent.md` | The Merchant | Autonomous + 1 question — pricing model, free/paid split, trial strategy. Runs after The Interrogator, before The Pragmatist |
+| `product-team/gtm-agent.md` | The Campaigner | Autonomous + 1 question — acquisition channels, launch sequence, social proof, retention design. Runs after The Advocate, before Synthesis |
 
 ### Build team
 | File | Role | Mode |
