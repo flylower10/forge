@@ -69,6 +69,7 @@ If the answer is a product or software build — proceed to Step 1.
 Before asking anything, read:
 - All files in `/product-team/` (discovery and ceremony agents)
 - All files in `/build-team/` (execution agents)
+- All files in `/marketing-team/` (commercialisation agents)
 - All files in `/skills/` (available domain knowledge)
 
 Understand what each agent does and what kinds of problems it
