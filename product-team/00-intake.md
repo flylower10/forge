@@ -165,6 +165,16 @@ Agents skipped:
 Specialist agents needed:
   [Name] — [what it would do] — [Draft now / Add later / Not needed]
 
+Execution order:
+  Wave 1 (sequential): The Scout
+  Wave 2 (parallel): [Agent A] + [Agent B]  — no dependency between them
+  Wave 3 (parallel): [Agent C] + [Agent D] + [Agent E]  — all depend on Wave 2
+  Wave 4 (sequential): Synthesis  — depends on all Wave 3 agents completing
+
+  Note: The Researcher may be invoked by any agent in any wave.
+  It does not have a fixed wave — it runs on demand and returns
+  before the invoking agent continues.
+
 Estimated pipeline length: [short / medium / full]
 ```
 
@@ -182,6 +192,7 @@ Once confirmed, save the pipeline configuration:
 Date: [date]
 Type: [idea type]
 Agents: [ordered list of agents selected]
+Execution order: [wave map — which agents run in parallel vs. sequentially]
 Modifications: [any agent-specific adjustments]
 Specialist agents: [any new agents drafted or deferred]
 Rationale: [two to three sentences on why this configuration]

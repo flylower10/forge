@@ -38,7 +38,7 @@ Date started: [date]
 ---
 
 ## Pipeline configuration
-[Copied from Intake output — which agents, in what order, and why]
+[Copied from Intake output — which agents, in what order, dependency map, and why]
 
 ---
 
@@ -51,7 +51,14 @@ Date started: [date]
 [Flags raised by agents for downstream review.
 Format: [AGENT TAG] Description of concern
 Example: [TECH FEASIBILITY] No clean API for sourcing expected squads — fallback needed
-Example: [PM REVIEW] User journey reveals a second user type not in original framing]
+Example: [PM REVIEW] User journey reveals a second user type not in original framing
+Example: [RESEARCH] Competitive pricing data not available — The Researcher to fill before The Merchant runs]
+
+---
+
+## Research log
+[Findings from The Researcher, appended chronologically. Any agent may add a
+[RESEARCH REQUEST] mid-conversation; The Researcher fills the finding here.]
 
 ---
 
@@ -93,8 +100,9 @@ in the open concerns section and address any flags before proceeding.
 |-----|---------------|
 | `[TECH FEASIBILITY]` | Agent 04 · The Pragmatist |
 | `[PM REVIEW]` | Agent 01 · The Interrogator |
-| `[DESIGN REVIEW]` | Agent 02 · The Anthropologist |
+| `[DESIGN REVIEW]` | Agent 02 · The Narrator |
 | `[USER RESEARCH]` | Agent 05 · The Advocate |
+| `[RESEARCH]` | The Researcher — fills immediately when invoked, or queued for async fill |
 | `[OPEN QUESTION]` | Human — surfaces in Synthesis for resolution |
 | `[REFINEMENT]` | Agent 07 · Refinement Ceremony |
 
@@ -104,7 +112,21 @@ in the open concerns section and address any flags before proceeding.
 
 **At the start:** Read the running brief. Note what has been
 established. Check the open concerns section for flags addressed
-to this agent. Do not re-cover settled ground.
+to this agent. Check the research log for findings relevant to
+your work. Do not re-cover settled ground.
+
+**Mid-session:** If you encounter a factual gap that would materially
+change your output, do not defer it. Invoke The Researcher immediately:
+
+```
+[RESEARCH REQUEST]
+Question: [precise question]
+Context: [what it feeds into and why it matters now]
+Depth: Surface / Deep
+```
+
+The Researcher returns findings before you continue. If research
+is blocked, flag it as `[RESEARCH]` in open concerns and proceed.
 
 **At the end:** Append your handoff block. If you have raised
 concerns that belong to another agent, flag them with the correct

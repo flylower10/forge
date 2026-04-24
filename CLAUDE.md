@@ -224,6 +224,7 @@ These agents are not part of any single phase. They run across the full pipeline
 | File | Agent | Mode |
 |------|-------|------|
 | `product-team/observer.md` | The Observer (The Witness) | Always on — fires after every handoff and on demand. Critiques process, not outputs. Reports directly to human. |
+| `product-team/research-agent.md` | The Researcher | On demand — invoked mid-conversation by any agent to fill factual gaps. Returns structured findings to the invoking agent and appends to the running brief research log. |
 
 ### Extensibility
 New agents can be added to `/product-team/` or `/build-team/` at any time.
@@ -247,7 +248,7 @@ become available to all future ideas automatically.
 | `skills/artefact-templates.md` | Standardised output formats |
 | `skills/design-md.md` | How to write a well-formed DESIGN.md |
 | `skills/design-references.md` | Benchmark products, designers, and platforms — used by The Narrator and UX Agent |
-| `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative |
+| `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative. Used by The Researcher. |
 | `skills/model-improvement-loop.md` | Iterative model refinement process — hypothesis → implement → backtest → measure → decide |
 | `skills/prioritisation.md` | WSJF-based prioritisation for genuine opportunity cost decisions — invoked by the Delivery Manager, decision surfaced in Linear |
 
