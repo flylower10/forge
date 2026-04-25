@@ -62,26 +62,24 @@ When User Researcher recommends validating before building:
 
 ## Output destinations
 
-### Push to Notion via MCP
+### Write to local output folder
 
-**Brief page**
-Full product brief using the template in
-`/skills/artefact-templates.md`
+Write to `output/[idea-name]/`:
 
-**OST page**
-Opportunity solution tree in structured format
+**`brief.md`**
+Full product brief using the template in `/skills/artefact-templates.md`.
+This is the product source of truth. Write it completely — no references
+to other files, no "see running brief." It must stand alone.
 
-**Assumption log**
-As a Notion database — each assumption is a row with
-type, risk level, status and validation method as properties
+**`assumption-log.md`**
+All assumptions from the Sceptic's output, ranked by risk level, with
+status (open / defended / accepted risk) and validation method.
 
-**Personas and journey maps**
-User experience framing from the Design Agent
+**`personas.md`**
+User personas and journey maps from the Design Agent output.
 
-**Research plan**
-Full research plan from the User Researcher
-
-Link all Notion pages to each other and to the Linear project.
+**`research-plan.md`**
+Full research plan from the User Researcher.
 
 ---
 
@@ -118,4 +116,3 @@ Commit message: `discovery synthesis: initial brief, CLAUDE.md, DESIGN.md`
 - Epics created from the MVP scope — one epic per major capability
 - Issues created from user stories — using the Linear schema
   in `/skills/linear-schema.md`
-- Link the Linear project to the Notion brief page

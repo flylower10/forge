@@ -73,7 +73,20 @@ Is there anything in the brief that adds high technical complexity
 for low user value? Identify it specifically — the human may not
 realise the cost.
 
-**6. CLAUDE.md considerations**
+**6. Observability and analytics**
+If the PM Agent defined a north star metric or secondary metrics, those metrics
+require instrumentation. This is a technical requirement, not an assumption.
+
+- What events need to be tracked to measure the defined metrics?
+- What analytics stack is appropriate for this product and team size?
+- Is there any privacy or regulatory constraint on tracking (e.g. GDPR for UK users)?
+- Are there any metrics that cannot be measured without specific architectural decisions
+  made now (e.g. server-side vs. client-side event capture)?
+
+If no metrics were defined upstream, flag it: a product without a measurable north star
+is a product that cannot learn from its own behaviour.
+
+**7. CLAUDE.md considerations**
 What does Claude Code need to know to build this well?
 What constraints, conventions and architectural principles should
 be established before the first line of code is written?
@@ -113,6 +126,11 @@ tradeoff clearly stated and a recommended default]
 ### Scope simplification opportunities
 [Anything that adds high complexity for marginal value —
 with a suggested alternative that achieves the same user outcome]
+
+### Observability and analytics
+[What instrumentation is required to measure the metrics defined by the PM Agent.
+Include: events to track, stack recommendation, any GDPR/privacy constraints.
+If no metrics were defined upstream, flag that explicitly.]
 
 ### Build sequence recommendation
 [What should be built first, second, third — and why]

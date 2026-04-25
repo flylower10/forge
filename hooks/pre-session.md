@@ -29,19 +29,18 @@ Query the active project in Linear via MCP:
 If Linear is unavailable, note it and proceed — flag any
 build work for manual Linear update at session end.
 
-## 4. Read product context from Notion
-If discovery is complete, read the brief in Notion via MCP.
+## 4. Read product context from local output folder
+If discovery is complete, read `output/[idea-name]/brief.md`.
 This is the product source of truth — use it to understand
 what is being built and why before touching any code.
 
-If Notion is unavailable, read the brief from the last
-known state and flag for reconciliation.
+If no brief exists yet, read the running brief at
+`output/[idea-name]/running-brief.md` for current pipeline state.
 
 ## 5. Confirm MCP connections
 Verify:
 - GitHub (read/write — technical artefacts)
 - Linear (read/write — build execution)
-- Notion (read/write — product artefacts)
 
 Note any unavailable connections. Do not block the session —
 produce outputs locally and push when connections restore.

@@ -154,14 +154,16 @@ when genuinely persuaded but do not capitulate to social pressure.
 
 ## Output structure
 
-### Notion (product artefacts — what you read)
-- Brief
-- Opportunity solution tree
-- Assumption log
-- User personas and journey maps
-- Research plan
-- Signal log (updated each sprint)
-- Sprint review notes
+### Local output folder (product artefacts — what you read)
+```
+/output/[idea-name]/
+  running-brief.md     ← live pipeline state, updated by every agent
+  brief.md             ← final consolidated brief from Synthesis
+  assumption-log.md    ← ranked assumptions with risk levels and status
+  personas.md          ← user personas and journey maps
+  research-plan.md     ← validated research plan from The Advocate
+  [agent-outputs].md   ← individual agent outputs, retained as record
+```
 
 ### GitHub repo (technical artefacts — what Claude Code reads)
 ```
@@ -238,7 +240,7 @@ become available to all future ideas automatically.
 | File | Contents |
 |------|----------|
 | `memory/decisions.md` | ADR log — architectural decisions, append-only |
-| `memory/signal-log.md` | Sprint learning template — lives in Notion in practice |
+| `memory/signal-log.md` | Sprint learning template |
 
 ## Skills
 | File | Contents |
@@ -256,18 +258,13 @@ become available to all future ideas automatically.
 
 ## Tool ownership
 
-Three tools, three distinct jobs. Never duplicate across them.
-
-**Notion — what you read**
-The product story. Brief, OST, assumption log, personas, journey maps,
-design principles, signal log, sprint review notes, research plan.
-Everything you'd open when you want to understand what you're building
-and why. Managed by the Synthesis agent and Delivery Manager via MCP.
+Two tools, two distinct jobs. Never duplicate across them.
 
 **GitHub — what Claude Code reads**
 Technical context that lives with the code. `CLAUDE.md`, `DESIGN.md`,
 ADRs in `/docs/decisions.md`. Functional artefacts Claude Code needs
 at the start of every build session. Committed alongside the codebase.
+Discovery artefacts live in `/output/[idea-name]/` in this repo.
 
 **Linear — what gets built**
 Sprint execution. Issues, acceptance criteria, progress, blockers.
@@ -280,7 +277,7 @@ Nothing else. Managed by the Delivery Manager via MCP.
 - Session start: follow `/hooks/pre-session.md`
 - Session end: follow `/hooks/post-session.md`
 - Decisions log: repo `/docs/decisions.md`
-- Product artefacts: Notion
+- Product artefacts: `/output/[idea-name]/` in this repo
 - No local session state file — Linear and GitHub orient Claude Code
 
 ---
