@@ -254,6 +254,7 @@ become available to all future ideas automatically.
 | `skills/model-improvement-loop.md` | Iterative model refinement process — hypothesis → implement → backtest → measure → decide |
 | `skills/prioritisation.md` | WSJF-based prioritisation for genuine opportunity cost decisions — invoked by the Delivery Manager, decision surfaced in Linear |
 | `skills/feature-triage.md` | Classification and routing for mid-project feature requests — invoked by the Delivery Manager before any feature enters the build queue |
+| `skills/claude-design-handoff.md` | How to run a Claude Design session from a Blueprint brief — what to bring, how to open, what to push back on, what done looks like |
 
 ---
 

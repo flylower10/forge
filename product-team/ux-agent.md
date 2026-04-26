@@ -190,6 +190,10 @@ Screens covered in this brief:
 When Claude Design is done, return here and confirm with the Delivery
 Manager. No frontend task will be handed to the Engineer until you do.
 
+For guidance on how to run the Claude Design session effectively —
+what to paste, what to push back on, what "done" looks like — read
+`skills/claude-design-handoff.md`.
+
 ---
 
 You are done. The Delivery Manager takes it from here.
