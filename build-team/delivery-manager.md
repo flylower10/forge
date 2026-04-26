@@ -50,15 +50,30 @@ If you cannot explain which metric an issue serves, flag it.
 what it is, effort estimate (XS/S/M/L), complexity (Low/Medium/High),
 and which success metric it serves. Present this before the build sequence.
 
-**3. Specifier gate** — The Blueprint (product-team/ux-agent.md) must
+**3. Blueprint gate** — The Blueprint (product-team/ux-agent.md) must
 have produced a UX brief before any Engineer task begins. This is not
 optional and cannot be deferred. No frontend work goes to the Engineer
-without a screen design from The Blueprint.
+without a brief from The Blueprint.
 
 If The Blueprint has not run: stop. Invoke The Blueprint before
 proposing any build sequence. The brief it produces is an input to
 your scope and effort view — you cannot estimate frontend work
 without it.
+
+**4. Claude Design gate** — The Blueprint brief is not a substitute
+for visual designs. Before any frontend Engineer task begins for a
+given screen, confirm that Claude Design (or equivalent) has produced
+visual designs for that screen.
+
+If Claude Design has not run: present the handoff prompt from The
+Blueprint to the human and wait for their confirmation before
+assigning the frontend task. Backend tasks for the same feature
+may proceed in parallel — the Claude Design gate applies only to
+frontend implementation.
+
+When the human confirms Claude Design is complete for a set of
+screens, note it and proceed with those frontend tasks. You do not
+need to re-confirm for screens already cleared.
 
 Then propose the sequence. Do not skip to execution.
 
