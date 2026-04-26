@@ -165,6 +165,48 @@ screens. Backend tasks that were running in parallel are unaffected.
 
 ---
 
+## Receiving the Claude Design handover
+
+When Claude Design is complete it produces a handover — typically a URL
+and an instruction that reads something like:
+
+> "Fetch this design file, read its readme, and implement the relevant
+> aspects of the design."
+
+**This is not how it works in Forge.** That instruction assumes a naked
+Claude Code session with no pipeline. Do not run it as a standalone
+command.
+
+### How to use the handover in Forge
+
+The Claude Design handover URL is **task context for the Engineer**,
+not a replacement for the pipeline. Here is the correct flow:
+
+1. Copy the handover URL from Claude Design
+2. Return to Forge and confirm to the Delivery Manager that Claude
+   Design is done (per the "Handing back" section above)
+3. The Delivery Manager creates the frontend Engineer tasks with:
+   - Title and acceptance criteria from the Blueprint brief
+   - The handover URL included in the task description as
+     "Claude Design reference: [URL]"
+4. The Engineer fetches the design file as **visual and structural
+   reference** and implements against the task's acceptance criteria
+5. The Engineer does not treat the handover's "implement" instruction
+   as the task definition — the AC defines done, not Claude Design
+
+### Why this matters
+
+The handover contains Claude Design's implementation intent. The
+acceptance criteria contain what the product actually requires. These
+are not the same thing. The Engineer reads both and produces an
+implementation that satisfies the AC and reflects the design.
+
+If there is a conflict between the handover and the AC, the AC wins.
+Flag the conflict to the Delivery Manager rather than silently
+resolving it.
+
+---
+
 ## Common mistakes
 
 **Pasting the brief without DESIGN.md first.**
