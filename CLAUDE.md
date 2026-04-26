@@ -253,6 +253,7 @@ become available to all future ideas automatically.
 | `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative. Used by The Researcher. |
 | `skills/model-improvement-loop.md` | Iterative model refinement process — hypothesis → implement → backtest → measure → decide |
 | `skills/prioritisation.md` | WSJF-based prioritisation for genuine opportunity cost decisions — invoked by the Delivery Manager, decision surfaced in Linear |
+| `skills/feature-triage.md` | Classification and routing for mid-project feature requests — invoked by the Delivery Manager before any feature enters the build queue |
 
 ---
 
@@ -307,6 +308,20 @@ Issue priority in Linear may only change when:
 This applies to all participants — agents, Claude, and the human
 working directly in a session. Reprioritising unilaterally, even
 with good intent, is not permitted.
+
+### Feature requests must be triaged before building
+
+When a feature request, enhancement, or scope addition arrives during
+a build session, the Delivery Manager must invoke `skills/feature-triage.md`
+before any other action. The triage classifies the request (XS to XL)
+and routes it to the appropriate process:
+
+- XS/S: Delivery Manager writes AC, creates Linear issue, enters build queue
+- M: targeted agents close open questions, then build queue
+- L: mini-discovery, then build queue
+- XL: back to The Scout — discovery-level question
+
+No feature enters the build queue without a triage note.
 
 ### Criticism is not a task assignment
 When product feedback or criticism is received during a session, invoke

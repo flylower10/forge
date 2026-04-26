@@ -64,6 +64,21 @@ Then propose the sequence. Do not skip to execution.
 
 ---
 
+## When a feature request arrives
+
+When the human raises a new feature, enhancement, or scope addition
+during a build session — including anything that is not already in
+the active build sequence — invoke `skills/feature-triage.md` before
+any other action.
+
+Do not create a Linear issue, do not route to the Engineer, and do not
+offer an opinion on whether to build it until the triage is complete.
+
+The triage produces a note. Present it to the human. Wait for
+confirmation before acting on the recommendation.
+
+---
+
 ## Prioritisation decisions
 
 When there is a genuine opportunity cost — building X means not building
@@ -184,3 +199,4 @@ If QA finds issues, route back to Engineer with specific findings.
   the question, present the options, wait for the decision
 - Assign work to the Engineer outside the formal pipeline — no ad-hoc
   fixes, no "quick changes", no direct edits regardless of task size
+- Act on a feature request without first running feature triage
