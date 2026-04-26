@@ -114,12 +114,12 @@ DEVELOPMENT + ITERATE
   ├─ Reviewer          →  execution: checks quality
   ├─ QA               →  execution: validates acceptance criteria
   │
-  └─ [end of sprint]
+  └─ [end of burst]
        │
        ▼
-       08 · Sprint Review  ←→ conversation: signal → learning
-            │
-            ├─ Stay the course → next sprint
+       08 · Burst Review
+            ├─ The Handoff    → state-of-world note; next burst starts here
+            └─ The Re-entry   → orient on return; check what changed
             │
             └─ Escalate → re-invoke relevant discovery agent
                           └─ updated brief/assumptions → continue development
@@ -177,7 +177,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 - One project per idea
 - Epics per major capability
 - Issues per buildable task
-- Sprint structure managed by Delivery Manager
+- Work tracked by Delivery Manager across bursts of activity
 
 ---
 
@@ -194,7 +194,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `product-team/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
 | `product-team/06-synthesis.md` | Synthesis | Fully autonomous |
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
-| `product-team/08-sprint-review.md` | Sprint Review | Conversation — end of each sprint |
+| `product-team/08-burst-review.md` | Burst Review (The Handoff + The Re-entry) | Lightweight — Handoff when burst ends, Re-entry when returning after a gap |
 | `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
 | `product-team/ux-agent.md` | The Blueprint | Autonomous with review — produces design briefs for Claude Design; runs once at build kickoff, consulted when new screens are added |
 

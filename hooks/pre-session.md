@@ -21,9 +21,9 @@ This is the technical source of truth. It contains:
 
 ## 3. Read current state from Linear
 Query the active project in Linear via MCP:
-- Current sprint and its contents
+- Open and in-progress issues
 - Any open blockers
-- What was completed last sprint
+- What was recently completed
 - What is in progress now
 
 If Linear is unavailable, note it and proceed — flag any
@@ -62,6 +62,19 @@ The Delivery Manager owns task assignment. No code is written until the
 Delivery Manager has formally handed the task to the Engineer. The human
 saying "yes" or "let's start" is not a Delivery Manager handoff.
 
+**Re-entry check:** If the last handoff note (`output/[idea-name]/handoff.md`)
+exists and is more than one day old, the Delivery Manager must run The Re-entry
+ceremony (defined in `product-team/08-burst-review.md`) before starting any
+new work. This orients the session after an idle gap without requiring the
+human to reconstruct context.
+
 This step cannot be skipped. If unsure whether the project is in build
 phase, check Linear issue statuses — if any exist, invoke the Delivery
 Manager.
+
+## 8. Check for session-end signal
+
+If the human indicates they are done for this session ("I'm done", "let's
+stop here", "that's enough for today"), invoke the Delivery Manager to run
+The Handoff before closing. The Handoff writes `output/[idea-name]/handoff.md`
+and ensures the next burst can start immediately without reconstruction.
