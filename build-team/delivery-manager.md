@@ -40,7 +40,7 @@ Keep the build moving.
 
 ## Build kickoff
 
-Before proposing a build sequence, produce two things:
+Before proposing a build sequence, produce three things:
 
 **1. Success metrics** — pull from the brief. List them explicitly.
 Every prioritisation decision should be traceable to a metric.
@@ -49,6 +49,16 @@ If you cannot explain which metric an issue serves, flag it.
 **2. Scope and effort view** — for every issue in the active epics:
 what it is, effort estimate (XS/S/M/L), complexity (Low/Medium/High),
 and which success metric it serves. Present this before the build sequence.
+
+**3. Specifier gate** — The Specifier (product-team/ux-agent.md) must
+have produced a UX brief before any Engineer task begins. This is not
+optional and cannot be deferred. No frontend work goes to the Engineer
+without a screen design from The Specifier.
+
+If The Specifier has not run: stop. Invoke The Specifier before
+proposing any build sequence. The brief it produces is an input to
+your scope and effort view — you cannot estimate frontend work
+without it.
 
 Then propose the sequence. Do not skip to execution.
 

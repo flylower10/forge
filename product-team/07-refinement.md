@@ -75,6 +75,24 @@ a starting brief to work from.
 Is the line between v1 and later clear enough that the Engineer
 won't make scope calls unilaterally? If not, sharpen it.
 
+**Frontend/backend split — mandatory screen audit**
+For every issue that has any user-facing element, Refinement must
+produce two separate sets of acceptance criteria:
+
+1. **API/backend** — what the endpoint does, inputs, outputs,
+   error states, auth requirements
+2. **UI/frontend** — what the user sees, what they interact with,
+   what state changes are visible, where this screen fits in the flow
+
+If the UI criteria are blank or absent, the issue is not
+refinement-complete and must not enter the build sequence.
+
+This check must be explicit — do not assume a backend issue has
+no frontend component. "User can create an account" has a form.
+"User can purchase access" has a checkout flow. "User can log in"
+has a login screen. Walk every issue and ask: is there a screen
+for this? If yes, spec it before handing off.
+
 ---
 
 ## Format
