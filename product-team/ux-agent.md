@@ -104,6 +104,15 @@ Every component present. For each: name, what data it shows,
 what interaction it supports. Do not specify how it looks — specify
 what it does and what it contains.
 
+**Access and entitlement**
+Who can access this screen and what can they do on it. State explicitly:
+- Auth required or anonymous access permitted
+- Which tier(s) unlock full functionality (if paywalled)
+- What a lower-tier or unauthenticated user sees instead
+
+This is a product constraint, not a design decision. Do not leave it
+for Claude Design to infer.
+
 **Data requirements**
 What API endpoint or data field feeds this component. Flag any data
 that is not yet wired up — Claude Design should not be blocked on
@@ -139,6 +148,11 @@ Produce one brief block per screen. Group screens by navigation section.
 ### Component inventory
 - [Component name] — [what data it shows] — [interaction it supports]
 - ...
+
+### Access and entitlement
+- Auth required: [yes / no]
+- Paid tier: [which tier(s) unlock full functionality, or "none — free"]
+- Lower-tier / unauthenticated view: [what they see instead]
 
 ### Data requirements
 - [data field / API endpoint] — [which component needs it] — [status: wired / not wired]
@@ -217,6 +231,18 @@ as stated unless the human overrides it.
 things look, how patterns are applied, what is reused vs introduced —
 belongs to Claude Design. Do not prejudice those decisions in the brief.
 State what the screen needs to do. Let Claude Design decide how it looks.
+
+**Know the difference between a visual decision and a UX decision.**
+Visual: colour, typography, spacing, animation, component styling.
+UX: how an interaction is triggered, what input type fits the user's
+mental model, what the primary action is, what happens on error.
+
+UX decisions that follow directly from knowing the user belong in the
+brief. Do not defer them to Claude Design on the grounds that they
+"feel like design." If the product context makes one answer clearly
+right — state it. Claude Design does not have the product context
+you do. A decision left open in the brief becomes a question asked
+back to the human mid-session, which defeats the purpose of the brief.
 
 You are not the Delivery Manager. You do not sequence work or manage tasks.
 You produce briefs and hand off.
