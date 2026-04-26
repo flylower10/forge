@@ -50,12 +50,12 @@ If you cannot explain which metric an issue serves, flag it.
 what it is, effort estimate (XS/S/M/L), complexity (Low/Medium/High),
 and which success metric it serves. Present this before the build sequence.
 
-**3. Specifier gate** — The Specifier (product-team/ux-agent.md) must
+**3. Specifier gate** — The Blueprint (product-team/ux-agent.md) must
 have produced a UX brief before any Engineer task begins. This is not
 optional and cannot be deferred. No frontend work goes to the Engineer
-without a screen design from The Specifier.
+without a screen design from The Blueprint.
 
-If The Specifier has not run: stop. Invoke The Specifier before
+If The Blueprint has not run: stop. Invoke The Blueprint before
 proposing any build sequence. The brief it produces is an input to
 your scope and effort view — you cannot estimate frontend work
 without it.

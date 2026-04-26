@@ -196,7 +196,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
 | `product-team/08-sprint-review.md` | Sprint Review | Conversation — end of each sprint |
 | `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
-| `product-team/ux-agent.md` | The Specifier | Autonomous with review — bridges discovery and build; runs once at build kickoff, consulted when new screens are added |
+| `product-team/ux-agent.md` | The Blueprint | Autonomous with review — produces design briefs for Claude Design; runs once at build kickoff, consulted when new screens are added |
 
 ### Marketing team
 Agents focused on commercialisation: pricing, go-to-market, acquisition, retention. Not bound to a specific pipeline phase — The Scout selects them when an idea requires commercial thinking, whether during discovery, refinement, or delivery.
