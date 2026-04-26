@@ -52,4 +52,16 @@ Before starting work, briefly state:
 - What the current session will do
 - Any blockers or open items to be aware of
 
-Then proceed.
+## 7. Invoke the Delivery Manager if in build phase
+
+If the active idea is in Development phase (any Linear issues In Progress,
+In Review, In QA, or the next issue is Ready to start), you MUST invoke
+`build-team/delivery-manager.md` before any other action.
+
+The Delivery Manager owns task assignment. No code is written until the
+Delivery Manager has formally handed the task to the Engineer. The human
+saying "yes" or "let's start" is not a Delivery Manager handoff.
+
+This step cannot be skipped. If unsure whether the project is in build
+phase, check Linear issue statuses — if any exist, invoke the Delivery
+Manager.
