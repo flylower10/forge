@@ -150,18 +150,60 @@ built — the Engineer needs to know what they look like.
 
 ---
 
+## DESIGN.md sync — required before closing the session
+
+Before the Claude Design session ends, request a DESIGN.md diff.
+**This is not optional.** Claude Design makes design decisions throughout
+the session — new component patterns, resolved layout questions, mobile
+behaviour, interaction details — that are not automatically written back
+to DESIGN.md. If they are not captured, the design system diverges from
+what was built and future sessions start from a stale baseline.
+
+Use this prompt at the end of every session, before the handover:
+
+> "Before we finish: produce a summary of every design decision made in
+> this session that should be written back into DESIGN.md. Include:
+> new component patterns, updated or new layout rules, mobile-specific
+> additions, resolved open items, and any decisions that extend or
+> override the existing design system. Format it as proposed additions
+> to DESIGN.md so I can apply them directly."
+
+If Claude Design cannot produce this summary — do not close the session.
+Ask again. A handover without a DESIGN.md sync is incomplete.
+
+### Applying the diff
+
+Once you have the summary:
+1. Read the current `docs/DESIGN.md`
+2. Apply Claude Design's additions — new sections, updated rules,
+   mobile patterns
+3. Do not remove existing rules unless Claude Design explicitly
+   proposed overriding them and you agreed
+4. Commit the updated DESIGN.md before the first frontend Engineer
+   task starts
+
+The Delivery Manager must confirm DESIGN.md has been updated before
+unlocking any frontend task. An Engineer working from a stale design
+system will make decisions Claude Design already resolved.
+
+---
+
 ## Handing back to the Delivery Manager
 
-When Claude Design is complete, return to the build pipeline and
-confirm with the Delivery Manager:
+When Claude Design is complete and DESIGN.md has been updated,
+return to the build pipeline and confirm with the Delivery Manager:
 
-> "Claude Design is done. Screens cleared for frontend build:
-> [list screen names]. Notes from the session: [any component
-> decisions or resolved open items that affect the Engineer].
-> Open items resolved: [list]."
+> "Claude Design is done. DESIGN.md updated. Screens cleared for
+> frontend build: [list screen names]. Notes from the session:
+> [any component decisions or resolved open items that affect the
+> Engineer]. Open items resolved: [list]."
 
 The Delivery Manager will then unlock the frontend tasks for those
 screens. Backend tasks that were running in parallel are unaffected.
+
+**The Delivery Manager must not unlock frontend tasks until
+DESIGN.md sync is confirmed.** If the confirmation does not include
+"DESIGN.md updated", ask before proceeding.
 
 ---
 

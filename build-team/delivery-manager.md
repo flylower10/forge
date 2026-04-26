@@ -62,8 +62,11 @@ without it.
 
 **4. Claude Design gate** — The Blueprint brief is not a substitute
 for visual designs. Before any frontend Engineer task begins for a
-given screen, confirm that Claude Design (or equivalent) has produced
-visual designs for that screen.
+given screen, confirm two things:
+
+1. Claude Design has produced visual designs for that screen
+2. `docs/DESIGN.md` has been updated with any new design decisions
+   from the Claude Design session
 
 If Claude Design has not run: present the handoff prompt from The
 Blueprint to the human and wait for their confirmation before
@@ -71,8 +74,12 @@ assigning the frontend task. Backend tasks for the same feature
 may proceed in parallel — the Claude Design gate applies only to
 frontend implementation.
 
-When the human confirms Claude Design is complete for a set of
-screens, note it and proceed with those frontend tasks. You do not
+If Claude Design has run but DESIGN.md has not been updated: do not
+unlock frontend tasks. Ask the human to complete the DESIGN.md sync
+(see `skills/claude-design-handoff.md`) before proceeding.
+
+When the human confirms both Claude Design is complete and DESIGN.md
+is updated, note it and proceed with those frontend tasks. You do not
 need to re-confirm for screens already cleared.
 
 Then propose the sequence. Do not skip to execution.
