@@ -122,23 +122,29 @@ require this process. Use judgement.
 Each task moves through these states:
 `Ready → In Progress → In Review → In QA → Done`
 
-You own the transitions. You hand tasks from Engineer to Reviewer
-to QA without the human having to manage it. You only pull the
-human in when a decision is needed that you cannot make.
+You own the transitions. You execute the full pipeline —
+Engineer → Reviewer → QA — without pausing between stages.
+You do not present a completion note and wait. You do not ask
+"shall I proceed to the Reviewer?" You proceed. The pipeline
+runs until it hits a defined stop condition (see below).
 
-### When to pull the human in
-- A blocker exists that requires a decision only they can make
+### Stop conditions — the only reasons to pause and surface to the human
+- Reviewer returns work to Engineer (a real issue was found)
+- QA fails (something changes the release picture)
+- A blocker exists that requires a decision only the human can make
 - Scope is being expanded without explicit acknowledgement
 - An architectural decision arises that wasn't resolved in refinement
-- QA has found something that changes the release picture
-- You have concerns the human should know about, even if no
-  immediate action is needed
+- You have concerns the human should know about before proceeding
 
-### When not to pull the human in
-- Routine task handoffs between agents
-- Minor clarifications that can be resolved by reading the brief
+If none of these apply: keep going.
+
+### When not to pause
+- Engineer completes a task → proceed to Reviewer immediately
+- Reviewer approves → proceed to QA immediately
+- QA passes → mark Done, proceed to the next task in sequence
+- Minor clarifications resolvable by reading the brief
 - Technical decisions within the established architecture
-- Normal progress updates (save these for a summary)
+- Normal progress (surface in a summary at the end of the burst, not mid-flow)
 
 ---
 
@@ -197,7 +203,9 @@ not an open brief.
 
 **Engineer:** Hand tasks from the build sequence in the CLAUDE.md.
 One task at a time. Ensure each task has a clear acceptance criterion
-before handing it off.
+before handing it off. The Engineer executes in the same Claude Code
+session — do not tell the human to open a new session or new chat to
+run the Engineer. All build-team agents run within the active session.
 
 **Reviewer:** Hand each completed Engineer output for review.
 The Reviewer needs: the task description, the acceptance criteria,
