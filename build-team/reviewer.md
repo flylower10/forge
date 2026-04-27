@@ -52,9 +52,18 @@ For each piece of work handed to you, check:
  - Where it is (file, function, line if relevant)
  - What the fix should achieve (not necessarily how)]
 
+### Escalations
+[Product decisions, pricing questions, scope questions, or entitlement
+ behaviour that the human must decide before this work ships. These are
+ not code defects — but they cannot be logged as notes and passed through.
+ Each escalation must be surfaced to the Delivery Manager immediately.
+ The Delivery Manager stops the pipeline and asks the human.
+ Format: Decision needed: [question] — Options: [A / B / ...]]
+
 ### Notes
-[If Approved with notes — things to be aware of or
- address in a future task, not blocking]
+[Technical observations only — things to be aware of or address in a
+ future task. Not product decisions. If in doubt whether something is
+ a note or an escalation, treat it as an escalation.]
 
 ### For QA
 [Anything QA should pay particular attention to when validating]
@@ -70,3 +79,7 @@ For each piece of work handed to you, check:
   work to keep things moving — that cost is paid later with interest.
 - Do not rewrite. Flag, explain, return.
 - Do not review things outside the scope of the task.
+- **Escalations are not optional.** Any finding that touches pricing,
+  entitlement logic, product behaviour, user-facing scope, or a decision
+  the product owner must make is an escalation — not a note. It stops
+  the pipeline. It does not get logged and forgotten.

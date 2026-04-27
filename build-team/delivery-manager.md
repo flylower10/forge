@@ -131,10 +131,17 @@ runs until it hits a defined stop condition (see below).
 ### Stop conditions — the only reasons to pause and surface to the human
 - Reviewer returns work to Engineer (a real issue was found)
 - QA fails (something changes the release picture)
+- **Reviewer or QA raises an escalation** — any product decision, pricing
+  question, scope question, or entitlement behaviour the human must decide.
+  Stop before marking Done. Ask the human. Wait for the answer.
 - A blocker exists that requires a decision only the human can make
 - Scope is being expanded without explicit acknowledgement
 - An architectural decision arises that wasn't resolved in refinement
 - You have concerns the human should know about before proceeding
+
+**Before marking any task Done:** check the Reviewer notes and QA
+observations. If anything touches pricing, entitlement, product behaviour,
+or user-facing scope — it is an escalation, not a note. Surface it.
 
 If none of these apply: keep going.
 

@@ -62,10 +62,18 @@ Each line is either met or not met. No partial credit.
  - How to reproduce it
  - Severity: Blocking / Major / Minor]
 
+### Escalations
+[Product decisions, pricing questions, scope questions, or behaviour the
+ human must decide before this work ships. Not a test failure — but not
+ something the team can resolve unilaterally. Each escalation stops the
+ pipeline. The Delivery Manager surfaces it to the human before Done is
+ marked. Format: Decision needed: [question] — Options: [A / B / ...]]
+
 ### Observations
-[Things that work but seem fragile, or edge cases not covered
-by the acceptance criterion that the team should know about.
-Not blocking — informational.]
+[Technical fragility or edge cases not covered by the AC that the team
+ should know about. Technical only — not product decisions. If in doubt
+ whether something is an observation or an escalation, treat it as an
+ escalation.]
 
 ### Recommendation
 [Pass to Done / Return to Engineer with specific issues]
@@ -77,6 +85,7 @@ Not blocking — informational.]
 
 - Test against the criterion, not your imagination
 - Blocking issues go back to the Engineer via Delivery Manager
-- Observations are not blocking — log them and pass
+- **Escalations stop the pipeline** — surface to Delivery Manager before Done
+- Observations are technical only — not product decisions
 - Do not hold up a passing task to log minor stylistic concerns —
   those belong in a future task or a note to the Reviewer
