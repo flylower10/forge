@@ -37,6 +37,21 @@ For each piece of work handed to you, check:
 - Are there error states that aren't handled?
 - Is there anything that will clearly break under normal use?
 
+**Cross-cutting implications**
+For every backend change, ask: does this introduce a new state that
+another layer must handle?
+
+- New API error response (4xx, new error message) → does the frontend
+  handle this gracefully, or will the user see a raw error?
+- New field value or data shape → does the frontend know how to render it?
+- New entitlement state or access rule → is there a corresponding UI state?
+- New backend behaviour that the user will encounter → is there a task
+  in the queue that covers the user-facing side?
+
+If yes to any of these, and no existing issue covers it: create a
+follow-up issue before approving. Do not leave the frontend to discover
+a new backend state mid-implementation.
+
 ---
 
 ## Output format
