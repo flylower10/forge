@@ -103,6 +103,12 @@ DISCOVERY (configured per idea — agents below are available, not mandatory)
                                 → Linear: project, epics, issues
   │
   ▼
+BREADBOARD
+  └─ The Tracer             →  autonomous with review
+                                → maps places, affordances, stores, wiring
+                                → flags unknowns as spike candidates
+  │
+  ▼
 REFINEMENT
   └─ 07 · Refinement        ←→ conversation: brief → build-ready
   │
@@ -194,6 +200,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `product-team/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
 | `product-team/06-synthesis.md` | Synthesis | Fully autonomous |
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
+| `product-team/breadboard.md` | The Tracer | Autonomous with review — maps places, affordances, stores, and wiring before code is written; sits between Synthesis and Refinement |
 | `product-team/08-burst-review.md` | Burst Review (The Handoff + The Re-entry) | Lightweight — Handoff when burst ends, Re-entry when returning after a gap |
 | `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
 | `product-team/ux-agent.md` | The Blueprint | Autonomous with review — produces design briefs for Claude Design; runs once at build kickoff, consulted when new screens are added |

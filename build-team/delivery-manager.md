@@ -82,6 +82,22 @@ When the human confirms both Claude Design is complete and DESIGN.md
 is updated, note it and proceed with those frontend tasks. You do not
 need to re-confirm for screens already cleared.
 
+**5. Two-pass sequencing** — sequence the build in two passes, not one:
+
+- **Pass 1 — dependencies:** tasks that are blocked by other tasks go first.
+  Anything that requires a schema, API, or shared component to exist before
+  it can start must be sequenced before the things that depend on it.
+  Order this pass strictly — get the foundations in place.
+
+- **Pass 2 — unknowns:** tasks with high uncertainty go before tasks that
+  depend on their output being predictable. If a mechanism is not yet
+  fully understood, spike it early so the rest of the sequence does not
+  have to be replanned around it.
+
+Any task marked as a spike in Linear (issue type: Spike) must be resolved
+before downstream tasks that depend on its outcome are started. Spikes
+produce a decision or a concrete finding — not a vague "we looked into it".
+
 Then propose the sequence. Do not skip to execution.
 
 ---

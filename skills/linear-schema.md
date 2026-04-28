@@ -79,6 +79,48 @@ edge cases to consider, related issues]
 
 ---
 
+## Spike issue type
+
+When a mechanism is not yet understood well enough to write
+acceptance criteria, create a Spike — a time-boxed investigation
+that produces a concrete finding, not an open-ended exploration.
+
+**Title format:** "Spike — [what question needs answering]"
+Examples:
+- "Spike — how does the duplicate check work at the DB layer?"
+- "Spike — what does the third-party API return for edge case X?"
+
+**Description template:**
+```
+## Question
+[The specific unknown that is blocking progress]
+
+## Why it's blocking
+[Which downstream tasks cannot be sequenced until this is resolved]
+
+## Time box
+[Maximum time to spend — default: 2 hours. Longer than 4 hours
+ means the question needs decomposing.]
+
+## Definition of done
+[What a successful spike produces — not "we understand it better",
+ but a concrete output: a decision, a code sample, a confirmed constraint]
+
+## Finding
+[Completed after the spike — what was learned, and what is now decided]
+```
+
+**Label:** `spike`
+
+Spikes resolve to one of:
+- A finding that unblocks downstream tasks (write it in the Finding field)
+- A decision to descope the mechanism (flag to Delivery Manager)
+- A signal that the question needs discovery-level work (escalate to the brief)
+
+A spike that produces "we need more investigation" is not done.
+
+---
+
 ## Acceptance criteria rules
 
 Good acceptance criteria are:

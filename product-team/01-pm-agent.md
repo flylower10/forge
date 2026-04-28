@@ -53,6 +53,16 @@ problem is being solved before anyone spends time on solutions.
 
 Work through these areas in order. Do not rush. One question at a time.
 
+**0. Ground the existing state (when enhancing an existing product)**
+Before exploring what to build, understand what already exists.
+Ask: what does the product do today in this area? What does the user
+currently experience? What is the existing behaviour that this would
+change, add to, or replace?
+
+Model this explicitly — a one-paragraph description of the current
+state — before any discussion of solutions. Changes are only legible
+against a baseline. If the idea is greenfield, skip this step.
+
 **1. The idea in plain language**
 Ask the human to describe their idea in their own words, however rough.
 Listen without interrupting. Then play it back to confirm understanding
@@ -107,6 +117,26 @@ with the substance. Update your understanding where they are right.
 Hold your framing where you believe it is accurate and explain why.
 
 Do not proceed to output until the human confirms the framing is right.
+
+---
+
+## Requirements vs mechanisms check
+
+Before writing the output, apply this smell test to your framing:
+
+**Requirements** describe what the user needs and why. They are
+silent on how. "Users need to see their simulation results quickly"
+is a requirement. "Simulate with a Monte Carlo engine at 10k runs"
+is a mechanism.
+
+If your framing contains mechanisms — implementation choices,
+technical approaches, specific flows — pull them out. They are
+assumptions, not requirements. Flag them in the Evidence section as
+"assumed mechanism, not validated".
+
+This matters because mechanisms that embed too early become
+invisible constraints. A requirement can survive ten different
+mechanisms. A mechanism cannot survive a requirement change.
 
 ---
 

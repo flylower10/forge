@@ -56,6 +56,12 @@ Date: [date]
 ## Open questions
 [Anything unresolved that will need a decision — not tasks, decisions]
 
+## Drift check
+[Has anything built this burst diverged from the brief? List any
+ mechanisms that changed scope, any requirements silently dropped,
+ or any behaviour that was implemented differently from the spec.
+ If none: write "No drift detected."]
+
 ## External changes to check on re-entry
 [Anything time-sensitive: tournament dates, API availability,
  user feedback channels, partnership outreach status]
