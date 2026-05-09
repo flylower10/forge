@@ -88,6 +88,11 @@
   --red-surface-subtle:    rgba(224, 92, 92,   0.06);
   --purple-surface-subtle: rgba(155, 114, 207, 0.06);
 
+  /* Strong border tokens (higher opacity for emphasis) */
+  --green-border-strong:  rgba(76, 175, 130, 0.30);
+  --red-border-strong:    rgba(224, 92, 92,  0.25);
+  --red-surface:          rgba(224, 92, 92,  0.12);
+
   /* Topbar height */
   --topbar-h: 53px;
 }
@@ -738,7 +743,7 @@ blockquote.forge-blockquote {
 /* Output chip — green tint */
 .forge-chip--out {
   color: var(--green);
-  border-color: rgba(76, 175, 130, 0.3);
+  border-color: var(--green-border-strong);
   background: var(--green-surface-subtle);
 }
 
@@ -824,7 +829,7 @@ details.forge-collapsible[open] > summary::after,
 
 .forge-never-do {
   background: var(--red-surface-subtle);
-  border: 1px solid rgba(224, 92, 92, 0.25);
+  border: 1px solid var(--red-border-strong);
   border-radius: 8px;
   padding: 1rem 1.25rem;
   margin-bottom: 1rem;
@@ -850,7 +855,7 @@ details.forge-collapsible[open] > summary::after,
   gap: 0.65rem;
   align-items: flex-start;
   padding: 0.45rem 0;
-  border-bottom: 1px solid rgba(224, 92, 92, 0.12);
+  border-bottom: 1px solid var(--red-surface);
   font-size: 0.83rem;
   color: var(--mid);
   line-height: 1.55;
@@ -1005,7 +1010,7 @@ details.forge-collapsible[open] > summary::after,
 
 .forge-artefact-ref.file-exists {
   color: var(--green);
-  border-color: rgba(76, 175, 130, 0.3);
+  border-color: var(--green-border-strong);
   background: var(--green-surface-subtle);
 }
 
