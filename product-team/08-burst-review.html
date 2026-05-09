@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>08 · Burst Review — The Handoff + Re-entry · Forge</title>
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d0d14; --surface: #14141f; --elevated: #1c1c2e; --border: #2a2a3d;
+  --text: #e8e8f0; --mid: #9090a8; --dim: #555568;
+  --blue: #5b8dee; --green: #4caf82; --amber: #e8a94d; --red: #e05c5c; --purple: #9b72cf;
+  --blue-surface: rgba(91,141,238,0.12); --green-surface: rgba(76,175,130,0.12);
+  --amber-surface: rgba(232,169,77,0.12); --red-surface: rgba(224,92,92,0.12);
+  --purple-surface: rgba(155,114,207,0.12);
+  --blue-border: rgba(91,141,238,0.20); --green-border: rgba(76,175,130,0.20);
+  --amber-border: rgba(232,169,77,0.20); --red-border: rgba(224,92,92,0.20);
+  --purple-border: rgba(155,114,207,0.20);
+  --blue-surface-subtle: rgba(91,141,238,0.06); --green-surface-subtle: rgba(76,175,130,0.06);
+  --amber-surface-subtle: rgba(232,169,77,0.06); --red-surface-subtle: rgba(224,92,92,0.06);
+  --purple-surface-subtle: rgba(155,114,207,0.06);
+  --green-border-strong: rgba(76,175,130,0.30); --red-border-strong: rgba(224,92,92,0.25);
+  --topbar-h: 53px;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.forge-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.65rem 1.75rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.forge-topbar__breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+.forge-topbar__breadcrumb a { color: var(--dim); text-decoration: none; }
+.forge-topbar__breadcrumb a:hover { color: var(--blue); }
+.forge-topbar__sep { color: var(--border); }
+.forge-topbar__current { color: var(--mid); }
+.forge-topbar__logo { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.forge-layout--full { display: block; }
+.forge-main { padding: 2rem 2.5rem; max-width: 860px; }
+.forge-main h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+.forge-main h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2.5rem 0 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.forge-main h2:first-of-type { border-top: none; margin-top: 1.5rem; padding-top: 0; }
+.forge-main h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin: 1.25rem 0 0.65rem; }
+.forge-main p { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.85rem; }
+.forge-main p:last-child { margin-bottom: 0; }
+.forge-main a { color: var(--blue); text-decoration: none; }
+.forge-main a:hover { text-decoration: underline; }
+.forge-main code { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.8rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.4rem; border-radius: 3px; }
+.forge-main pre { background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; overflow-x: auto; margin-bottom: 1rem; }
+.forge-main pre code { background: none; padding: 0; font-size: 0.8rem; color: var(--text); }
+.forge-main ul, .forge-main ol { padding-left: 1.5rem; margin-bottom: 0.85rem; color: var(--mid); font-size: 0.875rem; line-height: 1.75; }
+.forge-main li { margin-bottom: 0.2rem; }
+.forge-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.52rem; border-radius: 4px; white-space: nowrap; }
+.forge-badge--blue { background: var(--blue-surface); color: var(--blue); }
+.forge-badge--green { background: var(--green-surface); color: var(--green); }
+.forge-badge--dim { background: rgba(144,144,168,0.12); color: var(--mid); }
+.forge-agent-card { background: var(--elevated); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+.forge-agent-card__head { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+.forge-agent-card__name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.forge-agent-card__alias { font-size: 0.7rem; color: var(--dim); font-style: italic; }
+.forge-agent-card__badges { display: flex; gap: 0.4rem; flex-wrap: wrap; flex-shrink: 0; }
+.forge-agent-card__body { padding: 0.85rem 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.forge-agent-card__io-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim); margin-bottom: 0.35rem; }
+.forge-agent-card__chips { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.forge-chip { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.68rem; padding: 0.15rem 0.45rem; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; color: var(--mid); }
+.forge-chip--out { color: var(--green); border-color: var(--green-border-strong); background: var(--green-surface-subtle); }
+.forge-agent-card__footer { padding: 0.6rem 1rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--dim); display: flex; justify-content: space-between; align-items: center; }
+.forge-collapsible { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+.forge-collapsible > summary { list-style: none; cursor: pointer; padding: 0.75rem 1rem; background: var(--elevated); font-size: 0.78rem; font-weight: 600; color: var(--mid); display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.12s, color 0.12s; }
+.forge-collapsible > summary::-webkit-details-marker { display: none; }
+.forge-collapsible > summary:hover { background: var(--surface); color: var(--text); }
+.forge-collapsible > summary::after { content: '›'; font-size: 1rem; color: var(--dim); transform: rotate(90deg); display: inline-block; transition: transform 0.2s; }
+details.forge-collapsible[open] > summary::after { transform: rotate(270deg); }
+.forge-collapsible__body { padding: 1rem 1.25rem; background: var(--surface); font-size: 0.83rem; color: var(--mid); line-height: 1.75; }
+.forge-never-do { background: var(--red-surface-subtle); border: 1px solid var(--red-border-strong); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.forge-never-do__title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--red); margin-bottom: 0.75rem; }
+.forge-never-do__list { list-style: none; padding: 0; margin: 0; }
+.forge-never-do__item { display: flex; gap: 0.65rem; align-items: flex-start; padding: 0.45rem 0; border-bottom: 1px solid var(--red-surface); font-size: 0.83rem; color: var(--mid); line-height: 1.55; }
+.forge-never-do__item:last-child { border-bottom: none; padding-bottom: 0; }
+.forge-never-do__item::before { content: '✕'; color: var(--red); font-size: 0.7rem; flex-shrink: 0; padding-top: 0.15rem; }
+  </style>
+</head>
+<body>
+
+  <header class="forge-topbar">
+    <nav class="forge-topbar__breadcrumb">
+      <a href="../">Forge</a>
+      <span class="forge-topbar__sep">/</span>
+      <a href="./">product-team</a>
+      <span class="forge-topbar__sep">/</span>
+      <span class="forge-topbar__current">08-burst-review</span>
+    </nav>
+    <span class="forge-topbar__logo">Forge</span>
+  </header>
+
+  <div class="forge-layout forge-layout--full">
+    <main class="forge-main">
+
+      <h1>Burst Review</h1>
+      <p style="color: var(--dim); font-size: 0.8rem; margin-bottom: 1.5rem;">
+        Agent 08 · The Handoff + The Re-entry — burst boundary ceremonies
+      </p>
+
+      <!-- AGENT CARD -->
+      <div class="forge-agent-card">
+        <div class="forge-agent-card__head">
+          <div>
+            <div class="forge-agent-card__name">Burst Review</div>
+            <div class="forge-agent-card__alias">08 · The Handoff + The Re-entry</div>
+          </div>
+          <div class="forge-agent-card__badges">
+            <span class="forge-badge forge-badge--dim">Lightweight</span>
+            <span class="forge-badge forge-badge--blue">Development</span>
+          </div>
+        </div>
+
+        <div class="forge-agent-card__body">
+          <div>
+            <div class="forge-agent-card__io-label">Reads</div>
+            <div class="forge-agent-card__chips">
+              <span class="forge-chip">handoff.md</span>
+              <span class="forge-chip">Linear state</span>
+              <span class="forge-chip">external changes list</span>
+            </div>
+          </div>
+          <div>
+            <div class="forge-agent-card__io-label">Produces</div>
+            <div class="forge-agent-card__chips">
+              <span class="forge-chip forge-chip--out">handoff.md (overwrite)</span>
+              <span class="forge-chip forge-chip--out">re-entry briefing</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="forge-agent-card__footer">
+          <span>Trigger: burst end (Handoff) · burst start after gap (Re-entry) · run by Delivery Manager</span>
+        </div>
+      </div>
+
+      <!-- SVG PIPELINE POSITION -->
+      <h2>Pipeline position</h2>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 600 180"
+        width="600"
+        height="180"
+        style="display: block; max-width: 100%; margin-bottom: 1rem;"
+        aria-label="Pipeline position diagram for Burst Review"
+      >
+        <rect width="600" height="180" rx="8" fill="#14141f"/>
+
+        <!-- Delivery Manager (left) -->
+        <rect x="15" y="68" width="130" height="44" rx="5" fill="#1c1c2e" stroke="#2a2a3d" stroke-width="1"/>
+        <text x="80" y="86" fill="#9090a8" font-size="9.5" font-family="-apple-system, sans-serif" text-anchor="middle">Delivery Manager</text>
+        <text x="80" y="100" fill="#555568" font-size="8" font-family="-apple-system, sans-serif" text-anchor="middle">The Conductor</text>
+
+        <!-- Burst End trigger arrow down -->
+        <line x1="80" y1="112" x2="80" y2="145" stroke="#555568" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="84" y="142" fill="#555568" font-size="7.5" font-family="-apple-system, sans-serif">"I'm done for now"</text>
+
+        <!-- Arrow DM → Handoff -->
+        <line x1="145" y1="90" x2="195" y2="90" stroke="#555568" stroke-width="1.5"/>
+        <polygon points="193,86 201,90 193,94" fill="#555568"/>
+
+        <!-- Current node: Handoff -->
+        <rect x="201" y="55" width="115" height="50" rx="6" fill="#1c1c2e" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="258" y="76" fill="#e8e8f0" font-size="10" font-weight="700" font-family="-apple-system, sans-serif" text-anchor="middle">The Handoff</text>
+        <text x="258" y="92" fill="#5b8dee" font-size="9" font-family="-apple-system, sans-serif" text-anchor="middle">writes handoff.md</text>
+
+        <!-- Gap indicator -->
+        <line x1="316" y1="80" x2="360" y2="80" stroke="#555568" stroke-width="1" stroke-dasharray="6 4"/>
+        <text x="338" y="72" fill="#555568" font-size="7.5" font-family="-apple-system, sans-serif" text-anchor="middle">gap</text>
+
+        <!-- Re-entry node -->
+        <rect x="360" y="55" width="115" height="50" rx="6" fill="#1c1c2e" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="417" y="76" fill="#e8e8f0" font-size="10" font-weight="700" font-family="-apple-system, sans-serif" text-anchor="middle">The Re-entry</text>
+        <text x="417" y="92" fill="#5b8dee" font-size="9" font-family="-apple-system, sans-serif" text-anchor="middle">reads handoff.md</text>
+
+        <!-- Arrow Re-entry → DM resume -->
+        <line x1="475" y1="80" x2="525" y2="80" stroke="#555568" stroke-width="1.5"/>
+        <polygon points="523,76 531,80 523,84" fill="#555568"/>
+
+        <!-- DM resume -->
+        <rect x="531" y="68" width="55" height="24" rx="5" fill="#1c1c2e" stroke="#2a2a3d" stroke-width="1"/>
+        <text x="558" y="84" fill="#9090a8" font-size="9" font-family="-apple-system, sans-serif" text-anchor="middle">resume</text>
+
+        <!-- Signal/escalation arrow down from Re-entry -->
+        <line x1="417" y1="105" x2="417" y2="145" stroke="#2a2a3d" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="421" y="142" fill="#555568" font-size="7.5" font-family="-apple-system, sans-serif">escalate if belief changed</text>
+
+        <!-- Legend -->
+        <line x1="20" y1="165" x2="44" y2="165" stroke="#555568" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="48" y="169" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">gap / event-triggered</text>
+        <line x1="160" y1="165" x2="184" y2="165" stroke="#555568" stroke-width="1"/>
+        <text x="188" y="169" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">pipeline flow</text>
+      </svg>
+
+      <!-- FULL INSTRUCTIONS (COLLAPSIBLE) -->
+      <h2>Instructions</h2>
+
+      <details class="forge-collapsible" id="full-instructions">
+        <summary>Full instructions ▾</summary>
+        <div class="forge-collapsible__body">
+
+          <h3>Why this exists</h3>
+          <p>Work happens in bursts. Two ceremonies live at the edges of each burst:</p>
+          <p><strong>The Handoff</strong> — fires when a burst ends. Captures the state of the world so re-entry after a gap costs nothing.</p>
+          <p><strong>The Re-entry</strong> — fires when returning after an idle period. Orients before the Delivery Manager starts assigning work.</p>
+          <p>Both ceremonies are short. Neither is optional when the trigger fires.</p>
+
+          <h3>The Handoff</h3>
+          <p><strong>When it fires:</strong> The human says "I'm done for now" or signals the burst is ending. The Delivery Manager runs this before the session closes.</p>
+          <p>Produces a short note saved to <code>output/[idea-name]/handoff.md</code> (overwrites the previous — only the latest matters):</p>
+          <pre><code># Handoff note: [idea name]
+Date: [date]
+
+## What shipped this burst
+[List of completed issues with issue IDs]
+
+## State of the world
+[What is live, what is deployed, what users can currently do]
+
+## What is in flight
+[Issues in progress or in review — not yet done]
+
+## What comes next
+[The clearest next task — specific enough that re-entry starts here]
+
+## Open questions
+[Anything unresolved that will need a decision — not tasks, decisions]
+
+## Drift check
+[Has anything built this burst diverged from the brief?
+ If none: write "No drift detected."]
+
+## External changes to check on re-entry
+[Anything time-sensitive: tournament dates, API availability,
+ user feedback channels, partnership outreach status]</code></pre>
+
+          <h3>The Re-entry</h3>
+          <p><strong>When it fires:</strong> The human returns after a gap. If the last handoff was more than a day ago, run Re-entry before anything else.</p>
+          <p>The Delivery Manager reads the last handoff note, checks the current Linear state and the external changes list, then presents:</p>
+          <pre><code>[Idea name] · Re-entry · [date]
+
+Since you were last here ([gap]):
+  Shipped: [what completed]
+  Still open: [what is in flight]
+  External: [anything time-sensitive]
+
+Recommended starting point: [specific next task]
+
+Anything you want to address before we start?</code></pre>
+          <p>Wait for the human's response. If nothing to address, proceed directly to the build queue.</p>
+
+          <h3>Signal and learning</h3>
+          <p>Both ceremonies carry a lightweight signal check: <em>"Does anything we observed this burst change what we believe about the user, the problem, or the market?"</em></p>
+          <p>If yes — flag the specific belief that changed and recommend the discovery agent that should be consulted. Do not attempt discovery in this ceremony.</p>
+          <p>Escalate to a discovery agent when: user behaviour consistently contradicts the persona; a core assumption appears to be wrong; the north star metric is not moving despite the product working; a new opportunity has emerged.</p>
+
+        </div>
+      </details>
+
+      <!-- NEVER-DO LIST -->
+      <h2>What you never do</h2>
+
+      <div class="forge-never-do">
+        <div class="forge-never-do__title">Never do</div>
+        <ul class="forge-never-do__list">
+          <li class="forge-never-do__item">Skip the Handoff when the human signals they're done — it costs two minutes and saves an hour on re-entry.</li>
+          <li class="forge-never-do__item">Run the Re-entry as a full discovery session — orient, check, and ask one question. No more.</li>
+          <li class="forge-never-do__item">Ask the human to explain the context on re-entry — read the handoff note first; the context is there.</li>
+          <li class="forge-never-do__item">Produce a handoff note longer than it needs to be — it is a navigation aid, not a journal.</li>
+          <li class="forge-never-do__item">Attempt discovery in the burst review — when a belief changes, name it and flag the right discovery agent. Do not run discovery yourself.</li>
+          <li class="forge-never-do__item">Lead the handoff with framework changes or meta-observations — the handoff leads with product state and next action.</li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>

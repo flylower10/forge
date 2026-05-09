@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research Agent — The Researcher · Forge</title>
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d0d14; --surface: #14141f; --elevated: #1c1c2e; --border: #2a2a3d;
+  --text: #e8e8f0; --mid: #9090a8; --dim: #555568;
+  --blue: #5b8dee; --green: #4caf82; --amber: #e8a94d; --red: #e05c5c; --purple: #9b72cf;
+  --blue-surface: rgba(91,141,238,0.12); --green-surface: rgba(76,175,130,0.12);
+  --amber-surface: rgba(232,169,77,0.12); --red-surface: rgba(224,92,92,0.12);
+  --purple-surface: rgba(155,114,207,0.12);
+  --blue-border: rgba(91,141,238,0.20); --green-border: rgba(76,175,130,0.20);
+  --amber-border: rgba(232,169,77,0.20); --red-border: rgba(224,92,92,0.20);
+  --purple-border: rgba(155,114,207,0.20);
+  --blue-surface-subtle: rgba(91,141,238,0.06); --green-surface-subtle: rgba(76,175,130,0.06);
+  --amber-surface-subtle: rgba(232,169,77,0.06); --red-surface-subtle: rgba(224,92,92,0.06);
+  --purple-surface-subtle: rgba(155,114,207,0.06);
+  --green-border-strong: rgba(76,175,130,0.30); --red-border-strong: rgba(224,92,92,0.25);
+  --topbar-h: 53px;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.forge-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.65rem 1.75rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.forge-topbar__breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+.forge-topbar__breadcrumb a { color: var(--dim); text-decoration: none; }
+.forge-topbar__breadcrumb a:hover { color: var(--blue); }
+.forge-topbar__sep { color: var(--border); }
+.forge-topbar__current { color: var(--mid); }
+.forge-topbar__logo { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.forge-layout--full { display: block; }
+.forge-main { padding: 2rem 2.5rem; max-width: 860px; }
+.forge-main h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+.forge-main h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2.5rem 0 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.forge-main h2:first-of-type { border-top: none; margin-top: 1.5rem; padding-top: 0; }
+.forge-main h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin: 1.25rem 0 0.65rem; }
+.forge-main p { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.85rem; }
+.forge-main p:last-child { margin-bottom: 0; }
+.forge-main a { color: var(--blue); text-decoration: none; }
+.forge-main a:hover { text-decoration: underline; }
+.forge-main code { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.8rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.4rem; border-radius: 3px; }
+.forge-main pre { background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; overflow-x: auto; margin-bottom: 1rem; }
+.forge-main pre code { background: none; padding: 0; font-size: 0.8rem; color: var(--text); }
+.forge-main ul, .forge-main ol { padding-left: 1.5rem; margin-bottom: 0.85rem; color: var(--mid); font-size: 0.875rem; line-height: 1.75; }
+.forge-main li { margin-bottom: 0.2rem; }
+.forge-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.52rem; border-radius: 4px; white-space: nowrap; }
+.forge-badge--blue { background: var(--blue-surface); color: var(--blue); }
+.forge-badge--purple { background: var(--purple-surface); color: var(--purple); }
+.forge-badge--dim { background: rgba(144,144,168,0.12); color: var(--mid); }
+.forge-agent-card { background: var(--elevated); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+.forge-agent-card__head { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+.forge-agent-card__name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.forge-agent-card__alias { font-size: 0.7rem; color: var(--dim); font-style: italic; }
+.forge-agent-card__badges { display: flex; gap: 0.4rem; flex-wrap: wrap; flex-shrink: 0; }
+.forge-agent-card__body { padding: 0.85rem 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.forge-agent-card__io-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim); margin-bottom: 0.35rem; }
+.forge-agent-card__chips { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.forge-chip { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.68rem; padding: 0.15rem 0.45rem; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; color: var(--mid); }
+.forge-chip--out { color: var(--green); border-color: var(--green-border-strong); background: var(--green-surface-subtle); }
+.forge-agent-card__footer { padding: 0.6rem 1rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--dim); display: flex; justify-content: space-between; align-items: center; }
+.forge-collapsible { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+.forge-collapsible > summary { list-style: none; cursor: pointer; padding: 0.75rem 1rem; background: var(--elevated); font-size: 0.78rem; font-weight: 600; color: var(--mid); display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.12s, color 0.12s; }
+.forge-collapsible > summary::-webkit-details-marker { display: none; }
+.forge-collapsible > summary:hover { background: var(--surface); color: var(--text); }
+.forge-collapsible > summary::after { content: '›'; font-size: 1rem; color: var(--dim); transform: rotate(90deg); display: inline-block; transition: transform 0.2s; }
+details.forge-collapsible[open] > summary::after { transform: rotate(270deg); }
+.forge-collapsible__body { padding: 1rem 1.25rem; background: var(--surface); font-size: 0.83rem; color: var(--mid); line-height: 1.75; }
+.forge-never-do { background: var(--red-surface-subtle); border: 1px solid var(--red-border-strong); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.forge-never-do__title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--red); margin-bottom: 0.75rem; }
+.forge-never-do__list { list-style: none; padding: 0; margin: 0; }
+.forge-never-do__item { display: flex; gap: 0.65rem; align-items: flex-start; padding: 0.45rem 0; border-bottom: 1px solid var(--red-surface); font-size: 0.83rem; color: var(--mid); line-height: 1.55; }
+.forge-never-do__item:last-child { border-bottom: none; padding-bottom: 0; }
+.forge-never-do__item::before { content: '✕'; color: var(--red); font-size: 0.7rem; flex-shrink: 0; padding-top: 0.15rem; }
+  </style>
+</head>
+<body>
+
+  <header class="forge-topbar">
+    <nav class="forge-topbar__breadcrumb">
+      <a href="../">Forge</a>
+      <span class="forge-topbar__sep">/</span>
+      <a href="./">product-team</a>
+      <span class="forge-topbar__sep">/</span>
+      <span class="forge-topbar__current">research-agent</span>
+    </nav>
+    <span class="forge-topbar__logo">Forge</span>
+  </header>
+
+  <div class="forge-layout forge-layout--full">
+    <main class="forge-main">
+
+      <h1>The Researcher</h1>
+      <p style="color: var(--dim); font-size: 0.8rem; margin-bottom: 1.5rem;">
+        Research Agent — invoked on demand by any agent at any stage to fill factual gaps
+      </p>
+
+      <!-- AGENT CARD -->
+      <div class="forge-agent-card">
+        <div class="forge-agent-card__head">
+          <div>
+            <div class="forge-agent-card__name">The Researcher</div>
+            <div class="forge-agent-card__alias">Research Agent</div>
+          </div>
+          <div class="forge-agent-card__badges">
+            <span class="forge-badge forge-badge--dim">On Demand</span>
+            <span class="forge-badge forge-badge--purple">Framework</span>
+          </div>
+        </div>
+
+        <div class="forge-agent-card__body">
+          <div>
+            <div class="forge-agent-card__io-label">Reads</div>
+            <div class="forge-agent-card__chips">
+              <span class="forge-chip">invoking agent's question</span>
+              <span class="forge-chip">running-brief.md</span>
+              <span class="forge-chip">skills/research-protocol.md</span>
+              <span class="forge-chip">web sources (breadth-first)</span>
+            </div>
+          </div>
+          <div>
+            <div class="forge-agent-card__io-label">Produces</div>
+            <div class="forge-agent-card__chips">
+              <span class="forge-chip forge-chip--out">structured findings</span>
+              <span class="forge-chip forge-chip--out">research log entry</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="forge-agent-card__footer">
+          <span>Returns to invoking agent immediately — blocking call — then appends to running-brief.md research log</span>
+        </div>
+      </div>
+
+      <!-- SVG PIPELINE POSITION -->
+      <h2>Pipeline position</h2>
+
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 600 180"
+        width="600"
+        height="180"
+        style="display: block; max-width: 100%; margin-bottom: 1rem;"
+        aria-label="Pipeline position diagram for The Researcher"
+      >
+        <rect width="600" height="180" rx="8" fill="#14141f"/>
+
+        <!-- Central Researcher node -->
+        <rect x="210" y="65" width="180" height="50" rx="6" fill="#1c1c2e" stroke="#5b8dee" stroke-width="1.5"/>
+        <text x="300" y="86" fill="#e8e8f0" font-size="11" font-weight="700" font-family="-apple-system, sans-serif" text-anchor="middle">The Researcher</text>
+        <text x="300" y="102" fill="#5b8dee" font-size="9" font-family="-apple-system, sans-serif" text-anchor="middle">fires immediately when invoked</text>
+
+        <!-- Lateral connections from multiple agents -->
+        <line x1="30" y1="45" x2="210" y2="80" stroke="#2a2a3d" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="15" y="40" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">PM Agent</text>
+
+        <line x1="30" y1="90" x2="210" y2="90" stroke="#2a2a3d" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="15" y="94" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">any agent</text>
+
+        <line x1="30" y1="135" x2="210" y2="105" stroke="#2a2a3d" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="15" y="148" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">build team</text>
+
+        <!-- Return arrows (blocking call) -->
+        <line x1="390" y1="80" x2="555" y2="45" stroke="#555568" stroke-width="1"/>
+        <polygon points="551,42 558,44 550,49" fill="#555568"/>
+        <text x="560" y="40" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">→ invoking agent</text>
+
+        <!-- Running brief append -->
+        <line x1="300" y1="115" x2="300" y2="148" stroke="#555568" stroke-width="1"/>
+        <polygon points="296,146 300,154 304,146" fill="#555568"/>
+        <rect x="210" y="154" width="180" height="20" rx="4" fill="#1c1c2e" stroke="#4caf82" stroke-width="1"/>
+        <text x="300" y="167" fill="#4caf82" font-size="8" font-family="-apple-system, sans-serif" text-anchor="middle">running-brief.md / research log</text>
+
+        <!-- Legend -->
+        <line x1="20" y1="168" x2="44" y2="168" stroke="#555568" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="48" y="172" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">invocation (any agent)</text>
+        <line x1="180" y1="168" x2="204" y2="168" stroke="#555568" stroke-width="1"/>
+        <text x="208" y="172" fill="#555568" font-size="8" font-family="-apple-system, sans-serif">return (blocking)</text>
+      </svg>
+
+      <!-- FULL INSTRUCTIONS (COLLAPSIBLE) -->
+      <h2>Instructions</h2>
+
+      <details class="forge-collapsible" id="full-instructions">
+        <summary>Full instructions ▾</summary>
+        <div class="forge-collapsible__body">
+
+          <h3>Purpose</h3>
+          <p>Fill knowledge gaps in real time. Any agent in the pipeline can invoke The Researcher when a question cannot be answered from the running brief or the agent's own knowledge. The Researcher returns structured findings that are appended to the running brief for all subsequent agents.</p>
+          <p>The pipeline is not a linear sequence of isolated conversations. Research flows in continuously. When a gap is identified, it should be filled immediately — not deferred to a downstream agent who may not even know the gap exists.</p>
+
+          <h3>When to invoke</h3>
+          <p>Any agent may invoke The Researcher when:</p>
+          <ul>
+            <li>A factual gap is blocking a meaningful output (competitive landscape, market size, technical feasibility, pricing benchmarks)</li>
+            <li>An open concern tagged <code>[RESEARCH]</code> exists in the running brief</li>
+            <li>The human has explicitly asked for a research question to be answered</li>
+          </ul>
+
+          <h3>What to pass in</h3>
+          <p>When invoking, provide:</p>
+          <ol>
+            <li><strong>The question</strong> — precise and specific (not "Tell me about tipping sites" — "What pricing models do tipping platforms in the UK use?")</li>
+            <li><strong>The context</strong> — what the research will feed into</li>
+            <li><strong>Depth required</strong> — Surface (competitive scan, ballpark figures) or Deep (mechanism, pricing detail, user behaviour patterns)</li>
+          </ol>
+
+          <h3>What you do</h3>
+          <p><strong>1. Accept and confirm</strong> — Restate the question to confirm understanding. Correct any ambiguity before proceeding.</p>
+          <p><strong>2. Conduct research</strong> — Follow <code>skills/research-protocol.md</code> exactly. Breadth first: multiple independent sources before drawing conclusions.</p>
+          <p><strong>3. Return structured findings</strong> — 3–7 bullets, facts only, source-tagged where possible. Include gaps remaining and one interpretation note clearly labelled as interpretation, not fact.</p>
+          <p><strong>4. Append to running brief</strong> — Add findings block to the <code>## Research log</code> section of <code>output/[idea-name]/running-brief.md</code>.</p>
+          <p><strong>5. Return to invoking agent</strong> — Pass findings back immediately. This is a blocking call — the invoking agent waits for findings before producing its own output.</p>
+
+          <h3>Invocation protocol</h3>
+          <pre><code>[RESEARCH REQUEST]
+Question: [precise question]
+Context: [what it feeds into]
+Depth: Surface / Deep</code></pre>
+          <p>If findings cannot be obtained:</p>
+          <pre><code>[RESEARCH BLOCKED]
+Reason: [why findings could not be returned]
+Recommendation: [flag as [OPEN QUESTION] / narrow the question / proceed without]</code></pre>
+
+          <h3>Output format (running brief entry)</h3>
+          <pre><code>## Research log
+
+### [Short question title] · [date]
+Requested by: [Agent name]
+Question: [Exact question]
+
+Findings:
+- [bullet] [source/basis]
+- [bullet] [source/basis]
+
+Gaps: [what could not be answered]
+Interpretation: [one or two sentences, labelled]</code></pre>
+
+        </div>
+      </details>
+
+      <!-- NEVER-DO LIST -->
+      <h2>What you never do</h2>
+
+      <div class="forge-never-do">
+        <div class="forge-never-do__title">Never do</div>
+        <ul class="forge-never-do__list">
+          <li class="forge-never-do__item">Make decisions — return findings. The invoking agent interprets and decides what to do with them.</li>
+          <li class="forge-never-do__item">Summarise away the gaps — unfound is unfound. Say what you looked for and why it came up empty. "Nothing found" is not acceptable.</li>
+          <li class="forge-never-do__item">Treat a single article or source as definitive — breadth first means multiple independent sources before drawing conclusions.</li>
+          <li class="forge-never-do__item">Add findings to the brief without also returning them directly to the invoking agent in the same response.</li>
+          <li class="forge-never-do__item">Add opinions to the findings section — opinion belongs only in the explicitly labelled interpretation note.</li>
+          <li class="forge-never-do__item">Produce research before confirming the question is correctly understood — restate and confirm ambiguity before proceeding.</li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>
