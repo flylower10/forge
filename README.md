@@ -33,10 +33,10 @@ Some agents run as full conversations. Others run autonomously and surface one t
 
 ### Handoff
 
-Synthesis pushes structured artefacts to the right tools:
+Synthesis writes structured artefacts to the right places:
 
-- **Notion** — brief, OST, assumption log, personas, research plan *(what you read)*
-- **GitHub** — `CLAUDE.md`, `DESIGN.md`, ADR log *(what Claude Code reads)*
+- **`/output/[idea-name]/`** — brief, OST, ost-decisions, assumption log, personas, research plan *(what you read — `.md` source + `.html` view)*
+- **GitHub `/docs/`** — `CLAUDE.md`, `DESIGN.md`, ADR log *(what Claude Code reads at build time)*
 - **Linear** — project, epics, issues *(what gets built)*
 
 ### Phase 2 · Refinement
@@ -62,10 +62,11 @@ QA                Validates acceptance criteria
 ### The loop
 
 ```
-08 · Sprint Review     End of every sprint — signal → learning → next sprint
+08 · Burst Review      End of every burst — handoff + re-entry
+Signal log             On-demand or fortnightly — empirical learning from shipped work
 ```
 
-Sprint signal feeds back into discovery. If an assumption is invalidated, the relevant discovery agent is re-invoked. The brief evolves. The build continues.
+Bursts trigger handoff and re-entry rituals. The signal log runs on a separate clock — observation arrives weeks after shipping, not at the end of a work session. When a signal invalidates an assumption, the relevant discovery agent is re-invoked. The brief evolves. The build continues.
 
 ---
 
@@ -77,7 +78,7 @@ Sprint signal feeds back into discovery. If an assumption is invalidated, the re
 
 **Conversation over approval.** Human involvement is not about sign-offs. It is about thinking alongside agents, holding positions, and making judgement calls that no agent should make unilaterally.
 
-**Three sources of truth, clearly separated.** Notion for product thinking. GitHub for technical context. Linear for build execution. Nothing duplicated across tools.
+**Two sources of truth, clearly separated.** GitHub holds product thinking (in `/output/`) and technical context (in `/docs/`). Linear holds build execution. Nothing duplicated across stores.
 
 **Decisions are recorded.** Every significant decision is written to `decisions.md` in the repo alongside the code it informed. Future sessions cannot unknowingly contradict settled decisions.
 
@@ -98,7 +99,7 @@ forge/
     05-user-researcher.md      ← The Advocate
     06-synthesis.md            ← fully autonomous assembly
     07-refinement.md           ← discovery → build bridge
-    08-sprint-review.md        ← end of sprint ceremony
+    08-burst-review.md         ← end of burst ceremony (handoff + re-entry)
 
   build-team/
     delivery-manager.md        ← The Conductor
@@ -119,7 +120,7 @@ forge/
 
   memory/
     decisions.md               ← ADR log, append-only
-    signal-log.md              ← sprint learning template
+    signal-log.md              ← shipped-work learning template
 ```
 
 ---
@@ -130,7 +131,7 @@ forge/
 Clone or fork this repo. Push to your own GitHub account.
 
 **2. Connect your tools**
-Configure MCP servers for Linear, Notion and GitHub in Claude Code.
+Configure MCP servers for Linear and GitHub in Claude Code.
 
 **3. Open in Claude Code**
 Claude Code reads `CLAUDE.md` at the root on session start.

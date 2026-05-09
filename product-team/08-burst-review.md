@@ -107,6 +107,21 @@ Anything you want to address before we start?
 5. Wait for the human's response. If nothing to address, proceed
    directly to the build queue.
 
+### Signal log floor check
+
+Before proceeding, check `output/[idea-name]/signal-log.md`. If the
+last entry is more than two weeks old (or there are no entries and
+something has shipped), add one line to the orientation:
+
+```
+  Signal log: last entry [date / "none yet"] — worth a check?
+```
+
+If the human says yes, run the signal log ritual defined in
+`build-team/delivery-manager.md` before starting build work.
+If no, proceed. The floor check exists so the log does not go
+dormant — it is not a forced cadence.
+
 ### What the Delivery Manager does NOT do
 
 - Restart discovery

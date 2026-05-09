@@ -201,9 +201,9 @@ Specialist agents: [any new agents drafted or deferred]
 Rationale: [two to three sentences on why this configuration]
 ```
 
-Save this to the idea's Notion page when Synthesis runs.
-Reference it in the repo CLAUDE.md so the build team knows
-which discovery pipeline was used and why.
+Save this to `output/[idea-name]/pipeline-config.md` for Synthesis
+to incorporate. Reference it in the repo CLAUDE.md so the build team
+knows which discovery pipeline was used and why.
 
 ---
 

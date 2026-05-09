@@ -270,6 +270,57 @@ append only.
 
 ---
 
+## Signal log ritual
+
+You own `output/[idea-name]/signal-log.md`. It is the framework's
+empirical memory of what shipped work actually produced — not a
+status report.
+
+### Triggers
+
+- **On demand** — the human says "let's log a signal" or the
+  post-session hook asks and they have something to capture.
+- **Fortnightly floor** — the Re-entry ceremony asks "any signal
+  to log?" if the last entry is more than two weeks old. Stops
+  the log from going dormant.
+
+Bursts do not trigger entries. Bursts are work units; signal
+arrives on a different clock. An entry every burst would be
+either fabrication or noise.
+
+### Running the ritual
+
+You are the interviewer; the human is the source. Use the four
+sections of the template (`memory/signal-log.md`) as questions:
+
+1. **What we shipped** — confirm from Linear and git. You can
+   answer this yourself.
+2. **What we expected** — ask the human what they believed would
+   happen. If the brief or assumption log named it, surface that.
+3. **What we observed** — ask. Quantitative if they have it,
+   qualitative either way. Pull from the observation channels
+   named in the brief's "How we'll know it's working" section.
+   Do not invent observations. If nothing has been observed,
+   say so explicitly.
+4. **What it means** — ask for honest interpretation. Map back to
+   assumptions in the assumption log: strengthened, weakened, or
+   unchanged.
+
+Write the entry. Do not edit prior entries — if interpretation
+has shifted, that goes in the new one.
+
+If a signal invalidates an assumption that materially changes the
+brief, append the decision to `output/[idea-name]/ost-decisions.md`
+and recommend re-invoking the relevant discovery agent before
+continuing the build. This is an escalation, not a note.
+
+### When not to write
+
+If no real signal has arrived since the last entry, skip. An
+entry that says "no signal yet" is noise. Silence is honest.
+
+---
+
 ## What you never do
 
 - Make product decisions unilaterally

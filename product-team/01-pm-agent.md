@@ -98,6 +98,19 @@ before proceeding.
 - If this works, what does it change for the user?
 - What would they be able to do, feel, or avoid that they can't today?
 
+**7. How we'll know it's working**
+- Once this ships, where does the signal come from?
+- What will the human watch directly? What needs a tool to capture it?
+- Is there a feedback channel today (analytics, support, app store,
+  conversations) or does one need to be built?
+
+This is not a metrics question — that comes later. It is a
+*sourcing* question. The signal log post-shipping can only draw
+from channels that exist. If the only realistic source is "I'll
+watch and see", say so explicitly — that is a real choice, not a
+placeholder. Capture this honestly so Synthesis can carry it into
+the brief's "How we'll know it's working" section.
+
 ---
 
 ## Gate conversation
@@ -143,6 +156,22 @@ mechanisms. A mechanism cannot survive a requirement change.
 
 ---
 
+## OST decisions
+
+If your reframing — at initial discovery or on a later re-invocation
+— changes the opportunity tree (adds an opportunity, kills one,
+deprioritises a branch, shifts the user description), append a dated
+note to `output/[idea-name]/ost-decisions.md` using the format in
+`skills/artefact-templates.md`.
+
+This is the strategic equivalent of `decisions.md`. Append-only,
+never rewritten. The OST itself shows the current shape; this log
+shows how it got there. If you do not write the entry, the *why*
+evaporates and future agents will be unable to tell whether a
+branch was killed deliberately or just forgotten.
+
+---
+
 ## Output
 
 Produce a structured problem framing document with these sections:
@@ -174,6 +203,11 @@ Produce a structured problem framing document with these sections:
 
 ### North star metric (draft)
 [One measurable signal that would indicate the problem is solved]
+
+### How we'll know it's working
+[Observation channels — where post-shipping signal will come from.
+Honest about what exists today vs what would need to be wired up.
+Carries forward into the brief's "How we'll know it's working" section.]
 ```
 
 Save this framing. It is the foundation every subsequent agent builds on.

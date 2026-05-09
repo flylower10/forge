@@ -53,6 +53,21 @@ Agents write the `.md` source first — clean, human-editable content. Then gene
 ## Risks
 [Top 3 risks with mitigation notes]
 
+## How we'll know it's working
+[Observation sources — where signal will come from once this ships.
+Be honest about what's real today vs what would need to be wired up.
+
+Examples:
+- Direct human observation (default — what you watch yourself)
+- Analytics tool (name + what you'll measure)
+- Error tracking (name)
+- User feedback channel (support inbox, app store reviews, in-product)
+- Direct user conversations (cadence)
+
+This is what the signal log will be drawn from. If the only source
+is "I'll watch and see", say so explicitly — that is a real choice,
+not a placeholder.]
+
 ## Open questions
 [Any unresolved questions requiring human sign-off]
 ```
@@ -119,6 +134,33 @@ Agents write the `.md` source first — clean, human-editable content. Then gene
 
 ### Questions
 1. [question]
+```
+
+### `ost-decisions.md`
+
+```markdown
+# [Product Name] — OST Decisions
+
+Append-only log of strategic decisions that shaped or reshaped the
+opportunity tree. The OST itself shows the current shape; this log
+shows how it got there.
+
+Owned by Synthesis at initialisation; appended to by PM Agent or
+Synthesis whenever the opportunity tree changes — opportunity added,
+killed, paused, deprioritised, or user description shifted.
+
+Never edited. If a decision is reversed, append a new entry that
+references the prior one.
+
+---
+
+### YYYY-MM-DD · [What changed in one line]
+
+**Trigger:** [signal log entry / human input / re-framing in this session / new evidence]
+**Decision:** [what is now true that wasn't before]
+**Why:** [evidence or reasoning — link to the signal log entry, assumption, or conversation]
+**Affects:** [which opportunity nodes, which assumptions, which scope items]
+**Revisit when:** [condition, or "—" if permanent]
 ```
 
 ### `handoff.md`
