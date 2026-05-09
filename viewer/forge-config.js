@@ -48,6 +48,21 @@ window.FORGE_CONFIG = (function () {
 
   const PROJECTS = [
     {
+      id: 'forge-knowledge-browser',
+      name: 'forge-knowledge-browser',
+      phase: 'discovery',
+      artefacts: [
+        { id: 'fkb-running-brief', n: 'rb', name: 'Running brief',    file: 'output/forge-knowledge-browser/running-brief.md',     phase: 'discovery' },
+        { id: 'fkb-01',           n: '01', name: 'Problem framing',  file: 'output/forge-knowledge-browser/01-problem-framing.md', phase: 'discovery' },
+        { id: 'fkb-02',           n: '02', name: 'UX framing',       file: 'output/forge-knowledge-browser/02-design-agent.md',    phase: 'discovery' },
+        { id: 'fkb-03',           n: '03', name: 'Tech feasibility',  file: 'output/forge-knowledge-browser/03-tech-feasibility.md', phase: 'discovery' },
+        { id: 'fkb-04',           n: '04', name: 'Assumption log',    file: 'output/forge-knowledge-browser/04-sceptic.md',           phase: 'discovery' },
+        { id: 'fkb-brief',        n: 'br', name: 'Brief',             file: 'output/forge-knowledge-browser/brief.md',                 phase: 'discovery' },
+        { id: 'fkb-assumptions',  n: 'al', name: 'Assumptions',       file: 'output/forge-knowledge-browser/assumption-log.md',        phase: 'discovery' },
+        { id: 'fkb-ost',          n: 'od', name: 'OST decisions',     file: 'output/forge-knowledge-browser/ost-decisions.md',         phase: 'discovery' },
+      ],
+    },
+    {
       id: 'wc-sim-market',
       name: 'wc-sim-market',
       phase: 'build',

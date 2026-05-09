@@ -99,6 +99,27 @@
         continue;
       }
 
+      // Horizontal rule — skip, it's a visual separator in the source
+      if (/^---+\s*$/.test(line)) { i++; continue; }
+
+      // H3 heading
+      if (/^###\s+/.test(line)) {
+        blocks.push({ kind: 'h3', text: line.replace(/^###\s+/, '') });
+        i++; continue;
+      }
+
+      // Fenced code block
+      if (/^```/.test(line)) {
+        const inner = [];
+        i++;
+        while (i < lines.length && !/^```/.test(lines[i])) {
+          inner.push(lines[i]); i++;
+        }
+        i++; // skip closing ```
+        blocks.push({ kind: 'code', text: inner.join('\n') });
+        continue;
+      }
+
       // List: consecutive lines starting with `- `
       if (/^- /.test(line)) {
         const items = [];
@@ -111,7 +132,7 @@
 
       // Paragraph: consecutive non-empty, non-special lines
       const para = [];
-      while (i < lines.length && lines[i].trim() && !/^:::|^- /.test(lines[i])) {
+      while (i < lines.length && lines[i].trim() && !/^:::|^- |^###\s|^```|^---+\s*$/.test(lines[i])) {
         para.push(lines[i]); i++;
       }
       blocks.push({ kind: 'p', text: para.join(' ').trim() });

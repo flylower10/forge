@@ -248,17 +248,37 @@
     );
   }
 
+  // Inline markdown: **bold**, _italic_, `code`
+  function inlineMd(text) {
+    if (!text) return '';
+    return text
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/_(.+?)_/g, '<em>$1</em>')
+      .replace(/`(.+?)`/g, '<code style="font-family:var(--fg-mono);font-size:0.9em;background:rgba(0,0,0,0.05);padding:1px 4px;border-radius:3px">$1</code>');
+  }
+
   function Block({ block }) {
     switch (block.kind) {
       case 'p':
-        return <p className="fg-card__p">{block.text}</p>;
+        return <p className="fg-card__p" dangerouslySetInnerHTML={{__html: inlineMd(block.text)}} />;
+      case 'h3':
+        return <h3 style={{fontSize:13, fontWeight:600, color:'var(--fg-ink-1)', margin:'16px 0 6px', letterSpacing:'0.01em'}}>{block.text}</h3>;
+      case 'code':
+        return (
+          <pre style={{
+            fontFamily:'var(--fg-mono)', fontSize:12, lineHeight:1.6,
+            background:'rgba(0,0,0,0.04)', border:'1px solid var(--fg-line-soft)',
+            borderRadius:6, padding:'12px 16px', margin:'4px 0',
+            overflowX:'auto', whiteSpace:'pre-wrap', color:'var(--fg-ink-1)'
+          }}><code>{block.text}</code></pre>
+        );
       case 'list':
         return (
           <ul className="fg-stack fg-stack--gap-s" style={{listStyle:'none', padding:0, margin:0}}>
             {block.items.map((it, i) => (
               <li key={i} className="fg-step">
                 <span className="fg-step__n" style={{background:'var(--fg-ink-soft)'}}>·</span>
-                <div style={{fontSize:13.5, color:'var(--fg-ink-1)', lineHeight:1.55}}>{it}</div>
+                <div style={{fontSize:13.5, color:'var(--fg-ink-1)', lineHeight:1.55}} dangerouslySetInnerHTML={{__html: inlineMd(it)}} />
               </li>
             ))}
           </ul>
