@@ -1,0 +1,1106 @@
+/*
+ * forge-styles.css
+ * Canonical CSS for all Forge HTML outputs — Style B (Dark / Card-heavy)
+ *
+ * Usage: agents embed the full contents of this file inline in every HTML
+ * output they produce, inside a <style> tag in the <head>. No external
+ * dependencies. Works offline. Survives being moved.
+ *
+ * All class names are prefixed `forge-` to avoid collisions with any
+ * host page styles. Do not add generic names like `.card` or `.badge`.
+ *
+ * Sections:
+ *   1.  Reset & base
+ *   2.  Design tokens (CSS custom properties)
+ *   3.  Body
+ *   4.  Topbar
+ *   5.  Pipeline strip
+ *   6.  Artefact nav bar
+ *   7.  Layout grid
+ *   8.  Sidebar
+ *   9.  Typography
+ *   10. Badges
+ *   11. Status dots
+ *   12. Cards
+ *   13. Agent card
+ *   14. Collapsible instructions
+ *   15. Never-do list
+ *   16. Data table
+ *   17. Metric cards
+ *   18. Artefact reference chips
+ *   19. Tabs
+ *   20. Divider
+ */
+
+
+/* ─────────────────────────────────────────────
+   1. RESET & BASE
+   ───────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ─────────────────────────────────────────────
+   2. DESIGN TOKENS
+   ───────────────────────────────────────────── */
+
+:root {
+  /* Surfaces */
+  --bg:       #0d0d14;   /* Page background */
+  --surface:  #14141f;   /* Cards, topbar, sidebar */
+  --elevated: #1c1c2e;   /* Nested surfaces, hover states */
+  --border:   #2a2a3d;   /* All dividers */
+
+  /* Text */
+  --text: #e8e8f0;   /* Primary text */
+  --mid:  #9090a8;   /* Secondary text */
+  --dim:  #555568;   /* Tertiary / labels */
+
+  /* Semantic colours */
+  --blue:   #5b8dee;   /* Discovery, in-progress, links */
+  --green:  #4caf82;   /* Build, complete, success */
+  --amber:  #e8a94d;   /* Open, pending, medium risk */
+  --red:    #e05c5c;   /* Blocked, high risk */
+  --purple: #9b72cf;   /* Delivery phase */
+
+  /* Surface variants (colour with alpha — for tinted backgrounds) */
+  --blue-surface:   rgba(91, 141, 238, 0.12);
+  --green-surface:  rgba(76, 175, 130, 0.12);
+  --amber-surface:  rgba(232, 169, 77, 0.12);
+  --red-surface:    rgba(224, 92, 92, 0.12);
+  --purple-surface: rgba(155, 114, 207, 0.12);
+}
+
+
+/* ─────────────────────────────────────────────
+   3. BODY
+   ───────────────────────────────────────────── */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* ─────────────────────────────────────────────
+   4. TOPBAR
+   ───────────────────────────────────────────── */
+
+.forge-topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.65rem 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.forge-topbar__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+}
+
+.forge-topbar__breadcrumb a {
+  color: var(--dim);
+  text-decoration: none;
+}
+
+.forge-topbar__breadcrumb a:hover {
+  color: var(--blue);
+}
+
+.forge-topbar__sep {
+  color: var(--border);
+}
+
+.forge-topbar__current {
+  color: var(--mid);
+}
+
+.forge-topbar__logo {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.forge-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  color: var(--dim);
+}
+
+
+/* ─────────────────────────────────────────────
+   5. PIPELINE STRIP
+   ───────────────────────────────────────────── */
+
+.forge-pipeline-strip {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.forge-pipeline-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.forge-pipeline-strip__item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.7rem;
+  color: var(--dim);
+  white-space: nowrap;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s;
+}
+
+.forge-pipeline-strip__item:hover {
+  color: var(--mid);
+}
+
+.forge-pipeline-strip__item.is-done {
+  color: var(--mid);
+}
+
+.forge-pipeline-strip__item.is-done .forge-pipeline-strip__dot {
+  background: var(--green);
+  box-shadow: 0 0 4px var(--green);
+}
+
+.forge-pipeline-strip__item.is-current {
+  color: var(--green);
+  border-bottom-color: var(--green);
+  font-weight: 600;
+}
+
+.forge-pipeline-strip__item.is-current .forge-pipeline-strip__dot {
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+}
+
+.forge-pipeline-strip__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dim);
+  flex-shrink: 0;
+}
+
+.forge-pipeline-strip__sep {
+  color: var(--border);
+  font-size: 0.7rem;
+  padding: 0 0.1rem;
+  flex-shrink: 0;
+}
+
+
+/* ─────────────────────────────────────────────
+   6. ARTEFACT NAV BAR
+   ───────────────────────────────────────────── */
+
+.forge-artefact-nav {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.forge-artefact-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.forge-artefact-nav__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.72rem;
+  color: var(--dim);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.forge-artefact-nav__item:hover {
+  color: var(--mid);
+}
+
+.forge-artefact-nav__item.is-active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  font-weight: 600;
+}
+
+/* Green dot shown when the artefact file exists */
+.forge-artefact-nav__item.is-active .forge-artefact-nav__dot,
+.forge-artefact-nav__item.file-exists .forge-artefact-nav__dot {
+  background: var(--green);
+  box-shadow: 0 0 4px var(--green);
+}
+
+.forge-artefact-nav__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dim);
+  flex-shrink: 0;
+}
+
+
+/* ─────────────────────────────────────────────
+   7. LAYOUT GRID
+   ───────────────────────────────────────────── */
+
+.forge-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 53px);  /* adjust if strip/nav bars add height */
+}
+
+/* Single-column fallback when there is no sidebar */
+.forge-layout--full {
+  grid-template-columns: 1fr;
+}
+
+
+/* ─────────────────────────────────────────────
+   8. SIDEBAR
+   ───────────────────────────────────────────── */
+
+.forge-sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 1rem;
+  position: sticky;
+  top: 53px;           /* height of topbar; adjust if pipeline/artefact bars are present */
+  height: calc(100vh - 53px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--elevated) transparent;
+}
+
+.forge-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.forge-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.forge-sidebar::-webkit-scrollbar-thumb {
+  background: var(--elevated);
+  border-radius: 2px;
+}
+
+.forge-sidebar__label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dim);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.forge-sidebar__label:first-child {
+  margin-top: 0;
+}
+
+.forge-sidebar__link {
+  display: block;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.78rem;
+  color: var(--mid);
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 0.1rem;
+  transition: background 0.12s, color 0.12s;
+}
+
+.forge-sidebar__link:hover {
+  background: var(--elevated);
+  color: var(--text);
+}
+
+.forge-sidebar__link.is-active {
+  background: var(--blue-surface);
+  color: var(--blue);
+}
+
+/* Main content area */
+.forge-main {
+  padding: 2rem 2.5rem;
+  max-width: 860px;
+}
+
+
+/* ─────────────────────────────────────────────
+   9. TYPOGRAPHY
+   ───────────────────────────────────────────── */
+
+.forge-main h1,
+h1.forge-h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+
+.forge-main h2,
+h2.forge-h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 2.5rem 0 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.forge-main h2:first-of-type,
+h2.forge-h2:first-of-type {
+  border-top: none;
+  margin-top: 1.5rem;
+  padding-top: 0;
+}
+
+.forge-main h3,
+h3.forge-h3 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+  margin: 1.25rem 0 0.65rem;
+}
+
+.forge-main h4,
+h4.forge-h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+
+.forge-main p,
+p.forge-p {
+  font-size: 0.875rem;
+  color: var(--mid);
+  line-height: 1.75;
+  margin-bottom: 0.85rem;
+}
+
+.forge-main p:last-child,
+p.forge-p:last-child {
+  margin-bottom: 0;
+}
+
+.forge-main a,
+a.forge-link {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.forge-main a:hover,
+a.forge-link:hover {
+  text-decoration: underline;
+}
+
+.forge-main code,
+code.forge-code {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.8rem;
+  background: var(--elevated);
+  color: var(--blue);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+}
+
+.forge-main pre,
+pre.forge-pre {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.forge-main pre code,
+pre.forge-pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+.forge-main ul,
+.forge-main ol,
+ul.forge-list,
+ol.forge-list {
+  padding-left: 1.5rem;
+  margin-bottom: 0.85rem;
+  color: var(--mid);
+  font-size: 0.875rem;
+  line-height: 1.75;
+}
+
+.forge-main li,
+li.forge-li {
+  margin-bottom: 0.2rem;
+}
+
+.forge-main blockquote,
+blockquote.forge-blockquote {
+  border-left: 3px solid var(--border);
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.85rem;
+  color: var(--mid);
+  font-size: 0.875rem;
+}
+
+
+/* ─────────────────────────────────────────────
+   10. BADGES
+   ───────────────────────────────────────────── */
+
+.forge-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.52rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.forge-badge--blue {
+  background: var(--blue-surface);
+  color: var(--blue);
+}
+
+.forge-badge--green {
+  background: var(--green-surface);
+  color: var(--green);
+}
+
+.forge-badge--amber {
+  background: var(--amber-surface);
+  color: var(--amber);
+}
+
+.forge-badge--red {
+  background: var(--red-surface);
+  color: var(--red);
+}
+
+.forge-badge--purple {
+  background: var(--purple-surface);
+  color: var(--purple);
+}
+
+.forge-badge--dim {
+  background: rgba(144, 144, 168, 0.12);
+  color: var(--mid);
+}
+
+
+/* ─────────────────────────────────────────────
+   11. STATUS DOTS
+   ───────────────────────────────────────────── */
+
+.forge-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.forge-dot--blue {
+  background: var(--blue);
+}
+
+.forge-dot--green {
+  background: var(--green);
+  box-shadow: 0 0 5px var(--green);
+}
+
+.forge-dot--amber {
+  background: var(--amber);
+}
+
+.forge-dot--red {
+  background: var(--red);
+}
+
+.forge-dot--purple {
+  background: var(--purple);
+}
+
+.forge-dot--dim {
+  background: var(--dim);
+}
+
+/* Convenience: dot + label pairing */
+.forge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--mid);
+}
+
+
+/* ─────────────────────────────────────────────
+   12. CARDS
+   ───────────────────────────────────────────── */
+
+.forge-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.forge-card__title {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--dim);
+  margin-bottom: 0.75rem;
+}
+
+/* Tinted card variants */
+.forge-card--blue {
+  background: rgba(91, 141, 238, 0.06);
+  border-color: rgba(91, 141, 238, 0.2);
+}
+
+.forge-card--green {
+  background: rgba(76, 175, 130, 0.06);
+  border-color: rgba(76, 175, 130, 0.2);
+}
+
+.forge-card--amber {
+  background: rgba(232, 169, 77, 0.06);
+  border-color: rgba(232, 169, 77, 0.2);
+}
+
+.forge-card--red {
+  background: rgba(224, 92, 92, 0.06);
+  border-color: rgba(224, 92, 92, 0.2);
+}
+
+.forge-card--purple {
+  background: rgba(155, 114, 207, 0.06);
+  border-color: rgba(155, 114, 207, 0.2);
+}
+
+/* Decision callout — blue left-rule */
+.forge-card--decision {
+  background: rgba(91, 141, 238, 0.06);
+  border: 1px solid rgba(91, 141, 238, 0.2);
+  border-left: 3px solid var(--blue);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Exception callout — amber left-rule */
+.forge-card--exception {
+  background: rgba(232, 169, 77, 0.06);
+  border: 1px solid rgba(232, 169, 77, 0.2);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 8px 8px 0;
+}
+
+
+/* ─────────────────────────────────────────────
+   13. AGENT CARD
+   ───────────────────────────────────────────── */
+
+.forge-agent-card {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.forge-agent-card__head {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.forge-agent-card__name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.forge-agent-card__alias {
+  font-size: 0.7rem;
+  color: var(--dim);
+  font-style: italic;
+}
+
+.forge-agent-card__badges {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.forge-agent-card__body {
+  padding: 0.85rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.forge-agent-card__io-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--dim);
+  margin-bottom: 0.35rem;
+}
+
+.forge-agent-card__chips {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+/* Monospace chip — input reference */
+.forge-chip {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.68rem;
+  padding: 0.15rem 0.45rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--mid);
+}
+
+/* Output chip — green tint */
+.forge-chip--out {
+  color: var(--green);
+  border-color: rgba(76, 175, 130, 0.3);
+  background: rgba(76, 175, 130, 0.06);
+}
+
+.forge-agent-card__footer {
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* ─────────────────────────────────────────────
+   14. COLLAPSIBLE INSTRUCTIONS
+   ───────────────────────────────────────────── */
+
+.forge-collapsible {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.forge-collapsible > summary,
+.forge-collapsible > details > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  background: var(--elevated);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--mid);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: background 0.12s, color 0.12s;
+}
+
+.forge-collapsible > summary::-webkit-details-marker,
+.forge-collapsible > details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.forge-collapsible > summary:hover,
+.forge-collapsible > details > summary:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* Chevron indicator */
+.forge-collapsible > summary::after,
+.forge-collapsible > details > summary::after {
+  content: '›';
+  font-size: 1rem;
+  color: var(--dim);
+  transform: rotate(90deg);
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+/* Rotate chevron when open */
+details.forge-collapsible[open] > summary::after,
+.forge-collapsible > details[open] > summary::after {
+  transform: rotate(270deg);
+}
+
+.forge-collapsible__body {
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  font-size: 0.83rem;
+  color: var(--mid);
+  line-height: 1.75;
+}
+
+/* Shorthand: wrap a <details> element with this class directly */
+details.forge-collapsible > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  background: var(--elevated);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--mid);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: background 0.12s, color 0.12s;
+}
+
+details.forge-collapsible > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.forge-collapsible > summary:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+details.forge-collapsible > summary::after {
+  content: '›';
+  font-size: 1rem;
+  color: var(--dim);
+  transform: rotate(90deg);
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+details.forge-collapsible[open] > summary::after {
+  transform: rotate(270deg);
+}
+
+details.forge-collapsible > .forge-collapsible__body {
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  font-size: 0.83rem;
+  color: var(--mid);
+  line-height: 1.75;
+}
+
+
+/* ─────────────────────────────────────────────
+   15. NEVER-DO LIST
+   ───────────────────────────────────────────── */
+
+.forge-never-do {
+  background: rgba(224, 92, 92, 0.06);
+  border: 1px solid rgba(224, 92, 92, 0.25);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.forge-never-do__title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--red);
+  margin-bottom: 0.75rem;
+}
+
+.forge-never-do__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.forge-never-do__item {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(224, 92, 92, 0.12);
+  font-size: 0.83rem;
+  color: var(--mid);
+  line-height: 1.55;
+}
+
+.forge-never-do__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.forge-never-do__item::before {
+  content: '✕';
+  color: var(--red);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  padding-top: 0.15rem;
+}
+
+
+/* ─────────────────────────────────────────────
+   16. DATA TABLE
+   ───────────────────────────────────────────── */
+
+.forge-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.forge-table thead th {
+  text-align: left;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.forge-table tbody td {
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid rgba(42, 42, 61, 0.4);
+  color: var(--mid);
+  vertical-align: top;
+}
+
+/* Alternating subtle rows */
+.forge-table tbody tr:nth-child(even) td {
+  background: rgba(28, 28, 46, 0.35);
+}
+
+.forge-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Row hover */
+.forge-table tbody tr:hover td {
+  background: var(--elevated);
+}
+
+/* Monospace file/path cell */
+.forge-table .forge-table__file {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: var(--blue);
+}
+
+.forge-table .forge-table__file--amber {
+  color: var(--amber);
+}
+
+
+/* ─────────────────────────────────────────────
+   17. METRIC CARDS
+   ───────────────────────────────────────────── */
+
+.forge-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.forge-metric {
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+}
+
+.forge-metric__value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  margin-bottom: 0.3rem;
+}
+
+.forge-metric__label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--dim);
+}
+
+/* Colour variants for metric values */
+.forge-metric--blue .forge-metric__value  { color: var(--blue); }
+.forge-metric--green .forge-metric__value { color: var(--green); }
+.forge-metric--amber .forge-metric__value { color: var(--amber); }
+.forge-metric--red .forge-metric__value   { color: var(--red); }
+
+
+/* ─────────────────────────────────────────────
+   18. ARTEFACT REFERENCE CHIPS
+   ───────────────────────────────────────────── */
+
+.forge-artefact-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: var(--mid);
+  background: var(--elevated);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.2rem 0.6rem;
+  text-decoration: none;
+}
+
+.forge-artefact-ref:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* Green dot when file exists */
+.forge-artefact-ref__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dim);
+  flex-shrink: 0;
+}
+
+.forge-artefact-ref.file-exists .forge-artefact-ref__dot {
+  background: var(--green);
+  box-shadow: 0 0 4px var(--green);
+}
+
+.forge-artefact-ref.file-exists {
+  color: var(--green);
+  border-color: rgba(76, 175, 130, 0.3);
+  background: rgba(76, 175, 130, 0.06);
+}
+
+.forge-artefact-ref.file-exists:hover {
+  border-color: var(--green);
+}
+
+
+/* ─────────────────────────────────────────────
+   19. TABS
+   ───────────────────────────────────────────── */
+
+.forge-tabs {
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.forge-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.forge-tabs__tab {
+  padding: 0.6rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--dim);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.15s;
+  margin-bottom: -1px;  /* overlap the container border-bottom */
+  text-decoration: none;
+  display: inline-block;
+}
+
+.forge-tabs__tab:hover {
+  color: var(--mid);
+}
+
+.forge-tabs__tab.is-active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+  font-weight: 600;
+}
+
+.forge-tab-panel {
+  display: none;
+}
+
+.forge-tab-panel.is-active {
+  display: block;
+}
+
+
+/* ─────────────────────────────────────────────
+   20. DIVIDER
+   ───────────────────────────────────────────── */
+
+.forge-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
