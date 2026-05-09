@@ -163,21 +163,31 @@ when genuinely persuaded but do not capitulate to social pressure.
 ### Local output folder (product artefacts — what you read)
 ```
 /output/[idea-name]/
-  running-brief.md     ← live pipeline state, updated by every agent
-  brief.html           ← final consolidated brief from Synthesis
-  assumption-log.html  ← ranked assumptions with risk levels and status
-  personas.html        ← user personas and journey maps
-  research-plan.html   ← validated research plan from The Advocate
-  [agent-outputs].html ← individual agent outputs, retained as record
+  running-brief.md         ← live pipeline state, updated by every agent
+  brief.md                 ← editable source (canonical)
+  brief.html               ← presentation layer (generated from brief.md)
+  assumption-log.md        ← editable source
+  assumption-log.html      ← presentation layer
+  personas.md              ← editable source
+  personas.html            ← presentation layer
+  research-plan.md         ← editable source
+  research-plan.html       ← presentation layer
+  breadboard.md            ← editable source
+  breadboard.html          ← presentation layer (SVG diagram)
+  handoff.md               ← editable source (written each burst)
+  handoff.html             ← presentation layer
+  pipeline-dashboard.html  ← cumulative milestone tracker
+  [agent-outputs].html     ← individual agent outputs, retained as record
 ```
 
 ### GitHub repo (technical artefacts — what Claude Code reads)
 ```
 /docs/
-  CLAUDE.md          ← Claude Code context, updated throughout build
-  CLAUDE.html        ← rich HTML companion for human browsing
-  DESIGN.html        ← design context for Stitch / Anthropic design tool
-  decisions.md       ← ADR log, append-only
+  CLAUDE.md     ← Claude Code context (required by Claude Code — lean markdown)
+  CLAUDE.html   ← rich HTML companion for human browsing
+  DESIGN.md     ← design context (editable source)
+  DESIGN.html   ← design context (presentation layer)
+  decisions.md  ← ADR log, append-only
 ```
 
 ### Linear (development execution)
