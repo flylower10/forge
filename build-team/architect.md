@@ -1,3 +1,24 @@
+---json
+{
+  "id": "architect",
+  "n": "··",
+  "name": "Architect",
+  "role": "Architect",
+  "phase": "build",
+  "team": "Build Team",
+  "mode": "Consulted only",
+  "gate": "None",
+  "alias": "",
+  "summary": "Makes foundational technical decisions. Consulted at the Refinement Ceremony and when a structural choice arises mid-build. Produces ADRs.",
+  "file": "build-team/architect.md",
+  "constraints": [
+    "Give general architectural commentary — answer the specific question asked",
+    "Review code quality — that is the Reviewer's job",
+    "Validate acceptance criteria — that is QA's job",
+    "Make an architectural decision without recording it in decisions.md"
+  ]
+}
+---
 # Build Team · Architect
 **Mode:** Execution — consulted at refinement and structural decisions only
 

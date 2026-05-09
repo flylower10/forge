@@ -1,0 +1,73 @@
+<h2>Where does Markdown hurt most in Forge?</h2>
+<p class="subtitle">The article makes a case for HTML. Before designing anything, let's identify where the friction actually lives.</p>
+
+<div style="margin: 2rem 0;">
+  <h3 style="margin-bottom: 1rem;">Forge outputs today</h3>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+
+    <div style="background: #1a1a2e; border: 1px solid #333; border-radius: 8px; padding: 1.25rem;">
+      <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 0.75rem;">Human reads</div>
+      <div style="font-size: 0.85rem; color: #ccc; line-height: 1.6;">
+        <div style="color: #f0a500; margin-bottom: 0.4rem;">📄 brief.md <span style="color: #666; font-size: 0.75rem;">~250 lines</span></div>
+        <div style="color: #f0a500; margin-bottom: 0.4rem;">📄 breadboard.md <span style="color: #666; font-size: 0.75rem;">5 dense tables</span></div>
+        <div style="color: #f0a500; margin-bottom: 0.4rem;">📄 personas.md</div>
+        <div style="color: #f0a500; margin-bottom: 0.4rem;">📄 assumption-log.md</div>
+        <div style="color: #f0a500; margin-bottom: 0.4rem;">📄 01-problem-framing.md</div>
+        <div style="color: #888; font-size: 0.75rem; margin-top: 0.75rem;">…and ~10 more agent outputs</div>
+      </div>
+    </div>
+
+    <div style="background: #1a1a2e; border: 1px solid #333; border-radius: 8px; padding: 1.25rem;">
+      <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: #888; margin-bottom: 0.75rem;">Agent reads + updates</div>
+      <div style="font-size: 0.85rem; color: #ccc; line-height: 1.6;">
+        <div style="color: #5ba4cf; margin-bottom: 0.4rem;">📝 running-brief.md <span style="color: #666; font-size: 0.75rem;">updated every agent</span></div>
+        <div style="color: #5ba4cf; margin-bottom: 0.4rem;">📝 handoff.md <span style="color: #666; font-size: 0.75rem;">written each burst</span></div>
+        <div style="color: #5ba4cf; margin-bottom: 0.4rem;">📝 brief.md <span style="color: #666; font-size: 0.75rem;">Synthesis writes it</span></div>
+        <div style="color: #5ba4cf; margin-bottom: 0.4rem;">📝 breadboard.md <span style="color: #666; font-size: 0.75rem;">Tracer writes it</span></div>
+        <div style="color: #888; font-size: 0.75rem; margin-top: 0.75rem;">Agents parse MD to produce outputs</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="background: #12201a; border: 1px solid #2d4a3e; border-radius: 8px; padding: 1.25rem;">
+    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #5d9e80; margin-bottom: 0.75rem;">The tension</div>
+    <div style="font-size: 0.85rem; color: #ccc; line-height: 1.7;">
+      Many Forge files are written <em>by agents</em> and read <em>by humans</em>. But some are also read back by agents in later pipeline stages. HTML is great for humans — but harder for agents to write and parse consistently.
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-bottom: 1rem;">Which of these causes you the most friction right now?</h3>
+<p class="subtitle">Select all that apply — this will shape what we design.</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Reading discovery outputs</h3>
+      <p>Brief, personas, assumption log — too long to read in full. The insight gets buried.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Reading the breadboard</h3>
+      <p>5 dense tables don't convey a flow diagram. The wiring relationships are hard to see.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Sharing outputs externally</h3>
+      <p>Hard to send the brief or personas to someone outside the repo. MD doesn't render well.</p>
+    </div>
+  </div>
+  <div class="option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>Navigating the pipeline state</h3>
+      <p>No visual sense of where in the pipeline the project is — just another text file.</p>
+    </div>
+  </div>
+</div>

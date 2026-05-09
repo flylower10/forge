@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>wc-sim-market — Brief</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d14; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; }
+
+:root {
+  --bg:        #0d0d14;
+  --surface:   #14141f;
+  --elevated:  #1c1c2e;
+  --border:    #2a2a3d;
+  --border-hi: #4a4a6a;
+  --text:      #e8e8f0;
+  --text-mid:  #9090a8;
+  --text-dim:  #555568;
+  --blue:      #5b8dee;
+  --green:     #4caf82;
+  --amber:     #e8a94d;
+  --red:       #e05c5c;
+  --purple:    #9b72cf;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1.5rem; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 1rem; }
+.forge-logo  { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+.breadcrumb  { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+.breadcrumb a { color: var(--text-dim); text-decoration: none; }
+.breadcrumb a:hover { color: var(--blue); }
+.breadcrumb-sep { color: var(--border-hi); }
+.breadcrumb-current { color: var(--text-mid); }
+
+/* ── PIPELINE STRIP ── */
+.pipeline {
+  display: flex; border-bottom: 1px solid var(--border);
+  background: var(--surface); padding: 0 1.5rem;
+}
+.p-step {
+  padding: 0.55rem 1rem; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-dim); border-bottom: 2px solid transparent;
+  margin-bottom: -1px; cursor: default; white-space: nowrap;
+}
+.p-step.done  { color: var(--text-dim); }
+.p-step.done::after { content: ' ✓'; font-size: 0.6rem; }
+.p-step.active { color: var(--green); border-bottom-color: var(--green); }
+.p-sep { padding: 0.55rem 0.2rem; color: var(--border-hi); font-size: 0.8rem; align-self: center; }
+
+/* ── ARTEFACT NAV ── */
+.artefact-nav {
+  background: var(--elevated); border-bottom: 1px solid var(--border);
+  padding: 0 1.5rem; display: flex; gap: 0; overflow-x: auto;
+}
+.a-link {
+  padding: 0.45rem 0.9rem; font-size: 0.72rem; font-weight: 500;
+  color: var(--text-dim); text-decoration: none; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; white-space: nowrap; transition: color 0.15s;
+}
+.a-link:hover  { color: var(--text-mid); }
+.a-link.active { color: var(--blue); border-bottom-color: var(--blue); }
+.a-link.done   { color: var(--text-dim); }
+.a-link.done::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--green); border-radius: 50%; margin-right: 0.35rem; vertical-align: middle; }
+.a-link.pending::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--border-hi); border-radius: 50%; margin-right: 0.35rem; vertical-align: middle; }
+
+/* ── LAYOUT ── */
+.layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 110px); }
+.sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.25rem 1rem; position: sticky; top: 110px; height: calc(100vh - 110px); overflow-y: auto; }
+.main { padding: 1.75rem 2rem; max-width: 820px; }
+
+/* ── SIDEBAR ── */
+.sidebar-section { margin-bottom: 1.5rem; }
+.sidebar-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 0.6rem; }
+.sidebar-link { display: block; padding: 0.3rem 0.6rem; font-size: 0.78rem; color: var(--text-mid); text-decoration: none; border-radius: 5px; margin-bottom: 0.1rem; transition: all 0.15s; }
+.sidebar-link:hover  { background: var(--elevated); color: var(--text); }
+.sidebar-link.active { background: rgba(91,141,238,0.12); color: var(--blue); }
+
+/* ── CONTENT ── */
+.doc-header { margin-bottom: 1.75rem; }
+.doc-title   { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.3rem; }
+.doc-meta    { font-size: 0.78rem; color: var(--text-dim); display: flex; gap: 1rem; align-items: center; }
+.doc-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+/* ── TAB NAV ── */
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+.tab { padding: 0.5rem 1rem; font-size: 0.78rem; font-weight: 500; color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+.tab:hover  { color: var(--text-mid); }
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* ── CARDS / SECTIONS ── */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; }
+.card-title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.65rem; }
+.section-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; }
+.body-text { font-size: 0.85rem; line-height: 1.7; color: var(--text-mid); }
+
+/* ── METRIC CARDS ── */
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+.metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.metric-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.4rem; }
+.metric-value { font-size: 1.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.metric-sub   { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.2rem; }
+
+/* ── BADGE ── */
+.badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.5rem; border-radius: 4px; }
+.badge-blue   { background: rgba(91,141,238,0.15); color: var(--blue); }
+.badge-green  { background: rgba(76,175,130,0.15); color: var(--green); }
+.badge-amber  { background: rgba(232,169,77,0.15);  color: var(--amber); }
+.badge-red    { background: rgba(224,92,92,0.15);   color: var(--red); }
+
+/* ── STATUS ── */
+.status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: var(--text-mid); }
+.dot { width: 6px; height: 6px; border-radius: 50%; }
+.dot-green { background: var(--green); box-shadow: 0 0 5px var(--green); }
+.dot-amber { background: var(--amber); }
+.dot-red   { background: var(--red); }
+
+/* ── TABLE ── */
+.forge-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.forge-table th { text-align: left; padding: 0.45rem 0.7rem; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); border-bottom: 1px solid var(--border); }
+.forge-table td { padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.5); color: var(--text-mid); vertical-align: top; }
+.forge-table tr:last-child td { border-bottom: none; }
+.forge-table tr:hover td { background: var(--elevated); }
+
+/* ── RISKS ── */
+.risk-row { display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+.risk-row:last-child { border-bottom: none; }
+.risk-num { font-size: 0.7rem; font-weight: 700; color: var(--text-dim); min-width: 1.5rem; padding-top: 0.1rem; }
+.risk-body { flex: 1; }
+.risk-text { font-size: 0.83rem; color: var(--text-mid); line-height: 1.5; margin-bottom: 0.25rem; }
+.risk-meta { display: flex; gap: 0.5rem; align-items: center; }
+
+/* ── JTBD ── */
+.jtbd { background: var(--elevated); border-left: 3px solid var(--blue); border-radius: 0 6px 6px 0; padding: 0.85rem 1rem; font-size: 0.85rem; line-height: 1.6; color: var(--text-mid); font-style: italic; }
+.jtbd strong { color: var(--blue); font-style: normal; }
+
+/* ── PRICING TABLE ── */
+.pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+.price-card { background: var(--elevated); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem; }
+.price-name  { font-size: 0.78rem; font-weight: 600; color: var(--text); margin-bottom: 0.2rem; }
+.price-val   { font-size: 1.3rem; font-weight: 700; color: var(--green); letter-spacing: -0.02em; }
+.price-desc  { font-size: 0.7rem; color: var(--text-dim); margin-top: 0.3rem; line-height: 1.5; }
+
+/* ── LINK TO ARTEFACT ── */
+.artefact-ref { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; color: var(--blue); text-decoration: none; background: rgba(91,141,238,0.08); border: 1px solid rgba(91,141,238,0.2); border-radius: 5px; padding: 0.2rem 0.55rem; }
+.artefact-ref:hover { background: rgba(91,141,238,0.16); }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+
+/* ── SCOPE LIST ── */
+.scope-item { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.45rem 0; }
+.scope-check { color: var(--green); font-size: 0.85rem; margin-top: 0.1rem; flex-shrink: 0; }
+.scope-cross { color: var(--text-dim); font-size: 0.85rem; margin-top: 0.1rem; flex-shrink: 0; }
+.scope-text  { font-size: 0.83rem; color: var(--text-mid); line-height: 1.5; }
+.scope-reason { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.15rem; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="forge-logo">Forge</span>
+    <div class="breadcrumb">
+      <a href="#">wc-sim-market</a>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-current">Brief</span>
+    </div>
+  </div>
+  <div style="display:flex;gap:0.5rem;align-items:center">
+    <span class="status"><span class="dot dot-green"></span>Discovery complete</span>
+    <span style="color:var(--border-hi)">·</span>
+    <span style="font-size:0.72rem;color:var(--text-dim)">2026-04-25</span>
+  </div>
+</div>
+
+<!-- PIPELINE STRIP -->
+<div class="pipeline">
+  <span class="p-step done">Intake</span>
+  <span class="p-sep">›</span>
+  <span class="p-step done">PM Agent</span>
+  <span class="p-sep">›</span>
+  <span class="p-step done">Design</span>
+  <span class="p-sep">›</span>
+  <span class="p-step done">Sceptic</span>
+  <span class="p-sep">›</span>
+  <span class="p-step done">Pragmatist</span>
+  <span class="p-sep">›</span>
+  <span class="p-step done">Researcher</span>
+  <span class="p-sep">›</span>
+  <span class="p-step done">Synthesis</span>
+  <span class="p-sep">›</span>
+  <span class="p-step active">Build ›</span>
+</div>
+
+<!-- ARTEFACT NAV -->
+<div class="artefact-nav">
+  <a href="#" class="a-link active done">Brief</a>
+  <a href="#" class="a-link done">Assumption Log</a>
+  <a href="#" class="a-link done">Personas</a>
+  <a href="#" class="a-link done">Research Plan</a>
+  <a href="#" class="a-link done">Breadboard</a>
+  <a href="#" class="a-link done">CLAUDE.md</a>
+  <a href="#" class="a-link done">DESIGN.md</a>
+  <a href="#" class="a-link pending">Handoff</a>
+</div>
+
+<!-- BODY -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Brief sections</div>
+      <a href="#summary"   class="sidebar-link active">Summary</a>
+      <a href="#problem"   class="sidebar-link">Problem + User</a>
+      <a href="#solution"  class="sidebar-link">Solution</a>
+      <a href="#pricing"   class="sidebar-link">Pricing</a>
+      <a href="#scope"     class="sidebar-link">MVP Scope</a>
+      <a href="#risks"     class="sidebar-link">Key Risks</a>
+      <a href="#research"  class="sidebar-link">Research</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Related artefacts</div>
+      <a href="#" class="sidebar-link">→ Assumption Log</a>
+      <a href="#" class="sidebar-link">→ Personas</a>
+      <a href="#" class="sidebar-link">→ Breadboard</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Build context</div>
+      <a href="#" class="sidebar-link">→ CLAUDE.md</a>
+      <a href="#" class="sidebar-link">→ DESIGN.md</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="doc-header">
+      <div class="doc-title">wc-sim-market</div>
+      <div class="doc-meta">
+        <span><span class="badge badge-green">Build-ready</span></span>
+        <span>Synthesis · 2026-04-25</span>
+        <a href="#" class="artefact-ref">↗ Linear project</a>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active">Summary</div>
+      <div class="tab">Problem + User</div>
+      <div class="tab">Solution</div>
+      <div class="tab">Scope</div>
+      <div class="tab">Risks</div>
+    </div>
+
+    <!-- SUMMARY TAB (visible) -->
+
+    <!-- Metrics -->
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-label">North star</div>
+        <div class="metric-value" style="font-size:0.95rem;margin-top:0.2rem">Repeated logins</div>
+        <div class="metric-sub">Users who return across multiple matchdays</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Launch target</div>
+        <div class="metric-value">June 11</div>
+        <div class="metric-sub">World Cup group stage opens</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Revenue model</div>
+        <div class="metric-value">One-time</div>
+        <div class="metric-sub">Stage-based purchase, no subscription</div>
+      </div>
+    </div>
+
+    <!-- Problem -->
+    <div id="problem" class="card">
+      <div class="card-title">The problem</div>
+      <p class="body-text">Recreational UK football bettors who want to identify betting value during the World Cup have no interactive tool that combines probabilistic simulation with market odds comparison. Tipping sites are structurally broken for EV-seeking users. Read-only simulators give no market comparison. General value-betting tools use non-editable proprietary models and are not tournament-specific.</p>
+      <div style="margin-top:0.9rem;padding-top:0.9rem;border-top:1px solid var(--border)">
+        <div class="jtbd">
+          <strong>JTBD:</strong> When I'm placing bets on the World Cup and want to know if I'm getting value, I want a model I can input my own opinions into and run simulations with, so I can identify where the market price is wrong and bet with genuine conviction rather than guesswork.
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div id="pricing" class="card">
+      <div class="card-title">Pricing <a href="#" class="artefact-ref" style="margin-left:0.5rem;font-size:0.65rem">See full monetisation output ↗</a></div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-name">Groups pass</div>
+          <div class="price-val">£5.99</div>
+          <div class="price-desc">Group stage model outputs — probabilities, edge signals, value bets</div>
+        </div>
+        <div class="price-card">
+          <div class="price-name">Knockout pass</div>
+          <div class="price-val">£7.99</div>
+          <div class="price-desc">Knockout model outputs · £4.99 upgrade for groups holders</div>
+        </div>
+        <div class="price-card">
+          <div class="price-name">Goalscorer add-on</div>
+          <div class="price-val">£3.99</div>
+          <div class="price-desc">Tournament top scorer + team top scorer vs Betfair</div>
+        </div>
+        <div class="price-card" style="border-color:rgba(76,175,130,0.3)">
+          <div class="price-name">Full bundle</div>
+          <div class="price-val">£16.99</div>
+          <div class="price-desc">Groups + knockout + goalscorer · Early-bird £13.99</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key risks -->
+    <div id="risks" class="card">
+      <div class="card-title">Key risks <a href="#" class="artefact-ref" style="margin-left:0.5rem;font-size:0.65rem">Full assumption log ↗</a></div>
+      <div class="risk-row">
+        <div class="risk-num">1</div>
+        <div class="risk-body">
+          <div class="risk-text">Value bettors will pay for model access if free tier shows concealed outputs</div>
+          <div class="risk-meta"><span class="badge badge-red">High</span><span class="badge badge-amber">Desirability</span><span class="status" style="margin-left:0.25rem"><span class="dot dot-amber"></span>Open</span></div>
+        </div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-num">2</div>
+        <div class="risk-body">
+          <div class="risk-text">Betfair odds API is reliable enough for live market display</div>
+          <div class="risk-meta"><span class="badge badge-amber">Med</span><span class="badge badge-amber">Feasibility</span><span class="status" style="margin-left:0.25rem"><span class="dot dot-amber"></span>Open</span></div>
+        </div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-num">3</div>
+        <div class="risk-body">
+          <div class="risk-text">Stripe Checkout handles tournament-scale traffic without ops overhead</div>
+          <div class="risk-meta"><span class="badge badge-amber">Med</span><span class="badge badge-blue">Feasibility</span><span class="status" style="margin-left:0.25rem"><span class="dot dot-green"></span>Defended</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MVP scope -->
+    <div id="scope" class="card">
+      <div class="card-title">MVP scope — v1 (launch blockers)</div>
+      <div class="scope-item"><span class="scope-check">✓</span><div class="scope-text">Supabase Auth + Postgres — email/password accounts with three entitlement flags</div></div>
+      <div class="scope-item"><span class="scope-check">✓</span><div class="scope-text">Stripe Checkout — 4 SKUs with idempotent webhook handler</div></div>
+      <div class="scope-item"><span class="scope-check">✓</span><div class="scope-text">Concealment paywall — model outputs shown as ?? until entitlement granted</div></div>
+      <div class="scope-item"><span class="scope-check">✓</span><div class="scope-text">Betfair odds integration — live odds alongside model probabilities</div></div>
+      <hr>
+      <div class="scope-item"><span class="scope-cross">✗</span><div><div class="scope-text">Social/sharing features</div><div class="scope-reason">Post-launch · no evidence users want this for v1</div></div></div>
+      <div class="scope-item"><span class="scope-cross">✗</span><div><div class="scope-text">Mobile app</div><div class="scope-reason">Web-first · validate demand before native investment</div></div></div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

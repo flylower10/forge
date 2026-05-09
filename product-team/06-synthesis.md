@@ -1,3 +1,19 @@
+---json
+{
+  "id": "06-synthesis",
+  "n": "06",
+  "name": "Synthesis",
+  "role": "Synthesis",
+  "phase": "discovery",
+  "team": "Product Team",
+  "mode": "Fully autonomous",
+  "gate": "None",
+  "alias": "",
+  "summary": "Consumes all discovery outputs and produces the canonical brief, assumption log, personas, research plan, and technical artefacts. Ends discovery.",
+  "file": "product-team/06-synthesis.md",
+  "constraints": []
+}
+---
 # Agent 06 · Synthesis
 **Mode:** Fully autonomous
 **Gate:** None — this agent produces the final discovery output

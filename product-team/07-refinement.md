@@ -1,3 +1,19 @@
+---json
+{
+  "id": "07-refinement",
+  "n": "07",
+  "name": "Refinement",
+  "role": "Refinement Ceremony",
+  "phase": "refinement",
+  "team": "Product Team",
+  "mode": "Conversation",
+  "gate": "Discovery → Build",
+  "alias": "",
+  "summary": "Bridges discovery and build. Resolves ambiguities, missing definitions, and foundational decisions the build team needs before the first line of code.",
+  "file": "product-team/07-refinement.md",
+  "constraints": []
+}
+---
 # Agent 07 · Refinement Ceremony
 **Mode:** Conversation
 **Gate:** Discovery → Build

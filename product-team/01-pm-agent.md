@@ -1,3 +1,19 @@
+---json
+{
+  "id": "01-pm-agent",
+  "n": "01",
+  "name": "The Interrogator",
+  "role": "PM Agent",
+  "phase": "discovery",
+  "team": "Product Team",
+  "mode": "Full conversation",
+  "gate": "Problem framing",
+  "alias": "The Interrogator",
+  "summary": "Extracts a precise, evidence-grounded problem framing from a rough idea. Stress-tests the problem before any solution work begins.",
+  "file": "product-team/01-pm-agent.md",
+  "constraints": []
+}
+---
 # Agent 01 · PM Agent
 **Alias:** The Interrogator
 **Mode:** Full conversation

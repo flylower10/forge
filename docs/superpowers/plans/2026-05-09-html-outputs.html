@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Outputs — Implementation Plan</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d14; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; }
+:root {
+  --bg: #0d0d14; --surface: #14141f; --elevated: #1c1c2e; --border: #2a2a3d;
+  --text: #e8e8f0; --mid: #9090a8; --dim: #555568;
+  --blue: #5b8dee; --green: #4caf82; --amber: #e8a94d; --red: #e05c5c; --purple: #9b72cf;
+}
+
+/* TOPBAR */
+.topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.65rem 1.75rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--dim); }
+.breadcrumb a { color: var(--dim); text-decoration: none; }
+.breadcrumb-sep { color: var(--border); }
+.logo { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.topbar-right { display: flex; gap: 0.5rem; align-items: center; font-size: 0.72rem; color: var(--dim); }
+
+/* LAYOUT */
+.layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - 50px); }
+.sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.25rem 1rem; position: sticky; top: 50px; height: calc(100vh - 50px); overflow-y: auto; }
+.main { padding: 2rem 2.5rem; max-width: 900px; }
+
+/* SIDEBAR */
+.nav-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin: 1.25rem 0 0.5rem; }
+.nav-label:first-child { margin-top: 0; }
+.nav-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.6rem; font-size: 0.78rem; color: var(--mid); text-decoration: none; border-radius: 5px; margin-bottom: 0.1rem; cursor: pointer; }
+.nav-link:hover { background: var(--elevated); color: var(--text); }
+.nav-link.done .task-num { background: rgba(76,175,130,0.2); color: var(--green); }
+.nav-link .task-num { font-size: 0.62rem; font-weight: 700; background: var(--elevated); border: 1px solid var(--border); border-radius: 3px; padding: 0.1rem 0.35rem; min-width: 1.6rem; text-align: center; color: var(--dim); }
+
+/* TYPOGRAPHY */
+h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2.25rem 0 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+h3 { font-size: 0.82rem; font-weight: 700; color: var(--mid); margin: 1rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.07em; }
+p { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.75rem; }
+p:last-child { margin-bottom: 0; }
+code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.78rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.4rem; border-radius: 3px; }
+pre { background: var(--elevated); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; margin: 0.75rem 0; }
+pre code { background: none; padding: 0; font-size: 0.78rem; color: var(--mid); }
+hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+a { color: var(--blue); text-decoration: none; }
+
+/* BADGES */
+.badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.52rem; border-radius: 4px; }
+.badge-amber  { background: rgba(232,169,77,0.15); color: var(--amber); }
+.badge-green  { background: rgba(76,175,130,0.15); color: var(--green); }
+.badge-blue   { background: rgba(91,141,238,0.15); color: var(--blue); }
+.badge-grey   { background: rgba(144,144,168,0.12); color: var(--mid); }
+
+/* DOC META */
+.doc-meta { display: flex; gap: 0.75rem; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; font-size: 0.75rem; color: var(--dim); }
+
+/* SUMMARY CARDS */
+.summary-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+.summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.summary-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-bottom: 0.4rem; }
+.summary-value { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.summary-sub { font-size: 0.72rem; color: var(--dim); margin-top: 0.2rem; }
+
+/* FILE MAP */
+.file-map-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+.file-group { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+.file-group-title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin-bottom: 0.65rem; }
+.file-item { display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.25rem 0; border-bottom: 1px solid rgba(42,42,61,0.4); font-size: 0.78rem; }
+.file-item:last-child { border-bottom: none; }
+.file-name { font-family: 'SF Mono', monospace; font-size: 0.72rem; color: var(--blue); flex-shrink: 0; }
+.file-name.amber { color: var(--amber); }
+.file-name.green { color: var(--green); }
+.file-name.dim   { color: var(--dim); }
+.file-desc { color: var(--dim); font-size: 0.72rem; }
+
+/* TASK CARD */
+.task-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+.task-header { padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none; }
+.task-header:hover { background: var(--elevated); }
+.task-num-badge { font-size: 0.72rem; font-weight: 700; background: var(--elevated); border: 1px solid var(--border); border-radius: 4px; padding: 0.15rem 0.5rem; color: var(--dim); min-width: 2rem; text-align: center; flex-shrink: 0; }
+.task-title { font-size: 0.92rem; font-weight: 600; color: var(--text); flex: 1; }
+.task-files-preview { font-size: 0.7rem; color: var(--dim); }
+.task-chevron { color: var(--dim); font-size: 0.8rem; transition: transform 0.2s; }
+.task-card.open .task-chevron { transform: rotate(180deg); }
+.task-body { display: none; padding: 0 1.25rem 1.25rem; border-top: 1px solid var(--border); }
+.task-card.open .task-body { display: block; }
+
+/* FILE LIST IN TASK */
+.task-files { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 0.85rem 0 1rem; }
+.task-file-chip { font-family: 'SF Mono', monospace; font-size: 0.68rem; padding: 0.18rem 0.5rem; border-radius: 3px; border: 1px solid var(--border); background: var(--elevated); }
+.chip-create { color: var(--green); border-color: rgba(76,175,130,0.3); background: rgba(76,175,130,0.06); }
+.chip-modify { color: var(--amber); border-color: rgba(232,169,77,0.3); background: rgba(232,169,77,0.06); }
+.chip-delete { color: var(--red); border-color: rgba(224,92,92,0.3); background: rgba(224,92,92,0.06); }
+
+/* STEPS */
+.step { display: flex; gap: 0.75rem; padding: 0.85rem 0; border-bottom: 1px solid rgba(42,42,61,0.5); }
+.step:last-child { border-bottom: none; }
+.step-check { flex-shrink: 0; margin-top: 0.15rem; }
+.step-check input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--green); cursor: pointer; }
+.step-content { flex: 1; }
+.step-label { font-size: 0.84rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; }
+.step-desc { font-size: 0.8rem; color: var(--mid); line-height: 1.6; margin-bottom: 0.5rem; }
+.step-note { font-size: 0.75rem; color: var(--dim); font-style: italic; margin-top: 0.35rem; }
+.expected { font-size: 0.72rem; color: var(--green); margin-top: 0.35rem; }
+.expected::before { content: 'Expected: '; color: var(--dim); }
+
+/* TABLE */
+.forge-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin: 0.75rem 0; }
+.forge-table th { text-align: left; padding: 0.4rem 0.65rem; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dim); border-bottom: 1px solid var(--border); }
+.forge-table td { padding: 0.5rem 0.65rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid); vertical-align: top; font-size: 0.78rem; }
+.forge-table td code { font-size: 0.72rem; }
+.forge-table tr:last-child td { border-bottom: none; }
+.forge-table tr:hover td { background: var(--elevated); }
+
+/* PROGRESS BAR */
+.progress-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 0.4rem; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.3s; }
+
+/* SELF REVIEW */
+.review-section { background: rgba(76,175,130,0.05); border: 1px solid rgba(76,175,130,0.2); border-radius: 8px; padding: 1.25rem; margin-top: 1rem; }
+.review-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); margin-bottom: 0.75rem; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="breadcrumb">
+    <span class="logo">Forge</span>
+    <span class="breadcrumb-sep">›</span>
+    <a href="#">plans</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>HTML Outputs</span>
+  </div>
+  <div class="topbar-right">
+    <span class="badge badge-amber">Ready to execute</span>
+    <span>2026-05-09</span>
+    <span>·</span>
+    <span id="progress-label">0 / 11 tasks</span>
+  </div>
+</div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="nav-label">Progress</div>
+  <div style="margin-bottom:1rem">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div style="font-size:0.72rem;color:var(--dim);margin-top:0.35rem" id="progress-pct">0% complete</div>
+  </div>
+
+  <div class="nav-label">Tasks</div>
+  <a class="nav-link" onclick="scrollToTask(1)"><span class="task-num">1</span>Design system CSS</a>
+  <a class="nav-link" onclick="scrollToTask(2)"><span class="task-num">2</span>Intellectual standards</a>
+  <a class="nav-link" onclick="scrollToTask(3)"><span class="task-num">3</span>Artefact templates</a>
+  <a class="nav-link" onclick="scrollToTask(4)"><span class="task-num">4</span>Agent HTML pattern</a>
+  <a class="nav-link" onclick="scrollToTask(5)"><span class="task-num">5</span>Product-team agents</a>
+  <a class="nav-link" onclick="scrollToTask(6)"><span class="task-num">6</span>Build + marketing agents</a>
+  <a class="nav-link" onclick="scrollToTask(7)"><span class="task-num">7</span>Synthesis instructions</a>
+  <a class="nav-link" onclick="scrollToTask(8)"><span class="task-num">8</span>Breadboard SVG output</a>
+  <a class="nav-link" onclick="scrollToTask(9)"><span class="task-num">9</span>Delivery Manager handoff</a>
+  <a class="nav-link" onclick="scrollToTask(10)"><span class="task-num">10</span>Standards — all agents</a>
+  <a class="nav-link" onclick="scrollToTask(11)"><span class="task-num">11</span>CLAUDE.md references</a>
+
+  <div class="nav-label" style="margin-top:1.5rem">Spec</div>
+  <a class="nav-link" href="../specs/2026-05-09-html-outputs-design.html" target="_blank" style="font-size:0.75rem;color:var(--blue)">↗ Design spec</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <h1>HTML Outputs</h1>
+  <div class="doc-meta">
+    <span class="badge badge-amber">Ready to execute</span>
+    <span>11 tasks</span>
+    <span>·</span>
+    <span>2026-05-09</span>
+    <span>·</span>
+    <span>Use superpowers:subagent-driven-development or superpowers:executing-plans</span>
+  </div>
+
+  <div style="background:rgba(91,141,238,0.06);border:1px solid rgba(91,141,238,0.2);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:0.85rem 1.25rem;margin-bottom:1.5rem">
+    <p style="margin:0;font-size:0.82rem"><strong style="color:var(--text)">Goal:</strong> Convert all human-facing Forge outputs from markdown to HTML using a shared design system, add an intellectual standards behavioral baseline for all agents, and produce a pipeline dashboard.</p>
+    <p style="margin-top:0.5rem;font-size:0.82rem"><strong style="color:var(--text)">Architecture:</strong> A canonical CSS file (<code>skills/forge-styles.css</code>) is embedded inline by all agents. Agent definition files become HTML with visual cards + collapsible instructions. Output instructions in Synthesis, Breadboard, and Delivery Manager are updated. <code>running-brief.md</code> is the only file that stays markdown.</p>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-label">New files</div>
+      <div class="summary-value">3</div>
+      <div class="summary-sub">forge-styles.css, intellectual-standards.md, CLAUDE.html</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Agent files converted</div>
+      <div class="summary-value">23</div>
+      <div class="summary-sub">product-team, build-team, marketing-team</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-label">Instruction files updated</div>
+      <div class="summary-value">5</div>
+      <div class="summary-sub">Synthesis, Breadboard, DM, artefact-templates, CLAUDE.md</div>
+    </div>
+  </div>
+
+  <!-- FILE MAP -->
+  <h2>File map</h2>
+  <div class="file-map-grid">
+    <div class="file-group">
+      <div class="file-group-title">Create</div>
+      <div class="file-item"><span class="file-name green">skills/forge-styles.css</span></div>
+      <div class="file-item"><span class="file-name green">skills/intellectual-standards.md</span></div>
+      <div class="file-item"><span class="file-name green">docs/CLAUDE.html</span><span class="file-desc" style="margin-left:0.5rem">product repos — by Synthesis</span></div>
+      <div class="file-item"><span class="file-name green">output/[idea]/pipeline-dashboard.html</span></div>
+    </div>
+    <div class="file-group">
+      <div class="file-group-title">Modify</div>
+      <div class="file-item"><span class="file-name amber">skills/artefact-templates.md</span></div>
+      <div class="file-item"><span class="file-name amber">product-team/06-synthesis.md</span></div>
+      <div class="file-item"><span class="file-name amber">product-team/breadboard.md</span></div>
+      <div class="file-item"><span class="file-name amber">build-team/delivery-manager.md</span></div>
+      <div class="file-item"><span class="file-name amber">CLAUDE.md (Forge repo)</span></div>
+    </div>
+    <div class="file-group" style="grid-column:1/-1">
+      <div class="file-group-title">Convert (markdown → HTML) — 23 agent files, originals kept</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.2rem;margin-top:0.25rem">
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/00-intake</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/01-pm-agent</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/02-design-agent</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/03-devils-advocate</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/04-tech-feasibility</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/05-user-researcher</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/06-synthesis</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/07-refinement</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/08-burst-review</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/breadboard</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/model-reviewer</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/observer</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/research-agent</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">product-team/ux-agent</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">build-team/delivery-manager</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">build-team/architect</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">build-team/engineer</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">build-team/reviewer</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">build-team/qa</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">build-team/feedback-triage</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">build-team/cartographer</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">marketing-team/monetisation-agent</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--blue)">marketing-team/gtm-agent</span>
+      </div>
+    </div>
+    <div class="file-group" style="grid-column:1/-1">
+      <div class="file-group-title">Unchanged</div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.25rem">
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--dim)">output/[idea]/running-brief.md</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--dim)">CLAUDE.md (Forge + product repos)</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--dim)">hooks/*.md</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--dim)">memory/*.md</span>
+        <span style="font-family:monospace;font-size:0.68rem;color:var(--dim)">decisions.md</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASKS -->
+  <h2>Tasks</h2>
+
+  <!-- TASK 1 -->
+  <div class="task-card" id="task-1">
+    <div class="task-header" onclick="toggleTask(1)">
+      <span class="task-num-badge">1</span>
+      <span class="task-title">Design system CSS</span>
+      <span class="task-files-preview">Create <code>skills/forge-styles.css</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Canonical CSS file that agents embed inline in every HTML output. Self-contained — no external URLs. Source of truth for all design tokens and components.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-create">CREATE skills/forge-styles.css</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Write the CSS file</div>
+          <div class="step-desc">Create <code>skills/forge-styles.css</code> with the full design system from the spec. See the design spec at <code>docs/superpowers/specs/2026-05-09-html-outputs-design.html</code> for the complete colour token list and component reference. The file must include: CSS custom properties (all tokens), body reset, topbar, pipeline strip, artefact nav, layout grid, sidebar nav, typography, badges, status dots, cards, agent card + collapsible instructions, never-do list, data table, metric cards, artefact refs, tabs, and divider styles. All class names prefixed <code>forge-</code> to avoid collision.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Verify file exists and is non-empty</div>
+          <pre><code>ls -la /Users/aidanmaughan/my-projects/forge/skills/forge-styles.css</code></pre>
+          <div class="expected">file exists, size > 0</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add skills/forge-styles.css
+git commit -m "feat: add Forge design system CSS — canonical inline styles for all HTML outputs"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 2 -->
+  <div class="task-card" id="task-2">
+    <div class="task-header" onclick="toggleTask(2)">
+      <span class="task-num-badge">2</span>
+      <span class="task-title">Intellectual standards skill</span>
+      <span class="task-files-preview">Create <code>skills/intellectual-standards.md</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Behavioral baseline for all agents. Read before acting. 7 principles covering counterargument-first reasoning, confidence levels, non-capitulation, and accuracy over approval.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-create">CREATE skills/intellectual-standards.md</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Write the skill file</div>
+          <div class="step-desc">Create <code>skills/intellectual-standards.md</code>. The 7 principles are defined in the design spec — see the "Intellectual Standards" section of <code>docs/superpowers/specs/2026-05-09-html-outputs-design.html</code>. Include a "What this does not mean" section clarifying that length ≠ quality, aggression ≠ rigor, and holding positions ≠ being closed to new evidence.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add skills/intellectual-standards.md
+git commit -m "feat: add intellectual-standards skill — behavioral baseline for all agents"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 3 -->
+  <div class="task-card" id="task-3">
+    <div class="task-header" onclick="toggleTask(3)">
+      <span class="task-num-badge">3</span>
+      <span class="task-title">Artefact templates — HTML</span>
+      <span class="task-files-preview">Modify <code>skills/artefact-templates.md</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Replace all markdown templates with HTML skeletons. This is the highest-effort task. Each template must be a complete, valid HTML structure an agent can fill with content — not pseudocode.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-modify">MODIFY skills/artefact-templates.md</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Read the current file</div>
+          <pre><code>cat skills/artefact-templates.md</code></pre>
+          <div class="step-desc">Understand the existing structure before editing. Note all template types currently defined.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Rewrite with HTML templates</div>
+          <div class="step-desc">Keep the preamble explaining why consistency matters. Add a CSS embedding instruction: "Embed the full contents of <code>skills/forge-styles.css</code> inside a <code>&lt;style&gt;</code> tag. Do not link externally." Then provide HTML skeleton templates for each output type:</div>
+          <ul style="margin:0.5rem 0 0.5rem 1.25rem;font-size:0.82rem;color:var(--mid);line-height:2">
+            <li><code>brief.html</code> — topbar, pipeline, artefact nav, sidebar, tabbed main (Summary / Problem+User / Solution / Pricing / Scope / Risks), metric cards</li>
+            <li><code>assumption-log.html</code> — filterable table with badge columns, expandable defended notes</li>
+            <li><code>personas.html</code> — persona cards + horizontal journey map</li>
+            <li><code>research-plan.html</code> — three-column knowledge map, priority list, collapsible interview guide</li>
+            <li><code>handoff.html</code> — product state card, last burst summary, next actions, open blockers, Linear link</li>
+            <li><code>pipeline-dashboard.html</code> — live pipeline position + stacked milestone blocks</li>
+            <li><code>CLAUDE.html</code> — sidebar nav, four sections: product overview, architecture, build sequence, open decisions</li>
+          </ul>
+          <div class="step-note">Reference the brief mockup at <code>.superpowers/brainstorm/*/content/brief-mockup.html</code> as a visual reference for the brief template.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add skills/artefact-templates.md
+git commit -m "feat: rewrite artefact-templates with HTML output skeletons"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 4 -->
+  <div class="task-card" id="task-4">
+    <div class="task-header" onclick="toggleTask(4)">
+      <span class="task-num-badge">4</span>
+      <span class="task-title">Agent HTML pattern — implement for 00-intake</span>
+      <span class="task-files-preview">Create <code>product-team/00-intake.html</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Defines the pattern for all 23 agent file conversions (Tasks 5–6). Implement fully for <code>00-intake</code> first. The <code>.md</code> file is kept — it remains the agent instruction source. The <code>.html</code> is the human-browsable view.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-create">CREATE product-team/00-intake.html</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Read the source file</div>
+          <pre><code>cat product-team/00-intake.md</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Create the HTML file with the four required sections</div>
+          <div class="step-desc">Every agent HTML file must contain these four sections in order:</div>
+          <ol style="margin:0.5rem 0 0.5rem 1.25rem;font-size:0.82rem;color:var(--mid);line-height:2">
+            <li><strong style="color:var(--text)">Agent card (always visible)</strong> — name, alias, mode badge, phase badge, reads chips, produces chips, hands-off-to line, toggle button</li>
+            <li><strong style="color:var(--text)">SVG pipeline position diagram</strong> — agent's actual position, preceding and following agents, lateral connections (Observer, Researcher where applicable)</li>
+            <li><strong style="color:var(--text)">Full instructions (collapsible, default closed)</strong> — complete prose from the markdown source, formatted as HTML sections. <code>toggleInstructions()</code> JS function controls visibility</li>
+            <li><strong style="color:var(--text)">What you never do (always visible)</strong> — red-tinted <code>forge-never-do</code> box with ✗-prefixed list items</li>
+          </ol>
+          <div class="step-desc">For 00-intake specifically: mode = Conversation, phase = Discovery, reads = product-team/* + build-team/* + marketing-team/* + skills/*, produces = running-brief.md + pipeline config block, hands off to = first wave of selected Discovery agents.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Open and verify in browser</div>
+          <pre><code>open product-team/00-intake.html</code></pre>
+          <div class="step-desc">Check: agent card visible, badges render, instructions toggle on click, SVG diagram shows pipeline position, never-do list has red tint.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add product-team/00-intake.html
+git commit -m "feat: add 00-intake.html — reference implementation for agent HTML pattern"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 5 -->
+  <div class="task-card" id="task-5">
+    <div class="task-header" onclick="toggleTask(5)">
+      <span class="task-num-badge">5</span>
+      <span class="task-title">Convert remaining product-team agents</span>
+      <span class="task-files-preview">13 files — apply Task 4 pattern</span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Apply the Task 4 pattern to all remaining product-team agents. Read each <code>.md</code> source, produce the <code>.html</code> version with correct metadata.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-create">CREATE product-team/01-pm-agent.html</span>
+        <span class="task-file-chip chip-create">CREATE product-team/02-design-agent.html</span>
+        <span class="task-file-chip chip-create">CREATE product-team/03-devils-advocate.html</span>
+        <span class="task-file-chip chip-create">+ 10 more</span>
+      </div>
+      <h3>Agent metadata</h3>
+      <table class="forge-table">
+        <thead><tr><th>File</th><th>Name · Alias</th><th>Mode</th><th>Reads</th><th>Produces</th><th>Hands off to</th></tr></thead>
+        <tbody>
+          <tr><td><code>01-pm-agent</code></td><td>The Interrogator</td><td>Conversation</td><td>running-brief</td><td>01-problem-framing.html</td><td>parallel wave</td></tr>
+          <tr><td><code>02-design-agent</code></td><td>The Narrator</td><td>Conversation</td><td>running-brief, 01 output</td><td>02-design.html</td><td>parallel wave</td></tr>
+          <tr><td><code>03-devils-advocate</code></td><td>The Sceptic</td><td>Autonomous + 1q</td><td>running-brief, prior outputs</td><td>03-devils-advocate.html</td><td>parallel wave</td></tr>
+          <tr><td><code>04-tech-feasibility</code></td><td>The Pragmatist</td><td>Autonomous + 1q</td><td>running-brief, prior outputs</td><td>04-tech-feasibility.html</td><td>parallel wave</td></tr>
+          <tr><td><code>05-user-researcher</code></td><td>The Advocate</td><td>Autonomous + 1q</td><td>running-brief, prior outputs</td><td>05-user-researcher.html</td><td>Synthesis</td></tr>
+          <tr><td><code>06-synthesis</code></td><td>The Assembler</td><td>Fully autonomous</td><td>running-brief, all prior</td><td>brief.html, personas.html, assumption-log.html, research-plan.html, CLAUDE.md + CLAUDE.html, DESIGN.html, pipeline-dashboard.html</td><td>Breadboard</td></tr>
+          <tr><td><code>07-refinement</code></td><td>The Refiner</td><td>Conversation</td><td>brief.html, breadboard.html</td><td>refined brief</td><td>Delivery Manager</td></tr>
+          <tr><td><code>08-burst-review</code></td><td>The Handoff + Re-entry</td><td>Lightweight</td><td>handoff.html, Linear</td><td>handoff.html (updated)</td><td>next burst</td></tr>
+          <tr><td><code>breadboard</code></td><td>The Tracer</td><td>Autonomous + review</td><td>brief.html, running-brief</td><td>breadboard.html (SVG)</td><td>Refinement</td></tr>
+          <tr><td><code>model-reviewer</code></td><td>The Calibrator</td><td>Autonomous + 1q</td><td>brief, model outputs</td><td>model-review.html</td><td>invoking agent</td></tr>
+          <tr><td><code>observer</code></td><td>The Witness</td><td>Always on</td><td>all outputs</td><td>observer note</td><td>human (direct)</td></tr>
+          <tr><td><code>research-agent</code></td><td>The Researcher</td><td>On demand</td><td>invoking agent context</td><td>research findings</td><td>invoking agent</td></tr>
+          <tr><td><code>ux-agent</code></td><td>The Blueprint</td><td>Autonomous + review</td><td>brief, DESIGN.md</td><td>ux-brief.html</td><td>Refinement or build</td></tr>
+        </tbody>
+      </table>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">For each of the 13 files: read source, create HTML, open to verify</div>
+          <div class="step-desc">Apply Task 4 pattern exactly. Use metadata from the table above. SVG diagrams must show each agent's actual position — not a generic placeholder.</div>
+          <pre><code># For each agent:
+cat product-team/[name].md
+# Write product-team/[name].html
+open product-team/[name].html</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit all 13 files</div>
+          <pre><code>git add product-team/*.html
+git commit -m "feat: convert product-team agent definitions to HTML with agent cards and pipeline diagrams"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 6 -->
+  <div class="task-card" id="task-6">
+    <div class="task-header" onclick="toggleTask(6)">
+      <span class="task-num-badge">6</span>
+      <span class="task-title">Convert build-team and marketing-team agents</span>
+      <span class="task-files-preview">9 files</span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Apply the Task 4 pattern to all build-team and marketing-team agents.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-create">CREATE build-team/delivery-manager.html</span>
+        <span class="task-file-chip chip-create">CREATE build-team/engineer.html</span>
+        <span class="task-file-chip chip-create">+ 7 more</span>
+      </div>
+      <h3>Agent metadata</h3>
+      <table class="forge-table">
+        <thead><tr><th>File</th><th>Alias</th><th>Mode</th><th>Reads</th><th>Produces</th></tr></thead>
+        <tbody>
+          <tr><td><code>build-team/delivery-manager</code></td><td>The Conductor</td><td>Conversation</td><td>Linear, handoff.html, brief.html</td><td>handoff.html, Linear issues</td></tr>
+          <tr><td><code>build-team/architect</code></td><td>The Architect</td><td>Consulted only</td><td>brief.html, CLAUDE.md</td><td>architectural decision</td></tr>
+          <tr><td><code>build-team/engineer</code></td><td>The Engineer</td><td>Execution</td><td>Linear issue, CLAUDE.md</td><td>code + commits</td></tr>
+          <tr><td><code>build-team/reviewer</code></td><td>The Reviewer</td><td>Execution</td><td>code diff, CLAUDE.md</td><td>review output</td></tr>
+          <tr><td><code>build-team/qa</code></td><td>QA</td><td>Execution</td><td>Linear issue ACs, code</td><td>QA result</td></tr>
+          <tr><td><code>build-team/feedback-triage</code></td><td>The Arbiter</td><td>Triggered</td><td>product criticism, codebase</td><td>triage recommendation</td></tr>
+          <tr><td><code>build-team/cartographer</code></td><td>The Cartographer</td><td>Autonomous + 1q</td><td>codebase</td><td>codebase-doc-brief.html</td></tr>
+          <tr><td><code>marketing-team/monetisation-agent</code></td><td>The Merchant</td><td>Autonomous + 1q</td><td>brief.html</td><td>monetisation.html</td></tr>
+          <tr><td><code>marketing-team/gtm-agent</code></td><td>The Campaigner</td><td>Autonomous + 1q</td><td>brief.html, monetisation.html</td><td>gtm.html</td></tr>
+        </tbody>
+      </table>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">For each of the 9 files: read source, create HTML, open to verify</div>
+          <pre><code>cat build-team/[name].md   # or marketing-team/
+open build-team/[name].html</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add build-team/*.html marketing-team/*.html
+git commit -m "feat: convert build-team and marketing-team agent definitions to HTML"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 7 -->
+  <div class="task-card" id="task-7">
+    <div class="task-header" onclick="toggleTask(7)">
+      <span class="task-num-badge">7</span>
+      <span class="task-title">Update Synthesis output instructions</span>
+      <span class="task-files-preview">Modify <code>product-team/06-synthesis.md</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Synthesis produces most discovery artefacts. Update it to produce <code>.html</code> files, embed <code>forge-styles.css</code> inline, produce <code>CLAUDE.html</code> alongside <code>CLAUDE.md</code>, and generate the initial <code>pipeline-dashboard.html</code>.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-modify">MODIFY product-team/06-synthesis.md</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Read the current file</div>
+          <pre><code>cat product-team/06-synthesis.md</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Update output destinations</div>
+          <div class="step-desc">In the "Write to local output folder" section, update all output filenames from <code>.md</code> to <code>.html</code>. Add instructions to embed <code>forge-styles.css</code> inline in each file. Add <code>pipeline-dashboard.html</code> as a new output: mark all Discovery agents complete, mark Build pending.</div>
+          <div class="step-desc">In the "Push to GitHub" section, keep <code>CLAUDE.md</code> as lean markdown but add <code>CLAUDE.html</code> as the rich companion. Update <code>DESIGN.md</code> → <code>DESIGN.html</code>. Keep <code>decisions.md</code> as markdown (append-only ADR log).</div>
+          <div class="step-desc">Update the commit message to: <code>discovery synthesis: initial brief, CLAUDE.md + CLAUDE.html, DESIGN.html</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Add behavioral baseline reference at top of file</div>
+          <div class="step-desc">After the first <code>---</code> divider, add: <code>## Behavioral baseline\nRead and apply `skills/intellectual-standards.md` before producing any output.</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add product-team/06-synthesis.md
+git commit -m "feat: update Synthesis — produce HTML outputs, CLAUDE.html, pipeline dashboard"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 8 -->
+  <div class="task-card" id="task-8">
+    <div class="task-header" onclick="toggleTask(8)">
+      <span class="task-num-badge">8</span>
+      <span class="task-title">Breadboard SVG output</span>
+      <span class="task-files-preview">Modify <code>product-team/breadboard.md</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Update Breadboard to produce <code>breadboard.html</code> with an SVG flow diagram as the primary view. Tables (places, affordances, stores, flagged unknowns) become a collapsed secondary view.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-modify">MODIFY product-team/breadboard.md</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Read the current file</div>
+          <pre><code>cat product-team/breadboard.md</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Replace the output format section</div>
+          <div class="step-desc">Replace the markdown table template in the "Output format" section with HTML output instructions: save to <code>output/[idea-name]/breadboard.html</code>, embed <code>forge-styles.css</code>. Primary view = SVG flow diagram (places as rounded rects in blue, stores as parallelograms in green, flagged unknowns in amber). Affordances as labelled directed edges (solid = UI, dashed = non-UI). Secondary view = the five reference tables, collapsed by default.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Add behavioral baseline reference</div>
+          <div class="step-desc">Add after the first <code>---</code>: <code>## Behavioral baseline\nRead and apply `skills/intellectual-standards.md` before producing any output.</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add product-team/breadboard.md
+git commit -m "feat: update Breadboard — SVG flow diagram as primary HTML output"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 9 -->
+  <div class="task-card" id="task-9">
+    <div class="task-header" onclick="toggleTask(9)">
+      <span class="task-num-badge">9</span>
+      <span class="task-title">Delivery Manager — handoff.html + dashboard updates</span>
+      <span class="task-files-preview">Modify <code>build-team/delivery-manager.md</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Update Delivery Manager to produce <code>handoff.html</code> and to rewrite <code>pipeline-dashboard.html</code> with a new milestone block at each burst end.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-modify">MODIFY build-team/delivery-manager.md</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Read the current file</div>
+          <pre><code>cat build-team/delivery-manager.md</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Update all handoff.md references to handoff.html</div>
+          <div class="step-desc">Find every reference to <code>handoff.md</code> in the file and change to <code>handoff.html</code>. Add format instructions: use the handoff template from <code>skills/artefact-templates.md</code>, embed <code>forge-styles.css</code>. Required sections: current product state card, last burst summary, next 3 actions in priority order, open blockers, Linear project link.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Add pipeline dashboard update instruction</div>
+          <div class="step-desc">Add to the end-of-burst procedure: "After writing <code>handoff.html</code>, rewrite <code>output/[idea-name]/pipeline-dashboard.html</code> — read the existing dashboard, append a new milestone block (burst number, date, issues closed, key decisions, link to <code>handoff.html</code>), write the updated file."</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Add behavioral baseline reference</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add build-team/delivery-manager.md
+git commit -m "feat: update Delivery Manager — handoff.html and pipeline dashboard milestone updates"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 10 -->
+  <div class="task-card" id="task-10">
+    <div class="task-header" onclick="toggleTask(10)">
+      <span class="task-num-badge">10</span>
+      <span class="task-title">Add intellectual-standards reference to all remaining agents</span>
+      <span class="task-files-preview">20 agent .md files</span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Every agent that hasn't been updated yet (Tasks 7–9 covered Synthesis, Breadboard, DM) needs the two-line behavioral baseline block added to its <code>.md</code> file.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-modify">MODIFY 20 agent .md files</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Add to all product-team agents not yet updated</div>
+          <div class="step-desc">Files: <code>00-intake.md</code>, <code>01-pm-agent.md</code>, <code>02-design-agent.md</code>, <code>03-devils-advocate.md</code>, <code>04-tech-feasibility.md</code>, <code>05-user-researcher.md</code>, <code>07-refinement.md</code>, <code>08-burst-review.md</code>, <code>model-reviewer.md</code>, <code>observer.md</code>, <code>research-agent.md</code>, <code>ux-agent.md</code>.</div>
+          <div class="step-desc">In each file, after the first <code>---</code> divider, insert:</div>
+          <pre><code>## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
+---</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Add to all build-team and marketing-team agents not yet updated</div>
+          <div class="step-desc">Files: <code>build-team/architect.md</code>, <code>engineer.md</code>, <code>reviewer.md</code>, <code>qa.md</code>, <code>feedback-triage.md</code>, <code>cartographer.md</code>, <code>marketing-team/monetisation-agent.md</code>, <code>gtm-agent.md</code>.</div>
+          <div class="step-desc">Same insertion as above.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Verify all agent files have the baseline</div>
+          <pre><code>grep -rL "intellectual-standards" product-team/*.md build-team/*.md marketing-team/*.md</code></pre>
+          <div class="expected">no output — all files contain the reference</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add product-team/*.md build-team/*.md marketing-team/*.md
+git commit -m "feat: add intellectual-standards behavioral baseline to all agent files"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK 11 -->
+  <div class="task-card" id="task-11">
+    <div class="task-header" onclick="toggleTask(11)">
+      <span class="task-num-badge">11</span>
+      <span class="task-title">Update Forge CLAUDE.md references</span>
+      <span class="task-files-preview">Modify <code>CLAUDE.md</code></span>
+      <span class="task-chevron">▼</span>
+    </div>
+    <div class="task-body">
+      <p>Update all output file extension references throughout the Forge CLAUDE.md. Register the two new skills. Keep markdown for instruction files, working files, and the CLAUDE.md filename itself.</p>
+      <div class="task-files">
+        <span class="task-file-chip chip-modify">MODIFY CLAUDE.md (Forge repo)</span>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Find all output file extension references</div>
+          <pre><code>grep -n "\.md" CLAUDE.md | grep -v "skills/\|hooks/\|memory/\|product-team/\|build-team/\|marketing-team/\|running-brief\|CLAUDE\.md\|decisions\.md\|signal-log\|handoff-protocol\|artefact-templates\|design-md\|design-references\|research-protocol\|model-improvement\|prioritisation\|feature-triage\|claude-design\|linear-schema\|frameworks"</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Update output artefact extensions</div>
+          <div class="step-desc">Change: <code>brief.md → brief.html</code>, <code>assumption-log.md → assumption-log.html</code>, <code>personas.md → personas.html</code>, <code>research-plan.md → research-plan.html</code>, <code>handoff.md → handoff.html</code>, <code>DESIGN.md → DESIGN.html</code> (product repos). Add <code>CLAUDE.html</code> alongside <code>CLAUDE.md</code> in the output destinations section. Keep unchanged: <code>running-brief.md</code>, <code>CLAUDE.md</code> (both repos), <code>decisions.md</code>, all skill/hook/memory files.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Add new skills to the Skills table</div>
+          <div class="step-desc">Add two rows to the Skills table in the CLAUDE.md:</div>
+          <pre><code>| `skills/forge-styles.css` | Canonical design system CSS — embed inline in all HTML outputs |
+| `skills/intellectual-standards.md` | Behavioral baseline — referenced by all agents |</code></pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-check"><input type="checkbox" onchange="updateProgress()"></div>
+        <div class="step-content">
+          <div class="step-label">Commit</div>
+          <pre><code>git add CLAUDE.md
+git commit -m "feat: update Forge CLAUDE.md — HTML output extensions, new skills registered"</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF REVIEW -->
+  <h2>Self-review</h2>
+  <div class="review-section">
+    <div class="review-title">Spec coverage</div>
+    <table class="forge-table">
+      <thead><tr><th>Requirement</th><th>Task</th></tr></thead>
+      <tbody>
+        <tr><td>All outputs become HTML</td><td>3, 7, 8, 9, 11</td></tr>
+        <tr><td>Shared design system CSS (forge-styles.css)</td><td>1</td></tr>
+        <tr><td>Intellectual standards — all agents</td><td>2, 10</td></tr>
+        <tr><td>Agent definition files as HTML</td><td>4, 5, 6</td></tr>
+        <tr><td>brief.html tabbed layout with artefact nav</td><td>3 (template), 7 (Synthesis instruction)</td></tr>
+        <tr><td>breadboard.html with SVG primary view</td><td>8</td></tr>
+        <tr><td>handoff.html</td><td>9</td></tr>
+        <tr><td>pipeline-dashboard.html (live + milestones)</td><td>7 (Synthesis creates), 9 (DM updates)</td></tr>
+        <tr><td>CLAUDE.md + CLAUDE.html dual file</td><td>7</td></tr>
+        <tr><td>running-brief.md stays markdown</td><td>Explicit in Tasks 3, 7, 11</td></tr>
+        <tr><td>Forge CLAUDE.md references updated</td><td>11</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.75rem;font-size:0.78rem"><strong style="color:var(--text)">No placeholders found.</strong> Task 3 requires the implementer to write full HTML templates — this is intentional implementation work, not a deferred step.</p>
+    <p style="font-size:0.78rem"><strong style="color:var(--text)">Type consistency:</strong> File naming is consistent throughout — <code>.html</code> for all human-facing outputs, <code>.md</code> retained for instruction files and working files. No naming conflicts across tasks.</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+function toggleTask(n) {
+  const card = document.getElementById('task-' + n);
+  card.classList.toggle('open');
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.step-check input').length;
+  const checked = document.querySelectorAll('.step-check input:checked').length;
+  const pct = total > 0 ? Math.round(checked / total * 100) : 0;
+
+  // Count tasks where all checkboxes are checked
+  let completedTasks = 0;
+  for (let i = 1; i <= 11; i++) {
+    const card = document.getElementById('task-' + i);
+    if (!card) continue;
+    const boxes = card.querySelectorAll('.step-check input');
+    const checkedBoxes = card.querySelectorAll('.step-check input:checked');
+    if (boxes.length > 0 && boxes.length === checkedBoxes.length) {
+      completedTasks++;
+      // Update sidebar link
+      const link = document.querySelectorAll('.nav-link')[i - 1];
+      if (link) link.classList.add('done');
+    }
+  }
+
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '% complete';
+  document.getElementById('progress-label').textContent = completedTasks + ' / 11 tasks';
+}
+
+function scrollToTask(n) {
+  const el = document.getElementById('task-' + n);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!el.classList.contains('open')) el.classList.add('open');
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+{"type":"server-started","port":51454,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:51454","screen_dir":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content","state_dir":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/state"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/problem-framing.html"}
+{"source":"user-event","type":"click","text":"A\n    \n      Reading discovery outputs\n      Brief, personas, assumption log — too long to read in full. The insight gets buried.","choice":"a","id":null,"timestamp":1778332530631}
+{"source":"user-event","type":"click","text":"D\n    \n      Navigating the pipeline state\n      No visual sense of where in the pipeline the project is — just another text file.","choice":"d","id":null,"timestamp":1778332539828}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/waiting-1.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/approaches.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/design-system.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/design-alt-c.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/design-alt-d.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/design-compare.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/design-compare-v2.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/brief-mockup.html"}
+{"type":"screen-added","file":"/Users/aidanmaughan/my-projects/forge/.superpowers/brainstorm/45348-1778332373/content/spec-review.html"}
+{"type":"server-stopped","reason":"idle timeout"}

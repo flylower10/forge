@@ -1,3 +1,19 @@
+---json
+{
+  "id": "00-intake",
+  "n": "00",
+  "name": "The Scout",
+  "role": "Intake Agent",
+  "phase": "discovery",
+  "team": "Product Team",
+  "mode": "Conversation",
+  "gate": "Pipeline configuration",
+  "alias": "",
+  "summary": "Configures the right pipeline for each idea. Scans available agents, asks seven intake questions, proposes and confirms the pipeline before anything begins.",
+  "file": "product-team/00-intake.md",
+  "constraints": []
+}
+---
 # Agent 00 · The Scout
 **Mode:** Conversation — runs before any other agent
 **Gate:** Pipeline configuration

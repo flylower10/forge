@@ -38,11 +38,12 @@ window.FORGE_CONFIG = (function () {
   ];
 
   const LATERAL = [
-    { id: 'observer',       name: 'The Observer',      mode: 'Always on',  note: 'Fires after every handoff. Critiques process, not outputs.' },
-    { id: 'researcher',     name: 'The Researcher',    mode: 'On demand',  note: 'Invoked by any agent to fill factual gaps mid-conversation.' },
-    { id: 'arbiter',        name: 'The Arbiter',       mode: 'Triggered',  note: 'Fires on product criticism before any action is taken.' },
-    { id: 'cartographer',   name: 'The Cartographer',  mode: 'Autonomous', note: 'Codebase documentation brief. Autonomous + 1 question.' },
-    { id: 'model-reviewer', name: 'The Calibrator',    mode: 'Autonomous', note: 'Domain-agnostic model architecture and calibration review.' },
+    { id: 'observer',       name: 'The Observer',      mode: 'Always on',  note: 'Fires after every handoff. Critiques process, not outputs.',        file: 'product-team/observer.md'        },
+    { id: 'researcher',     name: 'The Researcher',    mode: 'On demand',  note: 'Invoked by any agent to fill factual gaps mid-conversation.',       file: 'product-team/research-agent.md'  },
+    { id: 'arbiter',        name: 'The Arbiter',       mode: 'Triggered',  note: 'Fires on product criticism before any action is taken.',            file: 'build-team/feedback-triage.md'   },
+    { id: 'cartographer',   name: 'The Cartographer',  mode: 'Autonomous', note: 'Codebase documentation brief. Autonomous + 1 question.',            file: 'build-team/cartographer.md'      },
+    { id: 'model-reviewer', name: 'The Calibrator',    mode: 'Autonomous', note: 'Domain-agnostic model architecture and calibration review.',        file: 'product-team/model-reviewer.md'  },
+    { id: 'architect',      name: 'Architect',         mode: 'Consulted',  note: 'Foundational technical decisions. Consulted, never assigned tasks.', file: 'build-team/architect.md'        },
   ];
 
   return { PHASES, PIPELINE, LATERAL };

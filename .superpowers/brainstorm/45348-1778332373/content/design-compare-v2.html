@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge Design — Compare</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #181818; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 1.75rem; }
+  h1 { color: #e0e0e0; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .page-sub { color: #555; font-size: 0.8rem; margin-bottom: 1.5rem; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+  .col-label {
+    padding: 0.6rem 0.9rem; border-radius: 6px 6px 0 0;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 0;
+  }
+  .col-label strong { font-size: 0.82rem; }
+  .col-label span   { font-size: 0.7rem; opacity: 0.6; }
+
+  .preview-box {
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    padding: 1.1rem;
+    height: 420px;
+    overflow-y: auto;
+  }
+
+  /* ════════════════════════════════════════
+     OPTION B — Dark / card-heavy
+  ════════════════════════════════════════ */
+  .b-label { background: #1c1c2e; color: #5b8dee; }
+  .b-label span { color: #5b8dee; opacity: 0.5; }
+  .b-box { background: #0d0d14; border: 1px solid #2a2a3a; }
+
+  .b-pipe { display:flex; border:1px solid #2a2a3a; border-radius:5px; overflow:hidden; margin-bottom:1rem; }
+  .b-ps { flex:1; padding:0.4rem 0.3rem; text-align:center; font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#444; background:#14141f; border-right:1px solid #2a2a3a; }
+  .b-ps:last-child { border-right:none; }
+  .b-ps.done { color:#333; }
+  .b-ps.act  { background:rgba(76,175,130,0.18); color:#4caf82; }
+
+  .b-badge { display:inline-block; font-size:0.6rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:0.15rem 0.45rem; border-radius:3px; }
+  .b-bd  { background:rgba(91,141,238,0.15); color:#5b8dee; }
+  .b-bg  { background:rgba(76,175,130,0.15); color:#4caf82; }
+  .b-ba  { background:rgba(232,169,77,0.15); color:#e8a94d; }
+  .b-br  { background:rgba(224,92,92,0.15); color:#e05c5c; }
+
+  .b-card { background:#14141f; border:1px solid #2a2a3a; border-radius:8px; padding:0.9rem; margin-bottom:0.75rem; }
+  .b-card-title { font-size:0.8rem; font-weight:600; color:#e0e0e0; margin-bottom:0.2rem; }
+  .b-card-sub   { font-size:0.68rem; color:#666; }
+
+  .b-tbl { width:100%; border-collapse:collapse; font-size:0.72rem; }
+  .b-tbl th { padding:0.35rem 0.55rem; color:#555; font-size:0.6rem; text-transform:uppercase; letter-spacing:0.06em; border-bottom:1px solid #2a2a3a; text-align:left; }
+  .b-tbl td { padding:0.4rem 0.55rem; border-bottom:1px solid #1e1e2e; color:#888; }
+  .b-tbl tr:last-child td { border:none; }
+
+  .b-agent { background:#14141f; border:1px solid #2a2a3a; border-radius:8px; overflow:hidden; }
+  .b-ah { padding:0.65rem 0.9rem; border-bottom:1px solid #2a2a3a; display:flex; justify-content:space-between; align-items:center; }
+  .b-an { font-size:0.82rem; font-weight:600; color:#e8e8f0; }
+  .b-al { font-size:0.65rem; color:#555; font-style:italic; }
+  .b-ab { padding:0.75rem 0.9rem; display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .b-io-label { font-size:0.58rem; text-transform:uppercase; letter-spacing:0.08em; color:#555; margin-bottom:0.35rem; }
+  .b-chips { display:flex; gap:0.3rem; flex-wrap:wrap; }
+  .b-chip { font-size:0.6rem; padding:0.12rem 0.38rem; background:#1c1c2e; border:1px solid #2a2a3a; border-radius:3px; color:#777; }
+  .b-chip-out { color:#4caf82; border-color:rgba(76,175,130,0.25); background:rgba(76,175,130,0.06); }
+  .b-af { padding:0.5rem 0.9rem; border-top:1px solid #2a2a3a; font-size:0.65rem; color:#444; display:flex; justify-content:space-between; }
+  .b-btn { font-size:0.6rem; color:#666; background:#1c1c2e; border:1px solid #2a2a3a; border-radius:4px; padding:0.18rem 0.5rem; cursor:pointer; }
+  .b-h3 { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.08em; color:#555; margin-bottom:0.5rem; }
+
+  /* ════════════════════════════════════════
+     OPTION C — Editorial / light
+  ════════════════════════════════════════ */
+  .c-label { background: #f0ede8; color: #2563eb; }
+  .c-box { background: #f7f7f5; border: 1px solid #e0ddd8; font-family: Georgia, serif; }
+
+  .c-pipe { display:flex; align-items:center; gap:0; border-bottom:2px solid #e0ddd8; padding-bottom:0.7rem; margin-bottom:1rem; }
+  .c-ps { font-family:-apple-system,sans-serif; font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#bbb; padding:0.15rem 0.55rem; }
+  .c-ps.done { text-decoration:line-through; color:#bbb; }
+  .c-ps.act  { color:#16a34a; border-bottom:2px solid #16a34a; margin-bottom:-0.72rem; }
+  .c-sep { color:#ddd; font-size:0.8rem; }
+
+  .c-h2 { font-family:-apple-system,sans-serif; font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:#aaa; margin:1rem 0 0.5rem; }
+  .c-tag { display:inline-block; font-family:-apple-system,sans-serif; font-size:0.58rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:0.15rem 0.45rem; border-radius:2px; }
+  .c-td  { background:#dbeafe; color:#2563eb; }
+  .c-tg  { background:#dcfce7; color:#16a34a; }
+  .c-ta  { background:#fef3c7; color:#d97706; }
+  .c-tr  { background:#fee2e2; color:#dc2626; }
+  .c-tx  { background:#f3f4f6; color:#374151; }
+
+  .c-tbl { width:100%; border-collapse:collapse; font-family:-apple-system,sans-serif; font-size:0.7rem; }
+  .c-tbl th { padding:0.4rem 0.55rem; color:#aaa; font-weight:700; text-transform:uppercase; font-size:0.58rem; letter-spacing:0.07em; border-bottom:2px solid #e0ddd8; text-align:left; }
+  .c-tbl td { padding:0.45rem 0.55rem; border-bottom:1px solid #ede9e4; color:#666; }
+  .c-tbl tr:hover td { background:#f0ede8; }
+
+  .c-agent { border-left:3px solid #2563eb; padding:0.8rem 1rem; background:white; }
+  .c-ah { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.65rem; }
+  .c-an { font-family:-apple-system,sans-serif; font-size:0.82rem; font-weight:700; color:#1a1a1a; }
+  .c-al { font-size:0.7rem; color:#aaa; font-style:italic; }
+  .c-io-label { font-family:-apple-system,sans-serif; font-size:0.58rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#aaa; margin-bottom:0.3rem; }
+  .c-chips { display:flex; gap:0.3rem; flex-wrap:wrap; }
+  .c-chip { font-family:'Courier New',monospace; font-size:0.62rem; color:#666; background:#f0ede8; padding:0.12rem 0.4rem; border-radius:2px; }
+  .c-chip-out { color:#16a34a; background:#f0fdf4; }
+  .c-ab { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.65rem; }
+  .c-af { border-top:1px solid #e0ddd8; padding-top:0.5rem; font-family:-apple-system,sans-serif; font-size:0.65rem; color:#aaa; display:flex; justify-content:space-between; }
+  .c-af a { color:#2563eb; text-decoration:none; }
+
+  /* ════════════════════════════════════════
+     OPTION D — Bold / structured
+  ════════════════════════════════════════ */
+  .d-label { background: #0f0f0f; color: #e0e0e0; }
+  .d-box { background: #ffffff; border: 1px solid #e0e0e0; }
+
+  .d-header { background:#0f0f0f; padding:0.75rem 0.9rem; margin:-1.1rem -1.1rem 1rem; display:flex; justify-content:space-between; align-items:center; }
+  .d-htitle { font-size:0.85rem; font-weight:800; color:white; letter-spacing:-0.01em; }
+  .d-pipe { display:flex; border:1px solid rgba(255,255,255,0.15); border-radius:3px; overflow:hidden; }
+  .d-ps { padding:0.3rem 0.5rem; font-size:0.58rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.3); border-right:1px solid rgba(255,255,255,0.12); }
+  .d-ps:last-child { border-right:none; }
+  .d-ps.done { color:rgba(255,255,255,0.35); }
+  .d-ps.done::after { content:' ✓'; font-size:0.5rem; }
+  .d-ps.act  { background:#00913e; color:white; }
+
+  .d-h2 { font-size:0.58rem; font-weight:800; text-transform:uppercase; letter-spacing:0.14em; color:#aaa; margin:0.9rem 0 0.5rem; }
+  .d-badge { display:inline-block; font-size:0.58rem; font-weight:800; letter-spacing:0.07em; text-transform:uppercase; padding:0.15rem 0.45rem; border-radius:1px; }
+  .d-bd { background:#0057ff; color:white; }
+  .d-bg { background:#00913e; color:white; }
+  .d-ba { background:#e07000; color:white; }
+  .d-br { background:#cc0000; color:white; }
+  .d-bx { background:#e0e0e0; color:#333; }
+
+  .d-dot { display:inline-block; width:5px; height:5px; border-radius:50%; margin-right:0.3rem; }
+  .d-dot-o { background:#e07000; }
+  .d-dot-d { background:#00913e; }
+  .d-dot-b { background:#cc0000; }
+
+  .d-tbl { width:100%; border-collapse:collapse; font-size:0.7rem; }
+  .d-tbl thead tr { background:#0f0f0f; }
+  .d-tbl th { padding:0.45rem 0.65rem; text-align:left; font-size:0.58rem; font-weight:800; text-transform:uppercase; letter-spacing:0.09em; color:white; }
+  .d-tbl td { padding:0.45rem 0.65rem; border-bottom:1px solid #e8e8e8; color:#555; }
+  .d-tbl tr:hover td { background:#f5f5f5; }
+
+  .d-agent { border:2px solid #0f0f0f; overflow:hidden; }
+  .d-ah { background:#0f0f0f; padding:0.7rem 0.9rem; display:flex; justify-content:space-between; align-items:center; }
+  .d-an { font-size:0.82rem; font-weight:800; color:white; }
+  .d-al { font-size:0.65rem; color:rgba(255,255,255,0.4); margin-top:0.1rem; }
+  .d-ab { padding:0.85rem; display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+  .d-io-label { font-size:0.58rem; font-weight:800; text-transform:uppercase; letter-spacing:0.09em; color:#aaa; margin-bottom:0.35rem; }
+  .d-chips { display:flex; gap:0.3rem; flex-wrap:wrap; }
+  .d-chip { font-family:'Courier New',monospace; font-size:0.62rem; background:#f5f5f5; color:#555; padding:0.12rem 0.4rem; border:1px solid #e0e0e0; }
+  .d-chip-out { background:#edfaf3; color:#00913e; border-color:#b3e6cb; font-weight:700; }
+  .d-af { border-top:1px solid #e8e8e8; padding:0.55rem 0.9rem; display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; color:#aaa; }
+  .d-btn { font-size:0.6rem; font-weight:800; text-transform:uppercase; letter-spacing:0.06em; background:none; border:2px solid #0f0f0f; color:#0f0f0f; padding:0.2rem 0.55rem; cursor:pointer; }
+
+  .badges-row { display:flex; gap:0.35rem; flex-wrap:wrap; margin-bottom:0.9rem; }
+  .tbl-wrap { border-radius:4px; overflow:hidden; margin-bottom:0.9rem; }
+  .tbl-wrap-d { border:2px solid #0f0f0f; overflow:hidden; margin-bottom:0.9rem; }
+
+  .b-tbl-wrap { background:#14141f; border:1px solid #2a2a3a; border-radius:6px; overflow:hidden; margin-bottom:0.75rem; }
+  .c-tbl-wrap { background:white; border:1px solid #e0ddd8; border-radius:3px; overflow:hidden; margin-bottom:0.75rem; }
+</style>
+</head>
+<body>
+<h1 style="color:#e0e0e0">Three design directions</h1>
+<p class="page-sub">Open each at full size to get the proper feel — links at the bottom of each column.</p>
+
+<div class="grid">
+
+  <!-- ── B ── -->
+  <div>
+    <div class="col-label b-label" style="border-radius:6px 6px 0 0">
+      <strong>B — Dark / card-heavy</strong>
+      <span>Original proposal</span>
+    </div>
+    <div class="preview-box b-box">
+      <!-- Pipeline -->
+      <div class="b-pipe">
+        <div class="b-ps done">Intake</div>
+        <div class="b-ps done">Discovery</div>
+        <div class="b-ps act">Build</div>
+        <div class="b-ps">Delivery</div>
+      </div>
+      <!-- Badges -->
+      <div class="b-h3">Status badges</div>
+      <div class="badges-row">
+        <span class="b-badge b-bd">Discovery</span>
+        <span class="b-badge b-bg">Complete</span>
+        <span class="b-badge b-ba">Open</span>
+        <span class="b-badge b-br">Blocked</span>
+      </div>
+      <!-- Table -->
+      <div class="b-h3">Assumption log</div>
+      <div class="b-tbl-wrap">
+        <table class="b-tbl">
+          <thead><tr><th>#</th><th>Assumption</th><th>Risk</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Value bettors will pay if outputs concealed</td><td><span class="b-badge b-br">High</span></td><td style="color:#e8a94d">● Open</td></tr>
+            <tr><td>2</td><td>Stripe handles tournament traffic</td><td><span class="b-badge b-ba">Med</span></td><td style="color:#4caf82">● Defended</td></tr>
+            <tr><td>3</td><td>Betfair API reliable for live display</td><td><span class="b-badge b-ba">Med</span></td><td style="color:#e05c5c">● Open</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Agent card -->
+      <div class="b-h3">Agent card</div>
+      <div class="b-agent">
+        <div class="b-ah">
+          <div><div class="b-an">06 · Synthesis</div><div class="b-al">The Assembler</div></div>
+          <div style="display:flex;gap:0.3rem"><span class="b-badge b-bg" style="font-size:0.55rem">Autonomous</span><span class="b-badge b-bd" style="font-size:0.55rem">Discovery</span></div>
+        </div>
+        <div class="b-ab">
+          <div><div class="b-io-label">Reads</div><div class="b-chips"><span class="b-chip">running-brief</span><span class="b-chip">01-pm</span><span class="b-chip">02-design</span></div></div>
+          <div><div class="b-io-label">Produces</div><div class="b-chips"><span class="b-chip b-chip-out">brief.html</span><span class="b-chip b-chip-out">personas.html</span></div></div>
+        </div>
+        <div class="b-af"><span>→ Breadboard (The Tracer)</span><button class="b-btn">Instructions ↓</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── C ── -->
+  <div>
+    <div class="col-label c-label" style="border-radius:6px 6px 0 0">
+      <strong style="color:#1a1a1a">C — Editorial / light</strong>
+      <span style="color:#888">Document-first, serif</span>
+    </div>
+    <div class="preview-box c-box">
+      <!-- Pipeline -->
+      <div class="c-pipe">
+        <span class="c-ps done">Intake</span><span class="c-sep">›</span>
+        <span class="c-ps done">Discovery</span><span class="c-sep">›</span>
+        <span class="c-ps act">Build</span><span class="c-sep">›</span>
+        <span class="c-ps">Delivery</span>
+      </div>
+      <!-- Badges -->
+      <div class="c-h2">Status indicators</div>
+      <div class="badges-row">
+        <span class="c-tag c-td">Discovery</span>
+        <span class="c-tag c-tg">Complete</span>
+        <span class="c-tag c-ta">Open</span>
+        <span class="c-tag c-tr">Blocked</span>
+        <span class="c-tag c-tx">Autonomous</span>
+      </div>
+      <!-- Table -->
+      <div class="c-h2">Assumption log</div>
+      <div class="c-tbl-wrap">
+        <table class="c-tbl">
+          <thead><tr><th>#</th><th>Assumption</th><th>Risk</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Value bettors will pay if outputs concealed</td><td><span class="c-tag c-tr">High</span></td><td><span style="color:#d97706">●</span> Open</td></tr>
+            <tr><td>2</td><td>Stripe handles tournament traffic</td><td><span class="c-tag c-ta">Med</span></td><td><span style="color:#16a34a">●</span> Defended</td></tr>
+            <tr><td>3</td><td>Betfair API reliable for live display</td><td><span class="c-tag c-ta">Med</span></td><td><span style="color:#dc2626">●</span> Open</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Agent card -->
+      <div class="c-h2">Agent card</div>
+      <div class="c-agent">
+        <div class="c-ah">
+          <div><div class="c-an">06 · Synthesis</div><div class="c-al">The Assembler</div></div>
+          <div style="display:flex;gap:0.35rem;align-items:center"><span class="c-tag c-tx">Autonomous</span><span class="c-tag c-td">Discovery</span></div>
+        </div>
+        <div class="c-ab">
+          <div><div class="c-io-label">Reads</div><div class="c-chips"><span class="c-chip">running-brief</span><span class="c-chip">01-pm</span><span class="c-chip">02-design</span></div></div>
+          <div><div class="c-io-label">Produces</div><div class="c-chips"><span class="c-chip c-chip-out">brief.html</span><span class="c-chip c-chip-out">personas.html</span></div></div>
+        </div>
+        <div class="c-af"><span>→ Breadboard (The Tracer)</span><a href="#">View instructions ↓</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── D ── -->
+  <div>
+    <div class="col-label d-label" style="border-radius:6px 6px 0 0">
+      <strong>D — Bold / structured</strong>
+      <span>High-contrast, no-nonsense</span>
+    </div>
+    <div class="preview-box d-box">
+      <!-- Header with pipeline -->
+      <div class="d-header">
+        <div class="d-htitle">06 · Synthesis</div>
+        <div class="d-pipe">
+          <div class="d-ps done">Intake</div>
+          <div class="d-ps done">Disc</div>
+          <div class="d-ps act">Build</div>
+          <div class="d-ps">Del</div>
+        </div>
+      </div>
+      <!-- Badges -->
+      <div class="d-h2">Status indicators</div>
+      <div class="badges-row">
+        <span class="d-badge d-bd">Discovery</span>
+        <span class="d-badge d-bg">Complete</span>
+        <span class="d-badge d-ba">Open</span>
+        <span class="d-badge d-br">Blocked</span>
+        <span class="d-badge d-bx">Autonomous</span>
+      </div>
+      <!-- Table -->
+      <div class="d-h2">Assumption log</div>
+      <div class="tbl-wrap-d">
+        <table class="d-tbl">
+          <thead><tr><th>#</th><th>Assumption</th><th>Risk</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Value bettors will pay if outputs concealed</td><td><span class="d-badge d-br">High</span></td><td><span class="d-dot d-dot-o"></span>Open</td></tr>
+            <tr><td>2</td><td>Stripe handles tournament traffic</td><td><span class="d-badge d-ba">Med</span></td><td><span class="d-dot d-dot-d"></span>Defended</td></tr>
+            <tr><td>3</td><td>Betfair API reliable for live display</td><td><span class="d-badge d-ba">Med</span></td><td><span class="d-dot d-dot-b"></span>Open</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Agent card -->
+      <div class="d-h2">Agent card</div>
+      <div class="d-agent">
+        <div class="d-ah">
+          <div><div class="d-an">06 · Synthesis</div><div class="d-al">The Assembler</div></div>
+          <div style="display:flex;gap:0.35rem"><span class="d-badge d-bx" style="font-size:0.55rem">Autonomous</span><span class="d-badge d-bd" style="font-size:0.55rem">Discovery</span></div>
+        </div>
+        <div class="d-ab">
+          <div><div class="d-io-label">Reads</div><div class="d-chips"><span class="d-chip">running-brief</span><span class="d-chip">01-pm</span><span class="d-chip">02-design</span></div></div>
+          <div><div class="d-io-label">Produces</div><div class="d-chips"><span class="d-chip d-chip-out">brief.html</span><span class="d-chip d-chip-out">personas.html</span></div></div>
+        </div>
+        <div class="d-af"><span>→ Breadboard (The Tracer)</span><button class="d-btn">Instructions ↓</button></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

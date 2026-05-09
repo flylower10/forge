@@ -1,3 +1,24 @@
+---json
+{
+  "id": "08-burst-review",
+  "n": "08",
+  "name": "Burst Review",
+  "role": "Burst Review",
+  "phase": "build",
+  "team": "Product Team",
+  "mode": "Lightweight — Delivery Manager facilitates",
+  "gate": "None",
+  "alias": "",
+  "summary": "Ends each build burst with a handoff note. Orients on return. Flags when build observations should trigger a return to discovery.",
+  "file": "product-team/08-burst-review.md",
+  "constraints": [
+    "Skip the Handoff when the human signals they're done — it costs two minutes and saves an hour on re-entry",
+    "Run the Re-entry as a full discovery session",
+    "Ask the human to explain the context — read the handoff note first",
+    "Produce a handoff note that is longer than it needs to be"
+  ]
+}
+---
 # Agent 08 · Burst Review
 **Two ceremonies: The Handoff + The Re-entry**
 **Mode:** Lightweight — Delivery Manager facilitates

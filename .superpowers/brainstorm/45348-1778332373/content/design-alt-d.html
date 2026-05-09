@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge Design — Option D</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #ffffff; color: #0f0f0f; font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; }
+
+  :root {
+    --ink:       #0f0f0f;
+    --ink-mid:   #3d3d3d;
+    --ink-light: #888;
+    --rule:      #e8e8e8;
+    --bg-tint:   #f5f5f5;
+
+    --disc:  #0057ff;
+    --build: #00913e;
+    --del:   #7000cc;
+    --risk:  #e07000;
+    --block: #cc0000;
+
+    --stripe-disc:  #eef3ff;
+    --stripe-build: #edfaf3;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 960px; margin: 0 auto; }
+  .page-header {
+    background: var(--ink); color: white;
+    padding: 1.75rem 2rem; display: flex; align-items: center; justify-content: space-between;
+  }
+  .page-body { padding: 2rem; }
+
+  h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em; color: white; }
+  h2 {
+    font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--ink-light); margin: 2rem 0 1rem;
+  }
+  h3 { font-size: 0.95rem; font-weight: 700; color: var(--ink); }
+  p  { font-size: 0.88rem; line-height: 1.6; color: var(--ink-mid); }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 1.75rem 0; }
+
+  /* ── PIPELINE ── */
+  .pipeline { display: flex; gap: 0; }
+  .pipe-step {
+    flex: 1; padding: 0.6rem 1rem; text-align: center;
+    font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.35);
+  }
+  .pipe-step:last-child { border-right: none; }
+  .pipe-step.done { color: rgba(255,255,255,0.4); }
+  .pipe-step.done::after { content: ' ✓'; font-size: 0.6rem; }
+  .pipe-step.active-build { background: var(--build); color: white; }
+  .pipe-step.active-disc  { background: var(--disc); color: white; }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block; font-size: 0.65rem; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.2rem 0.55rem; border-radius: 2px;
+  }
+  .badge-disc  { background: var(--disc); color: white; }
+  .badge-build { background: var(--build); color: white; }
+  .badge-amber { background: var(--risk); color: white; }
+  .badge-red   { background: var(--block); color: white; }
+  .badge-grey  { background: #e0e0e0; color: #444; }
+
+  /* ── STATUS ── */
+  .status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; color: var(--ink-mid); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-open    { background: var(--risk); }
+  .dot-def     { background: var(--build); }
+  .dot-blocked { background: var(--block); }
+
+  /* ── TABLE ── */
+  .forge-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .forge-table thead tr { background: var(--ink); color: white; }
+  .forge-table th { padding: 0.6rem 0.9rem; text-align: left; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; }
+  .forge-table td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-mid); vertical-align: top; }
+  .forge-table tbody tr:hover td { background: var(--bg-tint); }
+
+  /* ── AGENT CARD ── */
+  .agent-card { border: 2px solid var(--ink); border-radius: 0; overflow: hidden; }
+  .agent-header {
+    background: var(--ink); color: white;
+    padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  .agent-name  { font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; }
+  .agent-alias { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 0.1rem; }
+  .agent-body  { padding: 1.25rem; }
+
+  .io-section  { margin-bottom: 1rem; }
+  .io-label    { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-light); margin-bottom: 0.4rem; }
+  .io-chips    { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+  .io-chip     { font-family: 'Courier New', monospace; font-size: 0.7rem; background: var(--bg-tint); color: var(--ink-mid); padding: 0.18rem 0.5rem; border: 1px solid var(--rule); }
+  .io-chip.out { background: var(--stripe-build); color: var(--build); border-color: #b3e6cb; font-weight: 700; }
+
+  .agent-footer {
+    border-top: 1px solid var(--rule); padding: 0.75rem 1.25rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.75rem; color: var(--ink-light);
+  }
+  .view-btn {
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em;
+    background: none; border: 2px solid var(--ink); color: var(--ink);
+    padding: 0.25rem 0.65rem; cursor: pointer;
+  }
+  .view-btn:hover { background: var(--ink); color: white; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:0.3rem">Option D · Bold/Structured</div>
+      <h1>Forge Design System</h1>
+    </div>
+    <!-- Pipeline in header -->
+    <div class="pipeline" style="width:380px;border:1px solid rgba(255,255,255,0.15);border-radius:4px;overflow:hidden">
+      <div class="pipe-step done">Intake</div>
+      <div class="pipe-step done">Discovery</div>
+      <div class="pipe-step active-build">Build</div>
+      <div class="pipe-step">Delivery</div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <h2>Status indicators</h2>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem">
+      <span class="badge badge-disc">Discovery</span>
+      <span class="badge badge-build">Complete</span>
+      <span class="badge badge-amber">Open</span>
+      <span class="badge badge-red">Blocked</span>
+      <span class="badge badge-grey">Autonomous</span>
+    </div>
+
+    <h2>Assumption log — sample</h2>
+    <div style="border:2px solid var(--ink);overflow:hidden;margin-bottom:2rem">
+      <table class="forge-table">
+        <thead>
+          <tr><th>#</th><th>Assumption</th><th>Type</th><th>Risk</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Value bettors will pay if free tier shows concealed outputs</td>
+            <td>Desirability</td>
+            <td><span class="badge badge-red">High</span></td>
+            <td><span class="status"><span class="dot dot-open"></span>Open</span></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Stripe Checkout handles tournament-scale traffic without ops overhead</td>
+            <td>Feasibility</td>
+            <td><span class="badge badge-amber">Med</span></td>
+            <td><span class="status"><span class="dot dot-def"></span>Defended</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Betfair odds API reliable enough for live market display</td>
+            <td>Feasibility</td>
+            <td><span class="badge badge-amber">Med</span></td>
+            <td><span class="status"><span class="dot dot-blocked"></span>Open</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Agent definition — sample</h2>
+    <div class="agent-card">
+      <div class="agent-header">
+        <div>
+          <div class="agent-name">06 · Synthesis</div>
+          <div class="agent-alias">The Assembler</div>
+        </div>
+        <div style="display:flex;gap:0.4rem">
+          <span class="badge badge-grey">Fully autonomous</span>
+          <span class="badge badge-disc">Discovery</span>
+        </div>
+      </div>
+      <div class="agent-body">
+        <div class="grid-2">
+          <div class="io-section">
+            <div class="io-label">Reads</div>
+            <div class="io-chips">
+              <span class="io-chip">01-problem-framing</span>
+              <span class="io-chip">02-monetisation</span>
+              <span class="io-chip">03-tech-feasibility</span>
+              <span class="io-chip">04-ux-framing</span>
+              <span class="io-chip">running-brief</span>
+            </div>
+          </div>
+          <div class="io-section">
+            <div class="io-label">Produces</div>
+            <div class="io-chips">
+              <span class="io-chip out">brief.html</span>
+              <span class="io-chip out">assumption-log.html</span>
+              <span class="io-chip out">personas.html</span>
+              <span class="io-chip out">research-plan.html</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="agent-footer">
+        <span>Hands off to → Breadboard (The Tracer)</span>
+        <button class="view-btn">View instructions ↓</button>
+      </div>
+    </div>
+
+    <hr>
+    <p style="font-size:0.75rem;color:var(--ink-light);text-align:center">Inline CSS · no external dependencies · readable in any browser</p>
+
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge Design System</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d14; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 2rem; }
+
+  /* ── TOKENS ── */
+  :root {
+    --bg-base:     #0d0d14;
+    --bg-surface:  #14141f;
+    --bg-elevated: #1c1c2e;
+    --border:      #2a2a3d;
+    --border-active: #4a4a6a;
+
+    --text-primary:   #e8e8f0;
+    --text-secondary: #9090a8;
+    --text-dim:       #555568;
+
+    --accent-blue:   #5b8dee;
+    --accent-green:  #4caf82;
+    --accent-amber:  #e8a94d;
+    --accent-red:    #e05c5c;
+    --accent-purple: #9b72cf;
+
+    --phase-discovery: #5b8dee;
+    --phase-build:     #4caf82;
+    --phase-delivery:  #9b72cf;
+  }
+
+  h1 { font-size: 1.6rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.4rem; }
+  h2 { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1.25rem; margin-top: 2.5rem; }
+  h3 { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
+  p  { font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); }
+
+  .subtitle { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 2rem; }
+
+  /* ── LAYOUT ── */
+  .section { margin-bottom: 2rem; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+  .card:hover { border-color: var(--border-active); }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+  }
+  .badge-blue   { background: rgba(91,141,238,0.15); color: var(--accent-blue); }
+  .badge-green  { background: rgba(76,175,130,0.15); color: var(--accent-green); }
+  .badge-amber  { background: rgba(232,169,77,0.15); color: var(--accent-amber); }
+  .badge-red    { background: rgba(224,92,92,0.15);  color: var(--accent-red); }
+  .badge-purple { background: rgba(155,114,207,0.15);color: var(--accent-purple); }
+
+  /* ── STATUS PILL ── */
+  .status {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.75rem; font-weight: 500; color: var(--text-secondary);
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 20px; padding: 0.25rem 0.65rem;
+  }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dot-active   { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
+  .dot-pending  { background: var(--accent-amber); }
+  .dot-complete { background: var(--accent-blue); }
+  .dot-blocked  { background: var(--accent-red); }
+
+  /* ── PIPELINE PHASE ── */
+  .phase-strip {
+    display: flex; gap: 0; border-radius: 8px; overflow: hidden;
+    border: 1px solid var(--border); margin-bottom: 0.75rem;
+  }
+  .phase-block {
+    flex: 1; padding: 0.6rem 0.5rem; text-align: center;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--text-dim);
+    background: var(--bg-elevated); border-right: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .phase-block:last-child { border-right: none; }
+  .phase-block.active-discovery { background: rgba(91,141,238,0.18); color: var(--phase-discovery); }
+  .phase-block.active-build     { background: rgba(76,175,130,0.18); color: var(--phase-build); }
+  .phase-block.done { opacity: 0.45; }
+
+  /* ── INLINE COLOUR SWATCHES ── */
+  .swatch-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+  .swatch {
+    width: 2.5rem; height: 2.5rem; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .swatch span {
+    position: absolute; bottom: -1.3rem; left: 0; right: 0;
+    font-size: 0.6rem; color: var(--text-dim); text-align: center;
+  }
+
+  /* ── TABLE ── */
+  .forge-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .forge-table th {
+    text-align: left; padding: 0.5rem 0.75rem;
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-dim); border-bottom: 1px solid var(--border);
+  }
+  .forge-table td {
+    padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border);
+    color: var(--text-secondary); vertical-align: top;
+  }
+  .forge-table tr:last-child td { border-bottom: none; }
+  .forge-table tr:hover td { background: var(--bg-elevated); }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+
+  /* ── AGENT CARD PREVIEW ── */
+  .agent-card {
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .agent-card-header {
+    padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .agent-card-body { padding: 1rem 1.25rem; }
+  .agent-name { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+  .agent-alias { font-size: 0.78rem; color: var(--text-dim); font-style: italic; }
+  .io-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+  .io-chip {
+    font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px;
+    border: 1px solid var(--border); color: var(--text-secondary);
+    background: var(--bg-elevated);
+  }
+</style>
+</head>
+<body>
+
+<h1>Forge Design System</h1>
+<p class="subtitle">A lightweight shared visual language. Embedded as inline CSS in every file — no external dependency.</p>
+
+<hr class="divider">
+
+<!-- COLOUR PALETTE -->
+<h2>Colour tokens</h2>
+<div class="grid-2">
+  <div class="card">
+    <h3>Surfaces</h3>
+    <div class="swatch-row" style="margin-bottom:1.5rem">
+      <div class="swatch" style="background:#0d0d14"><span>base</span></div>
+      <div class="swatch" style="background:#14141f"><span>surface</span></div>
+      <div class="swatch" style="background:#1c1c2e"><span>elevated</span></div>
+      <div class="swatch" style="background:#2a2a3d"><span>border</span></div>
+    </div>
+    <h3 style="margin-top:0.5rem">Text</h3>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#e8e8f0"><span>primary</span></div>
+      <div class="swatch" style="background:#9090a8"><span>secondary</span></div>
+      <div class="swatch" style="background:#555568"><span>dim</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Semantic accents</h3>
+    <div style="display:flex;flex-direction:column;gap:0.6rem;margin-top:0.25rem">
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:1rem;height:1rem;border-radius:3px;background:#5b8dee;flex-shrink:0"></div>
+        <span style="font-size:0.82rem;color:var(--text-secondary)"><strong style="color:#5b8dee">Blue</strong> — Discovery phase, in progress</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:1rem;height:1rem;border-radius:3px;background:#4caf82;flex-shrink:0"></div>
+        <span style="font-size:0.82rem;color:var(--text-secondary)"><strong style="color:#4caf82">Green</strong> — Build phase, complete, success</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:1rem;height:1rem;border-radius:3px;background:#e8a94d;flex-shrink:0"></div>
+        <span style="font-size:0.82rem;color:var(--text-secondary)"><strong style="color:#e8a94d">Amber</strong> — Open, pending, risk</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:1rem;height:1rem;border-radius:3px;background:#e05c5c;flex-shrink:0"></div>
+        <span style="font-size:0.82rem;color:var(--text-secondary)"><strong style="color:#e05c5c">Red</strong> — Blocked, high risk, rejected</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <div style="width:1rem;height:1rem;border-radius:3px;background:#9b72cf;flex-shrink:0"></div>
+        <span style="font-size:0.82rem;color:var(--text-secondary)"><strong style="color:#9b72cf">Purple</strong> — Delivery phase</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- COMPONENTS -->
+<h2>Core components</h2>
+
+<div class="grid-2" style="margin-bottom:1.5rem">
+
+  <!-- Badges -->
+  <div class="card">
+    <h3>Status badges</h3>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem">
+      <span class="badge badge-blue">Discovery</span>
+      <span class="badge badge-green">Complete</span>
+      <span class="badge badge-amber">Open</span>
+      <span class="badge badge-red">Blocked</span>
+      <span class="badge badge-purple">Delivery</span>
+    </div>
+    <h3>Status pills</h3>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+      <span class="status"><span class="status-dot dot-active"></span>In progress</span>
+      <span class="status"><span class="status-dot dot-pending"></span>Pending</span>
+      <span class="status"><span class="status-dot dot-complete"></span>Complete</span>
+      <span class="status"><span class="status-dot dot-blocked"></span>Blocked</span>
+    </div>
+  </div>
+
+  <!-- Pipeline strip -->
+  <div class="card">
+    <h3>Pipeline strip</h3>
+    <p style="font-size:0.8rem;margin-bottom:0.75rem">Used at top of every artefact to show current position.</p>
+    <div class="phase-strip">
+      <div class="phase-block done">Intake</div>
+      <div class="phase-block done">Discovery</div>
+      <div class="phase-block active-build">Build</div>
+      <div class="phase-block">Delivery</div>
+    </div>
+    <div class="phase-strip">
+      <div class="phase-block active-discovery">Intake</div>
+      <div class="phase-block">Discovery</div>
+      <div class="phase-block">Build</div>
+      <div class="phase-block">Delivery</div>
+    </div>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="card" style="margin-bottom:1.5rem">
+  <h3>Data table — assumption log preview</h3>
+  <table class="forge-table">
+    <thead>
+      <tr>
+        <th>#</th><th>Assumption</th><th>Type</th><th>Risk</th><th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Value bettors will pay for model access if free tier shows concealed outputs</td>
+        <td>Desirability</td>
+        <td><span class="badge badge-red">High</span></td>
+        <td><span class="status"><span class="status-dot dot-pending"></span>Open</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Stripe Checkout handles tournament-scale traffic without ops overhead</td>
+        <td>Feasibility</td>
+        <td><span class="badge badge-amber">Med</span></td>
+        <td><span class="status"><span class="status-dot dot-complete"></span>Defended</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Betfair odds API is reliable enough for live market display</td>
+        <td>Feasibility</td>
+        <td><span class="badge badge-amber">Med</span></td>
+        <td><span class="status"><span class="status-dot dot-blocked"></span>Open</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Agent card preview -->
+<div class="card">
+  <h3>Agent definition card — preview</h3>
+  <div class="agent-card">
+    <div class="agent-card-header">
+      <div>
+        <div class="agent-name">06 · Synthesis</div>
+        <div class="agent-alias">The Assembler</div>
+      </div>
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <span class="badge badge-green">Fully autonomous</span>
+        <span class="badge badge-blue">Discovery</span>
+      </div>
+    </div>
+    <div class="agent-card-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div>
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-dim);margin-bottom:0.4rem">Reads</div>
+          <div class="io-row">
+            <span class="io-chip">01-problem-framing</span>
+            <span class="io-chip">02-monetisation</span>
+            <span class="io-chip">03-tech-feasibility</span>
+            <span class="io-chip">04-ux-framing</span>
+            <span class="io-chip">05-user-researcher</span>
+            <span class="io-chip">running-brief</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-dim);margin-bottom:0.4rem">Produces</div>
+          <div class="io-row">
+            <span class="io-chip" style="color:var(--accent-green);border-color:rgba(76,175,130,0.3)">brief.html</span>
+            <span class="io-chip" style="color:var(--accent-green);border-color:rgba(76,175,130,0.3)">assumption-log.html</span>
+            <span class="io-chip" style="color:var(--accent-green);border-color:rgba(76,175,130,0.3)">personas.html</span>
+            <span class="io-chip" style="color:var(--accent-green);border-color:rgba(76,175,130,0.3)">research-plan.html</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:0.8rem;color:var(--text-dim)">Hands off to → Breadboard (The Tracer)</span>
+        <button style="font-size:0.75rem;color:var(--text-secondary);background:var(--bg-elevated);border:1px solid var(--border);border-radius:5px;padding:0.25rem 0.6rem;cursor:pointer">View instructions ↓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+<p style="font-size:0.8rem;color:var(--text-dim);text-align:center">This CSS is embedded inline in every Forge HTML file — no external dependencies, works offline, survives being moved.</p>
+
+</body>
+</html>

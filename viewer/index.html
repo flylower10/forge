@@ -41,44 +41,28 @@
 
 <script type="text/babel" data-presets="react">
   function App() {
+    const { PIPELINE, LATERAL } = window.FORGE_CONFIG;
+    const allAgents = [
+      ...PIPELINE,
+      ...LATERAL.map(a => ({ ...a, n: '··', phase: a.phase || 'framework' })),
+    ];
     return (
       <DesignCanvas>
         <DCSection
           id="forge-agents"
           title="Forge · Agent reference pages"
-          subtitle="Each artboard reads a .md source under output/agents/ and renders it through the Forge design system. Edit the .md, reload — the page reflects it.">
-          <DCArtboard
-            id="agent-pm-agent-md"
-            label="Agent reference · 01 · The Interrogator (conversation)"
-            width={1320} height={2400}>
-            <div className="artboard-host">
-              <AgentMdPage src="../output/agents/01-pm-agent.md" />
-            </div>
-          </DCArtboard>
-          <DCArtboard
-            id="agent-synthesis-md"
-            label="Agent reference · 06 · Synthesis (autonomous)"
-            width={1320} height={2400}>
-            <div className="artboard-host">
-              <AgentMdPage src="../output/agents/06-synthesis.md" />
-            </div>
-          </DCArtboard>
-          <DCArtboard
-            id="agent-observer-md"
-            label="Agent reference · ·· The Observer (always-on, framework-level)"
-            width={1320} height={2000}>
-            <div className="artboard-host">
-              <AgentMdPage src="../output/agents/observer.md" />
-            </div>
-          </DCArtboard>
-          <DCArtboard
-            id="agent-arbiter-md"
-            label="Agent reference · ·· The Arbiter (triggered)"
-            width={1320} height={2000}>
-            <div className="artboard-host">
-              <AgentMdPage src="../output/agents/arbiter.md" />
-            </div>
-          </DCArtboard>
+          subtitle="Reading live from the agent definition files. Edit a .md file and reload — the viewer reflects it.">
+          {allAgents.map(agent => (
+            <DCArtboard
+              key={agent.id}
+              id={`agent-${agent.id}`}
+              label={`${agent.n} · ${agent.name}`}
+              width={1320} height={2400}>
+              <div className="artboard-host">
+                <AgentMdPage src={`../${agent.file}`} />
+              </div>
+            </DCArtboard>
+          ))}
         </DCSection>
       </DesignCanvas>
     );

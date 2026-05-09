@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge Design — Option C</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f7f7f5; color: #1a1a1a; font-family: 'Georgia', 'Times New Roman', serif; padding: 2.5rem; max-width: 900px; margin: 0 auto; }
+
+  :root {
+    --ink:       #1a1a1a;
+    --ink-mid:   #4a4a4a;
+    --ink-light: #8a8a8a;
+    --rule:      #e0ddd8;
+    --bg:        #f7f7f5;
+    --bg-tint:   #f0ede8;
+    --accent:    #c0392b;
+
+    --disc:  #2563eb;
+    --build: #16a34a;
+    --del:   #7c3aed;
+    --risk:  #d97706;
+    --block: #dc2626;
+  }
+
+  h1 { font-size: 2rem; font-weight: 400; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-light); margin: 2.5rem 0 1rem; }
+  h3 { font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.4rem; font-family: -apple-system, sans-serif; }
+  p  { font-size: 0.95rem; line-height: 1.7; color: var(--ink-mid); }
+  .subtitle { color: var(--ink-light); font-size: 0.9rem; margin-bottom: 0.3rem; font-family: -apple-system, sans-serif; font-style: italic; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
+
+  /* Pipeline */
+  .pipeline {
+    display: flex; align-items: center; gap: 0; margin-bottom: 2rem;
+    border-bottom: 2px solid var(--rule); padding-bottom: 1rem;
+  }
+  .pipe-step {
+    font-family: -apple-system, sans-serif;
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--ink-light);
+    padding: 0.2rem 0.75rem; position: relative;
+  }
+  .pipe-step.done { color: var(--ink-light); text-decoration: line-through; }
+  .pipe-step.active { color: var(--build); border-bottom: 2px solid var(--build); margin-bottom: -1.05rem; }
+  .pipe-sep { color: var(--rule); font-size: 0.9rem; }
+
+  /* Badge */
+  .tag {
+    display: inline-block;
+    font-family: -apple-system, sans-serif;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; padding: 0.18rem 0.5rem;
+    border-radius: 3px;
+  }
+  .tag-disc  { background: #dbeafe; color: var(--disc); }
+  .tag-build { background: #dcfce7; color: var(--build); }
+  .tag-amber { background: #fef3c7; color: var(--risk); }
+  .tag-red   { background: #fee2e2; color: var(--block); }
+  .tag-auto  { background: #f3f4f6; color: #374151; }
+
+  /* Status dot */
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 0.4rem; }
+  .dot-open    { background: var(--risk); }
+  .dot-def     { background: var(--build); }
+  .dot-blocked { background: var(--block); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-family: -apple-system, sans-serif; font-size: 0.82rem; }
+  th { text-align: left; padding: 0.5rem 0.75rem; color: var(--ink-light); font-weight: 700; text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.08em; border-bottom: 2px solid var(--rule); }
+  td { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--rule); color: var(--ink-mid); vertical-align: top; }
+  tr:hover td { background: var(--bg-tint); }
+
+  /* Agent card */
+  .agent-card { border-left: 3px solid var(--disc); padding: 1rem 1.25rem; background: white; margin-bottom: 0; }
+  .agent-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+  .agent-name { font-family: -apple-system, sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+  .agent-alias { font-size: 0.82rem; color: var(--ink-light); font-style: italic; }
+  .io-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-light); margin-bottom: 0.3rem; font-family: -apple-system, sans-serif; }
+  .io-chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .io-chip { font-family: 'Courier New', monospace; font-size: 0.72rem; color: var(--ink-mid); background: var(--bg-tint); padding: 0.15rem 0.45rem; border-radius: 3px; }
+  .io-chip.out { color: var(--build); background: #f0fdf4; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+</style>
+</head>
+<body>
+
+<div style="margin-bottom: 0.25rem">
+  <span class="tag tag-build" style="font-family:-apple-system,sans-serif">Option C</span>
+</div>
+<h1>Editorial</h1>
+<p class="subtitle">Light, typographic, document-first. Feels like a well-designed report.</p>
+
+<hr>
+
+<!-- Pipeline -->
+<div class="pipeline">
+  <span class="pipe-step done">Intake</span>
+  <span class="pipe-sep">›</span>
+  <span class="pipe-step done">Discovery</span>
+  <span class="pipe-sep">›</span>
+  <span class="pipe-step active">Build</span>
+  <span class="pipe-sep">›</span>
+  <span class="pipe-step">Delivery</span>
+</div>
+
+<!-- Status badges -->
+<h2>Status indicators</h2>
+<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem">
+  <span class="tag tag-disc">Discovery</span>
+  <span class="tag tag-build">Complete</span>
+  <span class="tag tag-amber">Open</span>
+  <span class="tag tag-red">Blocked</span>
+  <span class="tag tag-auto">Autonomous</span>
+</div>
+
+<!-- Table -->
+<h2>Assumption log — sample</h2>
+<div style="background:white;border:1px solid var(--rule);border-radius:4px;overflow:hidden;margin-bottom:2rem">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Assumption</th><th>Type</th><th>Risk</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Value bettors will pay if free tier shows concealed outputs</td>
+        <td>Desirability</td>
+        <td><span class="tag tag-red">High</span></td>
+        <td><span class="dot dot-open"></span>Open</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Stripe Checkout handles tournament-scale traffic without ops overhead</td>
+        <td>Feasibility</td>
+        <td><span class="tag tag-amber">Med</span></td>
+        <td><span class="dot dot-def"></span>Defended</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Betfair odds API reliable enough for live market display</td>
+        <td>Feasibility</td>
+        <td><span class="tag tag-amber">Med</span></td>
+        <td><span class="dot dot-blocked"></span>Open</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Agent card -->
+<h2>Agent definition — sample</h2>
+<div class="agent-card">
+  <div class="agent-head">
+    <div>
+      <div class="agent-name">06 · Synthesis</div>
+      <div class="agent-alias">The Assembler</div>
+    </div>
+    <div style="display:flex;gap:0.4rem">
+      <span class="tag tag-auto">Fully autonomous</span>
+      <span class="tag tag-disc">Discovery</span>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div>
+      <div class="io-label">Reads</div>
+      <div class="io-chips">
+        <span class="io-chip">01-problem-framing</span>
+        <span class="io-chip">02-monetisation</span>
+        <span class="io-chip">03-tech-feasibility</span>
+        <span class="io-chip">04-ux-framing</span>
+        <span class="io-chip">running-brief</span>
+      </div>
+    </div>
+    <div>
+      <div class="io-label">Produces</div>
+      <div class="io-chips">
+        <span class="io-chip out">brief.html</span>
+        <span class="io-chip out">assumption-log.html</span>
+        <span class="io-chip out">personas.html</span>
+        <span class="io-chip out">research-plan.html</span>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:0.9rem;padding-top:0.75rem;border-top:1px solid var(--rule);font-family:-apple-system,sans-serif;font-size:0.78rem;color:var(--ink-light)">
+    Hands off to → Breadboard (The Tracer) &nbsp;·&nbsp;
+    <a href="#" style="color:var(--disc);text-decoration:none">View full instructions ↓</a>
+  </div>
+</div>
+
+<hr>
+<p style="font-size:0.78rem;color:var(--ink-light);font-family:-apple-system,sans-serif;text-align:center">Inline CSS · no external dependencies · readable in any browser</p>
+
+</body>
+</html>

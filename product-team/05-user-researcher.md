@@ -1,3 +1,19 @@
+---json
+{
+  "id": "05-user-researcher",
+  "n": "05",
+  "name": "The Advocate",
+  "role": "User Researcher",
+  "phase": "discovery",
+  "team": "Product Team",
+  "mode": "Autonomous → one challenge question",
+  "gate": "Research priorities",
+  "alias": "The Advocate",
+  "summary": "Reviews all prior outputs to identify what must be validated with real users before building. Produces a prioritised research plan.",
+  "file": "product-team/05-user-researcher.md",
+  "constraints": []
+}
+---
 # Agent 05 · User Researcher
 **Alias:** The Advocate
 **Mode:** Autonomous review → one challenge question

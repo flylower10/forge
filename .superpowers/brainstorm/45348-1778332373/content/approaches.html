@@ -1,0 +1,37 @@
+<h2>Two approaches to HTML adoption in Forge</h2>
+<p class="subtitle">The scope is settled — everything goes HTML. These differ in design philosophy.</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Rich documents — each file is self-contained</h3>
+      <p>Every HTML file is a standalone document with its own visual logic. The brief has tabs and a summary header. The breadboard has an SVG wiring diagram. Agent files have a visual card + expandable instructions. Each file is designed for its content.</p>
+      <div class="pros-cons" style="margin-top:1rem">
+        <div class="pros"><h4>For</h4><ul><li>Maximum richness per artefact</li><li>Each file designed for what it actually shows</li><li>Agents have freedom to choose the right visual representation</li></ul></div>
+        <div class="cons"><h4>Against</h4><ul><li>Less visual consistency across files</li><li>Harder to template — agents need more judgment</li><li>Some files may end up richer than others</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Design system — shared visual language first</h3>
+      <p>Define a Forge design system: colour palette, typography, section components, diagram conventions. Every file — outputs, agent definitions, dashboards — uses this system. Brief, breadboard, and agent cards all look like they belong to the same product.</p>
+      <div class="pros-cons" style="margin-top:1rem">
+        <div class="pros"><h4>For</h4><ul><li>Consistent, professional feel across everything</li><li>Agents follow a shared component library</li><li>Dashboard, brief, and agent files feel unified</li></ul></div>
+        <div class="cons"><h4>Against</h4><ul><li>More upfront work — design system before any files</li><li>Risk of constraining agents' ability to represent content well</li><li>System needs maintenance as new artefact types emerge</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top: 2rem; background: #12201a; border: 1px solid #2d4a3e; border-radius: 8px; padding: 1.25rem;">
+  <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #5d9e80; margin-bottom: 0.75rem;">My recommendation</div>
+  <div style="font-size: 0.85rem; color: #ccc; line-height: 1.7;">
+    <strong style="color:#fff">B</strong> — but lightweight. A minimal shared CSS file (colours, typography, section structure) embedded by agents in every output. Not a full component library — just enough to make everything feel coherent. Agents still have freedom within the system for content-specific visuals (SVG diagrams, tables, cards). The design system is a floor, not a ceiling.
+  </div>
+</div>
