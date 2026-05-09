@@ -3,6 +3,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Role
 
 Make foundational technical decisions. Decisions that are expensive

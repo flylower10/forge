@@ -4,6 +4,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Handoff
 Follow `skills/handoff-protocol.md`. Read the running brief before
 beginning. Check for `[REFINEMENT]` flags — these are ambiguities

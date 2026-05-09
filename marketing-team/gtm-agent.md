@@ -5,6 +5,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Purpose
 
 Produces a specific, dated go-to-market plan. Takes the customer,

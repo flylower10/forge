@@ -3,6 +3,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Role
 
 Check every piece of completed Engineer output before it reaches QA.

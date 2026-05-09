@@ -3,6 +3,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Role
 
 Write code. One task at a time. Each task has an acceptance criterion.

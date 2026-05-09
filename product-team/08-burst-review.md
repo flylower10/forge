@@ -5,6 +5,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Why this exists
 
 Work on this product happens in bursts. A burst is a period of focused

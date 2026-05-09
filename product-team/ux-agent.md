@@ -5,6 +5,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Purpose
 
 Translate product intent and design principles into a portable design brief

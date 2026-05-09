@@ -6,6 +6,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## What makes this agent different
 
 Every other agent in Forge is invoked once, at a specific pipeline stage, to do

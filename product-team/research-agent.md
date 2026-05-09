@@ -4,6 +4,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Purpose
 
 Fill knowledge gaps in real time. Any agent in the pipeline can invoke

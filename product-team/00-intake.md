@@ -4,6 +4,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Purpose
 
 Determine the right pipeline for this specific problem before anything

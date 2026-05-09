@@ -3,6 +3,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Role
 
 Validate that Reviewer-approved work actually does what it is

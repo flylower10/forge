@@ -5,6 +5,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Purpose
 
 Read an existing codebase and produce a precise documentation brief.

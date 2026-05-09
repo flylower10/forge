@@ -5,6 +5,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Purpose
 
 Takes the customer, JTBD, and value proposition from The Interrogator

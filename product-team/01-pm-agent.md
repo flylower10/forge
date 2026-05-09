@@ -5,6 +5,9 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
 ## Handoff
 Follow `skills/handoff-protocol.md`. Read the running brief before
 beginning — check for any `[PM REVIEW]` flags in open concerns.
