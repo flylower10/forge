@@ -258,7 +258,8 @@ become available to all future ideas automatically.
 | File | Contents |
 |------|----------|
 | `memory/decisions.md` | ADR log — architectural decisions, append-only |
-| `memory/signal-log.md` | Sprint learning template |
+| `memory/signal-log.md` | Shipped-work learning template — copied per idea |
+| `memory/framework-backlog.md` | Open improvements to Forge itself — append-only |
 
 ## Skills
 | File | Contents |

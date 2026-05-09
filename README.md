@@ -9,7 +9,7 @@ A structured multi-agent framework for turning ideas into shipped products. Runs
 
 Most ideas fail not because they were bad, but because they were built before they were understood. Forge fixes that. Every idea passes through a pipeline of specialist agents before a line of code is written. By the end, the problem is sharp, the assumptions are logged, the user is understood, and Claude Code has everything it needs to build.
 
-Forge then stays active through the build — orchestrating a team of execution agents, managing sprint cycles, and connecting what gets shipped back to what was assumed in discovery.
+Forge then stays active through the build — orchestrating a team of execution agents, managing build bursts, and connecting what gets shipped back to what was assumed in discovery.
 
 ---
 
@@ -19,15 +19,19 @@ Forge then stays active through the build — orchestrating a team of execution 
 
 A pipeline of specialist agents, each with a distinct role and personality. They are not assistants seeking validation — they hold positions, push back, and update their views only when genuinely persuaded.
 
+The core pipeline:
+
 ```
 00 · Intake            Determines the right pipeline for this specific idea
 01 · PM Agent          The Interrogator — problem framing
-02 · Design Agent      The Anthropologist — empathy and experience  
+02 · Design Agent      The Narrator — empathy and experience
 03 · Devil's Advocate  The Sceptic — assumption stress-test
 04 · Tech Feasibility  The Pragmatist — tradeoffs and architecture
 05 · User Researcher   The Advocate — what to validate before building
 06 · Synthesis         Assembles all outputs into a complete brief
 ```
+
+Plus specialist agents Intake selects per idea: **Breadboard** (mapping places, affordances and wiring before code), **Model Reviewer** (model architecture and calibration), **UX Agent** (design briefs for Claude Design), **Observer** (process critique, runs after every handoff), **Research Agent** (mid-conversation factual gaps), and the **Marketing team** (pricing, go-to-market) when commercial thinking is needed.
 
 Some agents run as full conversations. Others run autonomously and surface one targeted question before finalising. The human is an active thinking partner throughout — not an approver.
 
@@ -54,10 +58,13 @@ A team of execution agents orchestrated by the Delivery Manager.
 ```
 Delivery Manager  The Conductor — orchestration, blockers, human interface
 Architect         Consulted at refinement and structural decisions only
+Cartographer      Documents an existing codebase on first contact
 Engineer          Writes code
 Reviewer          Checks quality and consistency
 QA                Validates acceptance criteria
 ```
+
+Two triggered processes guard the queue. **Feedback Triage** (The Arbiter) fires before any action is taken on product criticism — criticism is not a task assignment. **Feature Triage** classifies and routes new feature requests so they enter the build queue with the right level of scoping.
 
 ### The loop
 
@@ -67,6 +74,10 @@ Signal log             On-demand or fortnightly — empirical learning from ship
 ```
 
 Bursts trigger handoff and re-entry rituals. The signal log runs on a separate clock — observation arrives weeks after shipping, not at the end of a work session. When a signal invalidates an assumption, the relevant discovery agent is re-invoked. The brief evolves. The build continues.
+
+### Phase 4 · Delivery
+
+Shipping, deployment, user onboarding, release notes and marketing handoff. Specialist agents for this phase are planned and will be added when first needed.
 
 ---
 
@@ -89,39 +100,31 @@ Bursts trigger handoff and re-entry rituals. The signal log runs on a separate c
 ```
 forge/
   CLAUDE.md                    ← framework root — read this first
+  README.md                    ← this file
 
-  product-team/
-    00-intake.md               ← always runs first
-    01-pm-agent.md             ← The Interrogator
-    02-design-agent.md         ← The Anthropologist
-    03-devils-advocate.md      ← The Sceptic
-    04-tech-feasibility.md     ← The Pragmatist
-    05-user-researcher.md      ← The Advocate
-    06-synthesis.md            ← fully autonomous assembly
-    07-refinement.md           ← discovery → build bridge
-    08-burst-review.md         ← end of burst ceremony (handoff + re-entry)
+  product-team/                ← discovery agents (numbered) + specialists
+                                 (breadboard, ux-agent, observer, research-agent,
+                                  model-reviewer)
+  build-team/                  ← execution agents + triggered processes
+                                 (delivery-manager, architect, cartographer,
+                                  engineer, reviewer, qa, feedback-triage)
+  marketing-team/              ← pricing, go-to-market (selected by Intake when
+                                 commercial thinking is needed)
 
-  build-team/
-    delivery-manager.md        ← The Conductor
-    architect.md               ← consulted only
-    engineer.md                ← execution
-    reviewer.md                ← execution
-    qa.md                      ← execution
-
-  skills/
-    frameworks.md              ← JTBD, OST, HEART reference
-    linear-schema.md           ← epic and issue structure
-    artefact-templates.md      ← standardised output formats
-    design-md.md               ← how to write a good DESIGN.md
-
-  hooks/
-    pre-session.md             ← run at session start
-    post-session.md            ← run at session end
+  skills/                      ← shared protocols (handoff, prioritisation,
+                                 feature-triage, research, design, intellectual
+                                 standards) + artefact templates + style system
+  hooks/                       ← pre-session and post-session rituals
 
   memory/
-    decisions.md               ← ADR log, append-only
+    decisions.md               ← framework-level ADR log, append-only
     signal-log.md              ← shipped-work learning template
+    framework-backlog.md       ← open improvements to Forge itself
+
+  output/[idea-name]/          ← per-idea product artefacts (.md + .html pairs)
 ```
+
+The canonical agent directory — every agent, its alias, and how it runs — lives in `CLAUDE.md`. The README describes the shape; `CLAUDE.md` is the source of truth.
 
 ---
 
