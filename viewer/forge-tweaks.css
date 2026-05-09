@@ -1,0 +1,288 @@
+/* ===========================================================================
+   forge-tweaks.css
+   ---------------------------------------------------------------------------
+   Three expressive controls layered on top of forge-styles.css. Each is an
+   axis of design intent, not a single property knob. Apply by setting the
+   data-* attribute on <body>; the rules cascade into every artefact.
+
+     data-voice    crisp | serif | mono       — what the system sounds like
+     data-chroma   muted | default | vivid    — how loud the phase color is
+     data-surface  card | float | sheet       — how the chrome sits in space
+
+   Each axis is independent: combinations are deliberate, not accidents.
+   =========================================================================== */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   §1 · Voice
+   --------------------------------------------------------------------------
+   Type system. crisp = current restrained sans. serif = editorial / weighty
+   for headlines. mono = engineering datasheet, mono everywhere with sharp
+   corners. Voice never touches color or chrome — only typography + radii.
+   ────────────────────────────────────────────────────────────────────────── */
+
+body[data-voice="serif"] .fg-header__h1,
+body[data-voice="serif"] .fg-card__title,
+body[data-voice="serif"] .fg-persona__name,
+body[data-voice="serif"] .fg-jts__body,
+body[data-voice="serif"] .fg-question__text,
+body[data-voice="serif"] .fg-feature__target,
+body[data-voice="serif"] .fg-feature__metric,
+body[data-voice="serif"] .fg-arc__title,
+body[data-voice="serif"] .fg-idea__name {
+  font-family: "Iowan Old Style", "Charter", "Source Serif Pro",
+               "Georgia", "Cambria", serif;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+body[data-voice="serif"] .fg-header__h1 {
+  font-size: 44px; letter-spacing: -0.02em;
+}
+body[data-voice="serif"] .fg-jts__body { font-size: 19px; line-height: 1.5; }
+body[data-voice="serif"] .fg-card__title { font-size: 16px; }
+body[data-voice="serif"] .fg-persona__quote {
+  font-family: "Iowan Old Style", "Charter", "Georgia", serif;
+  font-style: italic; font-size: 16px;
+}
+body[data-voice="serif"] .fg-prose,
+body[data-voice="serif"] .fg-card__p,
+body[data-voice="serif"] .fg-persona__context,
+body[data-voice="serif"] .fg-question__why {
+  font-family: "Iowan Old Style", "Charter", "Source Serif Pro",
+               "Georgia", "Cambria", serif;
+  font-size: 15.5px; line-height: 1.65;
+}
+
+body[data-voice="mono"] .fg-header__h1 {
+  font-family: var(--fg-mono);
+  font-size: 26px; font-weight: 600;
+  letter-spacing: -0.005em; text-transform: lowercase;
+}
+body[data-voice="mono"] .fg-card__title,
+body[data-voice="mono"] .fg-persona__name,
+body[data-voice="mono"] .fg-question__text,
+body[data-voice="mono"] .fg-arc__title,
+body[data-voice="mono"] .fg-idea__name {
+  font-family: var(--fg-mono);
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: 0;
+}
+body[data-voice="mono"] .fg-prose,
+body[data-voice="mono"] .fg-card__p,
+body[data-voice="mono"] .fg-persona__context,
+body[data-voice="mono"] .fg-persona__quote,
+body[data-voice="mono"] .fg-jts__body,
+body[data-voice="mono"] .fg-question__why,
+body[data-voice="mono"] .fg-step,
+body[data-voice="mono"] .fg-arc__body,
+body[data-voice="mono"] .fg-rail__rule,
+body[data-voice="mono"] .fg-rail__detail,
+body[data-voice="mono"] .fg-rail__intro,
+body[data-voice="mono"] .fg-idea__tag,
+body[data-voice="mono"] .fg-idea__next,
+body[data-voice="mono"] .fg-feed__event,
+body[data-voice="mono"] .fg-feed__text,
+body[data-voice="mono"] .fg-ledger__text,
+body[data-voice="mono"] .fg-table td {
+  font-family: var(--fg-mono);
+  font-size: 12px; line-height: 1.55;
+}
+body[data-voice="mono"] .fg-jts__body { font-size: 13.5px; }
+body[data-voice="mono"] .fg-card,
+body[data-voice="mono"] .fg-header,
+body[data-voice="mono"] .fg-counters,
+body[data-voice="mono"] .fg-feature,
+body[data-voice="mono"] .fg-pager__a,
+body[data-voice="mono"] .fg-jts,
+body[data-voice="mono"] .fg-tape__node,
+body[data-voice="mono"] .fg-step,
+body[data-voice="mono"] .fg-arc__item,
+body[data-voice="mono"] .fg-io__row,
+body[data-voice="mono"] .fg-ledger__row,
+body[data-voice="mono"] .fg-idea,
+body[data-voice="mono"] .fg-persona,
+body[data-voice="mono"] .fg-question,
+body[data-voice="mono"] .fg-rail__n,
+body[data-voice="mono"] .fg-arc__n,
+body[data-voice="mono"] .fg-step__n,
+body[data-voice="mono"] .fg-kind,
+body[data-voice="mono"] .fg-pill,
+body[data-voice="mono"] .fg-flag {
+  border-radius: 0;
+}
+body[data-voice="mono"] .fg-tape__node--current {
+  box-shadow: 0 0 0 2px var(--fg-tint);
+}
+/* schematic header crumb gets a leading hash */
+body[data-voice="mono"] .fg-header__path::before {
+  content: "$ "; color: var(--fg-ink-soft);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   §2 · Chroma
+   --------------------------------------------------------------------------
+   Phase color saturation. Hue is preserved — only chroma scales. Muted
+   approaches mono-with-a-hint; vivid approaches a brand poster.
+   Token table:
+     accent     | accent-dim | tint       | ink-tone
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* muted */
+body[data-chroma="muted"] [data-phase="discovery"] {
+  --fg-accent: oklch(0.55 0.04 232); --fg-accent-dim: oklch(0.84 0.02 232);
+  --fg-tint:   oklch(0.97 0.005 232); --fg-ink-tone:  oklch(0.34 0.025 232);
+}
+body[data-chroma="muted"] [data-phase="refinement"] {
+  --fg-accent: oklch(0.55 0.04 282); --fg-accent-dim: oklch(0.84 0.02 282);
+  --fg-tint:   oklch(0.97 0.005 282); --fg-ink-tone:  oklch(0.34 0.025 282);
+}
+body[data-chroma="muted"] [data-phase="build"] {
+  --fg-accent: oklch(0.55 0.04 156); --fg-accent-dim: oklch(0.84 0.02 156);
+  --fg-tint:   oklch(0.97 0.005 156); --fg-ink-tone:  oklch(0.34 0.025 156);
+}
+body[data-chroma="muted"] [data-phase="marketing"] {
+  --fg-accent: oklch(0.55 0.04 38);  --fg-accent-dim: oklch(0.84 0.02 38);
+  --fg-tint:   oklch(0.97 0.005 38); --fg-ink-tone:  oklch(0.34 0.025 38);
+}
+
+/* vivid */
+body[data-chroma="vivid"] [data-phase="discovery"] {
+  --fg-accent: oklch(0.55 0.20 232); --fg-accent-dim: oklch(0.78 0.13 232);
+  --fg-tint:   oklch(0.95 0.05 232); --fg-ink-tone:  oklch(0.30 0.16 232);
+}
+body[data-chroma="vivid"] [data-phase="refinement"] {
+  --fg-accent: oklch(0.55 0.22 282); --fg-accent-dim: oklch(0.78 0.13 282);
+  --fg-tint:   oklch(0.95 0.05 282); --fg-ink-tone:  oklch(0.30 0.18 282);
+}
+body[data-chroma="vivid"] [data-phase="build"] {
+  --fg-accent: oklch(0.55 0.18 156); --fg-accent-dim: oklch(0.78 0.12 156);
+  --fg-tint:   oklch(0.95 0.05 156); --fg-ink-tone:  oklch(0.30 0.14 156);
+}
+body[data-chroma="vivid"] [data-phase="marketing"] {
+  --fg-accent: oklch(0.58 0.20 38);  --fg-accent-dim: oklch(0.78 0.13 38);
+  --fg-tint:   oklch(0.95 0.05 38);  --fg-ink-tone:  oklch(0.34 0.16 38);
+}
+/* vivid pushes the rail head into a saturated band */
+body[data-chroma="vivid"] .fg-rail__head:not(.fg-rail__head--neutral) {
+  background: var(--fg-accent);
+}
+/* vivid amps the header top stripe from 3px → 5px */
+body[data-chroma="vivid"] .fg-header { border-top-width: 5px; }
+/* vivid leans on the JTS callout */
+body[data-chroma="vivid"] .fg-jts {
+  background: linear-gradient(180deg, var(--fg-tint) 0%, transparent 140%);
+  border-left-width: 4px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   §3 · Surface
+   --------------------------------------------------------------------------
+   How chrome occupies the page.
+     card  : current — bordered cards on a warm-white plane
+     float : no borders, soft shadows, lifted off a deeper tint
+     sheet : datasheet — 0-radius, ruled tops, no card backgrounds
+   ────────────────────────────────────────────────────────────────────────── */
+
+body[data-surface="float"] .fg-root,
+body[data-surface="float"] .fg-shell { background: #efece5; }
+body[data-surface="float"] .fg-card,
+body[data-surface="float"] .fg-header,
+body[data-surface="float"] .fg-counters,
+body[data-surface="float"] .fg-pager__a,
+body[data-surface="float"] .fg-feature {
+  border: 0;
+  box-shadow:
+    0 1px 1px rgba(20,18,12,0.04),
+    0 12px 32px -14px rgba(20,18,12,0.12);
+}
+body[data-surface="float"] .fg-header { border-top: 3px solid var(--fg-accent); }
+body[data-surface="float"] .fg-card__head {
+  background: transparent;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+body[data-surface="float"] .fg-card__body { padding-top: var(--fg-7); }
+body[data-surface="float"] .fg-tape__node,
+body[data-surface="float"] .fg-step,
+body[data-surface="float"] .fg-arc__item,
+body[data-surface="float"] .fg-io__row,
+body[data-surface="float"] .fg-ledger__row,
+body[data-surface="float"] .fg-persona,
+body[data-surface="float"] .fg-question,
+body[data-surface="float"] .fg-idea {
+  border: 0;
+  background: var(--fg-bg-card);
+  box-shadow: 0 1px 1px rgba(20,18,12,0.04);
+}
+body[data-surface="float"] .fg-rail {
+  background: var(--fg-bg-card);
+  border-left: 0;
+  box-shadow: -10px 0 24px -16px rgba(20,18,12,0.10);
+}
+body[data-surface="float"] .fg-dir {
+  background: transparent;
+  border-right: 0;
+}
+
+/* sheet — datasheet feel, ruled & sharp */
+body[data-surface="sheet"] .fg-root,
+body[data-surface="sheet"] .fg-shell { background: var(--fg-bg-card); }
+body[data-surface="sheet"] .fg-card,
+body[data-surface="sheet"] .fg-counters,
+body[data-surface="sheet"] .fg-feature,
+body[data-surface="sheet"] .fg-pager__a,
+body[data-surface="sheet"] .fg-jts {
+  border-radius: 0;
+  border-left: 0; border-right: 0;
+  box-shadow: none;
+  background: transparent;
+}
+body[data-surface="sheet"] .fg-header {
+  border-radius: 0;
+  border: 0;
+  border-top: 4px solid var(--fg-accent);
+  border-bottom: 1px solid var(--fg-line);
+  background: transparent;
+}
+body[data-surface="sheet"] .fg-card { border-top: 0; border-bottom: 1px solid var(--fg-line); }
+body[data-surface="sheet"] .fg-card__head {
+  background: transparent;
+  border-bottom: 1px dashed var(--fg-line);
+}
+body[data-surface="sheet"] .fg-card__title::before {
+  content: "§ "; font-family: var(--fg-mono); color: var(--fg-ink-soft); font-weight: 400;
+}
+body[data-surface="sheet"] .fg-tape__node,
+body[data-surface="sheet"] .fg-step,
+body[data-surface="sheet"] .fg-arc__item,
+body[data-surface="sheet"] .fg-io__row,
+body[data-surface="sheet"] .fg-ledger__row,
+body[data-surface="sheet"] .fg-persona,
+body[data-surface="sheet"] .fg-question,
+body[data-surface="sheet"] .fg-idea,
+body[data-surface="sheet"] .fg-feature,
+body[data-surface="sheet"] .fg-pager__a {
+  border-radius: 0;
+  background: transparent;
+  border: 1px solid var(--fg-line);
+}
+body[data-surface="sheet"] .fg-tape__node--current {
+  box-shadow: inset 0 0 0 1px var(--fg-accent);
+}
+body[data-surface="sheet"] .fg-rail {
+  background: transparent;
+  border-left: 1px solid var(--fg-line);
+}
+body[data-surface="sheet"] .fg-rail__head { border-radius: 0; }
+body[data-surface="sheet"] .fg-dir {
+  background: transparent;
+  border-right: 1px solid var(--fg-line);
+}
+body[data-surface="sheet"] .fg-dir__item--active {
+  background: var(--fg-bg-soft);
+  box-shadow: none;
+  border-left: 2px solid var(--fg-accent);
+  border-radius: 0;
+  padding-left: 8px;
+}
+body[data-surface="sheet"] .fg-dir__item--active::before { display: none; }
