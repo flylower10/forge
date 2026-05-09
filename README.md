@@ -115,6 +115,11 @@ forge/
                                  feature-triage, research, design, intellectual
                                  standards) + artefact templates + style system
   hooks/                       ← pre-session and post-session rituals
+  viewer/                      ← React app that renders agent reference pages
+                                 from .md sources (no static per-agent HTML)
+  docs/                        ← project-level technical context (CLAUDE.md,
+                                 DESIGN.md, ADR log) — what Claude Code reads
+                                 at build time
 
   memory/
     decisions.md               ← framework-level ADR log, append-only
@@ -140,7 +145,12 @@ Configure MCP servers for Linear and GitHub in Claude Code.
 Claude Code reads `CLAUDE.md` at the root on session start.
 The pre-session hook orients it from there.
 
-**4. Run your first idea**
+**4. Browse agents via the viewer**
+Run `python3 -m http.server 8080` from the repo root and open
+`http://localhost:8080/viewer/`. The viewer renders every agent reference
+page live from its `.md` source — no static HTML to keep in sync.
+
+**5. Run your first idea**
 Open Claude Code in the repo root. Describe your idea and the intake agent takes over from there.
 
 ---
