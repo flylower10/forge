@@ -31,9 +31,9 @@ behave when someone opens it. Follow these rules without exception:
    else, read and follow `/hooks/pre-session.md` in full.
 
 4. **Always invoke agents by their definition files.** Every agent's
-   behaviour is defined in `/product-team/`. Read the relevant file before
-   acting as that agent. Do not paraphrase or approximate — follow
-   the definition precisely.
+   behaviour is defined in `/product-team/`, `/build-team/`, or
+   `/marketing-team/`. Read the relevant file before acting as that agent.
+   Do not paraphrase or approximate — follow the definition precisely.
 
 5. **The intake agent always runs first.** Once the pre-session hook
    is complete and the human has described their idea, invoke
