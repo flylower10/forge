@@ -4,6 +4,11 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
+---
+
 ## Handoff
 Follow `skills/handoff-protocol.md`. Read the running brief before
 beginning — it is your primary navigation tool. All `[OPEN QUESTION]`
@@ -66,20 +71,30 @@ When User Researcher recommends validating before building:
 
 Write to `output/[idea-name]/`:
 
-**`brief.md`**
+**`brief.html`**
 Full product brief using the template in `/skills/artefact-templates.md`.
 This is the product source of truth. Write it completely — no references
 to other files, no "see running brief." It must stand alone.
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`assumption-log.md`**
+**`assumption-log.html`**
 All assumptions from the Sceptic's output, ranked by risk level, with
 status (open / defended / accepted risk) and validation method.
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`personas.md`**
+**`personas.html`**
 User personas and journey maps from the Design Agent output.
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`research-plan.md`**
+**`research-plan.html`**
 Full research plan from the User Researcher.
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
+
+**`pipeline-dashboard.html`**
+Write `output/[idea-name]/pipeline-dashboard.html` — marks all Discovery agents
+complete, Build pipeline pending. Use the pipeline-dashboard template from
+`skills/artefact-templates.md`. Embed the full contents of
+`skills/forge-styles.css` inline in a `<style>` tag.
 
 ---
 
@@ -97,15 +112,22 @@ Assembled from the Tech Feasibility draft, enriched with:
 
 This is what Claude Code reads at the start of every build session.
 It must be complete enough that no prior context is needed.
+Keep this as lean markdown — required by Claude Code.
 
-**`DESIGN.md`**
+**`CLAUDE.html`**
+Rich companion to `CLAUDE.md`. Same content, HTML format.
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
+
+**`DESIGN.html`**
 Design context file for Stitch / Anthropic design tool.
 Assembled from Design Agent output and Tech Feasibility constraints.
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
 **`decisions.md`**
 Initialised with any foundational decisions made during discovery.
+Keep as markdown — this is an append-only ADR log.
 
-Commit message: `discovery synthesis: initial brief, CLAUDE.md, DESIGN.md`
+Commit message: `discovery synthesis: initial brief, CLAUDE.md + CLAUDE.html, DESIGN.html`
 
 ---
 
