@@ -10,7 +10,7 @@
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #f0eee9; }
   * { box-sizing: border-box; }
-  .artboard-host { width: 100%; min-height: 100%; }
+  #root { height: 100%; }
 </style>
 </head>
 <body>
@@ -46,25 +46,13 @@
       ...PIPELINE,
       ...LATERAL.map(a => ({ ...a, n: '··', phase: a.phase || 'framework' })),
     ];
+    const [selectedId, setSelectedId] = React.useState(allAgents[0].id);
+    const selected = allAgents.find(a => a.id === selectedId) || allAgents[0];
     return (
-      <DesignCanvas>
-        <DCSection
-          id="forge-agents"
-          title="Forge · Agent reference pages"
-          subtitle="Reading live from the agent definition files. Edit a .md file and reload — the viewer reflects it.">
-          {allAgents.map(agent => (
-            <DCArtboard
-              key={agent.id}
-              id={`agent-${agent.id}`}
-              label={`${agent.n} · ${agent.name}`}
-              width={1320} height={2400}>
-              <div className="artboard-host">
-                <AgentMdPage src={`../${agent.file}`} />
-              </div>
-            </DCArtboard>
-          ))}
-        </DCSection>
-      </DesignCanvas>
+      <AgentMdPage
+        src={`../${selected.file}`}
+        onSelectAgent={setSelectedId}
+      />
     );
   }
 

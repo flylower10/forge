@@ -11,11 +11,12 @@
   const { parseMd } = window.ForgeMd;
   const { PIPELINE, LATERAL, PHASES } = window.FORGE_CONFIG;
 
-  function DirRail({ activeId }) {
+  function DirRail({ activeId, onSelectAgent }) {
     const groups = [
-      { id:'product-team', label:'product-team', range:[0,9] },
-      { id:'build-team',   label:'build-team',   range:[9,14] },
-      { id:'marketing',    label:'marketing-team', range:[14,16] },
+      { id:'product-team', label:'product-team', agents: PIPELINE },
+      { id:'build-team',   label:'build-team',   agents: PIPELINE.filter(p => p.file.startsWith('build-team/')) },
+      { id:'marketing',    label:'marketing-team', agents: PIPELINE.filter(p => p.file.startsWith('marketing-team/')) },
+      { id:'framework',    label:'framework',    agents: LATERAL },
     ];
     return (
       <aside className="fg-dir">
@@ -24,17 +25,18 @@
             <span className="fg-dir__mark">◆</span> Forge
             <span className="fg-dir__ver">v0.4</span>
           </div>
-          <input className="fg-dir__search" placeholder="Filter agents…" readOnly />
         </div>
         {groups.map(g => (
           <div key={g.id} className="fg-dir__group">
             <div className="fg-dir__group-head">
               <span className="fg-dir__group-label">{g.label}</span>
-              <span className="fg-dir__group-count">{g.range[1]-g.range[0]}</span>
+              <span className="fg-dir__group-count">{g.agents.length}</span>
             </div>
-            {PIPELINE.slice(g.range[0], g.range[1]).map(p => (
+            {g.agents.map(p => (
               <div key={p.id} data-phase={p.phase}
-                   className={`fg-dir__item${p.id === activeId ? ' fg-dir__item--active' : ''}`}>
+                   className={`fg-dir__item${p.id === activeId ? ' fg-dir__item--active' : ''}`}
+                   style={{cursor:'pointer'}}
+                   onClick={() => onSelectAgent && onSelectAgent(p.id)}>
                 <span className="fg-dir__n">{p.n}</span>
                 <div style={{flex:1, minWidth:0}}>
                   <div className="fg-dir__name">{p.name}</div>
@@ -336,7 +338,7 @@
     );
   }
 
-  function AgentMdPage({ src }) {
+  function AgentMdPage({ src, onSelectAgent }) {
     const [tree, setTree] = React.useState(null);
     const [error, setError] = React.useState(null);
 
@@ -354,7 +356,7 @@
     return (
       <div className="fg-root" data-phase={fm.phase} style={{minHeight:'100%'}}>
         <div className="fg-shell" data-shell="3col">
-          <DirRail activeId={fm.id} />
+          <DirRail activeId={fm.id} onSelectAgent={onSelectAgent} />
           <main className="fg-main">
             <Header fm={fm} />
             {fm.n && <Pipeline fm={fm} />}
