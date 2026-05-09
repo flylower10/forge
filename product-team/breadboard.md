@@ -5,6 +5,11 @@
 
 ---
 
+## Behavioral baseline
+Read and apply `skills/intellectual-standards.md` before producing any output.
+
+---
+
 ## When to run
 
 After Synthesis has produced a brief and selected direction, and before
@@ -105,41 +110,40 @@ Refinement Ceremony — it is probably scope creep.
 
 ## Output format
 
-Save to `output/[idea-name]/breadboard.md`:
+Save to `output/[idea-name]/breadboard.html`.
 
-```md
-# [Idea name] — Breadboard
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-## Places
+### Primary view — SVG flow diagram
 
-| ID | Place | Description |
-|----|-------|-------------|
-| P1 | ... | ... |
+Render the breadboard as an inline SVG flow diagram:
 
-## UI Affordances
+- **Places** — rounded rectangles, fill `var(--blue)`
+- **Stores** — parallelograms, fill `var(--green)`
+- **Flagged unknowns** — amber nodes (fill `var(--amber)` if defined, else `#f59e0b`)
+- **Affordances** — labelled directed edges:
+  - Solid line = UI affordance (type `U`)
+  - Dashed line = non-UI affordance (type `N`)
 
-| ID | Place | Affordance | Wires Out | Returns To |
-|----|-------|------------|-----------|------------|
-| U1 | P1 | ... | → N1 | — |
+Label each node with its ID (P1, U1, N1, S1) and a short name. Label each
+edge with the affordance description. Arrow direction shows control flow
+(Wires Out). Where a Returns To differs from Wires Out, draw a second
+edge in the reverse direction.
 
-## Non-UI Affordances
+### Secondary view — reference tables
 
-| ID | Place | Affordance | Wires Out | Returns To |
-|----|-------|------------|-----------|------------|
-| N1 | P1 | ... | → S1 | → U2 |
+After the SVG, include the five reference tables collapsed by default
+using `<details>` elements. One `<details>` block per table:
 
-## Stores
+1. Places
+2. UI Affordances (ID, Place, Affordance, Wires Out, Returns To)
+3. Non-UI Affordances (ID, Place, Affordance, Wires Out, Returns To)
+4. Stores (ID, Place, Store, Description)
+5. Flagged unknowns (Mechanism, What is unknown, Spike needed?)
 
-| ID | Place | Store | Description |
-|----|-------|-------|-------------|
-| S1 | P1 | ... | ... |
-
-## Flagged unknowns
-
-| Mechanism | What is unknown | Spike needed? |
-|-----------|----------------|:-------------:|
-| N3 | How duplicate check works at the DB layer | Yes |
-```
+Each `<details>` should have a `<summary>` with the table name.
+The flagged unknowns table must always be present — if empty, the table
+body should read "None identified."
 
 ---
 
