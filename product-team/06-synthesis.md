@@ -71,26 +71,38 @@ When User Researcher recommends validating before building:
 
 Write to `output/[idea-name]/`:
 
-**`brief.html`**
-Full product brief using the template in `/skills/artefact-templates.md`.
-This is the product source of truth. Write it completely — no references
-to other files, no "see running brief." It must stand alone.
+**`brief.md`** (canonical source)
+Write the brief in clean markdown using the `brief.md` template from `skills/artefact-templates.md`.
+This is the editable source of truth — human-readable and human-editable.
+It must stand alone: no references to other files, no "see running brief."
+
+**`brief.html`** (presentation layer)
+Generate from `brief.md` using the `brief.html` HTML skeleton from `skills/artefact-templates.md`.
 Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`assumption-log.html`**
-All assumptions from the Sceptic's output, ranked by risk level, with
-status (open / defended / accepted risk) and validation method.
+**`assumption-log.md`** (canonical source)
+Write all assumptions from the Sceptic's output in clean markdown using the `assumption-log.md` template from `skills/artefact-templates.md`.
+Ranked by risk level, with status (open / defended / accepted risk) and validation method.
+
+**`assumption-log.html`** (presentation layer)
+Generate from `assumption-log.md` using the `assumption-log.html` HTML skeleton from `skills/artefact-templates.md`.
 Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`personas.html`**
-User personas and journey maps from the Design Agent output.
+**`personas.md`** (canonical source)
+Write user personas and journey maps from the Design Agent output in clean markdown using the `personas.md` template from `skills/artefact-templates.md`.
+
+**`personas.html`** (presentation layer)
+Generate from `personas.md` using the `personas.html` HTML skeleton from `skills/artefact-templates.md`.
 Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`research-plan.html`**
-Full research plan from the User Researcher.
+**`research-plan.md`** (canonical source)
+Write the full research plan from the User Researcher in clean markdown using the `research-plan.md` template from `skills/artefact-templates.md`.
+
+**`research-plan.html`** (presentation layer)
+Generate from `research-plan.md` using the `research-plan.html` HTML skeleton from `skills/artefact-templates.md`.
 Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`pipeline-dashboard.html`**
+**`pipeline-dashboard.html`** (presentation-only)
 Write `output/[idea-name]/pipeline-dashboard.html` — marks all Discovery agents
 complete, Build pipeline pending. Use the pipeline-dashboard template from
 `skills/artefact-templates.md`. Embed the full contents of
@@ -118,16 +130,20 @@ Keep this as lean markdown — required by Claude Code.
 Rich companion to `CLAUDE.md`. Same content, HTML format.
 Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
-**`DESIGN.html`**
+**`DESIGN.md`** (canonical source)
 Design context file for Stitch / Anthropic design tool.
 Assembled from Design Agent output and Tech Feasibility constraints.
+Keep as clean markdown — editable source of truth.
+
+**`DESIGN.html`** (presentation layer)
+Generate from `DESIGN.md`.
 Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
 **`decisions.md`**
 Initialised with any foundational decisions made during discovery.
 Keep as markdown — this is an append-only ADR log.
 
-Commit message: `discovery synthesis: initial brief, CLAUDE.md + CLAUDE.html, DESIGN.html`
+Commit message: `discovery synthesis: initial brief, CLAUDE.md + CLAUDE.html, DESIGN.md + DESIGN.html`
 
 ---
 

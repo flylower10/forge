@@ -250,19 +250,16 @@ If QA finds issues, route back to Engineer with specific findings.
 When a burst of work concludes (session ending, natural stopping point, or
 explicit human instruction to wrap up), complete these steps in order:
 
-**1. Write `handoff.html`**
-Write `output/[idea-name]/handoff.html`. Use the handoff template from
-`skills/artefact-templates.md`, embed `forge-styles.css` inline. Required
-sections:
-- Current product state card
-- Last burst summary
-- Next 3 actions in priority order
-- Open blockers
-- Linear project link
+**1. Write `output/[idea-name]/handoff.md`** (canonical source)
+Write the handoff in clean markdown using the `handoff.md` template from `skills/artefact-templates.md`.
+Required sections: current product state, last burst summary, next 3 actions in priority order, open blockers, key decisions, Linear link.
 
-**2. Update `pipeline-dashboard.html`**
-Read the existing `output/[idea-name]/pipeline-dashboard.html`. Append a
-new milestone block containing:
+**2. Generate `output/[idea-name]/handoff.html`** (presentation layer)
+Generate from `handoff.md` using the HTML handoff template from `skills/artefact-templates.md`.
+Embed `forge-styles.css` inline.
+
+**3. Rewrite `output/[idea-name]/pipeline-dashboard.html`**
+Read the existing file. Append a new milestone block containing:
 - Burst number and date
 - Issues closed this burst
 - Key decisions made

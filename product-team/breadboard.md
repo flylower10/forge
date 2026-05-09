@@ -24,7 +24,7 @@ mark it optional at intake.
 
 ## What you read
 
-- `output/[idea-name]/brief.md` — selected direction and its mechanisms
+- `output/[idea-name]/brief.md` — canonical markdown source; selected direction and its mechanisms
 - `output/[idea-name]/running-brief.md` — design decisions from The Blueprint
 - `docs/CLAUDE.md` — existing system context if this is an enhancement
 
@@ -110,9 +110,11 @@ Refinement Ceremony — it is probably scope creep.
 
 ## Output format
 
-Save to `output/[idea-name]/breadboard.html`.
+Save to `output/[idea-name]/breadboard.md` first (canonical source):
+Write the five reference tables in markdown using the `breadboard.md` template from `skills/artefact-templates.md`.
 
-Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
+Then generate `output/[idea-name]/breadboard.html` from `breadboard.md`:
+Embed `skills/forge-styles.css` inline. Primary view = SVG flow diagram rendered from the markdown tables. Secondary view = the five reference tables, collapsed by default.
 
 ### Primary view — SVG flow diagram
 
