@@ -97,9 +97,9 @@ DISCOVERY (configured per idea — agents below are available, not mandatory)
   ├─ 04 · Tech Feasibility  →  autonomous → one challenge question
   ├─ 05 · User Researcher   →  autonomous → one challenge question
   └─ 06 · Synthesis         →  fully autonomous
-                                → Notion: brief, OST, assumptions,
-                                         personas, research plan
-                                → GitHub: CLAUDE.md, DESIGN.md, decisions.md
+                                → /output/[idea]: brief, OST, ost-decisions,
+                                         assumptions, personas, research plan
+                                → GitHub /docs/: CLAUDE.md, DESIGN.md, decisions.md
                                 → Linear: project, epics, issues
   │
   ▼
@@ -258,7 +258,8 @@ become available to all future ideas automatically.
 | File | Contents |
 |------|----------|
 | `memory/decisions.md` | ADR log — architectural decisions, append-only |
-| `memory/signal-log.md` | Sprint learning template |
+| `memory/signal-log.md` | Shipped-work learning template — copied per idea |
+| `memory/framework-backlog.md` | Open improvements to Forge itself — append-only |
 
 ## Skills
 | File | Contents |
@@ -407,8 +408,9 @@ that is a reason to improve the pipeline — not to bypass it.
 - The pipeline may loop back — if Devil's Advocate finds a fundamental
   flaw, return to Agent 01 with the specific concern flagged
 - Discovery ends at Synthesis. Build begins at Refinement Ceremony
-- Notion is the product source of truth. GitHub is the technical
-  source of truth. Linear is the build source of truth.
+- `/output/[idea-name]/` is the product source of truth (lives in this
+  repo). GitHub `/docs/` is the technical source of truth. Linear is the
+  build source of truth.
 - **Investigate before asking** — if a question can be answered by
   reading a file or running a command, do it first. Ask the human
   only when the answer requires their judgement or context that cannot

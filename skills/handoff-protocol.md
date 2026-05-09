@@ -149,7 +149,8 @@ filling in what you know, and proceed.
 
 - It is not a substitute for the full agent outputs. Those remain
   the authoritative record. The brief is a navigation layer.
-- It is not a Notion page or a GitHub file. It lives locally during
-  the pipeline run. Synthesis decides what gets pushed where.
+- It is not a final artefact or a GitHub-committed file. It lives
+  locally during the pipeline run. Synthesis decides what gets
+  promoted to canonical artefacts.
 - It is not a changelog. Do not log every minor decision — only
   what a downstream agent needs to know.

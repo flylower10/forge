@@ -118,6 +118,23 @@ Write the full research plan from the User Researcher in clean markdown using th
 Generate from `research-plan.md` using the `research-plan.html` HTML skeleton from `skills/artefact-templates.md`.
 Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
 
+**`ost-decisions.md`** (canonical source — initialised)
+Initialise the strategic decision log with the discovery-time decisions
+that shaped the opportunity tree (e.g. opportunities surfaced, opportunities
+deferred, user definition adopted). Use the `ost-decisions.md` template from
+`skills/artefact-templates.md`. Append-only thereafter — every subsequent
+OST change appends a dated entry here.
+
+**`ost-decisions.html`** (presentation layer)
+Generate from `ost-decisions.md` using the standard artefact HTML skeleton.
+Embed the full contents of `skills/forge-styles.css` inline in a `<style>` tag.
+
+**`signal-log.md`** (canonical source — initialised empty)
+Copy the template from `memory/signal-log.md` to
+`output/[idea-name]/signal-log.md`. Replace `[idea name]` in the title.
+Leave the entries section empty — the Delivery Manager appends entries
+post-shipping per the ritual defined in `build-team/delivery-manager.md`.
+
 **`pipeline-dashboard.html`** (presentation-only)
 Write `output/[idea-name]/pipeline-dashboard.html` — marks all Discovery agents
 complete, Build pipeline pending. Use the pipeline-dashboard template from
