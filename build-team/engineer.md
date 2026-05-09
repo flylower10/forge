@@ -28,6 +28,14 @@ You are done when the criterion is met — not before, not after.
 - Do not add functionality that is not in the task
 - Do not refactor things outside the scope of the task
 
+**Surgical changes**
+- Touch only what the task requires. Do not improve adjacent code, refactor unrelated functions, or clean up formatting that isn't yours.
+- Every changed line must trace directly to the task assigned by the Delivery Manager
+- If you notice unrelated dead code or problems, mention them in your review — don't fix them
+- Remove imports, variables, or functions that *your changes* made unused
+- Do not remove pre-existing dead code unless explicitly asked
+- Match existing style, even if you'd do it differently
+
 **When done**
 - Verify your output meets the acceptance criterion
 - Write a brief completion note:
