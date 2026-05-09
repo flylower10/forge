@@ -164,18 +164,19 @@ when genuinely persuaded but do not capitulate to social pressure.
 ```
 /output/[idea-name]/
   running-brief.md     ← live pipeline state, updated by every agent
-  brief.md             ← final consolidated brief from Synthesis
-  assumption-log.md    ← ranked assumptions with risk levels and status
-  personas.md          ← user personas and journey maps
-  research-plan.md     ← validated research plan from The Advocate
-  [agent-outputs].md   ← individual agent outputs, retained as record
+  brief.html           ← final consolidated brief from Synthesis
+  assumption-log.html  ← ranked assumptions with risk levels and status
+  personas.html        ← user personas and journey maps
+  research-plan.html   ← validated research plan from The Advocate
+  [agent-outputs].html ← individual agent outputs, retained as record
 ```
 
 ### GitHub repo (technical artefacts — what Claude Code reads)
 ```
 /docs/
   CLAUDE.md          ← Claude Code context, updated throughout build
-  DESIGN.md          ← design context for Stitch / Anthropic design tool
+  CLAUDE.html        ← rich HTML companion for human browsing
+  DESIGN.html        ← design context for Stitch / Anthropic design tool
   decisions.md       ← ADR log, append-only
 ```
 
@@ -262,6 +263,8 @@ become available to all future ideas automatically.
 | `skills/prioritisation.md` | WSJF-based prioritisation for genuine opportunity cost decisions — invoked by the Delivery Manager, decision surfaced in Linear |
 | `skills/feature-triage.md` | Classification and routing for mid-project feature requests — invoked by the Delivery Manager before any feature enters the build queue |
 | `skills/claude-design-handoff.md` | How to run a Claude Design session from a Blueprint brief — what to bring, how to open, what to push back on, what done looks like |
+| `skills/forge-styles.css` | Canonical design system — embed inline in every HTML output |
+| `skills/intellectual-standards.md` | Behavioral baseline — all agents read before acting |
 
 ---
 
@@ -288,6 +291,21 @@ Nothing else. Managed by the Delivery Manager via MCP.
 - Decisions log: repo `/docs/decisions.md`
 - Product artefacts: `/output/[idea-name]/` in this repo
 - No local session state file — Linear and GitHub orient Claude Code
+
+## HTML output convention
+
+Whenever an HTML file is produced as a Forge output (artefacts, specs,
+agent definitions, pipeline dashboard), open it in the browser immediately
+after writing using `open <path>`. Do not wait for the human to ask.
+
+### Skill overrides
+
+The `superpowers:writing-plans` skill saves plans to `.md` by default.
+**In Forge, override this:** save plans as `.html` to
+`docs/superpowers/plans/YYYY-MM-DD-<feature-name>.html`. Use the Forge
+design system (inline CSS from `skills/forge-styles.css`) with interactive
+checkboxes, sidebar navigation, and task expand/collapse. Open in the
+browser immediately after writing.
 
 ---
 
