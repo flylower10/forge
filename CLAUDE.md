@@ -302,11 +302,30 @@ Nothing else. Managed by the Delivery Manager via MCP.
 - Product artefacts: `/output/[idea-name]/` in this repo
 - No local session state file — Linear and GitHub orient Claude Code
 
+## Forge Viewer
+
+Agent reference pages are served by the viewer — a React app at `viewer/`.
+There are no static per-agent HTML files.
+
+**To browse agent pages:**
+```
+python3 -m http.server 8080   # from the Forge root
+open http://localhost:8080/viewer/
+```
+
+Keep the server running during active sessions. The viewer reads agent `.md`
+files directly — no HTML generation step.
+
+`viewer/forge-styles.css` — design system for agent pages (fg- prefix, phase colours)
+`skills/forge-styles.css` — design system for artefact HTML outputs (forge- prefix, dark theme)
+
 ## HTML output convention
 
 Whenever an HTML file is produced as a Forge output (artefacts, specs,
-agent definitions, pipeline dashboard), open it in the browser immediately
-after writing using `open <path>`. Do not wait for the human to ask.
+pipeline dashboard), open it in the browser immediately after writing
+using `open <path>`. Do not wait for the human to ask.
+
+Agent pages are not HTML outputs — they are served by the viewer (see above).
 
 ### Skill overrides
 
