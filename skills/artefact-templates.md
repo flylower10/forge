@@ -324,14 +324,14 @@ offline and survives being moved to any directory.
           row.style.display = 'none';
         }
       });
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('is-active'));
+      document.querySelectorAll('.forge-filter-btn').forEach(btn => btn.classList.remove('is-active'));
       document.getElementById('filter-' + status).classList.add('is-active');
     }
 
     function toggleNotes(btn) {
       const cell = btn.closest('td');
-      const full = cell.querySelector('.notes-full');
-      const short = cell.querySelector('.notes-short');
+      const full = cell.querySelector('.forge-notes-full');
+      const short = cell.querySelector('.forge-notes-short');
       if (full.style.display === 'none') {
         full.style.display = 'block';
         short.style.display = 'none';
@@ -344,7 +344,7 @@ offline and survives being moved to any directory.
     }
   </script>
   <style>
-    .filter-btn {
+    .forge-filter-btn {
       background: var(--elevated);
       border: 1px solid var(--border);
       border-radius: 5px;
@@ -358,10 +358,10 @@ offline and survives being moved to any directory.
       text-align: left;
       transition: background 0.12s, color 0.12s;
     }
-    .filter-btn:hover { background: var(--surface); color: var(--text); }
-    .filter-btn.is-active { background: var(--blue-surface); color: var(--blue); border-color: var(--blue-border); }
-    .notes-full { display: none; margin-top: 0.3rem; }
-    .expand-btn { color: var(--blue); cursor: pointer; font-size: 0.7rem; background: none; border: none; padding: 0; }
+    .forge-filter-btn:hover { background: var(--surface); color: var(--text); }
+    .forge-filter-btn.is-active { background: var(--blue-surface); color: var(--blue); border-color: var(--blue-border); }
+    .forge-notes-full { display: none; margin-top: 0.3rem; }
+    .forge-expand-btn { color: var(--blue); cursor: pointer; font-size: 0.7rem; background: none; border: none; padding: 0; }
   </style>
 </head>
 <body>
@@ -409,26 +409,26 @@ offline and survives being moved to any directory.
     <!-- SIDEBAR — filter controls -->
     <aside class="forge-sidebar">
       <p class="forge-sidebar__label">Filter by status</p>
-      <button class="filter-btn is-active" id="filter-all" onclick="filterTable('all')">All assumptions</button>
-      <button class="filter-btn" id="filter-open" onclick="filterTable('open')">Open</button>
-      <button class="filter-btn" id="filter-defended" onclick="filterTable('defended')">Defended</button>
-      <button class="filter-btn" id="filter-accepted" onclick="filterTable('accepted')">Accepted</button>
+      <button class="forge-filter-btn is-active" id="filter-all" onclick="filterTable('all')">All assumptions</button>
+      <button class="forge-filter-btn" id="filter-open" onclick="filterTable('open')">Open</button>
+      <button class="forge-filter-btn" id="filter-defended" onclick="filterTable('defended')">Defended</button>
+      <button class="forge-filter-btn" id="filter-accepted" onclick="filterTable('accepted')">Accepted</button>
 
       <p class="forge-sidebar__label" style="margin-top: 1.5rem;">Filter by risk</p>
-      <button class="filter-btn" id="filter-high" onclick="filterTable('high')">
+      <button class="forge-filter-btn" id="filter-high" onclick="filterTable('high')">
         <span class="forge-dot forge-dot--red" style="margin-right: 0.4rem;"></span>High risk
       </button>
-      <button class="filter-btn" id="filter-medium" onclick="filterTable('medium')">
+      <button class="forge-filter-btn" id="filter-medium" onclick="filterTable('medium')">
         <span class="forge-dot forge-dot--amber" style="margin-right: 0.4rem;"></span>Medium risk
       </button>
-      <button class="filter-btn" id="filter-low" onclick="filterTable('low')">
+      <button class="forge-filter-btn" id="filter-low" onclick="filterTable('low')">
         <span class="forge-dot forge-dot--green" style="margin-right: 0.4rem;"></span>Low risk
       </button>
 
       <p class="forge-sidebar__label" style="margin-top: 1.5rem;">Filter by type</p>
-      <button class="filter-btn" id="filter-desirability" onclick="filterTable('desirability')">Desirability</button>
-      <button class="filter-btn" id="filter-viability" onclick="filterTable('viability')">Viability</button>
-      <button class="filter-btn" id="filter-feasibility" onclick="filterTable('feasibility')">Feasibility</button>
+      <button class="forge-filter-btn" id="filter-desirability" onclick="filterTable('desirability')">Desirability</button>
+      <button class="forge-filter-btn" id="filter-viability" onclick="filterTable('viability')">Viability</button>
+      <button class="forge-filter-btn" id="filter-feasibility" onclick="filterTable('feasibility')">Feasibility</button>
     </aside>
 
     <!-- MAIN -->
@@ -460,9 +460,9 @@ offline and survives being moved to any directory.
             <td><span class="forge-badge forge-badge--amber">Open</span></td>
             <td style="color: var(--dim);"><!-- [agent fills: owner name or role] --></td>
             <td>
-              <span class="notes-short"><!-- [agent fills: short note preview] --></span>
-              <button class="expand-btn" onclick="toggleNotes(this)">more</button>
-              <div class="notes-full"><!-- [agent fills: full validation method and notes] --></div>
+              <span class="forge-notes-short"><!-- [agent fills: short note preview] --></span>
+              <button class="forge-expand-btn" onclick="toggleNotes(this)">more</button>
+              <div class="forge-notes-full"><!-- [agent fills: full validation method and notes] --></div>
             </td>
           </tr>
           <tr data-status="defended" data-risk="medium" data-type="viability">
@@ -473,9 +473,9 @@ offline and survives being moved to any directory.
             <td><span class="forge-badge forge-badge--green">Defended</span></td>
             <td style="color: var(--dim);"><!-- [agent fills: owner] --></td>
             <td>
-              <span class="notes-short"><!-- [agent fills: short note preview] --></span>
-              <button class="expand-btn" onclick="toggleNotes(this)">more</button>
-              <div class="notes-full"><!-- [agent fills: full notes] --></div>
+              <span class="forge-notes-short"><!-- [agent fills: short note preview] --></span>
+              <button class="forge-expand-btn" onclick="toggleNotes(this)">more</button>
+              <div class="forge-notes-full"><!-- [agent fills: full notes] --></div>
             </td>
           </tr>
           <tr data-status="accepted" data-risk="low" data-type="feasibility">
@@ -486,9 +486,9 @@ offline and survives being moved to any directory.
             <td><span class="forge-badge forge-badge--dim">Accepted</span></td>
             <td style="color: var(--dim);"><!-- [agent fills: owner] --></td>
             <td>
-              <span class="notes-short"><!-- [agent fills: short note] --></span>
-              <button class="expand-btn" onclick="toggleNotes(this)">more</button>
-              <div class="notes-full"><!-- [agent fills: full notes] --></div>
+              <span class="forge-notes-short"><!-- [agent fills: short note] --></span>
+              <button class="forge-expand-btn" onclick="toggleNotes(this)">more</button>
+              <div class="forge-notes-full"><!-- [agent fills: full notes] --></div>
             </td>
           </tr>
           <!-- [agent fills: add more rows following the same pattern] -->
@@ -525,19 +525,19 @@ offline and survives being moved to any directory.
     /* PASTE CONTENTS OF skills/forge-styles.css HERE */
   </style>
   <style>
-    .persona-journey {
+    .forge-persona-journey {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0.65rem;
       margin: 1rem 0 1.5rem;
     }
-    .journey-stage {
+    .forge-journey-stage {
       background: var(--elevated);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 0.85rem;
     }
-    .journey-stage__label {
+    .forge-journey-stage__label {
       font-size: 0.6rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -545,18 +545,18 @@ offline and survives being moved to any directory.
       color: var(--dim);
       margin-bottom: 0.5rem;
     }
-    .journey-stage__content {
+    .forge-journey-stage__content {
       font-size: 0.8rem;
       color: var(--mid);
       line-height: 1.55;
     }
-    .persona-section {
+    .forge-persona-section {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 0.65rem;
       margin-bottom: 1rem;
     }
-    .persona-quote {
+    .forge-persona-quote {
       font-size: 0.9rem;
       font-style: italic;
       color: var(--mid);
@@ -644,7 +644,7 @@ offline and survives being moved to any directory.
             </div>
           </div>
           <div class="forge-agent-card__body" style="grid-template-columns: 1fr;">
-            <blockquote class="persona-quote">
+            <blockquote class="forge-persona-quote">
               <!-- [agent fills: representative quote from this persona's perspective] -->
             </blockquote>
             <p style="font-size: 0.83rem; color: var(--mid);">
@@ -659,27 +659,27 @@ offline and survives being moved to any directory.
 
         <!-- JOURNEY MAP -->
         <h3>Journey map</h3>
-        <div class="persona-journey">
-          <div class="journey-stage" id="stage-discovery">
-            <div class="journey-stage__label">Discovery</div>
-            <div class="journey-stage__content"><!-- [agent fills: how this persona first encounters the problem or product] --></div>
+        <div class="forge-persona-journey">
+          <div class="forge-journey-stage" id="stage-discovery">
+            <div class="forge-journey-stage__label">Discovery</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills: how this persona first encounters the problem or product] --></div>
           </div>
-          <div class="journey-stage" id="stage-evaluation">
-            <div class="journey-stage__label">Evaluation</div>
-            <div class="journey-stage__content"><!-- [agent fills: how they evaluate whether to use it] --></div>
+          <div class="forge-journey-stage" id="stage-evaluation">
+            <div class="forge-journey-stage__label">Evaluation</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills: how they evaluate whether to use it] --></div>
           </div>
-          <div class="journey-stage" id="stage-adoption">
-            <div class="journey-stage__label">Adoption</div>
-            <div class="journey-stage__content"><!-- [agent fills: what makes them commit and start using it] --></div>
+          <div class="forge-journey-stage" id="stage-adoption">
+            <div class="forge-journey-stage__label">Adoption</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills: what makes them commit and start using it] --></div>
           </div>
-          <div class="journey-stage" id="stage-retention">
-            <div class="journey-stage__label">Retention</div>
-            <div class="journey-stage__content"><!-- [agent fills: what keeps them coming back] --></div>
+          <div class="forge-journey-stage" id="stage-retention">
+            <div class="forge-journey-stage__label">Retention</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills: what keeps them coming back] --></div>
           </div>
         </div>
 
         <!-- PAIN POINTS & GAINS -->
-        <div class="persona-section">
+        <div class="forge-persona-section">
           <div class="forge-card forge-card--red">
             <div class="forge-card__title">Pain points</div>
             <ul>
@@ -714,7 +714,7 @@ offline and survives being moved to any directory.
             </div>
           </div>
           <div class="forge-agent-card__body" style="grid-template-columns: 1fr;">
-            <blockquote class="persona-quote">
+            <blockquote class="forge-persona-quote">
               <!-- [agent fills: representative quote] -->
             </blockquote>
             <p style="font-size: 0.83rem; color: var(--mid);">
@@ -728,26 +728,26 @@ offline and survives being moved to any directory.
         </div>
 
         <h3>Journey map</h3>
-        <div class="persona-journey">
-          <div class="journey-stage">
-            <div class="journey-stage__label">Discovery</div>
-            <div class="journey-stage__content"><!-- [agent fills] --></div>
+        <div class="forge-persona-journey">
+          <div class="forge-journey-stage">
+            <div class="forge-journey-stage__label">Discovery</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills] --></div>
           </div>
-          <div class="journey-stage">
-            <div class="journey-stage__label">Evaluation</div>
-            <div class="journey-stage__content"><!-- [agent fills] --></div>
+          <div class="forge-journey-stage">
+            <div class="forge-journey-stage__label">Evaluation</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills] --></div>
           </div>
-          <div class="journey-stage">
-            <div class="journey-stage__label">Adoption</div>
-            <div class="journey-stage__content"><!-- [agent fills] --></div>
+          <div class="forge-journey-stage">
+            <div class="forge-journey-stage__label">Adoption</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills] --></div>
           </div>
-          <div class="journey-stage">
-            <div class="journey-stage__label">Retention</div>
-            <div class="journey-stage__content"><!-- [agent fills] --></div>
+          <div class="forge-journey-stage">
+            <div class="forge-journey-stage__label">Retention</div>
+            <div class="forge-journey-stage__content"><!-- [agent fills] --></div>
           </div>
         </div>
 
-        <div class="persona-section">
+        <div class="forge-persona-section">
           <div class="forge-card forge-card--red">
             <div class="forge-card__title">Pain points</div>
             <ul>
@@ -787,13 +787,13 @@ offline and survives being moved to any directory.
     /* PASTE CONTENTS OF skills/forge-styles.css HERE */
   </style>
   <style>
-    .knowledge-map {
+    .forge-knowledge-map {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0.65rem;
       margin-bottom: 1.5rem;
     }
-    .knowledge-col__header {
+    .forge-knowledge-col__header {
       font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -802,15 +802,15 @@ offline and survives being moved to any directory.
       padding-bottom: 0.4rem;
       border-bottom: 1px solid var(--border);
     }
-    .knowledge-col__item {
+    .forge-knowledge-col__item {
       font-size: 0.8rem;
       color: var(--mid);
       padding: 0.35rem 0;
       border-bottom: 1px solid rgba(42, 42, 61, 0.3);
       line-height: 1.5;
     }
-    .knowledge-col__item:last-child { border-bottom: none; }
-    .knowledge-col__basis {
+    .forge-knowledge-col__item:last-child { border-bottom: none; }
+    .forge-knowledge-col__basis {
       font-size: 0.7rem;
       color: var(--dim);
       margin-top: 0.15rem;
@@ -885,44 +885,44 @@ offline and survives being moved to any directory.
 
       <!-- KNOWLEDGE MAP -->
       <h2 id="knowledge-map">Knowledge map</h2>
-      <div class="knowledge-map">
+      <div class="forge-knowledge-map">
 
         <div class="forge-card">
-          <div class="knowledge-col__header" style="color: var(--green);">Known</div>
+          <div class="forge-knowledge-col__header" style="color: var(--green);">Known</div>
           <!-- [agent fills: one item per piece of grounded evidence] -->
-          <div class="knowledge-col__item">
+          <div class="forge-knowledge-col__item">
             <!-- [claim] -->
-            <div class="knowledge-col__basis"><!-- [basis / source] --></div>
+            <div class="forge-knowledge-col__basis"><!-- [basis / source] --></div>
           </div>
-          <div class="knowledge-col__item">
+          <div class="forge-knowledge-col__item">
             <!-- [claim] -->
-            <div class="knowledge-col__basis"><!-- [basis] --></div>
+            <div class="forge-knowledge-col__basis"><!-- [basis] --></div>
           </div>
         </div>
 
         <div class="forge-card">
-          <div class="knowledge-col__header" style="color: var(--amber);">Assumed</div>
+          <div class="forge-knowledge-col__header" style="color: var(--amber);">Assumed</div>
           <!-- [agent fills: one item per plausible but unverified claim] -->
-          <div class="knowledge-col__item">
+          <div class="forge-knowledge-col__item">
             <!-- [claim] -->
-            <div class="knowledge-col__basis"><!-- [what would verify it] --></div>
+            <div class="forge-knowledge-col__basis"><!-- [what would verify it] --></div>
           </div>
-          <div class="knowledge-col__item">
+          <div class="forge-knowledge-col__item">
             <!-- [claim] -->
-            <div class="knowledge-col__basis"><!-- [what would verify it] --></div>
+            <div class="forge-knowledge-col__basis"><!-- [what would verify it] --></div>
           </div>
         </div>
 
         <div class="forge-card">
-          <div class="knowledge-col__header" style="color: var(--red);">Unknown</div>
+          <div class="forge-knowledge-col__header" style="color: var(--red);">Unknown</div>
           <!-- [agent fills: one item per unaddressed question] -->
-          <div class="knowledge-col__item">
+          <div class="forge-knowledge-col__item">
             <!-- [claim] -->
-            <div class="knowledge-col__basis"><!-- [why it matters] --></div>
+            <div class="forge-knowledge-col__basis"><!-- [why it matters] --></div>
           </div>
-          <div class="knowledge-col__item">
+          <div class="forge-knowledge-col__item">
             <!-- [claim] -->
-            <div class="knowledge-col__basis"><!-- [why it matters] --></div>
+            <div class="forge-knowledge-col__basis"><!-- [why it matters] --></div>
           </div>
         </div>
 
@@ -1006,7 +1006,7 @@ offline and survives being moved to any directory.
     /* PASTE CONTENTS OF skills/forge-styles.css HERE */
   </style>
   <style>
-    .handoff-grid {
+    .forge-handoff-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
@@ -1089,7 +1089,7 @@ offline and survives being moved to any directory.
         <!-- [agent fills: idea name] --> &nbsp;·&nbsp; <!-- [agent fills: date] -->
       </p>
 
-      <div class="handoff-grid">
+      <div class="forge-handoff-grid">
 
         <!-- LEFT COLUMN -->
         <div>
@@ -1171,7 +1171,7 @@ offline and survives being moved to any directory.
           </div>
         </div>
 
-      </div><!-- /handoff-grid -->
+      </div><!-- /forge-handoff-grid -->
 
       <hr class="forge-divider">
 
@@ -1208,7 +1208,7 @@ offline and survives being moved to any directory.
     /* PASTE CONTENTS OF skills/forge-styles.css HERE */
   </style>
   <style>
-    .burst-block {
+    .forge-burst-block {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -1219,26 +1219,26 @@ offline and survives being moved to any directory.
       gap: 1rem;
       align-items: start;
     }
-    .burst-block__number {
+    .forge-burst-block__number {
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--dim);
     }
-    .burst-block__date {
+    .forge-burst-block__date {
       font-size: 0.68rem;
       color: var(--dim);
       margin-top: 0.2rem;
     }
-    .burst-block__decisions {
+    .forge-burst-block__decisions {
       font-size: 0.78rem;
       color: var(--dim);
       margin-top: 0.35rem;
     }
-    .burst-block.is-current {
+    .forge-burst-block.is-current {
       border-color: var(--green-border);
       background: var(--green-surface-subtle);
     }
-    .burst-block.is-current .burst-block__number {
+    .forge-burst-block.is-current .forge-burst-block__number {
       color: var(--green);
     }
   </style>
@@ -1372,16 +1372,16 @@ offline and survives being moved to any directory.
       </p>
 
       <!-- CURRENT BURST (in progress) -->
-      <div class="burst-block is-current">
+      <div class="forge-burst-block is-current">
         <div>
-          <div class="burst-block__number"><!-- [agent fills: N] --></div>
-          <div class="burst-block__date"><!-- [agent fills: date] --> · In progress</div>
+          <div class="forge-burst-block__number"><!-- [agent fills: N] --></div>
+          <div class="forge-burst-block__date"><!-- [agent fills: date] --> · In progress</div>
         </div>
         <div>
           <div style="font-size: 0.83rem; color: var(--text); margin-bottom: 0.35rem;">
             <!-- [agent fills: brief title of what this burst is building] -->
           </div>
-          <div class="burst-block__decisions">
+          <div class="forge-burst-block__decisions">
             <!-- [agent fills: key decisions or pivots in this burst, if any so far] -->
           </div>
         </div>
@@ -1391,10 +1391,10 @@ offline and survives being moved to any directory.
       </div>
 
       <!-- COMPLETED BURST — agent adds one block per completed burst, newest first -->
-      <div class="burst-block">
+      <div class="forge-burst-block">
         <div>
-          <div class="burst-block__number"><!-- [agent fills: N-1] --></div>
-          <div class="burst-block__date"><!-- [agent fills: date] --></div>
+          <div class="forge-burst-block__number"><!-- [agent fills: N-1] --></div>
+          <div class="forge-burst-block__date"><!-- [agent fills: date] --></div>
         </div>
         <div>
           <div style="font-size: 0.83rem; color: var(--text); margin-bottom: 0.35rem;">
@@ -1406,7 +1406,7 @@ offline and survives being moved to any directory.
               <div class="forge-metric__label">Issues closed</div>
             </div>
           </div>
-          <div class="burst-block__decisions">
+          <div class="forge-burst-block__decisions">
             <!-- [agent fills: key decisions made this burst] -->
           </div>
         </div>
