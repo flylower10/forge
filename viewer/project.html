@@ -1,0 +1,110 @@
+<!-- Project artefact viewer · open via ?id=wc-sim-market -->
+<!-- Serve with: python3 -m http.server 8080 from the forge root -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Forge · Project</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="forge-styles.css" />
+<link rel="stylesheet" href="forge-tweaks.css" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #f0eee9; }
+  * { box-sizing: border-box; }
+  #root { height: 100%; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="forge-config.js"></script>
+<script src="forge-md.js"></script>
+<script type="text/babel" src="artefacts/artefact-md.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+  const { PHASES } = window.FORGE_CONFIG;
+
+  function ProjectRail({ project, activeId, onSelect }) {
+    // Group artefacts: synthesised outputs first, then agent outputs
+    const synthesised = project.artefacts.filter(a => ['brief','running-brief','personas','research-plan','handoff','refinement-output'].includes(a.type || ''));
+    const agentOutputs = project.artefacts.filter(a => !['brief','running-brief','personas','research-plan','handoff','refinement-output'].includes(a.type || ''));
+    const groups = [
+      { label: 'synthesised', items: synthesised },
+      { label: 'agent outputs', items: agentOutputs },
+    ].filter(g => g.items.length > 0);
+
+    return (
+      <aside className="fg-dir">
+        <div className="fg-dir__head">
+          <div className="fg-dir__brand">
+            <span className="fg-dir__mark">◆</span> {project.name}
+            <span className="fg-dir__ver">project</span>
+          </div>
+        </div>
+        {groups.map(g => (
+          <div key={g.label} className="fg-dir__group">
+            <div className="fg-dir__group-head">
+              <span className="fg-dir__group-label">{g.label}</span>
+              <span className="fg-dir__group-count">{g.items.length}</span>
+            </div>
+            {g.items.map(a => (
+              <div key={a.id} data-phase={a.phase}
+                   className={`fg-dir__item${a.id === activeId ? ' fg-dir__item--active' : ''}`}
+                   style={{cursor:'pointer'}}
+                   onClick={() => onSelect(a.id)}>
+                <span className="fg-dir__n">{a.n}</span>
+                <div style={{flex:1, minWidth:0}}>
+                  <div className="fg-dir__name">{a.name}</div>
+                  <div className="fg-dir__sub">{a.file.split('/').pop()}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+        <div className="fg-dir__group" style={{marginTop:'auto', paddingTop:12}}>
+          <a href="index.html"
+             style={{display:'flex', alignItems:'center', gap:8, padding:'8px 16px',
+                     fontSize:11.5, color:'var(--fg-ink-soft)', fontFamily:'var(--fg-mono)',
+                     textDecoration:'none'}}>
+            ← Forge agents
+          </a>
+        </div>
+      </aside>
+    );
+  }
+
+  function App() {
+    const { PROJECTS = [] } = window.FORGE_CONFIG;
+    const params = new URLSearchParams(window.location.search);
+    const projectId = params.get('id');
+    const project = PROJECTS.find(p => p.id === projectId) || PROJECTS[0];
+
+    if (!project) {
+      return (
+        <div style={{padding:40, fontFamily:'var(--fg-mono)', color:'var(--fg-ink-soft)'}}>
+          No project found. Add <code>?id=wc-sim-market</code> to the URL.
+        </div>
+      );
+    }
+
+    const [selectedId, setSelectedId] = React.useState(project.artefacts[0].id);
+    const artefact = project.artefacts.find(a => a.id === selectedId) || project.artefacts[0];
+
+    return (
+      <div className="fg-root" data-phase={artefact.phase || 'discovery'} style={{minHeight:'100%'}}>
+        <div className="fg-shell">
+          <ProjectRail project={project} activeId={selectedId} onSelect={setSelectedId} />
+          <ArtefactMdPage src={`../${artefact.file}`} embedded={true} />
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

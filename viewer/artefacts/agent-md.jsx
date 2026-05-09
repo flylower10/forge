@@ -12,13 +12,11 @@
   const { PIPELINE, LATERAL, PHASES } = window.FORGE_CONFIG;
 
   function DirRail({ activeId, onSelectAgent }) {
-    const { PROJECTS = [] } = window.FORGE_CONFIG;
     const groups = [
       { id:'product-team', label:'product-team', agents: PIPELINE.filter(p => !p.file.startsWith('build-team/') && !p.file.startsWith('marketing-team/')) },
       { id:'build-team',   label:'build-team',   agents: PIPELINE.filter(p => p.file.startsWith('build-team/')) },
       { id:'marketing',    label:'marketing-team', agents: PIPELINE.filter(p => p.file.startsWith('marketing-team/')) },
       { id:'framework',    label:'framework',    agents: LATERAL },
-      ...PROJECTS.map(proj => ({ id: `proj-${proj.id}`, label: proj.name, agents: proj.artefacts })),
     ];
     return (
       <aside className="fg-dir">
