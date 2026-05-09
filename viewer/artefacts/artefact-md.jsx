@@ -456,7 +456,7 @@
     );
   }
 
-  function ArtefactMdPage({ src }) {
+  function ArtefactMdPage({ src, embedded }) {
     const [tree, setTree] = React.useState(null);
     const [error, setError] = React.useState(null);
 
@@ -496,35 +496,43 @@
     const { frontmatter: fm, sections } = tree;
     const meta = SECTION_META[fm.type] || {};
 
+    const inner = (
+      <>
+        <main className="fg-main">
+          <Header fm={fm} />
+          {sections.map((s, i) => {
+            const m = meta[s.title] || {};
+            return (
+              <Card key={i} title={s.title} eyebrow={m.eyebrow} meta={m.meta}>
+                <div className="fg-stack">
+                  {s.blocks.map((b, j) => <Block key={j} block={b} />)}
+                </div>
+              </Card>
+            );
+          })}
+          {fm.neighbours && (
+            <div className="fg-pager">
+              <a className="fg-pager__a">
+                <span className="fg-pager__label">Previous</span>
+                <span className="fg-pager__name">← {fm.neighbours.prev.n} · {fm.neighbours.prev.name}</span>
+              </a>
+              <a className="fg-pager__a fg-pager__a--right">
+                <span className="fg-pager__label">Next</span>
+                <span className="fg-pager__name">{fm.neighbours.next.n} · {fm.neighbours.next.name} →</span>
+              </a>
+            </div>
+          )}
+        </main>
+        <Rail rail={fm.rail} fm={fm} />
+      </>
+    );
+
+    if (embedded) return inner;
+
     return (
       <div className="fg-root" data-phase={fm.phase} style={{minHeight:'100%'}}>
         <div className="fg-shell" data-shell="2col-rail">
-          <main className="fg-main">
-            <Header fm={fm} />
-            {sections.map((s, i) => {
-              const m = meta[s.title] || {};
-              return (
-                <Card key={i} title={s.title} eyebrow={m.eyebrow} meta={m.meta}>
-                  <div className="fg-stack">
-                    {s.blocks.map((b, j) => <Block key={j} block={b} />)}
-                  </div>
-                </Card>
-              );
-            })}
-            {fm.neighbours && (
-              <div className="fg-pager">
-                <a className="fg-pager__a">
-                  <span className="fg-pager__label">Previous</span>
-                  <span className="fg-pager__name">← {fm.neighbours.prev.n} · {fm.neighbours.prev.name}</span>
-                </a>
-                <a className="fg-pager__a fg-pager__a--right">
-                  <span className="fg-pager__label">Next</span>
-                  <span className="fg-pager__name">{fm.neighbours.next.n} · {fm.neighbours.next.name} →</span>
-                </a>
-              </div>
-            )}
-          </main>
-          <Rail rail={fm.rail} fm={fm} />
+          {inner}
         </div>
       </div>
     );

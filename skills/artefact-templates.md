@@ -28,9 +28,40 @@ offline and survives being moved to any directory.
 
 Agents write the `.md` source first — clean, human-editable content. Then generate the `.html` presentation from it. The markdown is the canonical source of truth. The HTML is the browsable view.
 
+### Frontmatter rule
+
+Every `.md` output file **must** begin with a `---json` frontmatter block. This makes the file self-describing and lets the Forge viewer render it directly without an HTML wrapper. The frontmatter is **not** shown to the reader — it is metadata for the viewer renderer.
+
+Required fields:
+- `type` — artefact kind: `brief`, `personas`, `research-plan`, `handoff`, `running-brief`, `refinement-output`, `agent-output`
+- `file` — repo-relative path (e.g. `output/wc-sim-market/brief.md`)
+- `title` — the document title (matches the H1)
+- `tagline` — one sentence summary of what this document contains
+- `phase` — `discovery`, `refinement`, `build`, `marketing`, or `framework`
+- `status` — short human-readable status (e.g. `Discovery complete`, `3 open risks`)
+- `lastEdit` — `YYYY-MM-DD · Agent Name`
+- `stats` — array of 3–4 `{ "k": "Label", "v": "Value" }` objects for the header strip; add `"phase": true` to one to colour it
+
 ### `brief.md`
 
 ```markdown
+---json
+{
+  "type": "brief",
+  "file": "output/[idea-name]/brief.md",
+  "title": "[Product Name] — Brief",
+  "tagline": "[One sentence: what is this product and who is it for?]",
+  "phase": "discovery",
+  "status": "Discovery complete",
+  "lastEdit": "YYYY-MM-DD · Synthesis",
+  "stats": [
+    { "k": "Phase", "v": "Discovery", "phase": true },
+    { "k": "Status", "v": "Complete" },
+    { "k": "North star", "v": "[metric]" },
+    { "k": "Tournament", "v": "[event · date if applicable]" }
+  ]
+}
+---
 # [Product Name] — Brief
 
 **Status:** [Draft / Approved]  **Phase:** [Discovery / Build]

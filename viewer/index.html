@@ -41,19 +41,40 @@
 
 <script type="text/babel" data-presets="react">
   function App() {
-    const { PIPELINE, LATERAL } = window.FORGE_CONFIG;
+    const { PIPELINE, LATERAL, PROJECTS = [] } = window.FORGE_CONFIG;
     const allAgents = [
       ...PIPELINE,
       ...LATERAL.map(a => ({ ...a, n: '··', phase: a.phase || 'framework' })),
     ];
+    const allArtefacts = PROJECTS.flatMap(p => p.artefacts);
+
     const [selectedId, setSelectedId] = React.useState(allAgents[0].id);
-    const selected = allAgents.find(a => a.id === selectedId) || allAgents[0];
-    return (
-      <AgentMdPage
-        src={`../${selected.file}`}
-        onSelectAgent={setSelectedId}
-      />
-    );
+
+    const agent    = allAgents.find(a => a.id === selectedId);
+    const artefact = allArtefacts.find(a => a.id === selectedId);
+
+    if (agent) {
+      return (
+        <AgentMdPage
+          src={`../${agent.file}`}
+          onSelectAgent={setSelectedId}
+        />
+      );
+    }
+
+    if (artefact) {
+      const ForgeDirRail = window.ForgeDirRail;
+      return (
+        <div className="fg-root" data-phase={artefact.phase || 'discovery'} style={{minHeight:'100%'}}>
+          <div className="fg-shell">
+            <ForgeDirRail activeId={selectedId} onSelectAgent={setSelectedId} />
+            <ArtefactMdPage src={`../${artefact.file}`} embedded={true} />
+          </div>
+        </div>
+      );
+    }
+
+    return null;
   }
 
   ReactDOM.createRoot(document.getElementById('root')).render(<App />);
