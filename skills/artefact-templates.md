@@ -24,6 +24,167 @@ offline and survives being moved to any directory.
 
 ---
 
+## Markdown source templates
+
+Agents write the `.md` source first — clean, human-editable content. Then generate the `.html` presentation from it. The markdown is the canonical source of truth. The HTML is the browsable view.
+
+### `brief.md`
+
+```markdown
+# [Product Name] — Brief
+
+**Status:** [Draft / Approved]  **Phase:** [Discovery / Build]
+
+## Problem
+[One paragraph — who has the problem, what it costs them, why now]
+
+## Users
+[Personas — name, role, primary job-to-be-done]
+
+## Solution
+[What we're building and why it's the right solution]
+
+## Scope (MVP)
+[Bulleted feature list — what's in, what's explicitly out]
+
+## Pricing
+[Model and rationale]
+
+## Risks
+[Top 3 risks with mitigation notes]
+
+## Open questions
+[Any unresolved questions requiring human sign-off]
+```
+
+### `assumption-log.md`
+
+```markdown
+# [Product Name] — Assumption Log
+
+| # | Assumption | Risk | Status | Owner | Notes |
+|---|---|---|---|---|---|
+| 1 | [assumption text] | High / Medium / Low | Open / Defended / Accepted | [agent or human] | [rationale] |
+```
+
+### `personas.md`
+
+```markdown
+# [Product Name] — Personas
+
+## [Persona Name]
+**Role:** [job title or context]
+**Quote:** "[verbatim quote capturing their worldview]"
+
+### Jobs to be done
+- [primary JTBD]
+- [secondary JTBD]
+
+### Journey
+| Stage | Action | Pain | Gain |
+|---|---|---|---|
+| Discovery | | | |
+| Evaluation | | | |
+| Adoption | | | |
+| Retention | | | |
+
+### Pain points
+- [pain 1]
+
+### What they value
+- [gain 1]
+```
+
+### `research-plan.md`
+
+```markdown
+# [Product Name] — Research Plan
+
+## Knowledge map
+
+| Know | Assume | Must learn |
+|---|---|---|
+| [fact] | [assumption] | [question] |
+
+## Validation priorities
+
+| # | Question | Method | Owner | Status |
+|---|---|---|---|---|
+| 1 | [research question] | Interview / Survey / Test | | Open |
+
+## Interview guide
+
+### Screener
+[Who we're looking for]
+
+### Questions
+1. [question]
+```
+
+### `handoff.md`
+
+```markdown
+# Handoff — Burst [N] — [Date]
+
+## Product state
+**Phase:** [current phase]  **Sprint:** [N]  **Status:** [On track / At risk / Blocked]
+
+### Key metrics
+- [metric]: [value]
+
+## Last burst — what shipped
+- [issue/task]: [brief description]
+
+## Next 3 actions (priority order)
+1. [action] — [owner]
+2. [action] — [owner]
+3. [action] — [owner]
+
+## Open blockers
+| Blocker | Owner | Since |
+|---|---|---|
+| [description] | | [date] |
+
+## Key decisions made
+- [decision]: [rationale]
+
+## Linear
+[project URL]
+```
+
+### `breadboard.md`
+
+```markdown
+# [Product Name] — Breadboard
+
+## Places
+| ID | Name | Description |
+|---|---|---|
+| P1 | [name] | [what the user can do here] |
+
+## UI Affordances
+| ID | Place | Affordance | Wires Out | Returns To |
+|---|---|---|---|---|
+| U1 | P1 | [button/input/display] | [what it triggers] | [where result goes] |
+
+## Non-UI Affordances
+| ID | Place | Affordance | Wires Out | Returns To |
+|---|---|---|---|---|
+| N1 | P1 | [system behaviour] | [what it triggers] | [where result goes] |
+
+## Stores
+| ID | Place | Store | Description |
+|---|---|---|---|
+| S1 | P1 | [store name] | [what it holds] |
+
+## Flagged unknowns
+| Mechanism | What is unknown | Spike needed? |
+|---|---|---|
+| [mechanism] | [question] | Yes / No |
+```
+
+---
+
 ## Template 1 — `brief.html`
 
 ```html
