@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge HTML Outputs — Design Spec</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d14; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; }
+
+:root {
+  --bg:       #0d0d14;
+  --surface:  #14141f;
+  --elevated: #1c1c2e;
+  --border:   #2a2a3d;
+  --text:     #e8e8f0;
+  --mid:      #9090a8;
+  --dim:      #555568;
+  --blue:     #5b8dee;
+  --green:    #4caf82;
+  --amber:    #e8a94d;
+  --red:      #e05c5c;
+  --purple:   #9b72cf;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0.65rem 1.75rem; display: flex; justify-content: space-between; align-items: center;
+  position: sticky; top: 0; z-index: 100;
+}
+.breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+.breadcrumb a { color: var(--dim); text-decoration: none; }
+.breadcrumb a:hover { color: var(--blue); }
+.breadcrumb-sep { color: var(--border); }
+.breadcrumb-cur { color: var(--mid); }
+.forge-logo { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.topbar-right { display: flex; align-items: center; gap: 0.75rem; font-size: 0.72rem; color: var(--dim); }
+
+/* ── LAYOUT ── */
+.layout { display: grid; grid-template-columns: 230px 1fr; min-height: calc(100vh - 53px); }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--surface); border-right: 1px solid var(--border);
+  padding: 1.5rem 1rem; position: sticky; top: 53px;
+  height: calc(100vh - 53px); overflow-y: auto;
+}
+.nav-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin: 1.25rem 0 0.5rem; }
+.nav-label:first-child { margin-top: 0; }
+.nav-link {
+  display: block; padding: 0.3rem 0.6rem; font-size: 0.78rem;
+  color: var(--mid); text-decoration: none; border-radius: 5px; margin-bottom: 0.1rem;
+}
+.nav-link:hover { background: var(--elevated); color: var(--text); }
+.nav-link.active { background: rgba(91,141,238,0.12); color: var(--blue); }
+
+/* ── MAIN ── */
+.main { padding: 2rem 2.5rem; max-width: 860px; }
+
+/* ── TYPOGRAPHY ── */
+h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2.5rem 0 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+h2:first-of-type { border-top: none; margin-top: 1.5rem; padding-top: 0; }
+h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin: 1.25rem 0 0.65rem; }
+p  { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.85rem; }
+p:last-child { margin-bottom: 0; }
+code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.4rem; border-radius: 3px; }
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── DOC META ── */
+.doc-meta { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.75rem; flex-wrap: wrap; }
+.badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.52rem; border-radius: 4px; }
+.badge-amber  { background: rgba(232,169,77,0.15);  color: var(--amber); }
+.badge-blue   { background: rgba(91,141,238,0.15);  color: var(--blue); }
+.badge-green  { background: rgba(76,175,130,0.15);  color: var(--green); }
+.badge-red    { background: rgba(224,92,92,0.15);   color: var(--red); }
+.badge-grey   { background: rgba(144,144,168,0.12); color: var(--mid); }
+
+/* ── CARDS ── */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; }
+.card-title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim); margin-bottom: 0.75rem; }
+
+/* ── DECISION BLOCK ── */
+.decision-block {
+  background: rgba(91,141,238,0.06); border: 1px solid rgba(91,141,238,0.2);
+  border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0;
+  padding: 1rem 1.25rem; margin-bottom: 1rem;
+}
+.decision-block p { color: var(--text); font-size: 0.875rem; }
+
+.exception-block {
+  background: rgba(232,169,77,0.06); border: 1px solid rgba(232,169,77,0.2);
+  border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0;
+  padding: 0.85rem 1.25rem; margin-bottom: 1rem;
+}
+.exception-block p { color: var(--mid); font-size: 0.83rem; }
+
+/* ── COLOUR SWATCHES ── */
+.swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.65rem; margin-bottom: 1rem; }
+.swatch-item { background: var(--elevated); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.swatch-color { height: 40px; }
+.swatch-info { padding: 0.5rem 0.65rem; }
+.swatch-token { font-family: 'SF Mono', monospace; font-size: 0.68rem; color: var(--mid); display: block; }
+.swatch-value { font-family: 'SF Mono', monospace; font-size: 0.7rem; color: var(--dim); display: block; margin-top: 0.1rem; }
+.swatch-use   { font-size: 0.68rem; color: var(--dim); display: block; margin-top: 0.15rem; }
+
+/* ── COMPONENTS PREVIEW ── */
+.component-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.75rem; }
+.status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: var(--mid); }
+.dot { width: 6px; height: 6px; border-radius: 50%; }
+.dot-green  { background: var(--green); box-shadow: 0 0 5px var(--green); }
+.dot-amber  { background: var(--amber); }
+.dot-red    { background: var(--red); }
+.dot-blue   { background: var(--blue); }
+.dot-grey   { background: var(--dim); }
+
+/* ── LAYOUT DIAGRAM ── */
+.layout-diagram {
+  background: var(--elevated); border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; margin-bottom: 1rem;
+}
+.diag-row { display: flex; border-bottom: 1px solid var(--border); font-size: 0.72rem; }
+.diag-row:last-child { border-bottom: none; }
+.diag-label { background: rgba(91,141,238,0.08); color: var(--blue); font-weight: 700; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.07em; padding: 0.55rem 0.75rem; min-width: 130px; border-right: 1px solid var(--border); display: flex; align-items: center; }
+.diag-content { padding: 0.55rem 1rem; color: var(--mid); display: flex; align-items: center; flex: 1; }
+.diag-split { display: grid; grid-template-columns: 200px 1fr; flex: 1; }
+.diag-sidebar-preview { background: rgba(20,20,31,0.5); border-right: 1px solid var(--border); padding: 0.55rem 0.75rem; color: var(--dim); font-size: 0.7rem; }
+.diag-main-preview { padding: 0.55rem 0.75rem; color: var(--mid); font-size: 0.7rem; }
+
+/* ── ARTEFACT GRID ── */
+.artefact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+.artefact-card { background: var(--elevated); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem; }
+.artefact-name { font-family: 'SF Mono', monospace; font-size: 0.8rem; color: var(--green); margin-bottom: 0.35rem; font-weight: 600; }
+.artefact-name.md { color: var(--amber); }
+.artefact-desc { font-size: 0.78rem; color: var(--mid); line-height: 1.5; }
+.artefact-tag  { display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.12rem 0.4rem; border-radius: 3px; margin-top: 0.45rem; }
+.tag-new  { background: rgba(76,175,130,0.12); color: var(--green); }
+.tag-keep { background: rgba(232,169,77,0.12); color: var(--amber); }
+.tag-convert { background: rgba(91,141,238,0.12); color: var(--blue); }
+
+/* ── AGENT CARD ── */
+.agent-preview { background: var(--elevated); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+.agent-head { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.agent-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.agent-alias { font-size: 0.7rem; color: var(--dim); font-style: italic; }
+.agent-body { padding: 0.85rem 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+.io-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim); margin-bottom: 0.35rem; }
+.io-chips { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+.chip { font-family: 'SF Mono', monospace; font-size: 0.68rem; padding: 0.15rem 0.45rem; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; color: var(--mid); }
+.chip-out { color: var(--green); border-color: rgba(76,175,130,0.3); background: rgba(76,175,130,0.06); }
+.agent-footer { padding: 0.6rem 1rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--dim); display: flex; justify-content: space-between; align-items: center; }
+.view-btn { font-size: 0.68rem; color: var(--mid); background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 0.2rem 0.55rem; cursor: pointer; }
+
+/* ── PRINCIPLES LIST ── */
+.principle { display: flex; gap: 0.85rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border); }
+.principle:last-child { border-bottom: none; }
+.principle-num { font-size: 1rem; font-weight: 700; color: var(--blue); min-width: 1.75rem; padding-top: 0.05rem; }
+.principle-body h4 { font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 0.25rem; }
+.principle-body p { font-size: 0.8rem; color: var(--mid); line-height: 1.6; margin: 0; }
+
+/* ── IMPL TABLE ── */
+.impl-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1rem; }
+.impl-table th { text-align: left; padding: 0.45rem 0.7rem; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dim); border-bottom: 1px solid var(--border); }
+.impl-table td { padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid); vertical-align: top; }
+.impl-table tr:last-child td { border-bottom: none; }
+.impl-table tr:hover td { background: var(--elevated); }
+.file-ref { font-family: 'SF Mono', monospace; font-size: 0.75rem; color: var(--blue); }
+.file-ref.keep { color: var(--amber); }
+
+/* ── DONE LIST ── */
+.done-item { display: flex; gap: 0.75rem; padding: 0.7rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.done-item:last-child { border-bottom: none; }
+.done-num { font-size: 0.72rem; font-weight: 700; color: var(--dim); min-width: 1.5rem; padding-top: 0.15rem; }
+.done-text { font-size: 0.83rem; color: var(--mid); line-height: 1.55; }
+.done-text strong { color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="breadcrumb">
+    <span class="forge-logo">Forge</span>
+    <span class="breadcrumb-sep">›</span>
+    <a href="#">specs</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-cur">HTML Outputs — Design</span>
+  </div>
+  <div class="topbar-right">
+    <span class="badge badge-amber">Draft — pending review</span>
+    <span>2026-05-09</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="nav-label">Sections</div>
+    <a href="#decision"   class="nav-link active">Decision</a>
+    <a href="#rationale"  class="nav-link">Rationale</a>
+    <a href="#design"     class="nav-link">Design System</a>
+    <a href="#structure"  class="nav-link">Artefact Structure</a>
+    <a href="#artefacts"  class="nav-link">Per-artefact Treatments</a>
+    <a href="#agents"     class="nav-link">Agent Definition Files</a>
+    <a href="#dashboard"  class="nav-link">Pipeline Dashboard</a>
+    <a href="#standards"  class="nav-link">Intellectual Standards</a>
+    <a href="#impl"       class="nav-link">Implementation Scope</a>
+    <a href="#done"       class="nav-link">What Done Looks Like</a>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <h1>HTML Outputs</h1>
+    <div class="doc-meta">
+      <span class="badge badge-amber">Draft — pending review</span>
+      <span style="font-size:0.75rem;color:var(--dim)">2026-05-09</span>
+      <span style="font-size:0.75rem;color:var(--dim)">Brainstorming session</span>
+    </div>
+
+    <!-- DECISION -->
+    <h2 id="decision">Decision</h2>
+    <div class="decision-block">
+      <p><strong>Dual-file approach: markdown is the canonical source, HTML is the generated presentation layer.</strong> For every discovery artefact (brief, assumption-log, personas, research-plan, breadboard, handoff), agents write <code>.md</code> first — clean, human-editable content, close to thought. They then generate <code>.html</code> from the markdown — the browsable presentation layer. The <code>.md</code> is the source of truth; the <code>.html</code> is derived from it.</p>
+      <p style="margin-top:0.65rem">Agent definition files in <code>/product-team/</code> and <code>/build-team/</code> also become HTML. <code>DESIGN.md</code> gains an <code>.html</code> companion. The pipeline dashboard stays HTML-only (it is a tracker, not a thought document).</p>
+    </div>
+    <div class="exception-block">
+      <p><strong style="color:var(--amber)">Single-file markdown (no HTML pair):</strong> <code>running-brief.md</code>, <code>decisions.md</code>, and <code>CLAUDE.md</code>. These are agent coordination mechanisms or technical context files — their primary consumer is other agents, not humans. The pipeline dashboard provides the human-facing view of pipeline state.</p>
+      <p style="margin-top:0.5rem"><strong style="color:var(--amber)">CLAUDE.md — dual file approach:</strong> Claude Code reads files named <code>CLAUDE.md</code> specifically. The filename must stay <code>.md</code> for automatic pickup — this is the only technical constraint. Both the Forge repo and product repos keep <code>CLAUDE.md</code> as lean markdown, optimised for Claude Code reading at session start. Alongside it, Synthesis also produces <code>CLAUDE.html</code> — a rich, human-readable companion with full visual treatment. Same information, different density. <code>CLAUDE.md</code> is what Claude reads; <code>CLAUDE.html</code> is what you open in a browser.</p>
+    </div>
+
+    <!-- RATIONALE -->
+    <h2 id="rationale">Rationale</h2>
+    <p>The dual-file approach is grounded in how thinking actually works. Text is one step from thought. When agents write markdown first, the content is transparent, editable, and graspable — you can stare at it, tweak it, grapple with it. If agents wrote HTML directly, humans would lose that connection. The raw idea becomes obscured behind markup. Markdown keeps ideas reachable. HTML makes them presentable. These are different jobs, and they need different files.</p>
+    <p>HTML is for sharing and presentation, not thinking. A brief in HTML is easier to read, navigate, and share across a team. A brief in markdown is easier to interrogate, edit, and reason about. The dual-file pattern gives you both without compromise — at the cost of a generation step that agents handle automatically.</p>
+    <p>The richness of the HTML format also shapes what agents produce. A breadboard rendered as HTML produces a flow diagram. The same instruction in markdown produces five tables. Format is not neutral — which is exactly why the <code>.md</code> source must remain the canonical form. The HTML is a consequence of the thinking, not a replacement for it.</p>
+    <p>The counterargument — that agents struggle to parse HTML — does not hold. Claude reads and writes HTML fluently. The token cost is higher but acceptable given the 1M context window and the measurable improvement in human engagement with outputs.</p>
+
+    <!-- DESIGN SYSTEM -->
+    <h2 id="design">Design System — Style B (Dark / Card-heavy)</h2>
+    <p>A lightweight shared CSS baseline embedded inline in every Forge HTML file. No external dependencies. Works offline. Survives being moved. The canonical reference lives in <code>skills/forge-styles.css</code>.</p>
+
+    <h3>Colour tokens</h3>
+    <div class="swatch-grid">
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#0d0d14"></div>
+        <div class="swatch-info"><span class="swatch-token">--bg</span><span class="swatch-value">#0d0d14</span><span class="swatch-use">Page background</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#14141f"></div>
+        <div class="swatch-info"><span class="swatch-token">--surface</span><span class="swatch-value">#14141f</span><span class="swatch-use">Cards, topbar, sidebar</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#1c1c2e"></div>
+        <div class="swatch-info"><span class="swatch-token">--elevated</span><span class="swatch-value">#1c1c2e</span><span class="swatch-use">Nested, hover states</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#2a2a3d"></div>
+        <div class="swatch-info"><span class="swatch-token">--border</span><span class="swatch-value">#2a2a3d</span><span class="swatch-use">All dividers</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#5b8dee"></div>
+        <div class="swatch-info"><span class="swatch-token">--blue</span><span class="swatch-value">#5b8dee</span><span class="swatch-use">Discovery, in-progress, links</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#4caf82"></div>
+        <div class="swatch-info"><span class="swatch-token">--green</span><span class="swatch-value">#4caf82</span><span class="swatch-use">Build, complete, success</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#e8a94d"></div>
+        <div class="swatch-info"><span class="swatch-token">--amber</span><span class="swatch-value">#e8a94d</span><span class="swatch-use">Open, pending, medium risk</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#e05c5c"></div>
+        <div class="swatch-info"><span class="swatch-token">--red</span><span class="swatch-value">#e05c5c</span><span class="swatch-use">Blocked, high risk</span></div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch-color" style="background:#9b72cf"></div>
+        <div class="swatch-info"><span class="swatch-token">--purple</span><span class="swatch-value">#9b72cf</span><span class="swatch-use">Delivery phase</span></div>
+      </div>
+    </div>
+
+    <h3>Core components</h3>
+    <div class="card">
+      <div class="card-title">Status badges</div>
+      <div class="component-row">
+        <span class="badge badge-blue">Discovery</span>
+        <span class="badge badge-green">Complete</span>
+        <span class="badge badge-amber">Open</span>
+        <span class="badge badge-red">Blocked</span>
+        <span class="badge badge-grey">Autonomous</span>
+      </div>
+      <div class="card-title" style="margin-top:0.9rem">Status dots</div>
+      <div class="component-row">
+        <span class="status"><span class="dot dot-green"></span>Active</span>
+        <span class="status"><span class="dot dot-amber"></span>Pending</span>
+        <span class="status"><span class="dot dot-blue"></span>In progress</span>
+        <span class="status"><span class="dot dot-grey"></span>Not started</span>
+        <span class="status"><span class="dot dot-red"></span>Blocked</span>
+      </div>
+      <div class="card-title" style="margin-top:0.9rem">Monospace chips — I/O references</div>
+      <div class="component-row">
+        <span class="chip">running-brief</span>
+        <span class="chip">01-pm-agent</span>
+        <span class="chip chip-out">brief.html</span>
+        <span class="chip chip-out">personas.html</span>
+      </div>
+    </div>
+
+    <!-- ARTEFACT STRUCTURE -->
+    <h2 id="structure">Artefact Structure</h2>
+    <p>Every HTML output uses this chrome — topbar, pipeline strip, artefact nav, sidebar, and main content area.</p>
+
+    <div class="layout-diagram">
+      <div class="diag-row">
+        <div class="diag-label">Topbar</div>
+        <div class="diag-content" style="color:var(--mid);font-size:0.75rem">Forge › [idea] › [artefact] &nbsp;·&nbsp; status badge &nbsp;·&nbsp; date &nbsp;·&nbsp; Linear link</div>
+      </div>
+      <div class="diag-row">
+        <div class="diag-label">Pipeline strip</div>
+        <div class="diag-content" style="display:flex;gap:0;font-size:0.7rem">
+          <span style="color:var(--dim);padding:0 0.5rem">Intake ✓</span>
+          <span style="color:var(--dim)">›</span>
+          <span style="color:var(--dim);padding:0 0.5rem">Discovery ✓</span>
+          <span style="color:var(--dim)">›</span>
+          <span style="color:var(--green);padding:0 0.5rem;border-bottom:2px solid var(--green)">Build</span>
+          <span style="color:var(--dim)">›</span>
+          <span style="color:var(--dim);padding:0 0.5rem">Delivery</span>
+        </div>
+      </div>
+      <div class="diag-row">
+        <div class="diag-label">Artefact nav</div>
+        <div class="diag-content" style="font-size:0.7rem;gap:0.75rem;display:flex">
+          <span style="color:var(--blue);border-bottom:1px solid var(--blue)">● Brief</span>
+          <span style="color:var(--dim)">● Assumptions</span>
+          <span style="color:var(--dim)">● Personas</span>
+          <span style="color:var(--dim)">● Breadboard</span>
+          <span style="color:var(--dim)">○ Handoff</span>
+        </div>
+      </div>
+      <div class="diag-row" style="border-bottom:none">
+        <div class="diag-label" style="align-self:stretch;padding-top:0.75rem">Body</div>
+        <div class="diag-split" style="flex:1">
+          <div class="diag-sidebar-preview">
+            <div style="color:var(--dim);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.4rem">Sections</div>
+            <div style="color:var(--blue);font-size:0.7rem;margin-bottom:0.2rem">Summary</div>
+            <div style="color:var(--dim);font-size:0.7rem;margin-bottom:0.2rem">Problem + User</div>
+            <div style="color:var(--dim);font-size:0.7rem;margin-bottom:0.2rem">Solution</div>
+            <div style="color:var(--dim);font-size:0.7rem;margin-bottom:0.75rem">Risks</div>
+            <div style="color:var(--dim);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:0.4rem">Related</div>
+            <div style="color:var(--dim);font-size:0.7rem;margin-bottom:0.2rem">→ Assumption Log</div>
+            <div style="color:var(--dim);font-size:0.7rem">→ Breadboard</div>
+          </div>
+          <div class="diag-main-preview" style="padding:0.75rem">
+            <div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.3rem">Product name</div>
+            <div style="display:flex;gap:0.5rem;margin-bottom:0.75rem"><span class="badge badge-green" style="font-size:0.6rem">Build-ready</span></div>
+            <div style="display:flex;gap:0.5rem;margin-bottom:0.5rem">
+              <div style="background:var(--elevated);border:1px solid var(--border);border-radius:5px;padding:0.4rem 0.6rem;flex:1"><div style="font-size:0.6rem;color:var(--dim)">NORTH STAR</div><div style="font-size:0.8rem;color:var(--text);margin-top:0.15rem">Repeated logins</div></div>
+              <div style="background:var(--elevated);border:1px solid var(--border);border-radius:5px;padding:0.4rem 0.6rem;flex:1"><div style="font-size:0.6rem;color:var(--dim)">LAUNCH</div><div style="font-size:0.8rem;color:var(--text);margin-top:0.15rem">June 11</div></div>
+            </div>
+            <div style="font-size:0.72rem;color:var(--dim)">Tabs: Summary · Problem · Solution · Scope · Risks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PER-ARTEFACT -->
+    <h2 id="artefacts">Per-artefact Treatments</h2>
+    <p style="font-size:0.8rem;color:var(--dim);margin-bottom:0.85rem">Discovery artefacts follow the dual-file pattern: agents write <code>.md</code> (source of truth), then generate <code>.html</code> (presentation layer). The markdown is what you edit; the HTML is what you share.</p>
+    <div class="artefact-grid">
+      <div class="artefact-card">
+        <div class="artefact-name">brief.md + brief.html</div>
+        <div class="artefact-desc"><strong style="color:var(--mid)">brief.md</strong> — canonical source. Clean, editable markdown. <strong style="color:var(--mid)">brief.html</strong> — generated presentation: Tabs: Summary / Problem+User / Solution / Pricing / Scope / Risks. Summary shows metric cards, JTBD callout, pricing grid, top 3 risks with inline link to assumption log.</div>
+        <span class="artefact-tag" style="background:rgba(155,114,207,0.12);color:var(--purple)">Dual file</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name">breadboard.md + breadboard.html</div>
+        <div class="artefact-desc"><strong style="color:var(--mid)">breadboard.md</strong> — canonical source. Places, affordances, stores, wiring in structured markdown. <strong style="color:var(--mid)">breadboard.html</strong> — generated: SVG flow diagram as primary view, tables available as secondary toggle.</div>
+        <span class="artefact-tag" style="background:rgba(155,114,207,0.12);color:var(--purple)">Dual file</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name">assumption-log.md + .html</div>
+        <div class="artefact-desc"><strong style="color:var(--mid)">assumption-log.md</strong> — canonical source. <strong style="color:var(--mid)">assumption-log.html</strong> — generated: filterable table by type / risk / status. Each defended assumption has an expandable note. Risk level colour-coded throughout.</div>
+        <span class="artefact-tag" style="background:rgba(155,114,207,0.12);color:var(--purple)">Dual file</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name">personas.md + personas.html</div>
+        <div class="artefact-desc"><strong style="color:var(--mid)">personas.md</strong> — canonical source. <strong style="color:var(--mid)">personas.html</strong> — generated: visual persona cards with name, descriptor, situation, quote, JTBD. Journey map as horizontal flow below each card.</div>
+        <span class="artefact-tag" style="background:rgba(155,114,207,0.12);color:var(--purple)">Dual file</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name">DESIGN.md + DESIGN.html</div>
+        <div class="artefact-desc"><strong style="color:var(--mid)">DESIGN.md</strong> — canonical source. <strong style="color:var(--mid)">DESIGN.html</strong> — generated: colour swatches as colour blocks, typography samples in specified fonts, component references as previews, mood images embedded.</div>
+        <span class="artefact-tag" style="background:rgba(155,114,207,0.12);color:var(--purple)">Dual file</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name">CLAUDE.md + CLAUDE.html</div>
+        <div class="artefact-desc"><strong style="color:var(--mid)">CLAUDE.md</strong> — lean markdown, read by Claude Code at session start by filename. <strong style="color:var(--mid)">CLAUDE.html</strong> — rich human companion: sidebar nav, visual sections, full design system. Synthesis produces both. Build team keeps both in sync.</div>
+        <span class="artefact-tag" style="background:rgba(155,114,207,0.12);color:var(--purple)">Dual file</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name">handoff.md + handoff.html</div>
+        <div class="artefact-desc"><strong style="color:var(--mid)">handoff.md</strong> — canonical source, written fresh each burst by the Delivery Manager. <strong style="color:var(--mid)">handoff.html</strong> — generated: current product state, next actions, open blockers. Read by agents on re-entry and by humans reviewing burst progress.</div>
+        <span class="artefact-tag" style="background:rgba(155,114,207,0.12);color:var(--purple)">Dual file</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name md">running-brief.md</div>
+        <div class="artefact-desc">Remains single markdown file — no HTML pair. Agent coordination mechanism — multiple agents update it sequentially on every pipeline run. Primary consumer is other agents. The pipeline dashboard provides the human-facing equivalent.</div>
+        <span class="artefact-tag tag-keep">Keep markdown</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name md">decisions.md</div>
+        <div class="artefact-desc">Remains single markdown file — no HTML pair. Append-only ADR log. Agent-facing technical context. Does not benefit from visual presentation.</div>
+        <span class="artefact-tag tag-keep">Keep markdown</span>
+      </div>
+      <div class="artefact-card">
+        <div class="artefact-name">pipeline-dashboard.html</div>
+        <div class="artefact-desc">HTML-only — no markdown pair. It is a tracker, not a thought document. Generated by Synthesis at discovery close; updated by Delivery Manager at each milestone boundary.</div>
+        <span class="artefact-tag tag-new">HTML only</span>
+      </div>
+    </div>
+
+    <!-- AGENT DEFINITION FILES -->
+    <h2 id="agents">Agent Definition Files</h2>
+    <p>All files in <code>/product-team/</code> and <code>/build-team/</code> become HTML. Structure per file:</p>
+
+    <div class="agent-preview">
+      <div class="agent-head">
+        <div><div class="agent-name">06 · Synthesis</div><div class="agent-alias">The Assembler</div></div>
+        <div style="display:flex;gap:0.4rem">
+          <span class="badge badge-grey">Fully autonomous</span>
+          <span class="badge badge-blue">Discovery</span>
+        </div>
+      </div>
+      <div class="agent-body">
+        <div>
+          <div class="io-label">Reads</div>
+          <div class="io-chips"><span class="chip">running-brief</span><span class="chip">01-pm</span><span class="chip">02-design</span><span class="chip">03-sceptic</span><span class="chip">04-pragmatist</span></div>
+        </div>
+        <div>
+          <div class="io-label">Produces</div>
+          <div class="io-chips"><span class="chip chip-out">brief.md</span><span class="chip chip-out">brief.html</span><span class="chip chip-out">assumption-log.md</span><span class="chip chip-out">assumption-log.html</span><span class="chip chip-out">personas.md</span><span class="chip chip-out">personas.html</span></div>
+        </div>
+      </div>
+      <div class="agent-footer">
+        <span>Hands off to → Breadboard (The Tracer)</span>
+        <button class="view-btn">Full instructions ↓</button>
+      </div>
+    </div>
+
+    <p>The agent card (name, mode, reads, produces, handoff) is always visible. Full instructions are collapsible — default collapsed for human browsing, read in full by Claude when acting as the agent. The <strong style="color:var(--text)">"What you never do"</strong> section is always visible, never buried in the collapsible — it defines framework violations and must be immediately readable.</p>
+    <p>An SVG interaction diagram accompanies each agent card showing pipeline position and lateral connections (Observer, Researcher, etc.).</p>
+
+    <!-- PIPELINE DASHBOARD -->
+    <h2 id="dashboard">Pipeline Dashboard</h2>
+    <p>One file per idea: <code>output/[idea-name]/pipeline-dashboard.html</code>. Two modes in one file.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem">
+      <div class="card">
+        <div class="card-title">Live mode</div>
+        <p style="font-size:0.8rem">Updated after each agent run. Shows current pipeline position, each completed agent with date and linked outputs, active agent with status dot, pending agents greyed out, open blockers surfaced prominently.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Milestone snapshots</div>
+        <p style="font-size:0.8rem">At each phase transition, the Delivery Manager rewrites the dashboard with a new timestamped block. Blocks accumulate — the dashboard becomes a project timeline. Updates are milestone-gated (2–4 per project) and always written by the same agent.</p>
+      </div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--dim)">Updates happen at milestone boundaries only (2–4 per project, not after every agent run), and ownership is always the Delivery Manager — making the HTML rewrite pattern straightforward.</p>
+
+    <!-- INTELLECTUAL STANDARDS -->
+    <h2 id="standards">Intellectual Standards — Framework-wide Behavioral Baseline</h2>
+    <p>A new file: <code>skills/intellectual-standards.md</code>. Referenced by every agent. Default posture for all agent interactions.</p>
+
+    <div class="card" style="padding:0.5rem 1.25rem">
+      <div class="principle">
+        <div class="principle-num">1</div>
+        <div class="principle-body">
+          <h4>Lead with the counterargument</h4>
+          <p>Before supporting any position, steelman the strongest opposing view. Do not validate premises before examining them.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">2</div>
+        <div class="principle-body">
+          <h4>Explicit confidence levels</h4>
+          <p>Every factual or analytical claim carries a marker: <code>(high)</code> / <code>(moderate)</code> / <code>(low)</code> / <code>(unknown)</code>. Do not imply certainty you do not have.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">3</div>
+        <div class="principle-body">
+          <h4>No anchor on human framing</h4>
+          <p>Generate your own independent assessment before comparing to the brief or running context. Do not let prior framing constrain your analysis.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">4</div>
+        <div class="principle-body">
+          <h4>Non-capitulation rule</h4>
+          <p>If the human pushes back without new evidence or a superior argument, restate your position. Update only when genuinely persuaded. Social pressure is not a reason to change a view.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">5</div>
+        <div class="principle-body">
+          <h4>Negative conclusions are valid output</h4>
+          <p>"This assumption is wrong," "this idea has a fatal flaw," "do not build this" are acceptable conclusions. Do not soften them into suggestions.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">6</div>
+        <div class="principle-body">
+          <h4>No disclaimers, no moralising</h4>
+          <p>State conclusions directly. Do not preface with "it's important to consider" or equivalent hedges unless explicitly asked.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">7</div>
+        <div class="principle-body">
+          <h4>Accuracy is the success metric, not approval</h4>
+          <p>An agent that makes the human uncomfortable by being right is doing its job. An agent that makes the human comfortable by being wrong is failing.</p>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="principle-num">8</div>
+        <div class="principle-body">
+          <h4>Surgical Changes (Engineer only)</h4>
+          <p>Every changed line must trace to the assigned task. Do not improve adjacent code — mention it, don't touch it. Remove only the orphans your changes created. Match existing style even if you'd do it differently. The scope of a task is a constraint, not a suggestion.</p>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.78rem;color:var(--dim);margin-top:0.75rem">The instruction to "make answers as long and detailed as possible" from the source post is explicitly excluded. Length is calibrated to what the human needs to make a decision — not maximised.</p>
+
+    <!-- IMPLEMENTATION -->
+    <h2 id="impl">Implementation Scope</h2>
+    <h3>Files to update</h3>
+    <table class="impl-table">
+      <thead><tr><th>File</th><th>Change</th></tr></thead>
+      <tbody>
+        <tr><td><code class="file-ref">skills/artefact-templates.md</code></td><td>Replace all markdown templates with HTML templates using the design system</td></tr>
+        <tr><td><code class="file-ref">product-team/06-synthesis.md</code></td><td>Update output instructions to produce HTML; reference design system</td></tr>
+        <tr><td><code class="file-ref">product-team/breadboard.md</code></td><td>Update output format to SVG flow diagram + toggle tables</td></tr>
+        <tr><td><code class="file-ref">product-team/*.md</code>, <code class="file-ref">build-team/*.md</code></td><td>Convert all agent definition files to HTML format with agent card + interaction diagram + collapsible instructions</td></tr>
+        <tr><td><code class="file-ref">CLAUDE.md</code> (Forge repo)</td><td>Update output destination instructions to reference <code>.html</code> extensions throughout; add instruction for Synthesis to produce both <code>CLAUDE.md</code> and <code>CLAUDE.html</code> for product repos</td></tr>
+      </tbody>
+    </table>
+
+    <h3>New files to create</h3>
+    <table class="impl-table">
+      <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code class="file-ref">skills/forge-styles.css</code></td><td>Canonical CSS token reference — agents embed this inline; source of truth for all design system tokens and components</td></tr>
+        <tr><td><code class="file-ref">skills/intellectual-standards.md</code></td><td>Behavioral baseline referenced by all agents</td></tr>
+        <tr><td><code class="file-ref">output/[idea]/pipeline-dashboard.html</code></td><td>Generated by Synthesis at discovery close; updated by Delivery Manager each burst</td></tr>
+        <tr><td><code class="file-ref">docs/CLAUDE.html</code> (product repos)</td><td>Rich human companion to <code>CLAUDE.md</code> — produced by Synthesis alongside the markdown version; updated by build team when <code>CLAUDE.md</code> changes</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Files that do not change</h3>
+    <table class="impl-table">
+      <thead><tr><th>File</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td><code class="file-ref keep">running-brief.md</code></td><td>Agent coordination mechanism — multiple agents update sequentially on every pipeline run; primary consumer is other agents</td></tr>
+        <tr><td><code class="file-ref keep">hooks/*.md</code></td><td>Agent instruction files, not human-facing outputs</td></tr>
+        <tr><td><code class="file-ref keep">CLAUDE.md</code> (Forge repo + product repos)</td><td>Filename required by Claude Code — stays lean markdown. Companion <code>CLAUDE.html</code> is the human-readable version</td></tr>
+        <tr><td><code class="file-ref keep">memory/*.md</code></td><td>Internal framework state</td></tr>
+      </tbody>
+    </table>
+
+    <!-- WHAT DONE LOOKS LIKE -->
+    <h2 id="done">What Done Looks Like</h2>
+    <div class="card" style="padding:0.75rem 1.25rem">
+      <div class="done-item">
+        <div class="done-num">1</div>
+        <div class="done-text">A new idea goes through Discovery and Synthesis produces <strong>brief.md</strong>, <strong>assumption-log.md</strong>, <strong>personas.md</strong>, <strong>research-plan.md</strong> as canonical sources, then generates the corresponding <strong>.html</strong> files — styled with the Forge design system, cross-linked via the artefact nav bar. The markdown is what agents read; the HTML is what humans browse.</div>
+      </div>
+      <div class="done-item">
+        <div class="done-num">2</div>
+        <div class="done-text">The Tracer produces <strong>breadboard.md</strong> (places, affordances, stores, wiring) then generates <strong>breadboard.html</strong> with an SVG wiring diagram as the primary view — not a table.</div>
+      </div>
+      <div class="done-item">
+        <div class="done-num">3</div>
+        <div class="done-text">The pipeline dashboard (<strong>pipeline-dashboard.html</strong>) is generated at Discovery close and updated after each build burst. It is a project timeline, not a status file.</div>
+      </div>
+      <div class="done-item">
+        <div class="done-num">4</div>
+        <div class="done-text">Every agent definition file opens in a browser as a navigable card — role, mode, inputs, outputs, and constraints immediately visible. Instructions available on expand.</div>
+      </div>
+      <div class="done-item">
+        <div class="done-num">5</div>
+        <div class="done-text">Every agent applies the intellectual standards baseline by default: leads with counterarguments, uses confidence levels, does not capitulate to social pressure.</div>
+      </div>
+      <div class="done-item">
+        <div class="done-num">6</div>
+        <div class="done-text"><strong>running-brief.md</strong> and <strong>decisions.md</strong> remain single markdown files with no HTML pair — agent coordination mechanisms. The Delivery Manager writes <strong>handoff.md</strong> at the end of each burst and generates <strong>handoff.html</strong> from it. The <strong>pipeline-dashboard.html</strong> exists as HTML-only — it is a tracker, not a thought document.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
