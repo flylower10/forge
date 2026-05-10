@@ -7,7 +7,7 @@
 <meta charset="UTF-8" />
 <title>Forge · Project</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="forge-styles.css?v=2" />
+<link rel="stylesheet" href="forge-styles.css?v=3" />
 <link rel="stylesheet" href="forge-tweaks.css" />
 <style>
   html, body { margin: 0; padding: 0; height: 100%; background: #f0eee9; }
@@ -30,6 +30,60 @@
 <script type="text/babel" src="v2/pipeline.jsx"></script>
 
 <script type="text/babel" data-presets="react">
+
+  // ── Badge token helpers ───────────────────────────────────────────────────
+  // Maps [TAG] prefixes in running-brief list items to fg-badge chip data-kinds.
+  const BADGE_KIND_SLUG = {
+    'DECISION':               'DECISION',
+    'OPEN QUESTION':          'OPEN_QUESTION',
+    'OPEN':                   'OPEN_QUESTION',
+    'TECH FEASIBILITY':       'TECH_FEASIBILITY',
+    'DESIGN REVIEW':          'DESIGN_REVIEW',
+    'SPIKE':                  'SPIKE',
+    'REFINEMENT AGENDA ITEM': 'REFINEMENT_AGENDA_ITEM',
+    'SCOPE GAP':              'SCOPE_GAP',
+    'SCOPE NOTE':             'SCOPE_GAP',
+  };
+
+  // Render one list-item string. Parses a leading [TAG] or [[TAG]] token into
+  // an inline fg-badge chip, then renders the remainder via badgeInlineMd.
+  function renderBriefItem(text) {
+    const m = text.match(/^\[+([^\]]+)\]+\s*(.*)/s);
+    if (m) {
+      const rawTag = m[1].trim();
+      // Normalise: strip dashes/em-dashes, collapse spaces, uppercase
+      const norm = rawTag.toUpperCase().replace(/\s*[—–-]+\s*/g, ' ').trim();
+      // Find best slug: exact match first, then prefix match for "OPEN — *"
+      let slug = BADGE_KIND_SLUG[norm];
+      if (!slug) {
+        const prefix = Object.keys(BADGE_KIND_SLUG).find(k => norm.startsWith(k));
+        slug = prefix ? BADGE_KIND_SLUG[prefix] : norm.replace(/\s+/g, '_');
+      }
+      const body = m[2].trim();
+      const inlineParts = window.badgeInlineMd ? window.badgeInlineMd(body) : body;
+      return (
+        <>
+          <span className="fg-badge" data-kind={slug}>{rawTag}</span>
+          {' '}{inlineParts}
+        </>
+      );
+    }
+    return window.badgeInlineMd ? window.badgeInlineMd(text) : text;
+  }
+
+  // Returns true if text is a pure italic helper line: _text_
+  function isItalicHelper(text) {
+    return /^_[^_\n]+_$/.test(text.trim());
+  }
+
+  // A generic section is "empty" if it has no substantive blocks
+  // (ignoring italic-helper paragraphs and blank paragraphs).
+  function genericSectionIsEmpty(blocks) {
+    return !blocks.some(b => {
+      if (b.kind === 'p') return !isItalicHelper(b.text) && b.text.trim().length > 0;
+      return true;
+    });
+  }
 
   // ── Running-brief renderer ────────────────────────────────────────────────
   // Fetches the markdown, parses the handoff log + pipeline config sections,
@@ -139,25 +193,48 @@
             );
           }
 
-          // Generic section — standard block renderer
+          // Generic section — flat, no card chrome (fix #6).
+          // Empty sections (only italic helpers, no real content) are hidden (fix #4).
+          if (genericSectionIsEmpty(s.blocks)) return null;
+
           return (
-            <section key={i} className="fg-card">
-              <div className="fg-card__head">
-                <h2 className="fg-card__title">{s.title}</h2>
-              </div>
-              <div className="fg-card__body fg-stack">
+            <section key={i} style={{
+              borderTop: '1px solid var(--fg-line-soft)',
+              padding: '20px 0 8px',
+            }}>
+              <h2 style={{ fontSize: 14, fontWeight: 600, color: 'var(--fg-ink)', margin: '0 0 8px' }}>
+                {s.title}
+              </h2>
+              <div className="fg-stack">
                 {s.blocks.map((b, j) => {
-                  // Inline block renderer (subset used by running-brief)
+                  // Italic helper paragraph immediately after heading → subtitle (fix #5 & #9)
+                  if (b.kind === 'p' && isItalicHelper(b.text) && j === 0) {
+                    return (
+                      <div key={j} style={{
+                        fontFamily: 'var(--fg-mono)', fontSize: 11.5,
+                        color: 'var(--fg-ink-soft)', letterSpacing: '0.02em',
+                        marginTop: -4, marginBottom: 4,
+                      }}>
+                        {b.text.trim().replace(/^_|_$/g, '')}
+                      </div>
+                    );
+                  }
                   if (b.kind === 'p') {
                     return <p key={j} className="fg-card__p">{b.text}</p>;
                   }
                   if (b.kind === 'list') {
                     return (
-                      <ul key={j} className="fg-stack fg-stack--gap-s" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                      <ul key={j} style={{ listStyle: 'none', padding: 0, margin: '4px 0 0' }}>
                         {b.items.map((it, k) => (
-                          <li key={k} className="fg-step">
-                            <span className="fg-step__n" style={{ background: 'var(--fg-ink-soft)' }}>·</span>
-                            <div style={{ fontSize: 13.5, color: 'var(--fg-ink-1)', lineHeight: 1.55 }}>{it}</div>
+                          <li key={k} style={{
+                            fontSize: 13.5, color: 'var(--fg-ink-1)', lineHeight: 1.6,
+                            padding: '3px 0', display: 'flex', alignItems: 'baseline', gap: 8,
+                          }}>
+                            <span style={{
+                              color: 'var(--fg-ink-soft)', fontFamily: 'var(--fg-mono)',
+                              fontSize: 11, flexShrink: 0, userSelect: 'none',
+                            }}>–</span>
+                            <span>{renderBriefItem(it)}</span>
                           </li>
                         ))}
                       </ul>
@@ -174,7 +251,7 @@
                     );
                   }
                   if (b.kind === 'h3') {
-                    return <h3 key={j} style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg-ink-1)', margin: '16px 0 6px' }}>{b.text}</h3>;
+                    return <h3 key={j} style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg-ink-1)', margin: '16px 0 4px' }}>{b.text}</h3>;
                   }
                   return null;
                 })}
@@ -220,7 +297,10 @@
                    className={`fg-dir__item${a.id === activeId ? ' fg-dir__item--active' : ''}`}
                    style={{cursor:'pointer'}}
                    onClick={() => onSelect(a.id)}>
-                <span className="fg-dir__n">{a.n}</span>
+                {/* Option B: show number only on agent outputs, not synthesised docs (fix #7) */}
+                {!SYNTHESISED_TYPES.has(a.type || '') && (
+                  <span className="fg-dir__n">{a.n}</span>
+                )}
                 <div style={{flex:1, minWidth:0}}>
                   <div className="fg-dir__name">{a.name}</div>
                   <div className="fg-dir__sub">{a.file.split('/').pop()}</div>
@@ -229,12 +309,12 @@
             ))}
           </div>
         ))}
-        <div className="fg-dir__group" style={{marginTop:'auto', paddingTop:12}}>
-          <a href="agents.html"
-             style={{display:'flex', alignItems:'center', gap:8, padding:'8px 16px',
-                     fontSize:11.5, color:'var(--fg-ink-soft)', fontFamily:'var(--fg-mono)',
-                     textDecoration:'none'}}>
-            ← Forge agents
+        <div className="fg-dir__group" style={{marginTop:'auto', borderTop:'1px solid var(--fg-line-soft)'}}>
+          <a href="agents.html" className="fg-dir__item" style={{cursor:'pointer', textDecoration:'none'}}>
+            <span className="fg-dir__sub" style={{fontSize:11, padding:'10px 16px', display:'block',
+                                                  fontFamily:'var(--fg-mono)', color:'var(--fg-ink-soft)'}}>
+              ← forge agents
+            </span>
           </a>
         </div>
       </aside>

@@ -44,6 +44,37 @@ or `build-team/` since it operates on the framework, not on products.
 - Relationship to The Observer (which critiques process during
   sessions) — is this its persistent counterpart?
 
+### UI QA agent — design-to-build delta checker
+**Captured:** 2026-05-10
+**Why it matters:** Consistent gap between Claude Design intent and what
+gets built. First surfaced in the forge-viewer fixlist: badges rendering as
+block cards, phantom dots, section chrome wrong, sidebar numbering mixed —
+all because the build happened without a structured comparison pass against
+the design spec. The cost of the gap is a human QA pass that produces a
+fixlist, which then goes back to the engineer. That loop should be automated.
+
+**Shape (rough):** an agent that sits between QA and delivery in the build
+pipeline. Takes a screenshot of the rendered output (or a set of screenshots)
+and the Claude Design brief / DESIGN.md, compares them, and produces a
+structured fixlist in the same format as `forge-viewer-FIXLIST-01.md`:
+Critical (spec violations) and Refinements (polish), each with Symptom /
+Expected / Likely cause / Reference. Loops back to the Engineer for Critical
+items; Refinements can be batched as a follow-up issue.
+
+**Trigger:** after the Engineer completes a frontend task and before QA
+signs off. Also on-demand when the human suspects visual drift.
+
+**Open questions before drafting:**
+- Screenshot mechanism: does this require a headless browser (Puppeteer/
+  Playwright), or can the human supply screenshots manually for the first
+  version?
+- Does it compare against the Claude Design handover URL, DESIGN.md,
+  or the Blueprint brief — or all three?
+- Relationship to the existing QA agent: separate agent, or an extended
+  mode of QA that activates for frontend tasks?
+- How does it handle "Claude Design decides" items vs "brief decides"
+  items? The handoff skill distinguishes these — the UI QA agent should too.
+
 ### README structure block staleness
 **Captured:** 2026-05-09 (mitigated, not solved)
 **Why it matters:** The structure block was badly out of date when
