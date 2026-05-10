@@ -61,6 +61,7 @@ window.FORGE_CONFIG = (function () {
         { id: 'fkb-assumptions',  n: 'al', name: 'Assumptions',       file: 'output/forge-knowledge-browser/assumption-log.md',        phase: 'discovery' },
         { id: 'fkb-ost',          n: 'od', name: 'OST decisions',     file: 'output/forge-knowledge-browser/ost-decisions.md',         phase: 'discovery' },
         { id: 'fkb-breadboard',   n: 'bb', name: 'Breadboard',        file: 'output/forge-knowledge-browser/breadboard.md',            phase: 'discovery' },
+        { id: 'fkb-kickoff',      n: 'bk', name: 'Build kickoff',     file: 'output/forge-knowledge-browser/build-kickoff.md',          phase: 'refinement' },
       ],
     },
     {
