@@ -24,9 +24,167 @@
 
 <script src="forge-config.js"></script>
 <script src="forge-md.js"></script>
+<script src="v2/running-brief-parser.js"></script>
 <script type="text/babel" src="artefacts/artefact-md.jsx"></script>
+<script type="text/babel" src="v2/timeline.jsx"></script>
+<script type="text/babel" src="v2/pipeline.jsx"></script>
 
 <script type="text/babel" data-presets="react">
+
+  // ── Running-brief renderer ────────────────────────────────────────────────
+  // Fetches the markdown, parses the handoff log + pipeline config sections,
+  // and renders them with HandoffTimeline and PipelineMap. Other sections fall
+  // back to the standard Block renderer from artefact-md.jsx.
+  function RunningBriefPage({ src }) {
+    const [data, setData] = React.useState(null);
+    const [error, setError] = React.useState(null);
+
+    React.useEffect(() => {
+      if (!src) { setError('no src'); return; }
+      fetch(src).then(r => {
+        if (!r.ok) throw new Error(`${r.status}`);
+        return r.text();
+      }).then(md => {
+        const tree = window.ForgeMd.parseMd(md);
+        const entries = window.ForgeRunningBriefParser.parseHandoffLog(md);
+        const pipelineData = window.ForgeRunningBriefParser.parsePipelineConfig(md);
+        setData({ tree, entries, pipelineData });
+      }).catch(e => setError(e.message));
+    }, [src]);
+
+    if (error) {
+      return (
+        <main className="fg-main" style={{ padding: 32 }}>
+          <div style={{ color: 'var(--fg-ink-soft)', fontFamily: 'var(--fg-mono)', fontSize: 12 }}>
+            Could not load {src}: {error}
+          </div>
+        </main>
+      );
+    }
+    if (!data) {
+      return (
+        <main className="fg-main" style={{ padding: 32 }}>
+          <div style={{ color: 'var(--fg-ink-soft)', fontFamily: 'var(--fg-mono)', fontSize: 12 }}>
+            loading running brief…
+          </div>
+        </main>
+      );
+    }
+
+    const { tree, entries, pipelineData } = data;
+    const fm = tree.frontmatter;
+
+    return (
+      <main className="fg-main">
+        {/* Standard header */}
+        <div className="fg-header">
+          <div className="fg-header__crumbs">
+            <span className="fg-header__path">{fm.file}</span>
+            <span className="fg-header__sep">·</span>
+            <span className="fg-pill">{fm.phase ? fm.phase[0].toUpperCase() + fm.phase.slice(1) : ''}</span>
+            <span className="fg-header__sep">·</span>
+            <span className="fg-header__mode">{fm.status}</span>
+          </div>
+          <div className="fg-header__title-row">
+            <span className="fg-header__n" style={{ background: '#f0f0ee', color: 'var(--fg-ink-3)' }}>rb</span>
+            <h1 className="fg-header__h1">{fm.title}</h1>
+            <span className="fg-header__role">running brief · live pipeline state</span>
+          </div>
+          {fm.tagline && <p className="fg-header__summary">{fm.tagline}</p>}
+          {fm.stats && fm.stats.length > 0 && (
+            <div className="fg-header__stats" style={{ '--fg-stat-cols': fm.stats.length }}>
+              {fm.stats.map((s, i) => (
+                <div key={i} className="fg-stat">
+                  <div className="fg-stat__k">{s.k}</div>
+                  <div className={`fg-stat__v${s.phase ? ' fg-stat__v--phase' : ''}`}>{s.v}</div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Sections: pipeline config and handoff log get custom renderers */}
+        {tree.sections.map((s, i) => {
+          const titleLower = s.title.toLowerCase();
+
+          if (titleLower === 'pipeline configuration') {
+            return (
+              <section key={i} className="fg-card">
+                <div className="fg-card__head">
+                  <h2 className="fg-card__title">{s.title}</h2>
+                </div>
+                <div className="fg-card__body">
+                  {pipelineData
+                    ? <PipelineMap data={pipelineData} />
+                    : <pre style={{ fontFamily: 'var(--fg-mono)', fontSize: 12, whiteSpace: 'pre-wrap' }}>
+                        {s.blocks.filter(b => b.kind === 'code').map(b => b.text).join('\n')}
+                      </pre>
+                  }
+                </div>
+              </section>
+            );
+          }
+
+          if (titleLower === 'handoff log') {
+            return (
+              <section key={i} className="fg-card">
+                <div className="fg-card__head">
+                  <h2 className="fg-card__title">{s.title}</h2>
+                  <span className="fg-card__eyebrow">newest at top · each entry is one agent handoff</span>
+                </div>
+                <div className="fg-card__body">
+                  <HandoffTimeline entries={entries} />
+                </div>
+              </section>
+            );
+          }
+
+          // Generic section — standard block renderer
+          return (
+            <section key={i} className="fg-card">
+              <div className="fg-card__head">
+                <h2 className="fg-card__title">{s.title}</h2>
+              </div>
+              <div className="fg-card__body fg-stack">
+                {s.blocks.map((b, j) => {
+                  // Inline block renderer (subset used by running-brief)
+                  if (b.kind === 'p') {
+                    return <p key={j} className="fg-card__p">{b.text}</p>;
+                  }
+                  if (b.kind === 'list') {
+                    return (
+                      <ul key={j} className="fg-stack fg-stack--gap-s" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                        {b.items.map((it, k) => (
+                          <li key={k} className="fg-step">
+                            <span className="fg-step__n" style={{ background: 'var(--fg-ink-soft)' }}>·</span>
+                            <div style={{ fontSize: 13.5, color: 'var(--fg-ink-1)', lineHeight: 1.55 }}>{it}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  }
+                  if (b.kind === 'code') {
+                    return (
+                      <pre key={j} style={{
+                        fontFamily: 'var(--fg-mono)', fontSize: 12, lineHeight: 1.6,
+                        background: 'rgba(0,0,0,0.04)', border: '1px solid var(--fg-line-soft)',
+                        borderRadius: 6, padding: '12px 16px', overflowX: 'auto',
+                        whiteSpace: 'pre-wrap', color: 'var(--fg-ink-1)',
+                      }}><code>{b.text}</code></pre>
+                    );
+                  }
+                  if (b.kind === 'h3') {
+                    return <h3 key={j} style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg-ink-1)', margin: '16px 0 6px' }}>{b.text}</h3>;
+                  }
+                  return null;
+                })}
+              </div>
+            </section>
+          );
+        })}
+      </main>
+    );
+  }
 
   // Artefact types that are synthesised documents (shown in the top rail group)
   const SYNTHESISED_TYPES = new Set([
@@ -159,11 +317,16 @@
     const artefact = project.artefacts.find(a => a.id === selectedId)
       || project.artefacts[project.artefacts.length - 1];
 
+    const isRunningBrief = artefact?.type === 'running-brief';
+
     return (
       <div className="fg-root" data-phase={artefact?.phase || 'discovery'} style={{minHeight:'100%'}}>
         <div className="fg-shell">
           <ProjectRail project={project} activeId={selectedId} onSelect={setSelectedId} />
-          <ArtefactMdPage src={`../${artefact.file}`} embedded={true} />
+          {isRunningBrief
+            ? <RunningBriefPage src={`../${artefact.file}`} />
+            : <ArtefactMdPage src={`../${artefact.file}`} embedded={true} />
+          }
         </div>
       </div>
     );

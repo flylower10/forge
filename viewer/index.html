@@ -1,59 +1,66 @@
-<!-- Serve with: python3 -m http.server 8080 from the forge root, then open http://localhost:8080/viewer/ -->
+<!-- Forge · Project home screen -->
+<!-- Fetches output/manifest.json every 30s. Shows all projects with phase, one-liner, last edit. -->
+<!-- States: loading skeleton → populated list / single project / empty                          -->
+<!-- Serve with: ./forge serve from the forge root, then open http://localhost:8080/viewer/      -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Forge · Viewer</title>
+<title>Forge · Projects</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="forge-styles.css" />
-<link rel="stylesheet" href="forge-tweaks.css" />
 <style>
-  html, body { margin: 0; padding: 0; height: 100%; background: #f0eee9; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--fg-bg, #f0eee9); }
   * { box-sizing: border-box; }
   #root { height: 100%; }
 </style>
 </head>
 <body>
 <div id="root"></div>
-<div id="tweaks-root"></div>
-
-<script>
-  // Initial tweak values — host rewrites this block on each setTweak.
-  window.FORGE_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-    "voice": "crisp",
-    "chroma": "default",
-    "surface": "card"
-  }/*EDITMODE-END*/;
-</script>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
 <script src="forge-config.js"></script>
-<script src="forge-md.js"></script>
-<script type="text/babel" src="design-canvas.jsx"></script>
-<script type="text/babel" src="artefacts/agent-md.jsx"></script>
-<script type="text/babel" src="artefacts/artefact-md.jsx"></script>
-<script type="text/babel" src="artefacts/dashboard.jsx"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="forge-tweaks.jsx"></script>
+<script type="text/babel" src="v2/home.jsx"></script>
 
 <script type="text/babel" data-presets="react">
   function App() {
-    const { PIPELINE, LATERAL } = window.FORGE_CONFIG;
-    const allAgents = [
-      ...PIPELINE,
-      ...LATERAL.map(a => ({ ...a, n: '··', phase: a.phase || 'framework' })),
-    ];
-    const [selectedId, setSelectedId] = React.useState(allAgents[0].id);
-    const selected = allAgents.find(a => a.id === selectedId) || allAgents[0];
-    return (
-      <AgentMdPage
-        src={`../${selected.file}`}
-        onSelectAgent={setSelectedId}
-      />
-    );
+    // null = loading; [] = empty/error; [...] = projects
+    const [projects, setProjects] = React.useState(null);
+    const [manifestTime, setManifestTime] = React.useState('—');
+    const firstLoad = React.useRef(true);
+
+    function loadManifest() {
+      fetch('../output/manifest.json', { cache: 'no-store' })
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(manifest => {
+          setProjects(manifest.projects || []);
+          const d = new Date(manifest.generated);
+          const h = String(d.getUTCHours()).padStart(2, '0');
+          const m = String(d.getUTCMinutes()).padStart(2, '0');
+          setManifestTime(`${h}:${m} UTC`);
+          firstLoad.current = false;
+        })
+        .catch(() => {
+          // Manifest missing or server not running — show empty state
+          if (firstLoad.current) {
+            setProjects([]);
+            firstLoad.current = false;
+          }
+          // Subsequent poll failures: keep current data, don't reset to empty
+        });
+    }
+
+    React.useEffect(() => {
+      loadManifest();
+      const timer = setInterval(loadManifest, 30000);
+      return () => clearInterval(timer);
+    }, []);
+
+    const loading = projects === null;
+    return <HomeScreen projects={projects} loading={loading} manifestTime={manifestTime} />;
   }
 
   ReactDOM.createRoot(document.getElementById('root')).render(<App />);

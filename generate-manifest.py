@@ -72,24 +72,45 @@ def scan_project(project_dir, project_name):
         stem = filename[:-3]  # strip .md
 
         phase = fm.get('phase', 'discovery')
-        artefacts.append({
-            'id':   fm.get('id', stem),
-            'n':    fm.get('n', stem[:2] if len(stem) >= 2 else stem),
-            'name': fm.get('title', fm.get('name', stem)),
-            'file': f'output/{project_name}/{filename}',
-            'phase': phase,
-            'type': fm.get('type', ''),
-        })
 
         try:
             mtime = os.path.getmtime(filepath)
             if mtime > last_modified:
                 last_modified = mtime
+            modified_iso = datetime.fromtimestamp(mtime, tz=timezone.utc).isoformat()
         except OSError:
-            pass
+            modified_iso = None
+
+        artefact = {
+            'id':       fm.get('id', stem),
+            'n':        fm.get('n', stem[:2] if len(stem) >= 2 else stem),
+            'name':     fm.get('title', fm.get('name', stem)),
+            'file':     f'output/{project_name}/{filename}',
+            'phase':    phase,
+            'type':     fm.get('type', ''),
+        }
+        if modified_iso:
+            artefact['modified'] = modified_iso
+
+        # Collect tagline candidates for the project oneline (brief > running-brief > others)
+        tagline = fm.get('tagline', '')
+        artefact['_tagline'] = tagline  # temporary; stripped before output
+        artefact['_type'] = fm.get('type', '')
+
+        artefacts.append(artefact)
 
     if not artefacts:
         return None, 0
+
+    # Project oneline: prefer tagline from brief, then running-brief, then first found.
+    TYPE_PREF = {'brief': 0, 'running-brief': 1}
+    tagline_candidates = [(TYPE_PREF.get(a['_type'], 99), a['_tagline']) for a in artefacts if a['_tagline']]
+    oneline = min(tagline_candidates, key=lambda x: x[0])[1] if tagline_candidates else ''
+
+    # Strip internal-only fields before output
+    for a in artefacts:
+        del a['_tagline']
+        del a['_type']
 
     # Project phase: most advanced phase seen across all artefacts.
     # A build-kickoff or build-phase running-brief signals the project's current position,
@@ -101,6 +122,7 @@ def scan_project(project_dir, project_name):
         'id':        project_name,
         'name':      project_name,
         'phase':     project_phase,
+        'oneline':   oneline,
         'artefacts': artefacts,
     }
 

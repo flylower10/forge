@@ -46,45 +46,5 @@ window.FORGE_CONFIG = (function () {
     { id: 'architect',      name: 'Architect',         mode: 'Consulted',  note: 'Foundational technical decisions. Consulted, never assigned tasks.', file: 'build-team/architect.md'        },
   ];
 
-  const PROJECTS = [
-    {
-      id: 'forge-knowledge-browser',
-      name: 'forge-knowledge-browser',
-      phase: 'discovery',
-      artefacts: [
-        { id: 'fkb-running-brief', n: 'rb', name: 'Running brief',    file: 'output/forge-knowledge-browser/running-brief.md',     phase: 'discovery' },
-        { id: 'fkb-01',           n: '01', name: 'Problem framing',  file: 'output/forge-knowledge-browser/01-problem-framing.md', phase: 'discovery' },
-        { id: 'fkb-02',           n: '02', name: 'UX framing',       file: 'output/forge-knowledge-browser/02-design-agent.md',    phase: 'discovery' },
-        { id: 'fkb-03',           n: '03', name: 'Tech feasibility',  file: 'output/forge-knowledge-browser/03-tech-feasibility.md', phase: 'discovery' },
-        { id: 'fkb-04',           n: '04', name: 'Assumption log',    file: 'output/forge-knowledge-browser/04-sceptic.md',           phase: 'discovery' },
-        { id: 'fkb-brief',        n: 'br', name: 'Brief',             file: 'output/forge-knowledge-browser/brief.md',                 phase: 'discovery' },
-        { id: 'fkb-assumptions',  n: 'al', name: 'Assumptions',       file: 'output/forge-knowledge-browser/assumption-log.md',        phase: 'discovery' },
-        { id: 'fkb-ost',          n: 'od', name: 'OST decisions',     file: 'output/forge-knowledge-browser/ost-decisions.md',         phase: 'discovery' },
-        { id: 'fkb-breadboard',   n: 'bb', name: 'Breadboard',        file: 'output/forge-knowledge-browser/breadboard.md',            phase: 'discovery' },
-        { id: 'fkb-kickoff',      n: 'bk', name: 'Build kickoff',     file: 'output/forge-knowledge-browser/build-kickoff.md',          phase: 'refinement' },
-      ],
-    },
-    {
-      id: 'wc-sim-market',
-      name: 'wc-sim-market',
-      phase: 'build',
-      artefacts: [
-        { id: 'wcsim-brief',         n: 'br', name: 'Brief',              file: 'output/wc-sim-market/brief.md',             phase: 'discovery' },
-        { id: 'wcsim-running-brief', n: 'rb', name: 'Running brief',      file: 'output/wc-sim-market/running-brief.md',     phase: 'build'     },
-        { id: 'wcsim-personas',      n: 'pe', name: 'Personas',           file: 'output/wc-sim-market/personas.md',          phase: 'discovery' },
-        { id: 'wcsim-research-plan', n: 'rp', name: 'Research plan',      file: 'output/wc-sim-market/research-plan.md',    phase: 'discovery' },
-        { id: 'wcsim-handoff',       n: 'hf', name: 'Handoff',            file: 'output/wc-sim-market/handoff.md',           phase: 'build'     },
-        { id: 'wcsim-kickoff',       n: 'bk', name: 'Build kickoff',      file: 'output/wc-sim-market/build-kickoff.md',    phase: 'refinement'},
-        { id: 'wcsim-01',            n: '01', name: 'Problem framing',    file: 'output/wc-sim-market/01-problem-framing.md', phase: 'discovery'},
-        { id: 'wcsim-02',            n: '02', name: 'Monetisation',       file: 'output/wc-sim-market/02-monetisation.md',   phase: 'discovery' },
-        { id: 'wcsim-03',            n: '03', name: 'Tech feasibility',   file: 'output/wc-sim-market/03-tech-feasibility.md', phase: 'discovery'},
-        { id: 'wcsim-04',            n: '04', name: 'UX framing',         file: 'output/wc-sim-market/04-ux-framing.md',     phase: 'discovery' },
-        { id: 'wcsim-05',            n: '05', name: 'GTM',                file: 'output/wc-sim-market/05-gtm.md',            phase: 'discovery' },
-        { id: 'wcsim-06',            n: '06', name: 'Model assessment',   file: 'output/wc-sim-market/06-model-assessment.md', phase: 'discovery'},
-        { id: 'wcsim-07',            n: '07', name: 'Assumption log',     file: 'output/wc-sim-market/07-assumption-log.md', phase: 'discovery' },
-      ],
-    },
-  ];
-
-  return { PHASES, PIPELINE, LATERAL, PROJECTS };
+  return { PHASES, PIPELINE, LATERAL };
 })();

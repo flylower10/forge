@@ -212,6 +212,111 @@ data attributes on `.fg-shell`. The `.md` source is unchanged.
 
 ---
 
+## Viewer v2 — Project home + running-brief renderer
+
+Design decisions made in Claude Design session (2026-05-10). These extend
+the existing design system — they don't replace it. CSS class prefix is
+still `fg-`. New classes live in a merged section of `forge-styles.css`.
+
+### Project home screen (`viewer/index.html`)
+
+**Layout chosen:** Index (typographic table-of-contents). Rejected: Grid
+(too card-heavy for 5+ projects), Card (adds chrome without signal).
+
+The Index layout uses large typography as the primary navigation affordance.
+Each project is a full-width row. The project name is the headline; the
+one-liner is the subtitle. No card borders, no thumbnail images.
+
+**Phase legend filter** sits below the top chrome. Clicking a phase filters
+the list. Filter is combinatorial: one phase at a time. A "clear filter"
+button appears when active.
+
+**Sort controls:** three sort modes — `recent` (default, by last artefact
+mtime), `name` (alphabetical), `artefacts` (by count). Rendered as small
+toggles. State is transient — does not persist across page loads.
+
+**Row anatomy:**
+- `n` — zero-padded ordinal (01, 02, 03 …) in mono
+- Name — project slug in large weight
+- One-liner — subtitle in muted ink
+- Phase / artefact count — small meta row
+- Last artefact — right-aligned, eyebrow + name + relative time
+- Arrow `→` — rightmost, visible on hover
+
+**Four states:**
+- Populated: `HomeIndex` — the default
+- Empty: `HomeIndexEmpty` — no projects in manifest; shows `./forge serve` hint
+- Single: `HomeIndexSingle` — single project gets extra "Recent activity" list
+- Loading: `HomeIndexLoading` — skeleton placeholders while manifest fetches
+
+**Manifest fields required:**
+- Per project: `id`, `name`, `phase`, `oneline` (project one-liner from brief tagline), `artefacts[]`
+- Per artefact: `id`, `n`, `name`, `type`, `phase`, `modified` (ISO timestamp, for relative time and sort)
+
+### Running-brief renderer (`viewer/project.html`)
+
+Detection: if artefact frontmatter `type === "running-brief"`, route to the
+running-brief renderer instead of the generic markdown renderer. Other artefacts
+use the existing path unchanged.
+
+Three custom block transforms applied to the running-brief markdown:
+
+**1. Handoff log timeline** (`HandoffTimeline`)
+- Triggered by `## Handoff:` headings (or `### AgentName · Date` in existing format)
+- Each entry renders as a distinct timeline card with: agent name, role, date, phase
+- Subsections: Established (bullet list), Concerns flagged (badge list), Scope gap, Passing forward
+- Timeline direction: newest-first — most recent agent at top
+- Agent entries are visually distinct (phase accent left border, phase chip)
+- `isCurrent` flag on the newest entry
+
+**2. Pipeline map** (`PipelineMap`)
+- Triggered by the pipeline configuration section
+- Input shape: `{ project, typeLines[], estimate, waves[], trailing[], skipped[], selected[] }`
+- Each wave is a row: wave number + kind label + agent chips
+- Chip states: `complete` (dim, struck role), `current` (phase ring), `upcoming` (dashed)
+- Parallel waves show `+` glyph between chips
+- `trailing[]` rendered as "Then → agent → agent" footer
+- `skipped[]` rendered in a distinct strip beneath the wave map
+- Fallback: if parsing fails, render as plain fenced code block
+
+**3. Badge tokens** (`Badge`)
+- Inline in any list item, rendered in place
+- Format: `[TAG]` single-bracket (existing md format) → parsed to structured badge
+- Tag kinds: `DECISION`, `OPEN QUESTION`, `TECH FEASIBILITY`, `DESIGN REVIEW`,
+  `SPIKE`, `REFINEMENT AGENDA ITEM`
+- `resolved` flag when the body contains `RESOLVED` or explicit marker
+- Unknown kinds render as `[UNKNOWN]` with console warning
+
+### New CSS classes (appended to `forge-styles.css`)
+
+All use the `fg-` prefix. Applied via `data-phase` and `data-state` attributes.
+
+| Class group | What it styles |
+|---|---|
+| `.fg-home__*` | Top chrome, brand, nav, legend, sort controls, poll indicator |
+| `.fg-index-*` | Project list, rows, row content, empty/single states |
+| `.fg-timeline-*` | Handoff timeline container, entries, connector, cards, sections |
+| `.fg-pipemap__*` | Pipeline map container, header, wave rows, then-chain, skipped strip |
+| `.fg-pchip__*` | Pipeline agent chips (name, role, state variations) |
+| `.fg-wave__*` | Wave row, label, kind indicator, parallel plus glyph |
+| `.fg-badge__*` | Inline badge tokens (kind colours, resolved state) |
+| `.fg-skel*` | Skeleton loading placeholders |
+
+### Routing
+
+- `viewer/index.html` — project home (new, replaces old index)
+- `viewer/agents.html` — Forge agent reference (moved from old index.html)
+- `viewer/project.html?id={projectId}` — project artefact view
+- `viewer/project.html?id={projectId}&artefact={artefactId}` — deep-link to artefact
+
+### AGENT_PHASE lookup
+
+The pipeline map chips need a phase for each agent name. Source: `FORGE_CONFIG.PIPELINE`
+(available in viewer via `forge-config.js`). Map agent name → phase by reading the
+pipeline array. Do not hardcode a static lookup — derive it at runtime from the config.
+
+---
+
 ## Conventions
 
 - Class prefix: `fg-` for everything.
