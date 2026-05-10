@@ -1,5 +1,6 @@
-<!-- Project artefact viewer · open via ?id=wc-sim-market -->
-<!-- Serve with: python3 -m http.server 8080 from the forge root -->
+<!-- Project artefact viewer · open via ?id=forge-knowledge-browser or ?id=wc-sim-market -->
+<!-- Optional deep-link: ?artefact=[artefact-id] selects a specific artefact on load    -->
+<!-- Serve with: ./forge serve from the forge root                                       -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,12 +27,17 @@
 <script type="text/babel" src="artefacts/artefact-md.jsx"></script>
 
 <script type="text/babel" data-presets="react">
-  const { PHASES } = window.FORGE_CONFIG;
+
+  // Artefact types that are synthesised documents (shown in the top rail group)
+  const SYNTHESISED_TYPES = new Set([
+    'brief', 'running-brief', 'personas', 'research-plan',
+    'handoff', 'refinement-output', 'build-kickoff',
+    'assumption-log', 'breadboard', 'ost-decisions',
+  ]);
 
   function ProjectRail({ project, activeId, onSelect }) {
-    // Group artefacts: synthesised outputs first, then agent outputs
-    const synthesised = project.artefacts.filter(a => ['brief','running-brief','personas','research-plan','handoff','refinement-output'].includes(a.type || ''));
-    const agentOutputs = project.artefacts.filter(a => !['brief','running-brief','personas','research-plan','handoff','refinement-output'].includes(a.type || ''));
+    const synthesised = project.artefacts.filter(a => SYNTHESISED_TYPES.has(a.type || ''));
+    const agentOutputs = project.artefacts.filter(a => !SYNTHESISED_TYPES.has(a.type || ''));
     const groups = [
       { label: 'synthesised', items: synthesised },
       { label: 'agent outputs', items: agentOutputs },
@@ -66,7 +72,7 @@
           </div>
         ))}
         <div className="fg-dir__group" style={{marginTop:'auto', paddingTop:12}}>
-          <a href="index.html"
+          <a href="agents.html"
              style={{display:'flex', alignItems:'center', gap:8, padding:'8px 16px',
                      fontSize:11.5, color:'var(--fg-ink-soft)', fontFamily:'var(--fg-mono)',
                      textDecoration:'none'}}>
@@ -78,24 +84,83 @@
   }
 
   function App() {
-    const { PROJECTS = [] } = window.FORGE_CONFIG;
-    const params = new URLSearchParams(window.location.search);
-    const projectId = params.get('id');
-    const project = PROJECTS.find(p => p.id === projectId) || PROJECTS[0];
+    const params  = new URLSearchParams(window.location.search);
+    const projectId      = params.get('id');
+    const deepArtefactId = params.get('artefact');
 
-    if (!project) {
+    const [project,    setProject]    = React.useState(null);
+    const [selectedId, setSelectedId] = React.useState(null);
+    const [loadError,  setLoadError]  = React.useState(null);
+    const firstLoad = React.useRef(true);
+
+    const loadManifest = React.useCallback(() => {
+      fetch('../output/manifest.json', { cache: 'no-store' })
+        .then(r => {
+          if (!r.ok) throw new Error(`manifest fetch failed: ${r.status}`);
+          return r.json();
+        })
+        .then(manifest => {
+          const proj = projectId
+            ? manifest.projects.find(p => p.id === projectId)
+            : manifest.projects[0];
+
+          if (!proj) {
+            setLoadError(
+              projectId
+                ? `Project "${projectId}" not found in manifest.`
+                : 'No projects in manifest. Run ./forge serve to generate it.'
+            );
+            return;
+          }
+
+          setProject(proj);
+
+          if (firstLoad.current) {
+            firstLoad.current = false;
+            // Deep-link ?artefact= takes priority; otherwise default to last artefact
+            const deepMatch = deepArtefactId && proj.artefacts.find(a => a.id === deepArtefactId);
+            const initId = deepMatch
+              ? deepArtefactId
+              : proj.artefacts[proj.artefacts.length - 1]?.id;
+            setSelectedId(initId || null);
+          }
+          // On subsequent polls: don't reset selection — only the artefact list updates
+        })
+        .catch(() => {
+          // Poll failure: keep existing project data, only error on first load
+          if (firstLoad.current) {
+            setLoadError('Could not load output/manifest.json. Is ./forge serve running?');
+          }
+        });
+    }, [projectId, deepArtefactId]);
+
+    React.useEffect(() => {
+      loadManifest();
+      const timer = setInterval(loadManifest, 30000);
+      return () => clearInterval(timer);
+    }, [loadManifest]);
+
+    if (loadError) {
       return (
         <div style={{padding:40, fontFamily:'var(--fg-mono)', color:'var(--fg-ink-soft)'}}>
-          No project found. Add <code>?id=wc-sim-market</code> to the URL.
+          {loadError}
         </div>
       );
     }
 
-    const [selectedId, setSelectedId] = React.useState(project.artefacts[0].id);
-    const artefact = project.artefacts.find(a => a.id === selectedId) || project.artefacts[0];
+    if (!project || !selectedId) {
+      return (
+        <div style={{padding:40, fontFamily:'var(--fg-mono)', color:'var(--fg-ink-soft)'}}>
+          Loading…
+        </div>
+      );
+    }
+
+    const artefact = project.artefacts.find(a => a.id === selectedId)
+      || project.artefacts[project.artefacts.length - 1];
 
     return (
-      <div className="fg-root" data-phase={artefact.phase || 'discovery'} style={{minHeight:'100%'}}>
+      <div className="fg-root" data-phase={artefact?.phase || 'discovery'} style={{minHeight:'100%'}}>
         <div className="fg-shell">
           <ProjectRail project={project} activeId={selectedId} onSelect={setSelectedId} />
           <ArtefactMdPage src={`../${artefact.file}`} embedded={true} />
