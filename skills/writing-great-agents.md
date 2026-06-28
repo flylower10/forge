@@ -2,7 +2,7 @@
 
 > Authoring standard for all Forge agent files. Read this before
 > creating or editing an agent. This is reference, not steps —
-> it defines the vocabulary and failure modes that govern agent quality.
+> it defines the vocabulary that governs agent quality.
 
 ---
 
@@ -55,12 +55,12 @@ requires, don't improve adjacent code, don't refactor unrelated
 functions" — the single word *surgical* anchors all of this.
 
 **Sediment** — stale instructions that survive because adding felt safe.
-Test: does removing this line change behaviour? If not, delete it. The
-Observer is the natural owner of this check — it critiques process, and
-agent file quality is a process concern.
+Test: does removing this line change behaviour? If not, delete it.
+Route periodic agent file reviews to the Observer — it critiques process,
+and agent file quality is a process concern.
 
 **No-op** — a line the model follows by default without instruction.
-Paying context to say nothing. The fix is to find a leading word that
+Paying context to say nothing. The fix is to find a leading word (a compact pretrained concept) that
 collapses the meaning, or delete the sentence outright. Do not trim
 words — delete the whole sentence if it fails the test.
 
