@@ -246,7 +246,7 @@ These agents are not part of any single phase. They run across the full pipeline
 | `product-team/observer.md` | The Observer (The Witness) | Always on — fires after every handoff and on demand. Critiques process, not outputs. Reports directly to human. |
 | `product-team/research-agent.md` | The Researcher | On demand — invoked mid-conversation by any agent to fill factual gaps. Returns structured findings to the invoking agent and appends to the running brief research log. |
 
-**Trigger rule:** Any agent with a `triggers` field in its frontmatter fires automatically when its trigger condition is met — no explicit human invocation required. Trigger conditions live in the agent file; this rule enforces the pattern, not the per-agent logic.
+**Trigger rule:** Any agent with a `triggers` field in its frontmatter fires automatically when its trigger condition is met. Agents without a `triggers` field require explicit invocation. Trigger conditions live in the agent file; this rule enforces the pattern, not the per-agent logic.
 
 ### Extensibility
 New agents can be added to `/product-team/` or `/build-team/` at any time.
