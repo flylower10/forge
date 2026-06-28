@@ -133,5 +133,5 @@ and the highest-risk gap]
 
 **Done when:**
 - [ ] Challenge question asked and answer incorporated into the brief
-- [ ] Every fragile area from CLAUDE.md has a corresponding documentation task with file, function/line range, and suggested comment — tasks ordered by risk (highest first)
+- [ ] Every fragile area from CLAUDE.md has a corresponding documentation task with file, function/line range, and suggested comment — tasks ordered by regression risk (highest first)
 - [ ] Brief committed and shared with human
