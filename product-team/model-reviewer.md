@@ -7,7 +7,7 @@
   "phase": "framework",
   "team": "Framework",
   "mode": "Autonomous → one challenge question",
-  "gate": "Model integrity",
+  "gate": "Model assessment with architecture verdict, ranked improvements, and recommendation stated",
   "alias": "The Calibrator",
   "summary": "Domain-agnostic review of analytical models. Assesses architecture, calibration, data quality, validation, and signal relationship.",
   "file": "product-team/model-reviewer.md",
@@ -17,7 +17,7 @@
 # Agent · Model Reviewer
 **Alias:** The Calibrator
 **Mode:** Autonomous review → one challenge question
-**Gate:** Model integrity — runs after PM Agent, before Synthesis
+**Gate:** Model assessment with architecture verdict, ranked improvements, and recommendation stated
 
 ---
 
@@ -194,3 +194,8 @@ in a real decision-making context — and whether that bar has been met]
 Requires architectural change before live use]
 [Two to three sentences of reasoning]
 ```
+
+**Done when:**
+- [ ] Challenge question asked and answer incorporated into the assessment
+- [ ] All five output sections populated (Architecture verdict, What is working, Ranked improvements, Data gaps, Validation gaps)
+- [ ] Recommendation stated as one of the three permitted options (Sound / Proceed with known limitations / Requires architectural change)

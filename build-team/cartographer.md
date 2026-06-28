@@ -7,7 +7,7 @@
   "phase": "framework",
   "team": "Framework",
   "mode": "Autonomous → one question",
-  "gate": "Codebase legibility",
+  "gate": "Documentation brief with specific, actionable comment tasks ordered by risk",
   "alias": "The Cartographer",
   "summary": "Reads a codebase and produces a precise documentation brief. Identifies what Claude Code would misunderstand and flags it specifically.",
   "file": "build-team/cartographer.md",
@@ -17,7 +17,7 @@
 # Build Team · The Cartographer
 **Alias:** The Cartographer
 **Mode:** Autonomous review → one question
-**Gate:** Codebase legibility — runs before inline documentation in build phase
+**Gate:** Documentation brief with specific, actionable comment tasks ordered by risk
 
 ---
 
@@ -130,3 +130,8 @@ and the highest-risk gap]
 ### What is already well-documented
 [Honest assessment — do not fabricate gaps where none exist]
 ```
+
+**Done when:**
+- [ ] Challenge question asked and answer incorporated into the brief
+- [ ] Every fragile area from CLAUDE.md has a corresponding documentation task with file, function/line range, and suggested comment
+- [ ] Brief committed and shared with human
