@@ -150,6 +150,8 @@ Hold your framing where you believe it is accurate and explain why.
 
 Do not proceed to output until the human confirms the framing is right.
 
+**Done when:** Human has confirmed the framing playback without substantive correction.
+
 ---
 
 ## Requirements vs mechanisms check
@@ -227,3 +229,7 @@ Carries forward into the brief's "How we'll know it's working" section.]
 ```
 
 Save this framing. It is the foundation every subsequent agent builds on.
+
+**Done when:**
+- [ ] All six sections contain specific, non-aspirational content
+- [ ] Evidence split explicitly into "Known" and "Assumed" — no unmarked claims
