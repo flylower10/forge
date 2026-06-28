@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grill-Me Skill — Implementation Plan</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d14; --surface: #14141f; --elevated: #1c1c2e; --border: #2a2a3d;
+      --text: #e8e8f0; --mid: #9090a8; --dim: #555568;
+      --blue: #5b8dee; --green: #4caf82; --amber: #e8a94d; --red: #e05c5c; --purple: #9b72cf;
+      --blue-surface: rgba(91,141,238,0.12); --green-surface: rgba(76,175,130,0.12);
+      --amber-surface: rgba(232,169,77,0.12); --red-surface: rgba(224,92,92,0.12);
+      --blue-border: rgba(91,141,238,0.20); --green-border: rgba(76,175,130,0.20);
+      --amber-border: rgba(232,169,77,0.20); --red-border: rgba(224,92,92,0.20);
+      --blue-surface-subtle: rgba(91,141,238,0.06); --green-surface-subtle: rgba(76,175,130,0.06);
+      --amber-surface-subtle: rgba(232,169,77,0.06); --red-surface-subtle: rgba(224,92,92,0.06);
+      --green-border-strong: rgba(76,175,130,0.30); --red-border-strong: rgba(224,92,92,0.25);
+      --topbar-h: 53px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .forge-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.65rem 1.75rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .forge-topbar__breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+    .forge-topbar__sep { color: var(--border); }
+    .forge-topbar__current { color: var(--mid); }
+    .forge-topbar__logo { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+    .forge-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - var(--topbar-h)); }
+    .forge-sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 1rem; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--elevated) transparent; }
+    .forge-sidebar__label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin: 1.25rem 0 0.5rem; }
+    .forge-sidebar__label:first-child { margin-top: 0; }
+    .forge-sidebar__link { display: block; padding: 0.3rem 0.6rem; font-size: 0.78rem; color: var(--mid); text-decoration: none; border-radius: 5px; margin-bottom: 0.1rem; transition: background 0.12s, color 0.12s; }
+    .forge-sidebar__link:hover { background: var(--elevated); color: var(--text); }
+    .forge-sidebar__link.is-active { background: var(--blue-surface); color: var(--blue); }
+    .forge-main { padding: 2rem 2.5rem; max-width: 860px; }
+    .forge-main h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+    .forge-main h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2.5rem 0 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .forge-main h2:first-of-type { border-top: none; margin-top: 1.5rem; padding-top: 0; }
+    .forge-main h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin: 1.25rem 0 0.65rem; }
+    .forge-main p { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.85rem; }
+    .forge-main p:last-child { margin-bottom: 0; }
+    .forge-main code { font-family: 'SF Mono','Fira Code','Cascadia Code',monospace; font-size: 0.8rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.4rem; border-radius: 3px; }
+    .forge-main pre { background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; overflow-x: auto; margin-bottom: 1rem; }
+    .forge-main pre code { background: none; padding: 0; font-size: 0.78rem; color: var(--text); }
+    .forge-main ul, .forge-main ol { padding-left: 1.5rem; margin-bottom: 0.85rem; color: var(--mid); font-size: 0.875rem; line-height: 1.75; }
+    .forge-main li { margin-bottom: 0.2rem; }
+    .forge-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.52rem; border-radius: 4px; white-space: nowrap; }
+    .forge-badge--blue { background: var(--blue-surface); color: var(--blue); }
+    .forge-badge--green { background: var(--green-surface); color: var(--green); }
+    .forge-badge--amber { background: var(--amber-surface); color: var(--amber); }
+    .forge-badge--dim { background: rgba(144,144,168,0.12); color: var(--mid); }
+    .forge-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+    .forge-card--blue { background: var(--blue-surface-subtle); border-color: var(--blue-border); }
+    .forge-card--green { background: var(--green-surface-subtle); border-color: var(--green-border); }
+    .forge-card--amber { background: var(--amber-surface-subtle); border-color: var(--amber-border); }
+    .forge-card__title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim); margin-bottom: 0.75rem; }
+    .forge-divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+    .forge-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1rem; }
+    .forge-table thead th { text-align: left; padding: 0.45rem 0.7rem; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dim); border-bottom: 1px solid var(--border); }
+    .forge-table tbody td { padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid); vertical-align: top; }
+    .forge-table tbody tr:last-child td { border-bottom: none; }
+    .forge-table tbody tr:hover td { background: var(--elevated); }
+    .forge-table .file { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.75rem; color: var(--blue); }
+    /* Plan-specific: task blocks */
+    .task-block { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
+    .task-block summary { list-style: none; cursor: pointer; padding: 0.85rem 1.1rem; background: var(--elevated); font-size: 0.875rem; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 0.75rem; user-select: none; transition: background 0.12s; }
+    .task-block summary::-webkit-details-marker { display: none; }
+    .task-block summary:hover { background: var(--surface); }
+    .task-block summary::after { content: '›'; font-size: 1rem; color: var(--dim); transform: rotate(90deg); display: inline-block; transition: transform 0.2s; margin-left: auto; }
+    .task-block[open] summary::after { transform: rotate(270deg); }
+    .task-block__body { padding: 1.25rem 1.25rem 0.5rem; background: var(--surface); }
+    .task-block__files { background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.78rem; color: var(--mid); }
+    .task-block__files strong { color: var(--dim); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.4rem; }
+    .task-block__files code { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.75rem; color: var(--blue); background: transparent; padding: 0; }
+    /* Steps */
+    .step { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.6rem 0; border-bottom: 1px solid rgba(42,42,61,0.4); }
+    .step:last-child { border-bottom: none; }
+    .step input[type="checkbox"] { margin-top: 0.2rem; accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+    .step__content { flex: 1; font-size: 0.875rem; color: var(--mid); line-height: 1.65; }
+    .step__content strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step__content pre { margin-top: 0.6rem; margin-bottom: 0; }
+    .step__content p { margin-bottom: 0.4rem; }
+    .step.is-done .step__content { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--dim); }
+    /* Progress bar */
+    .progress-bar { background: var(--elevated); border-radius: 4px; height: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+    .progress-bar__fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.3s; }
+    .progress-label { font-size: 0.72rem; color: var(--dim); margin-bottom: 0.4rem; }
+    .task-number { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--blue-surface); color: var(--blue); font-size: 0.68rem; font-weight: 700; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="forge-topbar">
+  <div class="forge-topbar__breadcrumb">
+    <span style="color:var(--dim)">Forge</span>
+    <span class="forge-topbar__sep">›</span>
+    <span style="color:var(--dim)">Plans</span>
+    <span class="forge-topbar__sep">›</span>
+    <span class="forge-topbar__current">Grill-Me Skill</span>
+  </div>
+  <div class="forge-topbar__logo">Implementation Plan · 2026-06-09</div>
+</div>
+
+<div class="forge-layout">
+
+  <aside class="forge-sidebar">
+    <div class="forge-sidebar__label">Plan</div>
+    <a href="#overview" class="forge-sidebar__link">Overview</a>
+    <a href="#file-map" class="forge-sidebar__link">File Map</a>
+
+    <div class="forge-sidebar__label">Tasks</div>
+    <a href="#task-1" class="forge-sidebar__link">1 · Create grill-me.md</a>
+    <a href="#task-2" class="forge-sidebar__link">2 · Update delivery-manager.md</a>
+    <a href="#task-3" class="forge-sidebar__link">3 · Update 07-refinement.md</a>
+    <a href="#task-4" class="forge-sidebar__link">4 · Commit</a>
+  </aside>
+
+  <main class="forge-main">
+
+    <h1>Grill-Me Skill</h1>
+    <p style="color:var(--dim);font-size:0.8rem;margin-bottom:1.5rem;">Implementation Plan · 3 files · 4 tasks</p>
+
+    <div class="progress-label" id="progress-label">0 of 13 steps complete</div>
+    <div class="progress-bar"><div class="progress-bar__fill" id="progress-fill" style="width:0%"></div></div>
+
+    <!-- OVERVIEW -->
+    <h2 id="overview">Overview</h2>
+
+    <div class="forge-card forge-card--blue">
+      <div class="forge-card__title">Goal</div>
+      <p>Add a cross-cutting <code>skills/grill-me.md</code> skill and wire it into the Delivery Manager and Refinement Ceremony so any agent can invoke plan stress-testing before execution.</p>
+    </div>
+
+    <div class="forge-card">
+      <div class="forge-card__title">Architecture</div>
+      <p>One new skill file defines the full protocol. Two existing agent files receive targeted additions — no structural changes, only new sections/steps inserted at precise locations. The skill is invoked by judgement, not a hard gate.</p>
+    </div>
+
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <span class="forge-badge forge-badge--dim">1 file created</span>
+      <span class="forge-badge forge-badge--amber">2 files modified</span>
+      <span class="forge-badge forge-badge--blue">No code changes</span>
+    </div>
+
+    <!-- FILE MAP -->
+    <h2 id="file-map">File Map</h2>
+    <table class="forge-table">
+      <thead><tr><th>File</th><th>Action</th><th>What changes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="file">skills/grill-me.md</td>
+          <td><span class="forge-badge forge-badge--green">Create</span></td>
+          <td>Full skill protocol — when to invoke, 5-step process, recommended answer format, output template</td>
+        </tr>
+        <tr>
+          <td class="file">build-team/delivery-manager.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>3 additions: grill-me as step 6 of build kickoff, complex task gate section, burst-start procedure section</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/07-refinement.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add step 5 (invoke grill-me on build sequence) to "Your job" list; renumber old step 5 → 6</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TASK 1 -->
+    <h2 id="task-1">Tasks</h2>
+
+    <details class="task-block" open>
+      <summary>
+        <span class="task-number">1</span>
+        Create <code>skills/grill-me.md</code>
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Create: <code>skills/grill-me.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s1-1">
+          <div class="step__content">
+            <strong>Write the skill file with complete content</strong>
+            <p>Create <code>skills/grill-me.md</code> with exactly this content:</p>
+            <pre><code># Skill · Grill-Me
+**Mode:** On-demand — invoked by any agent before executing a plan
+
+---
+
+## When to invoke
+
+Invoke when you are holding a plan, approach, or implementation
+decision and need to work through open questions before execution
+begins. The invoking agent decides whether it applies.
+
+**Primary invokers:**
+- **Delivery Manager** — burst kickoff (step 6 of build kickoff
+  checklist), complex tasks (before assigning to Engineer),
+  burst-start planning (after re-entry orientation)
+- **Refinement Ceremony** — on the proposed build sequence
+  before handoff (step 5 of the "Your job" list)
+- **Engineer** — implementation fork mid-task (self-invoke)
+- **Architect** — architectural decision review
+
+**This skill is not:**
+- A discovery tool — use PM Agent + Devil's Advocate to question
+  the problem or user framing
+- A scope tool — use feature-triage to decide whether to build
+- A review tool — use Reviewer/QA to evaluate completed work
+
+Strictly: *given we are building this, is the plan sound?*
+
+---
+
+## Process
+
+**1. Read the full plan**
+Understand the shape before asking anything. Do not start
+questioning until you have read every part of the plan.
+
+**2. Check the codebase**
+Identify every question the plan raises. For each, check whether
+it can be answered by reading files or running a command. Answer
+those questions yourself — only ask the human about things you
+genuinely cannot resolve from the codebase.
+
+**3. Build a decision tree**
+List all remaining open questions. Order them by dependency:
+a decision that other decisions depend on must come first. Map
+dependencies explicitly before starting.
+
+**4. Work sequentially**
+For each question:
+- State the question clearly and specifically
+- Offer a recommended answer using the format below
+- Wait for confirmation, correction, or elaboration
+- Do not move to the next question until this one is resolved
+
+**5. Produce a decision log**
+Record what was decided and why.
+
+---
+
+## Recommended answer format
+
+&gt; **Recommendation:** [One clear answer]
+&gt; **Reasoning:** [One sentence]
+&gt; **Assumption:** [What must be true for this to hold]
+
+Always provide a recommendation — never ask an open question
+without one. This lets the human accept quickly ("yes, that")
+or correct with minimal friction.
+
+---
+
+## Output
+
+```
+## Grill-me: [plan name / task title]
+**Invoked by:** [agent]
+**Context:** pre-build | mid-burst | implementation fork
+
+### Decisions
+1. [Question] → [Decision made] _(recommended | corrected | human-directed)_
+2. ...
+
+### Unresolved
+- [Anything that could not be resolved — flagged for human escalation]
+
+### Plan notes
+[Short summary of how the plan changes in light of the decisions — optional]
+```
+
+The *(recommended | corrected | human-directed)* tag records whether
+the human took the recommended path, overrode it, or drove the answer
+themselves. Useful signal for the invoking agent and for future bursts.
+</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s1-2">
+          <div class="step__content">
+            <strong>Verify the file has all required sections</strong>
+            <p>Read back <code>skills/grill-me.md</code> and confirm these five headings are present:</p>
+            <ul>
+              <li><code>## When to invoke</code></li>
+              <li><code>## Process</code></li>
+              <li><code>## Recommended answer format</code></li>
+              <li><code>## Output</code></li>
+            </ul>
+            <p>Confirm the output template contains the three sections: <code>### Decisions</code>, <code>### Unresolved</code>, <code>### Plan notes</code>.</p>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- TASK 2 -->
+    <details class="task-block" id="task-2">
+      <summary>
+        <span class="task-number">2</span>
+        Update <code>build-team/delivery-manager.md</code>
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>build-team/delivery-manager.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s2-1">
+          <div class="step__content">
+            <strong>Addition 1 — Grill-me gate in Build Kickoff</strong>
+            <p>Find this exact line in the Build Kickoff section:</p>
+            <pre><code>Then propose the sequence. Do not skip to execution.</code></pre>
+            <p>Insert the following immediately before it (after the "Pass 2" paragraph and its closing text):</p>
+            <pre><code>**6. Grill-me gate** — before proposing the build sequence,
+invoke `skills/grill-me.md` on the full plan. Work through
+any open questions and resolve them. Do not propose the
+sequence until grill-me has run.
+
+</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s2-2">
+          <div class="step__content">
+            <strong>Addition 2 — Complex task gate</strong>
+            <p>Find this exact line in the Operating model section:</p>
+            <pre><code>### When not to pause</code></pre>
+            <p>Insert a new section immediately after the "When not to pause" block ends (after the last bullet "- Normal progress..."). Find the line:</p>
+            <pre><code>- Normal progress (surface in a summary at the end of the burst, not mid-flow)</code></pre>
+            <p>Insert this new section immediately after it:</p>
+            <pre><code>
+### Complex task gate
+
+Before assigning any task you judge too ambiguous to execute
+directly, invoke `skills/grill-me.md`. A task is ambiguous if:
+- Its acceptance criteria leave room for two different implementations
+- It has an unresolved dependency not covered by the build sequence
+- The Engineer would need to make a product decision to complete it
+
+Resolve the ambiguity with grill-me before handing off. A task
+that enters the Engineer with unresolved ambiguity will either
+stall or produce the wrong output.
+
+</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s2-3">
+          <div class="step__content">
+            <strong>Addition 3 — Burst-start procedure</strong>
+            <p>Find this exact heading:</p>
+            <pre><code>## End-of-burst procedure</code></pre>
+            <p>Insert a new section immediately before it:</p>
+            <pre><code>## Burst-start procedure
+
+After presenting the re-entry orientation
+(see `product-team/08-burst-review.md`) and receiving a green
+light from the human, review the proposed next tasks. If any
+have open questions or unresolved dependencies, invoke
+`skills/grill-me.md` before assigning to the Engineer.
+
+The re-entry ceremony stays lightweight — grill-me runs here,
+in the DM's planning step that follows orientation.
+
+</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s2-4">
+          <div class="step__content">
+            <strong>Verify additions are in the right locations</strong>
+            <p>Read <code>build-team/delivery-manager.md</code> and confirm:</p>
+            <ul>
+              <li>Build Kickoff has a numbered step 6 referencing <code>skills/grill-me.md</code>, before "Then propose the sequence."</li>
+              <li>Operating model has a "### Complex task gate" section after "### When not to pause"</li>
+              <li>A "## Burst-start procedure" section appears before "## End-of-burst procedure"</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- TASK 3 -->
+    <details class="task-block" id="task-3">
+      <summary>
+        <span class="task-number">3</span>
+        Update <code>product-team/07-refinement.md</code>
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>product-team/07-refinement.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s3-1">
+          <div class="step__content">
+            <strong>Add grill-me step to "Your job" list</strong>
+            <p>Find this exact text in the "Your job" section:</p>
+            <pre><code>4. Update the brief and CLAUDE.md accordingly
+5. Hand off to the build team with a clear start point</code></pre>
+            <p>Replace it with:</p>
+            <pre><code>4. Update the brief and CLAUDE.md accordingly
+5. Invoke `skills/grill-me.md` on the proposed build sequence.
+   Resolve any remaining open questions. Include the decision
+   log in the build kickoff note.
+6. Hand off to the build team with a clear start point</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s3-2">
+          <div class="step__content">
+            <strong>Verify the change</strong>
+            <p>Read back <code>product-team/07-refinement.md</code> and confirm:</p>
+            <ul>
+              <li>"Your job" list now has 6 items (not 5)</li>
+              <li>Step 5 references <code>skills/grill-me.md</code> and mentions the decision log</li>
+              <li>Step 6 still reads "Hand off to the build team with a clear start point"</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- TASK 4 -->
+    <details class="task-block" id="task-4">
+      <summary>
+        <span class="task-number">4</span>
+        Commit
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>All 3 changed files + this plan</div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s4-1">
+          <div class="step__content">
+            <strong>Stage and commit</strong>
+            <pre><code>git add skills/grill-me.md \
+      build-team/delivery-manager.md \
+      product-team/07-refinement.md \
+      docs/superpowers/specs/2026-06-09-grill-me-design.md \
+      docs/superpowers/plans/2026-06-09-grill-me.html
+git commit -m "feat: add grill-me skill for plan stress-testing"</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s4-2">
+          <div class="step__content">
+            <strong>Confirm commit</strong>
+            <pre><code>git log --oneline -1</code></pre>
+            <p>Expected: a single commit with message <code>feat: add grill-me skill for plan stress-testing</code></p>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <div class="forge-divider"></div>
+    <p style="color:var(--dim);font-size:0.78rem;">Spec: <code>docs/superpowers/specs/2026-06-09-grill-me-design.md</code></p>
+
+  </main>
+</div>
+
+<script>
+  const STORAGE_KEY = 'forge-plan-grill-me-2026-06-09';
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const progressFill = document.getElementById('progress-fill');
+  const progressLabel = document.getElementById('progress-label');
+  const total = checkboxes.length;
+
+  function save() {
+    const state = {};
+    checkboxes.forEach(cb => { state[cb.id] = cb.checked; });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function updateProgress() {
+    const done = Array.from(checkboxes).filter(cb => cb.checked).length;
+    const pct = Math.round((done / total) * 100);
+    progressFill.style.width = pct + '%';
+    progressLabel.textContent = done + ' of ' + total + ' steps complete';
+  }
+
+  function applyDoneClass(cb) {
+    const step = cb.closest('.step');
+    if (step) step.classList.toggle('is-done', cb.checked);
+  }
+
+  // Restore state
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    checkboxes.forEach(cb => {
+      if (saved[cb.id]) { cb.checked = true; applyDoneClass(cb); }
+    });
+  } catch(e) {}
+
+  updateProgress();
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      applyDoneClass(cb);
+      updateProgress();
+      save();
+    });
+  });
+
+  // Sidebar active link on scroll
+  const sections = document.querySelectorAll('h2[id], details[id]');
+  const links = document.querySelectorAll('.forge-sidebar__link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    links.forEach(l => {
+      l.classList.toggle('is-active', l.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>
