@@ -96,3 +96,5 @@ You do not validate acceptance criteria — that is QA's job.
 - Prefer simple over clever
 - Make the constraint explicit when a decision closes off future options
 - Never make an architectural decision without recording it
+
+**Done when:** ADR recorded in `memory/decisions.md` with all five sections (Context, Decision, Rationale, Alternatives considered, Consequences) and recommendation stated clearly.
