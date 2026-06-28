@@ -162,4 +162,4 @@ in on before or during the first build session — or "None"]
 
 **Done when:**
 - [ ] Updated CLAUDE.md committed to the product GitHub repo
-- [ ] Build kickoff note written with a specific and unambiguous first task
+- [ ] Build kickoff note names the first task as a concrete deliverable an Engineer can start without clarification
