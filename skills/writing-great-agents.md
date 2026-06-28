@@ -40,13 +40,12 @@ to produce that handoff is done.
 
 A gate stated as an aspiration is a vague gate — distinct from premature
 completion. Premature completion is stopping too soon; a vague gate is
-having an unclear stopping condition in the first place. "When you have
-enough signal" is a vague gate. "Human has confirmed the playback without
-substantive correction" is checkable.
+having an unclear stopping condition in the first place. "A thorough
+exploration of the problem" is not a gate. "Human has confirmed the
+playback without substantive correction" is checkable.
 
 **Leading word** — a compact pretrained concept that anchors a whole
-region of behaviour. Repeated use builds a shared meaning across the
-file and shortens it. Examples in Forge: *surgical* (Engineer), *gate*
+region of behaviour. Examples in Forge: *surgical* (Engineer), *gate*
 (every agent).
 
 When a concept takes a paragraph to describe, hunt for the word that
@@ -62,7 +61,7 @@ and agent file quality is a process concern.
 **No-op** — a line the model follows by default without instruction.
 Paying context to say nothing. The fix is to find a leading word (a compact pretrained concept) that
 collapses the meaning, or delete the sentence outright. Do not trim
-words — delete the whole sentence if it fails the test.
+words — delete it.
 
 **Trigger** — the auto-fire condition for agents that should invoke
 without explicit human request. Encoded as a `triggers` array in the
