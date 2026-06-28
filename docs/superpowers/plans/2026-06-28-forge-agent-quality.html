@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forge Agent Quality — Implementation Plan</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d14; --surface: #14141f; --elevated: #1c1c2e; --border: #2a2a3d;
+      --text: #e8e8f0; --mid: #9090a8; --dim: #555568;
+      --blue: #5b8dee; --green: #4caf82; --amber: #e8a94d; --red: #e05c5c; --purple: #9b72cf;
+      --blue-surface: rgba(91,141,238,0.12); --green-surface: rgba(76,175,130,0.12);
+      --amber-surface: rgba(232,169,77,0.12); --red-surface: rgba(224,92,92,0.12);
+      --blue-border: rgba(91,141,238,0.20); --green-border: rgba(76,175,130,0.20);
+      --amber-border: rgba(232,169,77,0.20); --red-border: rgba(224,92,92,0.20);
+      --blue-surface-subtle: rgba(91,141,238,0.06); --green-surface-subtle: rgba(76,175,130,0.06);
+      --amber-surface-subtle: rgba(232,169,77,0.06);
+      --topbar-h: 53px;
+    }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    .forge-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.65rem 1.75rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .forge-topbar__breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+    .forge-topbar__sep { color: var(--border); }
+    .forge-topbar__current { color: var(--mid); }
+    .forge-topbar__logo { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+    .forge-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - var(--topbar-h)); }
+    .forge-sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 1rem; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--elevated) transparent; }
+    .forge-sidebar__label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin: 1.25rem 0 0.5rem; }
+    .forge-sidebar__label:first-child { margin-top: 0; }
+    .forge-sidebar__link { display: block; padding: 0.3rem 0.6rem; font-size: 0.78rem; color: var(--mid); text-decoration: none; border-radius: 5px; margin-bottom: 0.1rem; transition: background 0.12s, color 0.12s; }
+    .forge-sidebar__link:hover { background: var(--elevated); color: var(--text); }
+    .forge-main { padding: 2rem 2.5rem; max-width: 900px; }
+    .forge-main h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+    .forge-main h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2.5rem 0 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .forge-main h2:first-of-type { border-top: none; margin-top: 1.5rem; padding-top: 0; }
+    .forge-main h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin: 1.25rem 0 0.65rem; }
+    .forge-main p { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.85rem; }
+    .forge-main p:last-child { margin-bottom: 0; }
+    .forge-main code { font-family: 'SF Mono','Fira Code','Cascadia Code',monospace; font-size: 0.8rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.4rem; border-radius: 3px; }
+    .forge-main pre { background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; overflow-x: auto; margin-bottom: 1rem; }
+    .forge-main pre code { background: none; padding: 0; font-size: 0.78rem; color: var(--text); }
+    .forge-main ul, .forge-main ol { padding-left: 1.5rem; margin-bottom: 0.85rem; color: var(--mid); font-size: 0.875rem; line-height: 1.75; }
+    .forge-main li { margin-bottom: 0.2rem; }
+    .forge-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.52rem; border-radius: 4px; white-space: nowrap; }
+    .forge-badge--blue { background: var(--blue-surface); color: var(--blue); }
+    .forge-badge--green { background: var(--green-surface); color: var(--green); }
+    .forge-badge--amber { background: var(--amber-surface); color: var(--amber); }
+    .forge-badge--dim { background: rgba(144,144,168,0.12); color: var(--mid); }
+    .forge-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+    .forge-card--blue { background: var(--blue-surface-subtle); border-color: var(--blue-border); }
+    .forge-card--green { background: var(--green-surface-subtle); border-color: var(--green-border); }
+    .forge-card--amber { background: var(--amber-surface-subtle); border-color: var(--amber-border); }
+    .forge-card__title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim); margin-bottom: 0.75rem; }
+    .forge-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1rem; }
+    .forge-table thead th { text-align: left; padding: 0.45rem 0.7rem; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dim); border-bottom: 1px solid var(--border); }
+    .forge-table tbody td { padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid); vertical-align: top; }
+    .forge-table tbody tr:last-child td { border-bottom: none; }
+    .forge-table .file { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.75rem; color: var(--blue); }
+    .task-block { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
+    .task-block summary { list-style: none; cursor: pointer; padding: 0.85rem 1.1rem; background: var(--elevated); font-size: 0.875rem; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 0.75rem; user-select: none; transition: background 0.12s; }
+    .task-block summary::-webkit-details-marker { display: none; }
+    .task-block summary:hover { background: rgba(28,28,46,0.6); }
+    .task-block summary::after { content: '›'; font-size: 1rem; color: var(--dim); transform: rotate(90deg); display: inline-block; transition: transform 0.2s; margin-left: auto; }
+    .task-block[open] summary::after { transform: rotate(270deg); }
+    .task-block__body { padding: 1.25rem 1.25rem 0.5rem; background: var(--surface); }
+    .task-block__files { background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.78rem; color: var(--mid); }
+    .task-block__files strong { color: var(--dim); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.4rem; }
+    .task-block__files code { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.75rem; color: var(--blue); background: transparent; padding: 0; }
+    .step { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.6rem 0; border-bottom: 1px solid rgba(42,42,61,0.4); }
+    .step:last-child { border-bottom: none; }
+    .step input[type="checkbox"] { margin-top: 0.2rem; accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+    .step__content { flex: 1; font-size: 0.875rem; color: var(--mid); line-height: 1.65; }
+    .step__content strong { color: var(--text); display: block; margin-bottom: 0.3rem; }
+    .step__content pre { margin-top: 0.6rem; margin-bottom: 0; }
+    .step__content p { margin-bottom: 0.4rem; }
+    .step.is-done .step__content { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--dim); }
+    .progress-bar { background: var(--elevated); border-radius: 4px; height: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+    .progress-bar__fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.3s; }
+    .progress-label { font-size: 0.72rem; color: var(--dim); margin-bottom: 0.4rem; }
+    .task-number { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--blue-surface); color: var(--blue); font-size: 0.68rem; font-weight: 700; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<div class="forge-topbar">
+  <div class="forge-topbar__breadcrumb">
+    <span style="color:var(--dim)">Forge</span>
+    <span class="forge-topbar__sep">›</span>
+    <span style="color:var(--dim)">Plans</span>
+    <span class="forge-topbar__sep">›</span>
+    <span class="forge-topbar__current">Forge Agent Quality</span>
+  </div>
+  <div class="forge-topbar__logo">Implementation Plan · 2026-06-28</div>
+</div>
+
+<div class="forge-layout">
+
+  <aside class="forge-sidebar">
+    <div class="forge-sidebar__label">Plan</div>
+    <a href="#overview" class="forge-sidebar__link">Overview</a>
+    <a href="#file-map" class="forge-sidebar__link">File Map</a>
+
+    <div class="forge-sidebar__label">Tasks</div>
+    <a href="#task-1" class="forge-sidebar__link">1 · writing-great-agents.md</a>
+    <a href="#task-2" class="forge-sidebar__link">2 · PM Agent criteria</a>
+    <a href="#task-3" class="forge-sidebar__link">3 · Design Agent criteria</a>
+    <a href="#task-4" class="forge-sidebar__link">4 · Autonomous agents criteria</a>
+    <a href="#task-5" class="forge-sidebar__link">5 · Synthesis criteria + context.md</a>
+    <a href="#task-6" class="forge-sidebar__link">6 · Refinement criteria</a>
+    <a href="#task-7" class="forge-sidebar__link">7 · context.md template</a>
+    <a href="#task-8" class="forge-sidebar__link">8 · Triggers frontmatter</a>
+    <a href="#task-9" class="forge-sidebar__link">9 · CLAUDE.md + Skills table</a>
+    <a href="#task-10" class="forge-sidebar__link">10 · Wire context.md into build agents</a>
+  </aside>
+
+  <main class="forge-main">
+
+    <h1>Forge Agent Quality</h1>
+    <p style="color:var(--dim);font-size:0.8rem;margin-bottom:1.5rem;">Implementation Plan · 1 file created · 13 files modified · 10 tasks</p>
+
+    <div class="progress-label" id="progress-label">0 of 30 steps complete</div>
+    <div class="progress-bar"><div class="progress-bar__fill" id="progress-fill" style="width:0%"></div></div>
+
+    <!-- OVERVIEW -->
+    <h2 id="overview">Overview</h2>
+
+    <div class="forge-card forge-card--blue">
+      <div class="forge-card__title">Goal</div>
+      <p>Raise Forge agent quality by introducing: (1) a meta-skill that defines authoring standards, (2) checkable completion criteria in every agent file, (3) an optional domain glossary artefact, and (4) explicit trigger frontmatter for auto-fire agents.</p>
+    </div>
+
+    <div class="forge-card">
+      <div class="forge-card__title">Architecture</div>
+      <p>Meta-skill first. <code>writing-great-agents.md</code> is written before anything else — it establishes the vocabulary (completion criterion, leading word, sediment, trigger) used in all subsequent tasks. Tasks 2–6 apply that vocabulary to existing agent files by inserting <strong>Done when:</strong> blocks at precise locations. Tasks 7–9 add the glossary artefact and trigger machinery.</p>
+    </div>
+
+    <div class="forge-card">
+      <div class="forge-card__title">Sequence Rationale</div>
+      <p>Tasks within each agent file are independent of each other but the meta-skill (Task 1) must exist before any agent file is touched, so reviewers can reference it. Tasks 2–6 can be done in any order. Tasks 7–9 are also independent of each other.</p>
+    </div>
+
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <span class="forge-badge forge-badge--green">1 file created</span>
+      <span class="forge-badge forge-badge--amber">10 files modified</span>
+      <span class="forge-badge forge-badge--blue">No code changes</span>
+    </div>
+
+    <!-- FILE MAP -->
+    <h2 id="file-map">File Map</h2>
+    <table class="forge-table">
+      <thead><tr><th>File</th><th>Action</th><th>What changes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="file">skills/writing-great-agents.md</td>
+          <td><span class="forge-badge forge-badge--green">Create</span></td>
+          <td>Full authoring standard — vocabulary, failure modes, pruning discipline</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/01-pm-agent.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Two Done when blocks: gate conversation + output</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/02-design-agent.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Two Done when blocks: gate conversation + output</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/03-devils-advocate.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Done when block after output</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/04-tech-feasibility.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Done when block after output</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/05-user-researcher.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Done when block after output</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/06-synthesis.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>New context.md conditional section + Done when block at end</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/07-refinement.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Done when block after output</td>
+        </tr>
+        <tr>
+          <td class="file">skills/artefact-templates.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>New context.md template section</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/observer.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add triggers array to JSON frontmatter</td>
+        </tr>
+        <tr>
+          <td class="file">build-team/feedback-triage.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add triggers array to JSON frontmatter</td>
+        </tr>
+        <tr>
+          <td class="file">product-team/research-agent.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add triggers array to JSON frontmatter</td>
+        </tr>
+        <tr>
+          <td class="file">CLAUDE.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add triggers rule after Framework agents table; add writing-great-agents.md to Skills table</td>
+        </tr>
+        <tr>
+          <td class="file">build-team/engineer.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add context.md read step in "Before writing code"</td>
+        </tr>
+        <tr>
+          <td class="file">build-team/reviewer.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add context.md reference in review setup</td>
+        </tr>
+        <tr>
+          <td class="file">build-team/delivery-manager.md</td>
+          <td><span class="forge-badge forge-badge--amber">Modify</span></td>
+          <td>Add context.md reference when writing acceptance criteria</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TASKS -->
+    <h2 id="task-1">Tasks</h2>
+
+    <!-- TASK 1 -->
+    <details class="task-block" open id="t1">
+      <summary>
+        <span class="task-number">1</span>
+        Create <code>skills/writing-great-agents.md</code>
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Create: <code>skills/writing-great-agents.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s1-1">
+          <div class="step__content">
+            <strong>Write the file with full content</strong>
+            <p>Create <code>skills/writing-great-agents.md</code> with exactly this content:</p>
+            <pre><code># Skills · Writing Great Agents
+
+> Authoring standard for all Forge agent files. Read this before
+> creating or editing an agent. This is reference, not steps —
+> it defines the vocabulary and failure modes that govern agent quality.
+
+---
+
+## Vocabulary
+
+**Completion criterion** — the checkable condition that ends each
+phase of an agent's work. Must be binary: either met or not.
+
+"The human confirmed the framing is accurate" is a completion criterion.
+"When you have enough signal" is not.
+
+Every agent phase gets one. Format:
+
+```
+**Done when:** [checkable condition in one sentence]
+```
+
+For multi-part conditions:
+
+```
+**Done when:**
+- [ ] [condition one]
+- [ ] [condition two]
+```
+
+**Gate** — the output condition for the whole agent: what it produces
+before the pipeline advances. Distinct from a completion criterion,
+which is per-phase within the agent. Both are required. A gate states
+what the agent hands off; a completion criterion states when the work
+to produce that handoff is done.
+
+**Leading word** — a compact pretrained concept that anchors a whole
+region of behaviour. Repeated use accumulates a distributed definition
+and shortens the file. Examples in Forge: *surgical* (Engineer), *gate*
+(every agent). When a concept takes a paragraph to describe, hunt for
+the word that collapses it.
+
+**Sediment** — stale instructions that survive because adding felt safe.
+Test: does removing this line change behaviour? If not, delete it.
+Every agent file accumulates sediment over time.
+
+**No-op** — a line the model follows by default without instruction.
+Paying context to say nothing. The fix is a stronger word, not a
+different technique.
+
+**Trigger** — the auto-fire condition for agents that should invoke
+without explicit human request. Encoded as a `triggers` array in the
+agent's JSON frontmatter. Agents without a `triggers` field require
+explicit invocation.
+
+**What you never do** — the failure modes an agent must actively
+resist. Encoded in the `constraints` array in JSON frontmatter and
+repeated in a body section. Standard across all agent files.
+
+---
+
+## Failure modes
+
+**Premature completion** — ending a phase before it is genuinely done,
+attention slipping to *being done*. Defence: sharpen the completion
+criterion. A vague criterion invites this; a checkable one prevents it.
+
+**Vague gate** — a gate stated as an aspiration rather than a checkable
+condition. "When you have enough signal" is vague. "Human has confirmed
+the playback without substantive correction" is checkable.
+
+**Sediment** — stale layers that settle because adding felt safe.
+Cure: periodic pruning against the no-op test. The Observer owns
+this check.
+
+**No-op inflation** — instructions the model already follows cluttering
+the file and consuming context. Test each sentence: does it change
+behaviour versus the default? If not, delete the whole sentence rather
+than trim words from it.
+
+---
+
+## Pruning discipline
+
+Every agent file should be reviewed periodically for sediment, no-ops,
+and vague gates. The Observer is the natural owner of this check —
+it critiques process, and agent file quality is a process concern.
+
+When reviewing an agent file:
+1. Run the no-op test sentence by sentence. Delete full sentences that
+   fail — not just words.
+2. Check every gate and completion criterion. Is it checkable? Binary?
+3. Hunt for concepts described in multiple sentences that a leading word
+   would collapse.
+4. Check the `constraints` / `What you never do` section — are these
+   still the real failure modes, or have they drifted?
+</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s1-2">
+          <div class="step__content">
+            <strong>Verify the file exists and reads correctly</strong>
+            <p>Check the file was written and scan it for any placeholder text or truncation:</p>
+            <pre><code>cat skills/writing-great-agents.md | head -20
+# Should show the header and first few vocabulary entries cleanly</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s1-3">
+          <div class="step__content">
+            <strong>Commit</strong>
+            <pre><code>git add skills/writing-great-agents.md
+git commit -m "feat: add writing-great-agents.md authoring standard"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 2 -->
+    <details class="task-block" id="t2">
+      <summary>
+        <span class="task-number">2</span>
+        Add completion criteria to PM Agent
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>product-team/01-pm-agent.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s2-1">
+          <div class="step__content">
+            <strong>Insert Done when after the Gate conversation section</strong>
+            <p>Find this line in <code>01-pm-agent.md</code> (end of the Gate conversation section):</p>
+            <pre><code>Do not proceed to output until the human confirms the framing is right.</code></pre>
+            <p>Immediately after it (new line), insert:</p>
+            <pre><code>
+**Done when:** Human has confirmed the framing playback without substantive correction.</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s2-2">
+          <div class="step__content">
+            <strong>Insert Done when after the Output section</strong>
+            <p>Find the end of the Output section in <code>01-pm-agent.md</code> — the last line of the output template:</p>
+            <pre><code>Save this framing. It is the foundation every subsequent agent builds on.</code></pre>
+            <p>Immediately after it (new line), insert:</p>
+            <pre><code>
+**Done when:**
+- [ ] All six sections contain specific, non-aspirational content
+- [ ] Evidence split explicitly into "Known" and "Assumed" — no unmarked claims</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s2-3">
+          <div class="step__content">
+            <strong>Commit</strong>
+            <pre><code>git add product-team/01-pm-agent.md
+git commit -m "feat: add completion criteria to PM Agent"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 3 -->
+    <details class="task-block" id="t3">
+      <summary>
+        <span class="task-number">3</span>
+        Add completion criteria to Design Agent
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>product-team/02-design-agent.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s3-1">
+          <div class="step__content">
+            <strong>Insert Done when after the Gate conversation section</strong>
+            <p>Find this line in <code>02-design-agent.md</code> (last line of Gate conversation):</p>
+            <pre><code>Do not just accept "yes that's right" without probing once — people often confirm prematurely when a framing is approximately right but not quite accurate.</code></pre>
+            <p>Immediately after it (new line), insert:</p>
+            <pre><code>
+**Done when:** Human has confirmed the empathy playback feels true, and you have probed at least once if they confirm without qualification.</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s3-2">
+          <div class="step__content">
+            <strong>Insert Done when after the Output section</strong>
+            <p>Find the end of the Output template in <code>02-design-agent.md</code> — the closing triple-backtick of the output block (last line of the file). Append after it:</p>
+            <pre><code>
+**Done when:**
+- [ ] Persona is a specific human, not a demographic profile
+- [ ] Emotional stakes captures costs beyond the functional
+- [ ] DESIGN.md seed grounded in named references from `skills/design-references.md`</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s3-3">
+          <div class="step__content">
+            <strong>Commit</strong>
+            <pre><code>git add product-team/02-design-agent.md
+git commit -m "feat: add completion criteria to Design Agent"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 4 -->
+    <details class="task-block" id="t4">
+      <summary>
+        <span class="task-number">4</span>
+        Add completion criteria to autonomous discovery agents (03, 04, 05)
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>product-team/03-devils-advocate.md</code></div>
+          <div>Modify: <code>product-team/04-tech-feasibility.md</code></div>
+          <div>Modify: <code>product-team/05-user-researcher.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s4-1">
+          <div class="step__content">
+            <strong>Add Done when to Devil's Advocate (03)</strong>
+            <p>The output template in <code>03-devils-advocate.md</code> ends with <code>```</code> after the Recommendation line. Append after that closing backtick block:</p>
+            <pre><code>
+**Done when:**
+- [ ] Challenge question tested one specific assumption, not a general area
+- [ ] All High risk assumptions explicitly signed off by human in conversation
+- [ ] Assumption log written with status and validation method for each challenge</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s4-2">
+          <div class="step__content">
+            <strong>Add Done when to Tech Feasibility (04)</strong>
+            <p>The output template in <code>04-tech-feasibility.md</code> ends with the <code>## Known technical risks</code> section inside the output block, then a closing <code>```</code>. Append after that closing backtick block:</p>
+            <pre><code>
+**Done when:**
+- [ ] Challenge question asked and answer incorporated into the assessment
+- [ ] CLAUDE.md draft contains all six required sections with no blank placeholders
+- [ ] Every capability has a complexity rating (Low/Medium/High) with a note</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s4-3">
+          <div class="step__content">
+            <strong>Add Done when to User Researcher (05)</strong>
+            <p>The output template in <code>05-user-researcher.md</code> ends with the Recommendation line inside the output block, then a closing <code>```</code>. Append after that closing backtick block:</p>
+            <pre><code>
+**Done when:**
+- [ ] Challenge question asked and answer incorporated into the research plan
+- [ ] Every high-risk unknown has a specific validation method and a what-good-signal-looks-like statement
+- [ ] Research plan distinguishes clearly between before-building and during-build validation</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s4-4">
+          <div class="step__content">
+            <strong>Commit all three</strong>
+            <pre><code>git add product-team/03-devils-advocate.md product-team/04-tech-feasibility.md product-team/05-user-researcher.md
+git commit -m "feat: add completion criteria to autonomous discovery agents (03, 04, 05)"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 5 -->
+    <details class="task-block" id="t5">
+      <summary>
+        <span class="task-number">5</span>
+        Add context.md production logic + completion criteria to Synthesis
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>product-team/06-synthesis.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s5-1">
+          <div class="step__content">
+            <strong>Add context.md conditional section to the local output folder block</strong>
+            <p>In <code>06-synthesis.md</code>, find the <code>**`signal-log.md`**</code> entry (which starts: "Copy the template from <code>memory/signal-log.md</code>..."). Insert a new block immediately <em>before</em> it:</p>
+            <pre><code>
+**`context.md`** (conditional — produce when domain vocabulary is non-trivial)
+Produce when the brief uses 3 or more terms that require domain knowledge
+to interpret correctly. If in doubt, produce it.
+
+Use the `context.md` template from `skills/artefact-templates.md`.
+This is a pure domain glossary — terms only, no implementation details
+or architecture decisions.
+
+Also push to the product repo as `docs/context.md` alongside
+`docs/CLAUDE.md` during the GitHub commit step.
+
+---
+</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s5-2">
+          <div class="step__content">
+            <strong>Add Done when at the end of the file</strong>
+            <p>Find the end of the Linear section — the last line currently in <code>06-synthesis.md</code>:</p>
+            <pre><code>- Issues created from user stories — using the Linear schema
+  in `/skills/linear-schema.md`</code></pre>
+            <p>Append after it:</p>
+            <pre><code>
+---
+
+**Done when:**
+- [ ] All required output files written to `output/[idea-name]/`
+- [ ] Every `[OPEN QUESTION]` flag from the running brief surfaced in the final brief
+- [ ] `context.md` produced and pushed to `docs/context.md` if domain vocabulary is non-trivial
+- [ ] Linear project, epics, and issues created</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s5-3">
+          <div class="step__content">
+            <strong>Commit</strong>
+            <pre><code>git add product-team/06-synthesis.md
+git commit -m "feat: add context.md production logic and completion criteria to Synthesis"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 6 -->
+    <details class="task-block" id="t6">
+      <summary>
+        <span class="task-number">6</span>
+        Add completion criteria to Refinement Ceremony
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>product-team/07-refinement.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s6-1">
+          <div class="step__content">
+            <strong>Insert Done when after the Output section</strong>
+            <p>Find the last line of the Build kickoff note template in <code>07-refinement.md</code>:</p>
+            <pre><code>## Open items
+[Anything still unresolved — with a note on when/how it will be resolved]
+```</code></pre>
+            <p>Append after the closing triple-backtick:</p>
+            <pre><code>
+**Done when:**
+- [ ] Every surfaced item resolved in conversation, or explicitly deferred with a written note
+- [ ] Updated CLAUDE.md committed to the product repo
+- [ ] Build kickoff note written with a specific and unambiguous first task</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s6-2">
+          <div class="step__content">
+            <strong>Commit</strong>
+            <pre><code>git add product-team/07-refinement.md
+git commit -m "feat: add completion criteria to Refinement Ceremony"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 7 -->
+    <details class="task-block" id="t7">
+      <summary>
+        <span class="task-number">7</span>
+        Add context.md template to artefact-templates.md
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>skills/artefact-templates.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s7-1">
+          <div class="step__content">
+            <strong>Read the end of artefact-templates.md to find the right insertion point</strong>
+            <p>The template should be appended after the last existing <code>### `*.md`</code> template entry. Read the file and find the last markdown source template section. Then append this new section:</p>
+            <pre><code>
+### `context.md`
+
+Optional — produced by Synthesis when the brief uses 3 or more domain-specific terms.
+
+```markdown
+---json
+{
+  "type": "context",
+  "file": "output/[idea-name]/context.md",
+  "title": "Context: [Idea name]",
+  "tagline": "Domain glossary — pure definitions, no implementation details",
+  "phase": "discovery",
+  "status": "Active",
+  "lastEdit": "YYYY-MM-DD · Synthesis"
+}
+---
+# Context: [Idea name]
+Domain glossary — pure definitions, no implementation details.
+
+## [Term]
+[Canonical definition in one sentence]
+_Avoid:_ [alternative phrasings that should not be used]
+
+## Relationships
+- [Term A] contains many [Term B]s
+- [Term A] and [Term B] are distinct — [why the distinction matters]
+```
+
+**Constraint:** Every entry must define what a term *is*, not how something *works*. If an entry explains implementation details, it belongs in the brief or decisions log instead.
+
+**Maintenance:** Synthesis creates it. The Delivery Manager may append new terms mid-build when the codebase surfaces vocabulary the glossary did not anticipate. Append-only — never rewrite existing entries.</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s7-2">
+          <div class="step__content">
+            <strong>Commit</strong>
+            <pre><code>git add skills/artefact-templates.md
+git commit -m "feat: add context.md template to artefact-templates"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 8 -->
+    <details class="task-block" id="t8">
+      <summary>
+        <span class="task-number">8</span>
+        Add triggers frontmatter to Observer, Feedback Triage, Research Agent
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>product-team/observer.md</code></div>
+          <div>Modify: <code>build-team/feedback-triage.md</code></div>
+          <div>Modify: <code>product-team/research-agent.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s8-1">
+          <div class="step__content">
+            <strong>Add triggers to Observer frontmatter</strong>
+            <p>In <code>product-team/observer.md</code>, find the opening JSON frontmatter block. The current first two fields are:</p>
+            <pre><code>---json
+{
+  "id": "observer",
+  "n": "··",</code></pre>
+            <p>Add a <code>triggers</code> field after <code>"id"</code>:</p>
+            <pre><code>---json
+{
+  "id": "observer",
+  "triggers": ["after-handoff", "on-demand"],
+  "n": "··",</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s8-2">
+          <div class="step__content">
+            <strong>Add triggers to Feedback Triage frontmatter</strong>
+            <p>In <code>build-team/feedback-triage.md</code>, find the opening JSON frontmatter block:</p>
+            <pre><code>---json
+{
+  "id": "arbiter",
+  "n": "··",</code></pre>
+            <p>Add a <code>triggers</code> field after <code>"id"</code>:</p>
+            <pre><code>---json
+{
+  "id": "arbiter",
+  "triggers": ["on-product-criticism"],
+  "n": "··",</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s8-3">
+          <div class="step__content">
+            <strong>Add triggers to Research Agent frontmatter</strong>
+            <p>In <code>product-team/research-agent.md</code>, find the opening JSON frontmatter block:</p>
+            <pre><code>---json
+{
+  "id": "researcher",
+  "n": "··",</code></pre>
+            <p>Add a <code>triggers</code> field after <code>"id"</code>:</p>
+            <pre><code>---json
+{
+  "id": "researcher",
+  "triggers": ["on-factual-gap"],
+  "n": "··",</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s8-4">
+          <div class="step__content">
+            <strong>Commit all three</strong>
+            <pre><code>git add product-team/observer.md build-team/feedback-triage.md product-team/research-agent.md
+git commit -m "feat: add triggers frontmatter to Observer, Feedback Triage, Research Agent"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 9 -->
+    <details class="task-block" id="t9">
+      <summary>
+        <span class="task-number">9</span>
+        Update CLAUDE.md — triggers rule + Skills table
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>CLAUDE.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s9-1">
+          <div class="step__content">
+            <strong>Add triggers rule after the Framework agents table</strong>
+            <p>In <code>CLAUDE.md</code>, find the Framework agents table. It ends with the Research Agent row:</p>
+            <pre><code>| `product-team/research-agent.md` | The Researcher | On demand — invoked mid-conversation by any agent to fill factual gaps. Returns structured findings to the invoking agent and appends to the running brief research log. |</code></pre>
+            <p>Immediately after that row (before the blank line and <code>### Extensibility</code> heading), insert:</p>
+            <pre><code>
+Agents with a `triggers` field in their frontmatter fire automatically when their trigger condition is met — no explicit human invocation required. All other agents require explicit invocation via the pipeline or by the human naming them.</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s9-2">
+          <div class="step__content">
+            <strong>Add writing-great-agents.md to the Skills table</strong>
+            <p>In <code>CLAUDE.md</code>, find the Skills table. The last entry is:</p>
+            <pre><code>| `skills/intellectual-standards.md` | Behavioral baseline — all agents read before acting |</code></pre>
+            <p>Append a new row after it:</p>
+            <pre><code>| `skills/writing-great-agents.md` | Authoring standard — read before creating or editing any agent file |</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s9-3">
+          <div class="step__content">
+            <strong>Commit</strong>
+            <pre><code>git add CLAUDE.md
+git commit -m "feat: add triggers rule and writing-great-agents.md to CLAUDE.md"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- TASK 10 -->
+    <details class="task-block" id="t10">
+      <summary>
+        <span class="task-number">10</span>
+        Wire context.md into build-team agents (Engineer, Reviewer, Delivery Manager)
+      </summary>
+      <div class="task-block__body">
+        <div class="task-block__files">
+          <strong>Files</strong>
+          <div>Modify: <code>build-team/engineer.md</code></div>
+          <div>Modify: <code>build-team/reviewer.md</code></div>
+          <div>Modify: <code>build-team/delivery-manager.md</code></div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s10-1">
+          <div class="step__content">
+            <strong>Add context.md read step to Engineer — "Before writing code" section</strong>
+            <p>In <code>build-team/engineer.md</code>, find the "Before writing code" section:</p>
+            <pre><code>**Before writing code**
+- Read the task description and acceptance criterion fully
+- Read the relevant sections of the project CLAUDE.md
+- If anything is ambiguous, flag it to the Delivery Manager
+  before starting — do not make assumptions and proceed</code></pre>
+            <p>Add one line after the CLAUDE.md read step:</p>
+            <pre><code>**Before writing code**
+- Read the task description and acceptance criterion fully
+- Read the relevant sections of the project CLAUDE.md
+- If `docs/context.md` exists, read it — use its vocabulary in code,
+  variable names, and completion notes
+- If anything is ambiguous, flag it to the Delivery Manager
+  before starting — do not make assumptions and proceed</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s10-2">
+          <div class="step__content">
+            <strong>Read reviewer.md to find the right insertion point, then add context.md reference</strong>
+            <p>Read <code>build-team/reviewer.md</code> to find where it describes what to read before reviewing. Add a line:</p>
+            <pre><code>- If `docs/context.md` exists, read it — domain terms in code and
+  comments should match the glossary</code></pre>
+            <p>Place it alongside or immediately after the instruction to read CLAUDE.md (wherever that occurs in the reviewer's setup steps).</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s10-3">
+          <div class="step__content">
+            <strong>Add context.md reference to Delivery Manager — acceptance criteria writing</strong>
+            <p>Read <code>build-team/delivery-manager.md</code> and find where it describes writing acceptance criteria for tasks (in the build kickoff or task assignment section). Add a note:</p>
+            <pre><code>- If `docs/context.md` exists, use its vocabulary when writing
+  acceptance criteria — consistent domain language across criteria,
+  Linear issues, and the codebase reduces ambiguity for the Engineer</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <input type="checkbox" id="s10-4">
+          <div class="step__content">
+            <strong>Commit all three</strong>
+            <pre><code>git add build-team/engineer.md build-team/reviewer.md build-team/delivery-manager.md
+git commit -m "feat: wire context.md into build-team agents (Engineer, Reviewer, Delivery Manager)"</code></pre>
+          </div>
+        </div>
+      </div>
+    </details>
+
+  </main>
+</div>
+
+<script>
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const total = checkboxes.length; // 30
+  const label = document.getElementById('progress-label');
+  const fill = document.getElementById('progress-fill');
+
+  function update() {
+    const done = [...checkboxes].filter(c => c.checked).length;
+    label.textContent = `${done} of ${total} steps complete`;
+    fill.style.width = `${(done / total) * 100}%`;
+    checkboxes.forEach(c => {
+      c.closest('.step').classList.toggle('is-done', c.checked);
+    });
+    localStorage.setItem('forge-agent-quality-progress', JSON.stringify([...checkboxes].map(c => c.checked)));
+  }
+
+  const saved = JSON.parse(localStorage.getItem('forge-agent-quality-progress') || '[]');
+  checkboxes.forEach((c, i) => { if (saved[i]) c.checked = true; });
+  update();
+  checkboxes.forEach(c => c.addEventListener('change', update));
+</script>
+
+</body>
+</html>
