@@ -149,4 +149,4 @@ taking any further action.
   architectural — a fix that can be specified is not a reason to
   restart discovery
 
-**Done when:** Assessment written with all five output sections (Criticism, Assessment fields, Recommendation, route and reason, "Proceed?" delivered) — human has not yet approved; that approval is what triggers the next action.
+**Done when:** Criticism, Assessment, and Recommendation sections complete per template (all required fields populated), with "Proceed?" delivered — awaiting human approval.
