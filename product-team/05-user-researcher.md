@@ -156,3 +156,8 @@ not "Would you use a product that..."]
 [One of: Validate before building | Validate in parallel | Build and learn]
 [With one sentence of reasoning]
 ```
+
+**Done when:**
+- [ ] Challenge question asked and answer incorporated into the research plan
+- [ ] Every high-risk unknown has a specific validation method and a what-good-signal-looks-like statement
+- [ ] Research plan distinguishes clearly between before-building and during-build validation

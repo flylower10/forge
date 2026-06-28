@@ -180,3 +180,8 @@ so they are not forgotten, but not treated as open issues]
 Nothing new to add — proceed]
 [With a single sentence of reasoning]
 ```
+
+**Done when:**
+- [ ] Challenge question tested one specific assumption, not a general area
+- [ ] All High risk assumptions explicitly signed off by human in conversation
+- [ ] Assumption log written with status and validation method for each challenge

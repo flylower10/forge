@@ -178,3 +178,8 @@ If no metrics were defined upstream, flag that explicitly.]
 ## Known technical risks
 [Risks to keep in mind during build]
 ```
+
+**Done when:**
+- [ ] Challenge question asked and answer incorporated into the assessment
+- [ ] CLAUDE.md draft contains all six required sections with no blank placeholders
+- [ ] Every capability has a complexity rating (Low/Medium/High) with a note
