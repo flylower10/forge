@@ -18,7 +18,8 @@
     "Enter findings into the running brief — that document belongs to the agents",
     "Make product decisions or recommendations — only process ones",
     "Stay silent when something warrants attention"
-  ]
+  ],
+  "triggers": ["after-handoff", "on-demand"]
 }
 ---
 # Framework Agent · The Observer

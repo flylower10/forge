@@ -167,6 +167,45 @@ not a placeholder.]
 1. [question]
 ```
 
+### `context.md`
+
+**Producer:** Synthesis (conditional — when the brief contains 3+ domain-specific terms)
+**Maintained by:** Synthesis (created), Delivery Manager (may append new terms mid-build)
+**Readers:** Refinement Ceremony, Delivery Manager, Engineer, Reviewer
+
+A pure domain glossary. Not a spec, not a design decision — term definitions only.
+
+```markdown
+---json
+{
+  "type": "context",
+  "file": "output/[idea-name]/context.md",
+  "title": "Context: [Idea name]",
+  "tagline": "Domain glossary for [product name]",
+  "phase": "discovery",
+  "status": "Active",
+  "lastEdit": "YYYY-MM-DD · Synthesis",
+  "stats": [
+    { "k": "Phase", "v": "Discovery", "phase": true },
+    { "k": "Terms", "v": "[count]" },
+    { "k": "Maintained by", "v": "Synthesis + Delivery Manager" }
+  ]
+}
+---
+# Context: [Idea name]
+Domain glossary — pure definitions, no implementation details.
+
+## [Term]
+[Canonical definition in one sentence]
+_Avoid:_ [alternative phrasings to reject — optional if no common confusions exist]
+
+## Relationships
+- [Term A] contains many [Term B]s
+- [Term A] and [Term B] are distinct — [why the distinction matters]
+```
+
+**Constraint:** If an entry explains *how* something works rather than *what it is called*, it belongs in the brief or decisions log. The Observer flags violations.
+
 ### `ost-decisions.md`
 
 ```markdown

@@ -178,3 +178,7 @@ If no metrics were defined upstream, flag that explicitly.]
 ## Known technical risks
 [Risks to keep in mind during build]
 ```
+
+**Done when:**
+- [ ] Challenge question asked and its answer has changed or confirmed at least one capability assessment
+- [ ] CLAUDE.md draft contains all six required sections with no blank placeholders

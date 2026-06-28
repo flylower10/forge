@@ -180,3 +180,7 @@ so they are not forgotten, but not treated as open issues]
 Nothing new to add — proceed]
 [With a single sentence of reasoning]
 ```
+
+**Done when:**
+- [ ] Challenge question targets one named assumption from the running brief, not a theme or category
+- [ ] Human has responded to the challenge question and the response is captured in the running brief

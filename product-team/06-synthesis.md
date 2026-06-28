@@ -135,6 +135,12 @@ Copy the template from `memory/signal-log.md` to
 Leave the entries section empty — the Delivery Manager appends entries
 post-shipping per the ritual defined in `build-team/delivery-manager.md`.
 
+**`context.md`** (conditional — produce when the brief uses 3 or more terms that require domain knowledge to interpret correctly)
+- Pure domain glossary: term names, one-sentence canonical definitions, _Avoid:_ phrasings to reject
+- Format: `# Context: [Idea name]` heading, one `## [Term]` section per term, a `## Relationships` section listing how terms relate
+- No implementation details — definitions only
+- Output to: `output/[idea-name]/context.md` and `docs/context.md` in the product GitHub repo (alongside CLAUDE.md)
+
 **`pipeline-dashboard.html`** (presentation-only)
 Write `output/[idea-name]/pipeline-dashboard.html` — marks all Discovery agents
 complete, Build pipeline pending. Use the pipeline-dashboard template from
@@ -187,3 +193,10 @@ Commit message: `discovery synthesis: initial brief, CLAUDE.md + CLAUDE.html, DE
 - Epics created from the MVP scope — one epic per major capability
 - Issues created from user stories — using the Linear schema
   in `/skills/linear-schema.md`
+
+---
+
+**Done when:**
+- [ ] All required output files written to `output/[idea-name]/`
+- [ ] Every `[OPEN QUESTION]` flag from the running brief surfaced in the final brief (not resolved — surfaced)
+- [ ] `context.md` produced if 3+ domain-specific terms present in the brief

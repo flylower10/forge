@@ -246,6 +246,8 @@ These agents are not part of any single phase. They run across the full pipeline
 | `product-team/observer.md` | The Observer (The Witness) | Always on — fires after every handoff and on demand. Critiques process, not outputs. Reports directly to human. |
 | `product-team/research-agent.md` | The Researcher | On demand — invoked mid-conversation by any agent to fill factual gaps. Returns structured findings to the invoking agent and appends to the running brief research log. |
 
+**Trigger rule:** Any agent with a `triggers` field in its frontmatter fires automatically when its trigger condition is met. Agents without a `triggers` field require explicit invocation. Trigger conditions live in the agent file; this rule enforces the pattern, not the per-agent logic.
+
 ### Extensibility
 New agents can be added to `/product-team/` or `/build-team/` at any time.
 The Intake agent discovers available agents by scanning these directories —
@@ -264,6 +266,7 @@ become available to all future ideas automatically.
 ## Skills
 | File | Contents |
 |------|----------|
+| `skills/writing-great-agents.md` | Vocabulary and standards for authoring Forge agent files — completion criterion, gate, leading word, sediment, no-op, trigger |
 | `skills/frameworks.md` | JTBD, OST, HEART, Jobs Story format |
 | `skills/linear-schema.md` | Epic and issue structure for Linear |
 | `skills/artefact-templates.md` | Standardised output formats |

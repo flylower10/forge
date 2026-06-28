@@ -156,3 +156,7 @@ not "Would you use a product that..."]
 [One of: Validate before building | Validate in parallel | Build and learn]
 [With one sentence of reasoning]
 ```
+
+**Done when:**
+- [ ] Challenge question asked and its answer is reflected in the research plan
+- [ ] At least one validation method is scoped to before-building (not all deferred to during-build)
