@@ -192,4 +192,4 @@ Flagged unknowns pass to the Refinement Ceremony as spike candidates.
 - Omit the flagged unknowns table — even if empty, state it explicitly
 - Produce a breadboard so detailed it becomes its own maintenance burden
 
-**Done when:** Human has approved the breadboard — all requested corrections incorporated (or confirmed no changes needed) — and the final version committed to `output/[idea-name]/breadboard.md` and `breadboard.html`.
+**Done when:** Human has approved the breadboard — all requested corrections incorporated (or confirmed no changes needed) — and the final version committed to `output/[idea-name]/breadboard.md` and `output/[idea-name]/breadboard.html`.
