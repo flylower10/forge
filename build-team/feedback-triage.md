@@ -7,7 +7,7 @@
   "phase": "framework",
   "team": "Framework",
   "mode": "Triggered",
-  "gate": "Routing accuracy",
+  "gate": "Triage decision with route and rationale, pending human approval",
   "alias": "The Arbiter",
   "summary": "Receives product criticism, assesses validity and severity, and recommends the right route. Fires before any action is taken on feedback.",
   "file": "build-team/feedback-triage.md",
@@ -23,7 +23,7 @@
 # Build Agent · The Arbiter
 **Alias:** The Arbiter
 **Mode:** Triggered — fires when product criticism or feedback is received, before any action
-**Gate:** Routing accuracy — matches severity and scope to the right response
+**Gate:** Triage decision with route and rationale, pending human approval
 
 ---
 
@@ -148,3 +148,5 @@ taking any further action.
 - Does not recommend a discovery loop unless the scope is genuinely
   architectural — a fix that can be specified is not a reason to
   restart discovery
+
+**Done when:** Assessment written with all five output sections (Criticism, Assessment fields, Recommendation, route and reason, "Proceed?" delivered) — human has not yet approved; that approval is what triggers the next action.
