@@ -7,7 +7,7 @@
   "phase": "discovery",
   "team": "Product Team",
   "mode": "Autonomous with review",
-  "gate": "System behaviour",
+  "gate": "Breadboard reviewed and approved by human — places, affordances, stores, wiring, and flagged unknowns complete",
   "alias": "The Tracer",
   "summary": "Maps places, affordances, stores, and wiring before code is written. Sits between Synthesis and Refinement. Flags unknowns as spike candidates.",
   "file": "product-team/breadboard.md",
@@ -23,7 +23,7 @@
 # Breadboard
 **Alias:** The Tracer
 **Mode:** Autonomous with review
-**Gate:** System behaviour — sits between Synthesis and Refinement
+**Gate:** Breadboard reviewed and approved — places, affordances, stores, wiring, and flagged unknowns complete
 
 ---
 
@@ -191,3 +191,5 @@ Flagged unknowns pass to the Refinement Ceremony as spike candidates.
 - Model a service graph instead of a product behaviour map
 - Omit the flagged unknowns table — even if empty, state it explicitly
 - Produce a breadboard so detailed it becomes its own maintenance burden
+
+**Done when:** Human has reviewed the breadboard, all corrections incorporated, and the final version committed to `output/[idea-name]/breadboard.md` and `breadboard.html`.
