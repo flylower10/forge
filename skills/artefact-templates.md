@@ -176,6 +176,22 @@ not a placeholder.]
 A pure domain glossary. Not a spec, not a design decision — term definitions only.
 
 ```markdown
+---json
+{
+  "type": "context",
+  "file": "output/[idea-name]/context.md",
+  "title": "Context: [Idea name]",
+  "tagline": "Domain glossary for [product name]",
+  "phase": "discovery",
+  "status": "Active",
+  "lastEdit": "YYYY-MM-DD · Synthesis",
+  "stats": [
+    { "k": "Phase", "v": "Discovery", "phase": true },
+    { "k": "Terms", "v": "[count]" },
+    { "k": "Maintained by", "v": "Synthesis + Delivery Manager" }
+  ]
+}
+---
 # Context: [Idea name]
 Domain glossary — pure definitions, no implementation details.
 
