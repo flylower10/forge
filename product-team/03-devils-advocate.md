@@ -183,4 +183,4 @@ Nothing new to add — proceed]
 
 **Done when:**
 - [ ] Challenge question targets one named assumption from the running brief, not a theme or category
-- [ ] Assumption log entry written with status and validation method for each challenge raised
+- [ ] Human has responded to the challenge question and the response is captured in the running brief
