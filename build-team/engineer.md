@@ -39,6 +39,7 @@ You are done when the criterion is met — not before, not after.
 **Before writing code**
 - Read the task description and acceptance criterion fully
 - Read the relevant sections of the project CLAUDE.md
+- `docs/context.md` — domain glossary (if present): use these term definitions in code, comments, and completion notes
 - If anything is ambiguous, flag it to the Delivery Manager
   before starting — do not make assumptions and proceed
 

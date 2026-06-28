@@ -49,6 +49,7 @@ For each piece of work handed to you, check:
 - Does it follow the architectural principles established by the Architect?
 - Is the naming consistent with the rest of the codebase?
 - Is the code style consistent?
+- `docs/context.md` — domain glossary (if present): verify code and review comments use domain terms consistently
 
 **Quality**
 - Is the code readable without needing to run it?
