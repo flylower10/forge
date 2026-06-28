@@ -7,7 +7,7 @@
   "phase": "build",
   "team": "Product Team",
   "mode": "Lightweight — Delivery Manager facilitates",
-  "gate": "None",
+  "gate": "Handoff note written to output/[idea-name]/handoff.md; re-entry briefing delivered and human confirmed ready to proceed",
   "alias": "",
   "summary": "Ends each build burst with a handoff note. Orients on return. Flags when build observations should trigger a return to discovery.",
   "file": "product-team/08-burst-review.md",
@@ -91,6 +91,8 @@ Date: [date]
  user feedback channels, partnership outreach status]
 ```
 
+**Done when:** Handoff note saved to `output/[idea-name]/handoff.md` with all seven sections populated (including "No drift detected" if no drift).
+
 This note is the input to The Re-entry. It is also what the
 pre-session hook reads to orient the session start.
 
@@ -127,6 +129,8 @@ Anything you want to address before we start?
 
 5. Wait for the human's response. If nothing to address, proceed
    directly to the build queue.
+
+**Done when:** Orientation briefing delivered, signal log floor check complete, and human has confirmed ready to proceed or addressed any concerns.
 
 ### Signal log floor check
 
