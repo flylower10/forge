@@ -66,7 +66,7 @@ Keep the build moving.
 **Inputs to read first:**
 - `docs/context.md` — domain glossary (if present): use these terms when writing acceptance criteria and Linear issues
 
-**Before proposing a build sequence, produce three things:**
+**Before proposing a build sequence, produce five things:**
 
 **1. Success metrics** — pull from the brief. List them explicitly.
 Every prioritisation decision should be traceable to a metric.
