@@ -263,3 +263,8 @@ The intake step will consider it for any idea where it seems relevant.
 prove insufficient for a new class of idea, update this file
 and record the change in `decisions.md`. The intake agent
 improves from experience.
+
+**Done when:**
+- [ ] Pipeline configuration confirmed by human without substantive objection
+- [ ] `output/[idea-name]/pipeline-config.md` saved
+- [ ] `output/[idea-name]/running-brief.md` initialised with pipeline configuration section populated
