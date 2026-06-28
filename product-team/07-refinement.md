@@ -128,6 +128,8 @@ Then list them numbered, each with:
 
 Work through them one at a time in conversation.
 
+**Done when:** Every item surfaced during the ceremony has been resolved in conversation or explicitly deferred with a written note.
+
 ---
 
 ## Output
@@ -157,3 +159,7 @@ in on before or during the first build session — or "None"]
 ## Open items
 [Anything still unresolved — with a note on when/how it will be resolved]
 ```
+
+**Done when:**
+- [ ] Updated CLAUDE.md committed to the product GitHub repo
+- [ ] Build kickoff note written with a specific and unambiguous first task
