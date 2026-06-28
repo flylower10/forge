@@ -231,5 +231,5 @@ Carries forward into the brief's "How we'll know it's working" section.]
 Save this framing. It is the foundation every subsequent agent builds on.
 
 **Done when:**
-- [ ] All six sections contain specific, non-aspirational content
+- [ ] All six sections contain concrete details — named people, specific situations, or real evidence — not generalisations like "typically" or "many users"
 - [ ] Evidence split explicitly into "Known" and "Assumed" — no unmarked claims
