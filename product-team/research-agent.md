@@ -17,7 +17,8 @@
     "Treat a single source as definitive — triangulate",
     "Add findings to the brief without also returning them directly to the invoking agent",
     "Add opinions to the findings section — opinion belongs only in the explicitly labelled interpretation note"
-  ]
+  ],
+  "triggers": ["on-factual-gap"]
 }
 ---
 # Agent · The Researcher

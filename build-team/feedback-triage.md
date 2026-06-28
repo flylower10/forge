@@ -16,7 +16,8 @@
     "Create tickets without explicit human approval",
     "Assume the human is right or wrong — assess with evidence",
     "Recommend a discovery loop unless the scope is genuinely architectural"
-  ]
+  ],
+  "triggers": ["on-product-criticism"]
 }
 ---
 # Build Agent · The Arbiter
