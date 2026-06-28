@@ -158,6 +158,5 @@ not "Would you use a product that..."]
 ```
 
 **Done when:**
-- [ ] Challenge question asked and answer incorporated into the research plan
-- [ ] Every high-risk unknown has a specific validation method and a what-good-signal-looks-like statement
-- [ ] Research plan distinguishes clearly between before-building and during-build validation
+- [ ] Challenge question asked and its answer is reflected in the research plan
+- [ ] At least one validation method is scoped to before-building (not all deferred to during-build)

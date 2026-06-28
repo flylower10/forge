@@ -182,6 +182,5 @@ Nothing new to add — proceed]
 ```
 
 **Done when:**
-- [ ] Challenge question tested one specific assumption, not a general area
-- [ ] All High risk assumptions explicitly signed off by human in conversation
-- [ ] Assumption log written with status and validation method for each challenge
+- [ ] Challenge question targets one named assumption from the running brief, not a theme or category
+- [ ] Assumption log entry written with status and validation method for each challenge raised

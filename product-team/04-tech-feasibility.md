@@ -180,6 +180,5 @@ If no metrics were defined upstream, flag that explicitly.]
 ```
 
 **Done when:**
-- [ ] Challenge question asked and answer incorporated into the assessment
+- [ ] Challenge question asked and its answer has changed or confirmed at least one capability assessment
 - [ ] CLAUDE.md draft contains all six required sections with no blank placeholders
-- [ ] Every capability has a complexity rating (Low/Medium/High) with a note
