@@ -166,6 +166,8 @@ what specifically is missing. Do not just accept "yes that's right"
 without probing once — people often confirm prematurely when a framing
 is approximately right but not quite accurate.
 
+**Done when:** Human has confirmed the empathy playback feels true, and you have probed at least once if they confirm without qualification.
+
 ---
 
 ## Visual direction output
@@ -219,3 +221,8 @@ Format: "[Principle name]: [one sentence of what this means in practice]"]
 state, and key experience qualities — written for an AI design tool
 to use as context when generating UI]
 ```
+
+**Done when:**
+- [ ] Persona is a specific human, not a demographic profile
+- [ ] Emotional stakes captures costs beyond the functional
+- [ ] DESIGN.md seed grounded in named references from `skills/design-references.md`
