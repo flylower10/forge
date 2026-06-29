@@ -126,20 +126,41 @@ Work through these areas. One question at a time. Let answers breathe.
   - **Unknown / multiple:** write both — the mood section for AI tools,
     the precise palette for engineers.
 
-**7. Visual preferences**
-- Do you have any visual references in mind — other tools, sites, or
-  apps whose aesthetic feels right for this product?
-- Is there a colour palette, a mood, or an era you're drawn to?
-- What should this NOT look like — aesthetics that would feel wrong?
-- Is there an image, poster, or object whose visual quality you'd
-  want to channel, even if it seems unrelated?
+**7. Visual direction**
 
-Note: people often find it hard to describe visual preferences in
-words. Accept oblique references — a film poster, a game, a decade,
-a feeling. These are often more useful than explicit design language.
-Push gently for at least one concrete reference before moving on.
+If the pipeline-config or running brief flags the Research Agent for
+this project, invoke it now before continuing — the recognition
+exercise below should be grounded in what's known about adjacent tools.
 
-**7. What good looks like**
+Most people cannot name visual references on demand but instantly
+recognise what pulls at them. Do not open by asking the human to
+supply references.
+
+(1) Read `skills/design-references.md`. Select 3–4 directions that
+    are genuinely distinct and credible for this user and product.
+    Each must be a committed point of view — not a safe middle ground.
+    Use the `good-for / avoid-when` field to select; draw the
+    distinctive moves from the core principles and in-practice sections.
+
+(2) Present each direction concretely: name, one-line stance, its
+    distinctive moves (type / colour / layout / motion), and one
+    real exemplar the human can look up. Three or four sentences
+    maximum per direction.
+
+(3) Ask the human to react: which pulls at them, which repels, what
+    they'd take from one and leave from another.
+
+(4) Only after they react, ask if any references of their own now
+    come to mind — reaction unlocks recall. You supply the starting
+    options, not them.
+
+Also ask: what should this NOT look like? This is the product-specific
+avoid-list, distinct from the universal forbidden defaults in the
+references skill.
+
+Push for at least one concrete anchor before moving on.
+
+**8. What good looks like**
 - If this product works perfectly, describe the user's experience
   in specific, concrete terms
 - What are they doing differently? What do they no longer have to do?
@@ -172,18 +193,25 @@ is approximately right but not quite accurate.
 
 ## Visual direction output
 
-After completing the discovery arc, read `skills/design-references.md`.
+The committed direction from step 7 is what seeds DESIGN.md — not
+a post-hoc synthesis. Name the references explicitly. Do not use
+generic design language where a specific reference exists.
 
-Find the references that correspond to what the user described —
-by era, mood, aesthetic anchor, or specific work they named.
-Extract the principles that apply. Name them explicitly in the
-DESIGN.md seed. Do not use generic design language where a
-specific reference exists.
+**Diverge before converging.** Before writing the seed, name the
+direction(s) being set aside and why. The human should see the choice
+as deliberate — not averaged.
 
 The palette, type treatment, and what-to-avoid sections of DESIGN.md
-should all be grounded in named references from this skill.
-If the user's visual direction doesn't match any existing reference,
-note the gap and describe what a new reference entry would contain.
+should all be grounded in named references from `skills/design-references.md`.
+If the user's direction doesn't match any existing reference, note the
+gap and describe what a new reference entry would contain.
+
+**Anti-derivative audit.** Before declaring done, check the DESIGN.md
+seed against the forbidden defaults in `skills/design-references.md`.
+Ask: "If someone saw the resulting UI and said 'AI made this', would
+they instantly believe it?" If yes, the direction isn't committed
+enough — name a sharper anchor. If the audit finds nothing to flag,
+declare the no-op explicitly.
 
 ---
 
@@ -226,3 +254,5 @@ to use as context when generating UI]
 - [ ] Persona is a specific human, not a demographic profile
 - [ ] Emotional stakes captures costs beyond the functional
 - [ ] DESIGN.md seed grounded in named references from `skills/design-references.md`
+- [ ] Discarded directions named and the choice explained
+- [ ] Anti-derivative audit complete — no-op declared explicitly if nothing flagged

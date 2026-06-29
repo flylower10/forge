@@ -13,14 +13,49 @@ surface references not yet here.
 
 ## How to use this skill
 
-When the user gives you a visual direction — a mood, an era, a
-reference, a feeling — find the corresponding entry here. Extract
-the specific principles that apply. Name them in your DESIGN.md
-output. The more specific the reference, the more distinctive the
-output from any downstream design tool.
+Two modes of use:
+
+**Recognition (step 7 of the discovery arc):** Select 3–4 directions
+from this file that are genuinely distinct and credible for the product
+at hand. Present them to the human using the distinctive moves and
+`Exemplar` fields — let them react before asking for their own
+references. Use `good-for / avoid-when` to select the right directions
+for this specific product.
+
+**Synthesis (DESIGN.md seed):** After the human commits to a direction,
+extract the specific principles that apply. Name them explicitly in the
+output. The more specific the reference, the more distinctive the result
+from any downstream design tool.
 
 Do not apply all references at once. One or two anchors, precisely
 chosen, are better than five competing influences.
+
+---
+
+## Forbidden defaults
+
+These are universal AI-generated design tells. A UI that hits any of
+these reads as "AI made this" before the user reads a word. Check every
+DESIGN.md seed against this list — name each one explicitly under "what
+this should NOT look like" in the brief if any apply.
+
+- **Inter as the default typeface.** The universal AI font choice.
+  Legible, anonymous, and in virtually every AI-generated interface.
+  Choose a typeface with a point of view, or explain why Inter is right
+  for this specific product.
+- **Purple/lavender→blue gradients.** The most common decorative
+  gradient in AI-generated UI. Signals "no visual decision was made."
+- **Cards with a coloured left border.** The AI default for callouts,
+  alerts, and highlighted content. Instantly recognisable as generated.
+- **Hero → features → pricing → FAQ → footer layout grammar.** The
+  default AI marketing page structure. Present in virtually every
+  AI-built landing page. Any deviation signals intentionality.
+- **Permanent dark mode with grey body text and all-caps section
+  labels.** The "premium dark" AI pattern. Flat grey on dark
+  backgrounds frequently fails WCAG AA contrast requirements.
+- **Oversized italic serif h1.** The AI "editorial sophistication"
+  move. Appears whenever "elegant" or "premium" is requested without
+  further direction.
 
 ---
 
@@ -45,6 +80,14 @@ Envisioning Information (1990)
 **When to invoke:** Any product where the primary job is reading
 numbers. Data tables, probability displays, comparison views.
 
+**Good for / avoid when:** Data-heavy products where reading numbers
+is the primary activity. Avoid when the product needs emotional warmth
+or the user expects visual delight rather than density.
+
+**Exemplar:** Any FiveThirtyEight forecast page (fivethirtyeight.com)
+— small multiples and data-ink in practice on any election or sports
+model page.
+
 **In practice:** No borders on table cells if spacing does the
 job. No background fill on chart areas. Numbers in a tight,
 consistent typeface. The data is the visual.
@@ -63,6 +106,15 @@ consistent typeface. The data is the visual.
 
 **When to invoke:** Probability tables, model outputs, any view
 that shows "what the model thinks" vs what the market says.
+
+**Good for / avoid when:** Prediction and forecast tools; any context
+where uncertainty is first-class data rather than something to hide.
+Avoid when the audience lacks statistical literacy or the product needs
+to feel reassuring rather than analytical.
+
+**Exemplar:** fivethirtyeight.com — any live election or sports
+forecast. Also pudding.cool for the editorial data-journalism aesthetic
+in the same lineage.
 
 ---
 
@@ -83,6 +135,14 @@ that shows "what the model thinks" vs what the market says.
 serious and lasting rather than trendy. Products that are tools,
 not experiences.
 
+**Good for / avoid when:** Daily-use tools where longevity and
+seriousness matter more than trendiness. Avoid when the product
+needs personality, warmth, or emotional resonance.
+
+**Exemplar:** Search "Braun T3 radio" or "Braun SK4 record player" —
+the physical product aesthetic that all the digital principles derive
+from.
+
 ---
 
 ### Swiss International Style — Müller-Brockmann, Ruder, 1950s–70s
@@ -96,6 +156,15 @@ not experiences.
 
 **When to invoke:** Data-heavy layouts, dashboard structures,
 any product where information density needs to be readable.
+
+**Good for / avoid when:** Data-dense dashboards, editorial products,
+layouts with multiple competing information types. Avoid when
+personality and brand voice matter — the grid reads as cold or
+institutional in consumer contexts.
+
+**Exemplar:** Search "Müller-Brockmann concert poster" — the grid
+and typographic hierarchy are immediately visible. Swiss airline posters
+from the 1960s show the same system applied to colour.
 
 ---
 
@@ -124,6 +193,15 @@ any product where information density needs to be readable.
 **When to invoke:** When the user references early gaming, retro
 digital, or the specific visual quality of late-80s/early-90s software.
 
+**Good for / avoid when:** Developer tools with a retro-digital
+character; products where constraint-as-aesthetic is the point;
+audiences who relate to early gaming. Avoid when the product needs to
+communicate credibility to non-technical or older audiences.
+
+**Exemplar:** Search "Deluxe Paint Amiga interface" — palette, pixel
+type, and chrome are the direct reference. itch.io hosts modern work
+in this aesthetic if you need a living example.
+
 **In practice:**
 - Use pixel or bitmap-style fonts for headlines and key numbers
 - Limit the palette to 6–8 deliberate colours; don't use more
@@ -147,6 +225,14 @@ digital, or the specific visual quality of late-80s/early-90s software.
 **When to invoke:** Football analytics, betting tools, any product
 where the user is an expert who does not need things explained visually.
 
+**Good for / avoid when:** Expert analytics tools where the data IS
+the interface; any product where the user resents being hand-held.
+Avoid when onboarding matters or non-expert users need visual affordances.
+
+**Exemplar:** Search "Championship Manager 01/02 screenshot" — the
+table-as-interface approach is unmistakable. FM Touch continues the
+lineage with slightly more visual polish.
+
 ---
 
 ## Dark + warm palette
@@ -168,6 +254,15 @@ where the user is an expert who does not need things explained visually.
 drama over neutrality. Sports, betting, anything where the stakes
 should feel real.
 
+**Good for / avoid when:** Products where drama and stakes are part
+of the emotional experience — sports, competition, high-investment
+decisions. Avoid when trust, calm, or clinical credibility are
+required (healthcare, financial planning, productivity tools).
+
+**Exemplar:** The Apocalypse Now movie poster (1979, Bob Peak) —
+widely available by image search. The palette is the reference, not
+the imagery.
+
 ---
 
 ### Italia 90 aesthetic (1990 World Cup)
@@ -184,6 +279,14 @@ should feel real.
   but is a generative system: it produces layouts, typography,
   texture, and interaction patterns, not just a logo style
 
+**Good for / avoid when:** Sports products tied to the 1990 World Cup
+or that specific era. Avoid when you need a flexible, generative
+system — this aesthetic is iconic but not scalable.
+
+**Exemplar:** Search "Italia 90 Ciao mascot" or "1990 World Cup
+official poster" — the geometric abstraction and terracotta palette
+are immediately recognisable.
+
 ---
 
 ## Sports analytics / information design
@@ -194,6 +297,14 @@ should feel real.
 - Typography-led: the writing and the numbers are given equal weight
 - Context always accompanies data: a percentage means nothing without
   a comparison or a benchmark
+
+**Good for / avoid when:** Long-form content products where reading
+and data sit alongside each other; editorial publications. Avoid
+when the primary activity isn't reading — real-time or utility tools
+where brevity matters more than depth.
+
+**Exemplar:** theathleticfc.com — the typographic hierarchy and
+editorial weight are visible on any article page.
 
 ---
 
@@ -206,6 +317,14 @@ should feel real.
 **When to invoke:** Any football product with spatial data (pass maps,
 shot maps, pressure maps). Not directly relevant to tournament simulation
 but useful if the product ever visualises match-level spatial data.
+
+**Good for / avoid when:** Expert sports analytics with spatial data;
+audiences who already know what a pitch map is. Avoid for general
+audiences or products without positional data as a primary concept.
+
+**Exemplar:** statsbomb.com/open-data — pitch map style is visible
+in the sample visualisations. fbref.com uses StatsBomb data with their
+visualisation approach on every player page.
 
 ---
 
@@ -301,6 +420,13 @@ scale decisions, and how to create hierarchy without colour.
 organised by pattern and platform. Use before specifying any screen
 type to find real-world examples of how others have solved the same
 problem. mobbin.com
+
+**Lapa Ninja** — curated landing page and web design examples.
+Stronger than Godly for marketing and app UI patterns. lapa.ninja
+
+**Screenlane** — app UI inspiration, mobile and desktop. Good for
+finding real-world patterns in product flows and navigation.
+screenlane.com
 
 **Godly** — curated high-quality web design and product UI.
 Useful for visual direction and layout. godly.website
