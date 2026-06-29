@@ -110,6 +110,20 @@ before proceeding.
 - What has changed — technically, behaviourally, or in the market —
   that makes this viable now when it wasn't before?
 
+**5a. Market landscape scan**
+Read and apply `skills/market-landscape.md`.
+
+Before finalising the opportunity framing, scan for structural gaps in the market
+adjacent to or larger than the stated idea. Ask:
+- What data, distribution, platform, or incumbency gaps exist in this space?
+- What has changed recently that makes a gap newly closeable?
+- Is the stated problem the most valuable expression of the opportunity — or is there
+  something adjacent worth naming?
+
+If you find a significant gap the human has not named, surface it explicitly. Do not
+soften it into a question. Append any findings to the Market signals section of the
+running brief. If the section does not exist, create it.
+
 **6. The opportunity**
 - If this works, what does it change for the user?
 - What would they be able to do, feel, or avoid that they can't today?

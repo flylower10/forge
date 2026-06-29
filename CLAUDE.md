@@ -95,18 +95,23 @@ DISCOVERY (configured per idea — agents below are available, not mandatory)
   ├─ 02 · Design Agent      ←→ conversation: empathy + experience
   ├─ 03 · Devil's Advocate  →  autonomous → one challenge question
   ├─ 04 · Tech Feasibility  →  autonomous → one challenge question
-  ├─ 05 · User Researcher   →  autonomous → one challenge question
-  └─ 06 · Synthesis         →  fully autonomous
-                                → /output/[idea]: brief, OST, ost-decisions,
-                                         assumptions, personas, research plan
-                                → GitHub /docs/: CLAUDE.md, DESIGN.md, decisions.md
-                                → Linear: project, epics, issues
+  └─ 05 · User Researcher   →  autonomous → one challenge question
   │
   ▼
 BREADBOARD
   └─ The Tracer             →  autonomous with review
                                 → maps places, affordances, stores, wiring
                                 → flags unknowns as spike candidates
+                                → runs before Synthesis so the brief is
+                                  built from a complete journey map
+  │
+  ▼
+  └─ 06 · Synthesis         →  fully autonomous
+                                → reads all Discovery outputs + Breadboard
+                                → /output/[idea]: brief, OST, ost-decisions,
+                                         assumptions, personas, research plan
+                                → GitHub /docs/: CLAUDE.md, DESIGN.md, decisions.md
+                                → Linear: project, epics, issues
   │
   ▼
 REFINEMENT
@@ -211,7 +216,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `product-team/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
 | `product-team/06-synthesis.md` | Synthesis | Fully autonomous |
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
-| `product-team/breadboard.md` | The Tracer | Autonomous with review — maps places, affordances, stores, and wiring before code is written; sits between Synthesis and Refinement |
+| `product-team/breadboard.md` | The Tracer | Autonomous with review — maps places, affordances, stores, and wiring; runs after Discovery waves and before Synthesis so the brief is built from a complete journey map |
 | `product-team/08-burst-review.md` | Burst Review (The Handoff + The Re-entry) | Lightweight — Handoff when burst ends, Re-entry when returning after a gap |
 | `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
 | `product-team/ux-agent.md` | The Blueprint | Autonomous with review — produces design briefs for Claude Design; runs once at build kickoff, consulted when new screens are added |

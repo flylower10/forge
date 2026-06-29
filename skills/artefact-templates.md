@@ -42,6 +42,88 @@ Required fields:
 - `lastEdit` — `YYYY-MM-DD · Agent Name`
 - `stats` — array of 3–4 `{ "k": "Label", "v": "Value" }` objects for the header strip; add `"phase": true` to one to colour it
 
+### `running-brief.md`
+
+Created by The Scout at intake. Updated by every agent as it completes. The live state
+of the pipeline — not a polished artefact, a working document.
+
+```markdown
+---json
+{
+  "type": "running-brief",
+  "file": "output/[idea-name]/running-brief.md",
+  "title": "Running brief: [idea-name]",
+  "tagline": "[One sentence summary of the idea]",
+  "phase": "discovery",
+  "status": "Discovery in progress — [current wave]",
+  "lastEdit": "YYYY-MM-DD · [Agent Name]",
+  "stats": [
+    { "k": "Phase", "v": "Discovery", "phase": true },
+    { "k": "Status", "v": "[Wave N done / in progress]" },
+    { "k": "Platform", "v": "[tech stack]" },
+    { "k": "Primary user", "v": "[one-word description]" }
+  ]
+}
+---
+# Running brief: [idea-name]
+Date started: YYYY-MM-DD
+
+---
+
+## Pipeline configuration
+
+**Idea:** [Plain language description of the idea]
+
+**Primary user:** [Who the product is for — specific, not a demographic]
+
+**Secondary user:** [If applicable]
+
+**Target platform:** [iOS / Android / Web / etc.]
+
+**Pipeline:**
+  Wave 1 (done): The Scout
+  Wave 2 (parallel): [agents]
+  ...
+
+Full configuration in `pipeline-config.md`.
+
+---
+
+## What's been established
+
+_(Agents append here as they complete.)_
+
+---
+
+## Market signals
+
+_(Commercial and market intelligence observations captured mid-discovery.
+Any participant — human or agent — may append. Not agent outputs, not risks —
+observations about structural gaps, data access, distribution, or timing that
+belong in view before the brief locks. Synthesis picks these up and routes them
+to The Merchant or relevant agents.)_
+
+---
+
+## Open concerns
+
+_(Flags raised by agents for downstream review.)_
+
+---
+
+## Research log
+
+_(Findings from The Researcher, appended chronologically.)_
+
+---
+
+## Handoff log
+
+_(Agent handoff blocks, newest first.)_
+```
+
+---
+
 ### `brief.md`
 
 ```markdown

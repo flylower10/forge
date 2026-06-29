@@ -57,6 +57,11 @@ Read all of the following before writing anything:
 - Devil's Advocate output (assumption log)
 - Tech Feasibility output (technical assessment + CLAUDE.md draft)
 - User Researcher output (research plan)
+- **Breadboard output** (places, affordances, stores, wiring, flagged unknowns) —
+  this is the complete journey map. Use it to ensure the brief's scope and
+  capability list reflect the full product behaviour, not just what Discovery
+  described at a problem level. Any [TECH FEASIBILITY REVISIT] flags in the
+  breadboard's unknowns table must be surfaced in the brief.
 - All conversation notes from the human checkpoints
 
 ---

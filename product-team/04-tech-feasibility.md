@@ -64,6 +64,14 @@ brief's requirements create genuine complexity, where the architecture
 decisions are foundational and need making early, and where the scope
 might be simplified without losing core user value.
 
+**Scope note:** Tech Feasibility runs before the Breadboard, which means the
+full journey map does not yet exist. Focus this assessment on foundational
+architectural decisions — the choices that are expensive to reverse regardless
+of what the journey map surfaces. Capability-level complexity (individual user
+flows, specific feature shapes) should be flagged as incomplete and revisited
+after the Breadboard runs. Mark any capability assessment that depends on
+unconfirmed journey details as `[PENDING BREADBOARD]` in the complexity table.
+
 ---
 
 ## Review process

@@ -263,18 +263,18 @@
     );
   }
 
-  // Artefact types that are synthesised documents (shown in the top rail group)
-  const SYNTHESISED_TYPES = new Set([
+  // Artefact types that are living project documents (shown in the top rail group)
+  const ARTEFACT_TYPES = new Set([
     'brief', 'running-brief', 'personas', 'research-plan',
     'handoff', 'refinement-output', 'build-kickoff',
     'assumption-log', 'breadboard', 'ost-decisions',
   ]);
 
   function ProjectRail({ project, activeId, onSelect }) {
-    const synthesised = project.artefacts.filter(a => SYNTHESISED_TYPES.has(a.type || ''));
-    const agentOutputs = project.artefacts.filter(a => !SYNTHESISED_TYPES.has(a.type || ''));
+    const artefacts = project.artefacts.filter(a => ARTEFACT_TYPES.has(a.type || ''));
+    const agentOutputs = project.artefacts.filter(a => !ARTEFACT_TYPES.has(a.type || ''));
     const groups = [
-      { label: 'synthesised', items: synthesised },
+      { label: 'artefacts', items: artefacts },
       { label: 'agent outputs', items: agentOutputs },
     ].filter(g => g.items.length > 0);
 
@@ -298,7 +298,7 @@
                    style={{cursor:'pointer'}}
                    onClick={() => onSelect(a.id)}>
                 {/* Option B: show number only on agent outputs, not synthesised docs (fix #7) */}
-                {!SYNTHESISED_TYPES.has(a.type || '') && (
+                {!ARTEFACT_TYPES.has(a.type || '') && (
                   <span className="fg-dir__n">{a.n}</span>
                 )}
                 <div style={{flex:1, minWidth:0}}>

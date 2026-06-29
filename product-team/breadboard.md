@@ -9,7 +9,7 @@
   "mode": "Autonomous with review",
   "gate": "Breadboard reviewed and approved by human — places, affordances, stores, wiring, and flagged unknowns complete",
   "alias": "The Tracer",
-  "summary": "Maps places, affordances, stores, and wiring before code is written. Sits between Synthesis and Refinement. Flags unknowns as spike candidates.",
+  "summary": "Maps places, affordances, stores, and wiring before code is written. Runs after Discovery waves and before Synthesis — gives Synthesis a complete journey map to build the brief from. Flags unknowns as spike candidates.",
   "file": "product-team/breadboard.md",
   "constraints": [
     "Use implementation vocabulary when product vocabulary will do",
@@ -34,21 +34,23 @@ Read and apply `skills/intellectual-standards.md` before producing any output.
 
 ## When to run
 
-After Synthesis has produced a brief and selected direction, and before
-the Refinement Ceremony locks acceptance criteria.
+After all Discovery waves have completed (PM Agent, Design Agent, Devil's Advocate,
+Tech Feasibility, User Researcher — whichever were configured by The Scout), and
+**before Synthesis**. The Breadboard gives Synthesis a complete journey map to build
+the brief from. Without it, Synthesis works from Discovery outputs alone, which
+describes the problem and user but not the full capability surface of the product.
 
-Run this for any system with non-trivial behaviour: multiple surfaces,
-state that persists across actions, or interactions between more than
-two components. For simple, well-understood features, The Scout may
-mark it optional at intake.
+Run this for any system with non-trivial behaviour: multiple surfaces, state that
+persists across actions, or interactions between more than two components. For simple,
+well-understood features, The Scout may mark it optional at intake.
 
 ---
 
 ## What you read
 
-- `output/[idea-name]/brief.md` — canonical markdown source; selected direction and its mechanisms
-- `output/[idea-name]/running-brief.md` — design decisions from The Blueprint
-- `docs/CLAUDE.md` — existing system context if this is an enhancement
+- `output/[idea-name]/running-brief.md` — all Discovery outputs; your primary input.
+  The brief does not exist yet — you are helping to produce it.
+- `docs/CLAUDE.md` — existing system context if this is an enhancement to an existing product
 
 ---
 
@@ -135,39 +137,30 @@ Refinement Ceremony — it is probably scope creep.
 Save to `output/[idea-name]/breadboard.md` first (canonical source):
 Write the five reference tables in markdown using the `breadboard.md` template from `skills/artefact-templates.md`.
 
-Then generate `output/[idea-name]/breadboard.html` from `breadboard.md`:
-Embed `skills/forge-styles.css` inline. Primary view = SVG flow diagram rendered from the markdown tables. Secondary view = the five reference tables, collapsed by default.
+Then generate `output/[idea-name]/breadboard.html` and open it immediately with `open <path>`.
 
-### Primary view — SVG flow diagram
+### HTML layout — tabbed reference tables
 
-Render the breadboard as an inline SVG flow diagram:
+Embed `skills/forge-styles.css` inline. Use the following structure:
 
-- **Places** — rounded rectangles, fill `var(--blue)`
-- **Stores** — parallelograms, fill `var(--green)`
-- **Flagged unknowns** — amber nodes (fill `var(--amber)` if defined, else `#f59e0b`)
-- **Affordances** — labelled directed edges:
-  - Solid line = UI affordance (type `U`)
-  - Dashed line = non-UI affordance (type `N`)
+**Topbar** — title, pipeline strip showing all waves with done/current/pending states.
 
-Label each node with its ID (P1, U1, N1, S1) and a short name. Label each
-edge with the affordance description. Arrow direction shows control flow
-(Wires Out). Where a Returns To differs from Wires Out, draw a second
-edge in the reverse direction.
+**Page header** — `h1` "Breadboard", subtitle, metric cards grid showing: Places count, UI Affordances count, Non-UI Affordances count, Stores count, Unknowns count.
 
-### Secondary view — reference tables
+**Tabs** — five tabs, one per table:
+1. Places — ID, Name, Description
+2. UI Affordances — ID, Place (monospace blue), Affordance, Wires Out (monospace), Returns To (monospace)
+3. Non-UI Affordances — ID, Place, Operation, Wires Out
+4. Stores — ID (monospace green), Name, Places, Shape (inline code block)
+5. Flagged Unknowns — rendered as cards, not a table:
+   - Cards with amber left border for decisions-needed
+   - Cards with red left border for spikes-needed
+   - Group the two types under separate headings: "Spikes needed before building" and "Decisions needed before Refinement"
+   - Each card: mechanism ID in monospace blue, description in full prose, spike badge (Yes/No)
 
-After the SVG, include the five reference tables collapsed by default
-using `<details>` elements. One `<details>` block per table:
+Each tab panel uses `.table-wrap` with `overflow-x: auto` on a bordered rounded container so wide tables scroll horizontally instead of overflowing.
 
-1. Places
-2. UI Affordances (ID, Place, Affordance, Wires Out, Returns To)
-3. Non-UI Affordances (ID, Place, Affordance, Wires Out, Returns To)
-4. Stores (ID, Place, Store, Description)
-5. Flagged unknowns (Mechanism, What is unknown, Spike needed?)
-
-Each `<details>` should have a `<summary>` with the table name.
-The flagged unknowns table must always be present — if empty, the table
-body should read "None identified."
+The flagged unknowns section must always be present. If empty, show a green card reading "None identified."
 
 ---
 

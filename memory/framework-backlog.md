@@ -75,6 +75,52 @@ signs off. Also on-demand when the human suspects visual drift.
 - How does it handle "Claude Design decides" items vs "brief decides"
   items? The handoff skill distinguishes these — the UI QA agent should too.
 
+### ~~Market signals capture — mid-discovery commercial observations have no home~~
+**Captured:** 2026-06-28 · **Resolved:** 2026-06-29
+**Why it matters:** During the family-nutrition discovery session, a mid-conversation observation arose about grocery store product data gaps and the commercial opportunity there. It didn't fit any existing Forge structure: not a research log finding (The Researcher wasn't invoked), not an open concern (it's not a risk), not an agent output (no agent owns commercial intelligence during discovery). It had to be written into a new ad-hoc "Market signals" section of the running brief.
+
+This will recur. Discovery conversations regularly surface observations about market structure, data access, distribution gaps, and partnership opportunities. Currently these either get lost or require inventing a container for them each time.
+
+**Shape (rough):** Two possibilities —
+1. **Structural:** Add a "Market signals" section to the running brief template (`skills/artefact-templates.md`) as a standard capture point. Any participant (human or agent) can append observations. Synthesis picks these up and routes them to The Merchant or relevant agents.
+2. **Agent:** A lightweight "The Cartographer for markets" — observes mid-discovery conversations, flags commercially significant observations (who holds the data, where distribution gaps lie, what partnership opportunities exist), and appends to the signals log. Not a full agent session — more like The Researcher but for commercial intelligence rather than factual gaps.
+
+**Open questions before deciding:**
+- Is this a structural fix (template section) or a behavioural one (new agent)?
+- Should The Merchant be triggered earlier — mid-discovery rather than only when "an idea requires commercial thinking"?
+- Is The Researcher's remit broad enough to cover this if explicitly invoked, or does commercial intelligence need a different agent personality?
+
+### Forge design system — viewer-rendered artefacts via structured data
+**Captured:** 2026-06-29
+**Why it matters:** The current HTML output system requires Claude to hand-assemble CSS inline into each HTML file. The result is inconsistent across artefacts, hard to maintain, and produces UX that is difficult to read (wide tables, no interactivity, no shared component library). The `forge-styles.css` design system exists but is a CSS file that must be copied in full each time — not a real component system.
+
+**The opportunity:** The viewer already reads frontmatter JSON from `.md` files and renders them. If agents produce structured data (which they already do) instead of hand-built HTML, the viewer can render artefacts consistently using a real component library. This is the same architecture as the Forge knowledge browser idea in memory.
+
+**Shape:**
+- Agents produce `.md` files with rich frontmatter JSON (tables as arrays, not markdown text) — the breadboard is a prototype of what this structured data could look like
+- The viewer's React app renders these using a shared component library (table component, unknown card, metric grid, pipeline strip, tabs)
+- HTML files become the exception (for truly bespoke layouts), not the rule
+- The viewer becomes the canonical display surface for all Forge artefacts
+
+**This is a product that should run through Forge's own pipeline before being built.** Treat it as a first-class idea: Scout → PM Agent (what does readable mean for each artefact type) → Synthesis → build.
+
+**Immediate fix (while the bigger system is built):** Codify the breadboard HTML layout as the template for breadboard artefacts. Add an instruction to `product-team/breadboard.md` to produce and open a `breadboard.html` file using this layout — not a hand-assembled CSS dump, but following the tabbed structure with proper wide-table handling.
+
+### Viewer underutilisation — agent outputs live only in chat
+**Captured:** 2026-06-29
+**Why it matters:** Discovery agent outputs (PM framing, design framing, assumption log, breadboard) are produced as long text in chat and are difficult to read and review. The viewer exists but is not being actively used during the pipeline. The only HTML artefacts currently produced come from Synthesis at the end of discovery — everything before that has no visual home. The output structure in CLAUDE.md already specifies `[agent-outputs].html` as individual retained files, but no agent is producing them.
+
+**Two fixes needed:**
+
+1. **Wave checkpoints** — Add a convention to the pipeline that after each wave completes, the running brief is opened in the viewer before the next wave begins. This makes the running brief the review surface between waves, not the chat transcript. Should be codified in `hooks/pre-session.md` or the agent handoff protocol.
+
+2. **Individual agent HTML outputs** — Each agent that produces a substantial output should save it as `output/[idea-name]/[agent-slug]-output.html` immediately after producing it, and open it in the browser. This makes every agent output independently browsable and reviewable. Requires: a lightweight HTML template for agent outputs (in `skills/artefact-templates.md`), and an instruction in each agent definition to produce and open the file.
+
+**Open questions before implementing:**
+- Should the agent output HTML use the full Forge layout (sidebar, topbar) or a simpler reading view?
+- Which agents should produce HTML outputs? All of them, or only the ones with substantial structured outputs (PM Agent, Design Agent, Devil's Advocate, Tech Feasibility, Breadboard)?
+- Should the viewer serve these agent output files, or do they open directly in the browser?
+
 ### README structure block staleness
 **Captured:** 2026-05-09 (mitigated, not solved)
 **Why it matters:** The structure block was badly out of date when
@@ -90,4 +136,5 @@ agent above.
 
 ## Done
 
-[Implemented entries move here with date + reference]
+### Market signals capture · 2026-06-29
+Resolved by: (1) `skills/market-landscape.md` — methodology for identifying structural market gaps; (2) step 5a added to The Interrogator's discovery arc invoking the skill; (3) Market signals section added to the running-brief.md template in artefact-templates.md. Decision: skill over dedicated agent — the PM function already owns this lens, the skill distributes it without creating a new pipeline step.
