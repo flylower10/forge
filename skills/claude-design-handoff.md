@@ -46,6 +46,87 @@ not fit the product it lives inside.
 
 ---
 
+## Non-negotiable constraints — paste at session open
+
+Immediately after the opening framing, before any screen is designed,
+paste the anti-derivative constraint. This is what stops Claude Design
+defaulting to generic AI-generated visual language. It is not optional
+and it is not a suggestion — it is a hard filter every output must pass.
+
+> **Hard constraints — reject any design that hits these. They are the
+> universal tells that read as "an AI made this" before a word is read:**
+> - Inter as the default typeface — use a face with a point of view, or
+>   justify why Inter is right for this specific product
+> - Purple/lavender→blue decorative gradients
+> - Cards with a coloured left border
+> - Hero → features → pricing → FAQ → footer landing-page grammar
+> - Permanent dark mode + grey body text + all-caps section labels
+> - Oversized italic serif h1 as the "premium/editorial" move
+>
+> Ground every visual decision in a **specific reference**, not an
+> adjective. "Clean and minimal" is not a direction; "Tufte's data-ink
+> applied to a dark palette" is. The reference anchors are in the brief —
+> honour them.
+
+The forbidden list and the reference anchors both come from the brief
+(`skills/design-references.md` is their source). If the brief you were
+handed does not carry them, stop and add them before opening the session —
+a brief without the forbidden list cannot produce a non-generic result.
+
+---
+
+## Style tile first — establish the visual language before screens
+
+Do not let Claude Design jump straight to full screens. The first
+deliverable of every session is a **style tile**: a single board that
+fixes the visual language so it can be reviewed and signed off once,
+rather than re-litigated on every screen.
+
+Open the style tile with this instruction:
+
+> "Before designing any screen, produce a style tile — a single board
+> that establishes the visual language for this product. Include every
+> item in the checklist below. I will review and approve the style tile
+> before we design a single screen. Keep it visible and treat it as the
+> contract for everything that follows."
+
+**The style tile must contain:**
+
+- **Typography** — the chosen typeface(s) with their point of view named,
+  the type scale, and a live specimen: heading, body, label, and a
+  numeric sample (numbers matter — most products show data)
+- **Colour** — ground, surface, accent(s), and semantic colours
+  (success / warning / error), each with its hex value and the WCAG
+  contrast ratio for any text pairing
+- **Core components** — button (primary / secondary / disabled), input,
+  card, badge or tag, and one nav element, each shown in default and
+  interactive (hover / focus / active) states
+- **State language** — how *active*, *done*, *pending*, *empty*,
+  *loading*, and *error* are each expressed visually. This is the single
+  most under-specified thing in AI design and the Engineer needs it
+- **Spacing, radius, elevation** — the spatial rhythm, border-radius
+  scale, and shadow/elevation approach
+- **Motion** — the one or two signature transitions, with duration and
+  easing intent
+- **Reference anchor** — a one-line statement of the specific reference
+  the style is grounded in (from the brief)
+- **Anti-derivative audit** — an explicit line-by-line confirmation that
+  the tile clears every forbidden default above, or names and justifies
+  any deviation
+
+**Review the style tile before proceeding.** Run the forbidden-defaults
+list against it yourself — this is the one place the anti-derivative
+audit happens, so nothing generic propagates into the screens. If the
+tile passes, approve it explicitly and only then move to screens. If it
+does not, redirect on the specific default it hit (not on taste) and
+have it revised before any screen work begins.
+
+Every screen thereafter is designed *from* the approved style tile.
+When you review a screen (below), one of the checks is simply: does it
+use the style tile faithfully?
+
+---
+
 ## Working through the brief
 
 Work screen by screen, not all at once. After each screen:
@@ -138,6 +219,8 @@ that Claude Design is done.
 
 A Claude Design session is complete for a screen when:
 
+- [ ] An approved style tile exists and this screen is built from it
+- [ ] The style tile passed the anti-derivative audit (no forbidden defaults)
 - [ ] All components in the brief's component inventory are present
 - [ ] Information hierarchy matches the brief (most important = most prominent)
 - [ ] Edge cases (loading, empty, error) are shown
@@ -209,6 +292,13 @@ DESIGN.md sync is confirmed.** If the confirmation does not include
 
 ## Receiving the Claude Design handover
 
+**Viewing the handover files:** Claude Design bundles (`.dc.html` +
+`support.js`) require their runtime, which fetches the page itself —
+they do not render opened from disk. Always view them through the
+served URL: run `./forge serve`, then open
+`http://localhost:8080/output/[idea-name]/design-handoff/<file>.dc.html`.
+Keep `support.js` beside the `.dc.html` files when storing the bundle.
+
 When Claude Design is complete it produces a handover — typically a URL
 and an instruction that reads something like:
 
@@ -257,6 +347,12 @@ your product.
 
 **Working all screens at once.**
 Mistakes on screen 1 propagate silently. Work screen by screen.
+
+**Designing screens before approving a style tile.**
+Without a signed-off style tile the visual language is decided implicitly,
+screen by screen, and the anti-derivative audit never happens in one
+place. Establish and approve the style tile first — it is the contract
+every screen is built against.
 
 **Redirecting on aesthetic grounds.**
 "I don't like how that looks" is not a reason to redirect. The

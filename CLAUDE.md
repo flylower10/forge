@@ -331,8 +331,23 @@ files directly — no HTML generation step.
 ## HTML output convention
 
 Whenever an HTML file is produced as a Forge output (artefacts, specs,
-pipeline dashboard), open it in the browser immediately after writing
-using `open <path>`. Do not wait for the human to ask.
+pipeline dashboard), open it in the browser immediately after writing.
+Do not wait for the human to ask.
+
+**Check how the file must be opened first.** Browsers block `fetch` on
+pages opened from disk, so a page that fetches anything after loading
+will silently fail via `open <path>`:
+
+- **Self-contained page** (all CSS/JS inline, no runtime fetching) →
+  `open <path>` directly.
+- **Fetch-dependent page** (loads a manifest, state file, or runtime
+  like the Claude Design `support.js`) → ensure `./forge serve` is
+  running, then open the served URL:
+  `open "http://localhost:8080/<repo-relative-path>"`.
+  Never open a fetch-dependent page via `file://`.
+
+When unsure, grep the file for `fetch(`, `XMLHttpRequest`, or external
+`<script src=` — any hit means serve it.
 
 Agent pages are not HTML outputs — they are served by the viewer (see above).
 

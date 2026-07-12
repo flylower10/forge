@@ -126,39 +126,33 @@ Work through these areas. One question at a time. Let answers breathe.
   - **Unknown / multiple:** write both — the mood section for AI tools,
     the precise palette for engineers.
 
-**7. Visual direction**
+**7. Visual direction — Claude Design handoff**
 
 If the pipeline-config or running brief flags the Research Agent for
-this project, invoke it now before continuing — the recognition
-exercise below should be grounded in what's known about adjacent tools.
+this project, invoke it now before continuing.
 
-Most people cannot name visual references on demand but instantly
-recognise what pulls at them. Do not open by asking the human to
-supply references.
+Read `skills/design-references.md`. Identify candidate directions
+and the forbidden defaults. Then write a Claude Design brief at
+`output/[idea-name]/claude-design-brief.md` covering:
 
-(1) Read `skills/design-references.md`. Select 3–4 directions that
-    are genuinely distinct and credible for this user and product.
-    Each must be a committed point of view — not a safe middle ground.
-    Use the `good-for / avoid-when` field to select; draw the
-    distinctive moves from the core principles and in-practice sections.
+- What the product is and who uses it (one paragraph)
+- User context: environment, emotional need, contrast requirements
+- Visual direction: ground colour, accent approach, type choices,
+  aesthetic references, what the active/done/pending states should
+  communicate — drawn from design-references.md and everything
+  established in steps 1–6
+- What needs designing: screens and the open questions for Claude Design
+  to resolve (accent colour, spatial representation, edge cases)
+- Forbidden list: universal defaults from design-references.md plus
+  any product-specific avoid-list from this conversation
 
-(2) Present each direction concretely: name, one-line stance, its
-    distinctive moves (type / colour / layout / motion), and one
-    real exemplar the human can look up. Three or four sentences
-    maximum per direction.
+Tell the human the brief is at `output/[idea-name]/claude-design-brief.md`
+and instruct them to open a Claude Design session using it.
+See `skills/claude-design-handoff.md` for how to open and run that session.
 
-(3) Ask the human to react: which pulls at them, which repels, what
-    they'd take from one and leave from another.
-
-(4) Only after they react, ask if any references of their own now
-    come to mind — reaction unlocks recall. You supply the starting
-    options, not them.
-
-Also ask: what should this NOT look like? This is the product-specific
-avoid-list, distinct from the universal forbidden defaults in the
-references skill.
-
-Push for at least one concrete anchor before moving on.
+Do not generate moodboard HTML. Claude Design produces better visual
+output than hand-coded mood boards and this is where visual direction
+work belongs.
 
 **8. What good looks like**
 - If this product works perfectly, describe the user's experience

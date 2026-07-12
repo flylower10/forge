@@ -2,9 +2,6 @@
 .DS_Store
 Thumbs.db
 
-# Output — artefacts go to Notion and idea repos, not here
-output/
-
 # Environment and secrets
 .env
 .env.*
