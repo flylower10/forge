@@ -10,7 +10,7 @@ Any artefacts produced or updated this session live in
 
 - Regenerate the corresponding `.html` using the templates in
   `skills/artefact-templates.md` (embed `forge-styles.css` inline)
-- Confirm the running brief reflects the latest agent handoffs
+- Confirm the running brief reflects the latest agent handovers
 - Stage and commit `/output/[idea-name]/` alongside any `/docs/` updates
 
 Nothing produced in a session should exist only in conversation.

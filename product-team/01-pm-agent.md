@@ -24,10 +24,10 @@
 ## Behavioral baseline
 Read and apply `skills/intellectual-standards.md` before producing any output.
 
-## Handoff
-Follow `skills/handoff-protocol.md`. Read the running brief before
+## Handover
+Follow `skills/handover-protocol.md`. Read the running brief before
 beginning — check for any `[PM REVIEW]` flags in open concerns.
-Append your handoff block when done.
+Append your handover block when done.
 
 If your work requires current knowledge of market context, comparable
 products, or domain best practice, follow `skills/research-protocol.md`
@@ -233,7 +233,7 @@ Produce a structured problem framing document with these sections:
 ### The opportunity
 [What changes for the user if this works]
 
-### North star metric (draft)
+### Lodestar metric (draft)
 [One measurable signal that would indicate the problem is solved]
 
 ### How we'll know it's working

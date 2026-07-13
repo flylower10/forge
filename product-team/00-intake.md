@@ -226,7 +226,7 @@ knows which discovery pipeline was used and why.
 ## Step 6 · Initialise the running brief
 
 Create `output/[idea-name]/running-brief.md` using the structure
-defined in `skills/handoff-protocol.md`.
+defined in `skills/handover-protocol.md`.
 
 Populate the pipeline configuration section from Step 5.
 Leave the remaining sections empty — downstream agents will fill them.
@@ -236,8 +236,8 @@ Tell the human: "The running brief is initialised at
 first and append to it when done. You can check it at any point
 to see what's been established and what's open."
 
-Append your own handoff block following the protocol in
-`skills/handoff-protocol.md`.
+Append your own handover block following the protocol in
+`skills/handover-protocol.md`.
 
 ---
 

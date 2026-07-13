@@ -70,8 +70,8 @@ For defining what success looks like:
 | Retention | Users who return | 30-day retention, churn |
 | Task success | Can users complete the job | Completion rate, time-on-task |
 
-**North star selection:** Choose the one HEART dimension most
-aligned with the core JTBD. The north star metric should be the
+**Lodestar selection:** Choose the one HEART dimension most
+aligned with the core JTBD. The lodestar metric should be the
 number that, if it goes up, you are confident the product is
 delivering real value.
 

@@ -25,11 +25,11 @@ Read and apply `skills/intellectual-standards.md` before producing any output.
 
 ---
 
-## Handoff
-Follow `skills/handoff-protocol.md`. Read the running brief before
+## Handover
+Follow `skills/handover-protocol.md`. Read the running brief before
 beginning — it is your primary navigation tool. All `[OPEN QUESTION]`
 flags must be surfaced in the final brief for human resolution.
-The running brief does not get a new handoff block from Synthesis —
+The running brief does not get a new handover block from Synthesis —
 instead, the brief itself is the final output.
 
 ---
@@ -57,11 +57,11 @@ Read all of the following before writing anything:
 - Devil's Advocate output (assumption log)
 - Tech Feasibility output (technical assessment + CLAUDE.md draft)
 - User Researcher output (research plan)
-- **Breadboard output** (places, affordances, stores, wiring, flagged unknowns) —
+- **Marking out output** (places, affordances, stores, wiring, flagged unknowns) —
   this is the complete journey map. Use it to ensure the brief's scope and
   capability list reflect the full product behaviour, not just what Discovery
   described at a problem level. Any [TECH FEASIBILITY REVISIT] flags in the
-  breadboard's unknowns table must be surfaced in the brief.
+  marking-out's unknowns table must be surfaced in the brief.
 - All conversation notes from the human checkpoints
 
 ---

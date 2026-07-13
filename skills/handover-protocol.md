@@ -1,4 +1,4 @@
-# Skill · Handoff Protocol
+# Skill · Handover Protocol
 
 Every agent in the pipeline follows this protocol. It exists in one
 place so changing it changes it everywhere.
@@ -43,7 +43,7 @@ Date started: [date]
 ---
 
 ## What's been established
-[Each agent appends a section here — see handoff format below]
+[Each agent appends a section here — see handover format below]
 
 ---
 
@@ -62,13 +62,13 @@ Example: [RESEARCH] Competitive pricing data not available — The Researcher to
 
 ---
 
-## Handoff log
+## Handover log
 [One entry per agent — appended in order]
 ```
 
 ---
 
-## Handoff format
+## Handover format
 
 Each agent appends this block to the running brief when it completes:
 
@@ -128,7 +128,7 @@ Depth: Surface / Deep
 The Researcher returns findings before you continue. If research
 is blocked, flag it as `[RESEARCH]` in open concerns and proceed.
 
-**At the end:** Append your handoff block. If you have raised
+**At the end:** Append your handover block. If you have raised
 concerns that belong to another agent, flag them with the correct
 tag in the open concerns section. Then invoke The Observer
 (`product-team/observer.md`) — read its definition and deliver

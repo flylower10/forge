@@ -23,11 +23,11 @@
 ## Behavioral baseline
 Read and apply `skills/intellectual-standards.md` before producing any output.
 
-## Handoff
-Follow `skills/handoff-protocol.md`. Read the running brief before
+## Handover
+Follow `skills/handover-protocol.md`. Read the running brief before
 beginning. Check for `[REFINEMENT]` flags — these are ambiguities
 or decisions explicitly deferred for this ceremony. Append your
-handoff block when done, including the build kickoff note.
+handover block when done, including the build kickoff note.
 
 ---
 
@@ -138,7 +138,7 @@ After the conversation, produce:
 
 **Updated CLAUDE.md** — incorporate all decisions made in the ceremony
 
-**Build kickoff note** — a short handoff document:
+**Build kickoff note** — a short handover document:
 
 ```
 # Build kickoff: [idea name]

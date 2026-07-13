@@ -79,16 +79,16 @@ edge cases to consider, related issues]
 
 ---
 
-## Spike issue type
+## Proving issue type
 
 When a mechanism is not yet understood well enough to write
-acceptance criteria, create a Spike — a time-boxed investigation
+acceptance criteria, create a Proving — a time-boxed investigation
 that produces a concrete finding, not an open-ended exploration.
 
-**Title format:** "Spike — [what question needs answering]"
+**Title format:** "Proving — [what question needs answering]"
 Examples:
-- "Spike — how does the duplicate check work at the DB layer?"
-- "Spike — what does the third-party API return for edge case X?"
+- "Proving — how does the duplicate check work at the DB layer?"
+- "Proving — what does the third-party API return for edge case X?"
 
 **Description template:**
 ```
@@ -103,21 +103,21 @@ Examples:
  means the question needs decomposing.]
 
 ## Definition of done
-[What a successful spike produces — not "we understand it better",
+[What a successful proving produces — not "we understand it better",
  but a concrete output: a decision, a code sample, a confirmed constraint]
 
 ## Finding
-[Completed after the spike — what was learned, and what is now decided]
+[Completed after the proving — what was learned, and what is now decided]
 ```
 
-**Label:** `spike`
+**Label:** `proving`
 
-Spikes resolve to one of:
+Provings resolve to one of:
 - A finding that unblocks downstream tasks (write it in the Finding field)
 - A decision to descope the mechanism (flag to Delivery Manager)
 - A signal that the question needs discovery-level work (escalate to the brief)
 
-A spike that produces "we need more investigation" is not done.
+A proving that produces "we need more investigation" is not done.
 
 ---
 

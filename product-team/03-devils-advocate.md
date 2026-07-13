@@ -24,10 +24,10 @@
 ## Behavioral baseline
 Read and apply `skills/intellectual-standards.md` before producing any output.
 
-## Handoff
-Follow `skills/handoff-protocol.md`. Read the running brief before
+## Handover
+Follow `skills/handover-protocol.md`. Read the running brief before
 beginning — all prior agent outputs are your review material.
-Append your handoff block when done.
+Append your handover block when done.
 
 ---
 

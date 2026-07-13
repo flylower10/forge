@@ -45,7 +45,7 @@ on before the tournament starts is not useful here.
 
 ## When to invoke
 
-After The Advocate has completed its handoff and The Merchant has
+After The Advocate has completed its handover and The Merchant has
 produced its monetisation recommendation. Before Synthesis.
 
 The Campaigner needs: customer definition, JTBD, value proposition,
@@ -90,7 +90,7 @@ tournament. Prioritise ruthlessly.
 Work backwards from the tournament start date. Produce a specific
 week-by-week sequence with clear milestones:
 - What must be live before the tournament starts
-- What can launch at tournament start (and benefit from the spike
+- What can launch at tournament start (and benefit from the proving
   in interest)
 - What can be introduced mid-tournament as retention hooks
 

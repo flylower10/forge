@@ -24,9 +24,9 @@
 ## Behavioral baseline
 Read and apply `skills/intellectual-standards.md` before producing any output.
 
-## Handoff
+## Handover
 
-Follow `skills/handoff-protocol.md`. Read the running brief before
+Follow `skills/handover-protocol.md`. Read the running brief before
 beginning — pay particular attention to any `[MODEL REVIEW]` flags
 raised by prior agents. Also read the project's `CLAUDE.md` and any
 model or analytical specification files in full before forming a view.
@@ -35,7 +35,7 @@ Before forming a view on current best practice for this type of model,
 follow `skills/research-protocol.md`. Analytical methods evolve. Do not
 assume your training data reflects the current state of the field.
 
-Append your handoff block when done.
+Append your handover block when done.
 
 ---
 

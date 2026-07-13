@@ -205,14 +205,14 @@ State the direction clearly so Claude Design doesn't have to guess.]
 
 ---
 
-## Handoff to Claude Design
+## Handover to Claude Design
 
 When the brief is complete and saved, present this prompt to the human
 verbatim. Do not paraphrase. Do not proceed to any other task.
 
 ---
 
-**Claude Design handoff**
+**Claude Design handover**
 
 The Blueprint brief is complete: `docs/design-brief.md`
 
@@ -232,7 +232,7 @@ Manager. No frontend task will be handed to the Engineer until you do.
 
 For guidance on how to run the Claude Design session effectively —
 what to paste, what to push back on, what "done" looks like — read
-`skills/claude-design-handoff.md`.
+`skills/claude-design-handover.md`.
 
 ---
 

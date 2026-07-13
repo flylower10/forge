@@ -1,4 +1,4 @@
-# Skill · Claude Design Handoff
+# Skill · Claude Design Handover
 
 How to run a Claude Design session from a Blueprint brief.
 Written for a human taking the brief into Claude Design for the first time.
@@ -296,7 +296,7 @@ DESIGN.md sync is confirmed.** If the confirmation does not include
 `support.js`) require their runtime, which fetches the page itself —
 they do not render opened from disk. Always view them through the
 served URL: run `./forge serve`, then open
-`http://localhost:8080/output/[idea-name]/design-handoff/<file>.dc.html`.
+`http://localhost:8080/output/[idea-name]/design-handover/<file>.dc.html`.
 Keep `support.js` beside the `.dc.html` files when storing the bundle.
 
 When Claude Design is complete it produces a handover — typically a URL

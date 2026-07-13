@@ -36,7 +36,7 @@ For multi-part conditions:
 before the pipeline advances. Distinct from a completion criterion,
 which is per-phase within the agent. Both are required. A gate states
 what the agent hands off; a completion criterion states when the work
-to produce that handoff is done.
+to produce that handover is done.
 
 A gate stated as an aspiration is a vague gate — distinct from premature
 completion. Premature completion is stopping too soon; a vague gate is

@@ -21,7 +21,7 @@ Score each dimension 1–5:
 
 | Dimension | 1 | 3 | 5 |
 |---|---|---|---|
-| **User/Business Value** | Nice to have | Important | Directly enables north star |
+| **User/Business Value** | Nice to have | Important | Directly enables lodestar |
 | **Time Criticality** | No deadline | Soft deadline | Hard deadline (revenue, launch) |
 | **Risk Reduction** | No risk addressed | Reduces known risk | Eliminates blocking risk |
 | **Job Size** | XS (hours) | M (days) | L (weeks) |
@@ -37,7 +37,7 @@ For projects with a single primary user and a hard external deadline
 
 1. What fails silently if this isn't done before the deadline?
 2. What becomes worthless after the deadline passes?
-3. What serves the north star directly vs supporting metrics?
+3. What serves the lodestar directly vs supporting metrics?
 
 Use WSJF when these questions don't produce a clear answer.
 

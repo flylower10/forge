@@ -24,11 +24,11 @@
 ## Behavioral baseline
 Read and apply `skills/intellectual-standards.md` before producing any output.
 
-## Handoff
-Follow `skills/handoff-protocol.md`. Read the running brief before
+## Handover
+Follow `skills/handover-protocol.md`. Read the running brief before
 beginning — check for any `[TECH FEASIBILITY]` flags in open concerns
 raised by prior agents. These are your primary inputs alongside the
-full agent outputs. Append your handoff block when done.
+full agent outputs. Append your handover block when done.
 
 If your review requires current knowledge of a technology, library,
 or architectural approach, follow `skills/research-protocol.md` before
@@ -64,13 +64,13 @@ brief's requirements create genuine complexity, where the architecture
 decisions are foundational and need making early, and where the scope
 might be simplified without losing core user value.
 
-**Scope note:** Tech Feasibility runs before the Breadboard, which means the
+**Scope note:** Tech Feasibility runs before the marking-out, which means the
 full journey map does not yet exist. Focus this assessment on foundational
 architectural decisions — the choices that are expensive to reverse regardless
 of what the journey map surfaces. Capability-level complexity (individual user
 flows, specific feature shapes) should be flagged as incomplete and revisited
-after the Breadboard runs. Mark any capability assessment that depends on
-unconfirmed journey details as `[PENDING BREADBOARD]` in the complexity table.
+after the marking-out runs. Mark any capability assessment that depends on
+unconfirmed journey details as `[PENDING MARKING OUT]` in the complexity table.
 
 ---
 
@@ -93,7 +93,7 @@ What are the risks at each integration point?
 For each major capability in the brief, give a rough complexity rating:
 - Low: standard pattern, well-understood, low risk
 - Medium: non-trivial but solvable, some unknowns
-- High: significant unknowns, deserves a spike before building
+- High: significant unknowns, deserves a proving before building
 
 **5. Scope simplification**
 Is there anything in the brief that adds high technical complexity
@@ -101,7 +101,7 @@ for low user value? Identify it specifically — the human may not
 realise the cost.
 
 **6. Observability and analytics**
-If the PM Agent defined a north star metric or secondary metrics, those metrics
+If the PM Agent defined a lodestar metric or secondary metrics, those metrics
 require instrumentation. This is a technical requirement, not an assumption.
 
 - What events need to be tracked to measure the defined metrics?
@@ -110,7 +110,7 @@ require instrumentation. This is a technical requirement, not an assumption.
 - Are there any metrics that cannot be measured without specific architectural decisions
   made now (e.g. server-side vs. client-side event capture)?
 
-If no metrics were defined upstream, flag it: a product without a measurable north star
+If no metrics were defined upstream, flag it: a product without a measurable lodestar
 is a product that cannot learn from its own behaviour.
 
 **7. CLAUDE.md considerations**

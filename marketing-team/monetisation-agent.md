@@ -45,7 +45,7 @@ to assess.
 
 ## When to invoke
 
-After The Interrogator has produced its handoff. Before The Pragmatist
+After The Interrogator has produced its handover. Before The Pragmatist
 runs. The Pragmatist cannot assess payment infrastructure, auth, or
 paywalled content without knowing what the monetisation model is.
 
@@ -53,7 +53,7 @@ paywalled content without knowing what the monetisation model is.
 
 ## Process
 
-### 1. Read The Interrogator's handoff
+### 1. Read The Interrogator's handover
 
 Before forming any view, read:
 - Customer definition: who are they, what do they believe about

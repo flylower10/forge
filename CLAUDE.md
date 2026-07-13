@@ -73,7 +73,7 @@ product is ready to ship.
 
 ### Phase 4 · Delivery
 Shipping, deployment, user onboarding, release notes, changelog,
-and handoff to marketing. Specialist agents for this phase are
+and handover to marketing. Specialist agents for this phase are
 planned but not yet defined — to be built when first needed.
 
 ---
@@ -98,16 +98,16 @@ DISCOVERY (configured per idea — agents below are available, not mandatory)
   └─ 05 · User Researcher   →  autonomous → one challenge question
   │
   ▼
-BREADBOARD
+MARKING OUT
   └─ The Tracer             →  autonomous with review
                                 → maps places, affordances, stores, wiring
-                                → flags unknowns as spike candidates
+                                → flags unknowns as proving candidates
                                 → runs before Synthesis so the brief is
                                   built from a complete journey map
   │
   ▼
   └─ 06 · Synthesis         →  fully autonomous
-                                → reads all Discovery outputs + Breadboard
+                                → reads all Discovery outputs + Marking out
                                 → /output/[idea]: brief, OST, ost-decisions,
                                          assumptions, personas, research plan
                                 → GitHub /docs/: CLAUDE.md, DESIGN.md, decisions.md
@@ -125,11 +125,11 @@ DEVELOPMENT + ITERATE
   ├─ Reviewer          →  execution: checks quality
   ├─ QA               →  execution: validates acceptance criteria
   │
-  └─ [end of burst]
+  └─ [end of heat]
        │
        ▼
-       08 · Burst Review
-            ├─ The Handoff    → state-of-world note; next burst starts here
+       08 · Heat Review
+            ├─ Banking the Fire    → state-of-world note; next heat starts here
             └─ The Re-entry   → orient on return; check what changed
             │
             └─ Escalate → re-invoke relevant discovery agent
@@ -140,7 +140,7 @@ DELIVERY                    [specialist agents TBD]
   ├─ Deployment
   ├─ User onboarding
   ├─ Release notes + changelog
-  └─ Marketing handoff
+  └─ Marketing handover
 ```
 
 ---
@@ -177,10 +177,10 @@ when genuinely persuaded but do not capitulate to social pressure.
   personas.html            ← presentation layer
   research-plan.md         ← editable source
   research-plan.html       ← presentation layer
-  breadboard.md            ← editable source
-  breadboard.html          ← presentation layer (SVG diagram)
-  handoff.md               ← editable source (written each burst)
-  handoff.html             ← presentation layer
+  marking-out.md            ← editable source
+  marking-out.html          ← presentation layer (SVG diagram)
+  handover.md               ← editable source (written each heat)
+  handover.html             ← presentation layer
   pipeline-dashboard.html  ← cumulative milestone tracker
   [agent-outputs].html     ← individual agent outputs, retained as record
 ```
@@ -199,7 +199,7 @@ when genuinely persuaded but do not capitulate to social pressure.
 - One project per idea
 - Epics per major capability
 - Issues per buildable task
-- Work tracked by Delivery Manager across bursts of activity
+- Work tracked by Delivery Manager across heats of activity
 
 ---
 
@@ -216,8 +216,8 @@ when genuinely persuaded but do not capitulate to social pressure.
 | `product-team/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
 | `product-team/06-synthesis.md` | Synthesis | Fully autonomous |
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
-| `product-team/breadboard.md` | The Tracer | Autonomous with review — maps places, affordances, stores, and wiring; runs after Discovery waves and before Synthesis so the brief is built from a complete journey map |
-| `product-team/08-burst-review.md` | Burst Review (The Handoff + The Re-entry) | Lightweight — Handoff when burst ends, Re-entry when returning after a gap |
+| `product-team/marking-out.md` | The Tracer | Autonomous with review — maps places, affordances, stores, and wiring; runs after Discovery waves and before Synthesis so the brief is built from a complete journey map |
+| `product-team/08-heat-review.md` | Heat Review (Banking the Fire + The Re-entry) | Lightweight — Handover when heat ends, Re-entry when returning after a gap |
 | `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
 | `product-team/ux-agent.md` | The Blueprint | Autonomous with review — produces design briefs for Claude Design; runs once at build kickoff, consulted when new screens are added |
 
@@ -248,7 +248,7 @@ These agents are not part of any single phase. They run across the full pipeline
 
 | File | Agent | Mode |
 |------|-------|------|
-| `product-team/observer.md` | The Observer (The Witness) | Always on — fires after every handoff and on demand. Critiques process, not outputs. Reports directly to human. |
+| `product-team/observer.md` | The Observer (The Witness) | Always on — fires after every handover and on demand. Critiques process, not outputs. Reports directly to human. |
 | `product-team/research-agent.md` | The Researcher | On demand — invoked mid-conversation by any agent to fill factual gaps. Returns structured findings to the invoking agent and appends to the running brief research log. |
 
 **Trigger rule:** Any agent with a `triggers` field in its frontmatter fires automatically when its trigger condition is met. Agents without a `triggers` field require explicit invocation. Trigger conditions live in the agent file; this rule enforces the pattern, not the per-agent logic.
@@ -281,9 +281,11 @@ become available to all future ideas automatically.
 | `skills/model-improvement-loop.md` | Iterative model refinement process — hypothesis → implement → backtest → measure → decide |
 | `skills/prioritisation.md` | WSJF-based prioritisation for genuine opportunity cost decisions — invoked by the Delivery Manager, decision surfaced in Linear |
 | `skills/feature-triage.md` | Classification and routing for mid-project feature requests — invoked by the Delivery Manager before any feature enters the build queue |
-| `skills/claude-design-handoff.md` | How to run a Claude Design session from a Blueprint brief — what to bring, how to open, what to push back on, what done looks like |
+| `skills/claude-design-handover.md` | How to run a Claude Design session from a Blueprint brief — what to bring, how to open, what to push back on, what done looks like |
 | `skills/forge-styles.css` | Canonical design system — embed inline in every HTML output |
+| `skills/handover-protocol.md` | How every agent reads and appends to the running brief — the pipeline's shared memory. Followed at every handover |
 | `skills/intellectual-standards.md` | Behavioral baseline — all agents read before acting |
+| `skills/voice.md` | How Forge speaks to the human — anchor voices, banned list, house-term rulings. All agents read before writing human-facing output. Owner: The Narrator |
 
 ---
 

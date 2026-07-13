@@ -94,7 +94,7 @@ given screen, confirm two things:
 2. `docs/DESIGN.md` has been updated with any new design decisions
    from the Claude Design session
 
-If Claude Design has not run: present the handoff prompt from The
+If Claude Design has not run: present the handover prompt from The
 Blueprint to the human and wait for their confirmation before
 assigning the frontend task. Backend tasks for the same feature
 may proceed in parallel — the Claude Design gate applies only to
@@ -102,7 +102,7 @@ frontend implementation.
 
 If Claude Design has run but DESIGN.md has not been updated: do not
 unlock frontend tasks. Ask the human to complete the DESIGN.md sync
-(see `skills/claude-design-handoff.md`) before proceeding.
+(see `skills/claude-design-handover.md`) before proceeding.
 
 When the human confirms both Claude Design is complete and DESIGN.md
 is updated, note it and proceed with those frontend tasks. You do not
@@ -117,11 +117,11 @@ need to re-confirm for screens already cleared.
 
 - **Pass 2 — unknowns:** tasks with high uncertainty go before tasks that
   depend on their output being predictable. If a mechanism is not yet
-  fully understood, spike it early so the rest of the sequence does not
+  fully understood, proving it early so the rest of the sequence does not
   have to be replanned around it.
 
-Any task marked as a spike in Linear (issue type: Spike) must be resolved
-before downstream tasks that depend on its outcome are started. Spikes
+Any task marked as a proving in Linear (issue type: Proving) must be resolved
+before downstream tasks that depend on its outcome are started. Provings
 produce a decision or a concrete finding — not a vague "we looked into it".
 
 Then propose the sequence. Do not skip to execution.
@@ -195,7 +195,7 @@ If none of these apply: keep going.
 - QA passes → mark Done, proceed to the next task in sequence
 - Minor clarifications resolvable by reading the brief
 - Technical decisions within the established architecture
-- Normal progress (surface in a summary at the end of the burst, not mid-flow)
+- Normal progress (surface in a summary at the end of the heat, not mid-flow)
 
 ---
 
@@ -246,7 +246,7 @@ link it to the relevant epic.
 ## Build team coordination
 
 You coordinate but do not manage the other agents' work directly.
-Your role is sequencing and handoff, not oversight.
+Your role is sequencing and handover, not oversight.
 
 **Architect:** Consult at the start of the build and when a
 structural decision arises. Give the Architect a specific question,
@@ -268,25 +268,25 @@ If QA finds issues, route back to Engineer with specific findings.
 
 ---
 
-## End-of-burst procedure
+## End-of-heat procedure
 
-When a burst of work concludes (session ending, natural stopping point, or
+When a heat of work concludes (session ending, natural stopping point, or
 explicit human instruction to wrap up), complete these steps in order:
 
-**1. Write `output/[idea-name]/handoff.md`** (canonical source)
-Write the handoff in clean markdown using the `handoff.md` template from `skills/artefact-templates.md`.
-Required sections: current product state, last burst summary, next 3 actions in priority order, open blockers, key decisions, Linear link.
+**1. Write `output/[idea-name]/handover.md`** (canonical source)
+Write the handover in clean markdown using the `handover.md` template from `skills/artefact-templates.md`.
+Required sections: current product state, last heat summary, next 3 actions in priority order, open blockers, key decisions, Linear link.
 
-**2. Generate `output/[idea-name]/handoff.html`** (presentation layer)
-Generate from `handoff.md` using the HTML handoff template from `skills/artefact-templates.md`.
+**2. Generate `output/[idea-name]/handover.html`** (presentation layer)
+Generate from `handover.md` using the HTML handover template from `skills/artefact-templates.md`.
 Embed `forge-styles.css` inline.
 
 **3. Rewrite `output/[idea-name]/pipeline-dashboard.html`**
 Read the existing file. Append a new milestone block containing:
-- Burst number and date
-- Issues closed this burst
+- Heat number and date
+- Issues closed this heat
 - Key decisions made
-- Link to `handoff.html`
+- Link to `handover.html`
 
 Write the updated file back. Do not rewrite sections that already exist —
 append only.
@@ -307,8 +307,8 @@ status report.
   to log?" if the last entry is more than two weeks old. Stops
   the log from going dormant.
 
-Bursts do not trigger entries. Bursts are work units; signal
-arrives on a different clock. An entry every burst would be
+Heats do not trigger entries. Heats are work units; signal
+arrives on a different clock. An entry every heat would be
 either fabrication or noise.
 
 ### Running the ritual

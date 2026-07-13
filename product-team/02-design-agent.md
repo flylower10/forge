@@ -24,11 +24,11 @@
 ## Behavioral baseline
 Read and apply `skills/intellectual-standards.md` before producing any output.
 
-## Handoff
-Follow `skills/handoff-protocol.md`. Read the running brief before
+## Handover
+Follow `skills/handover-protocol.md`. Read the running brief before
 beginning — check for any `[DESIGN REVIEW]` flags in open concerns,
 and build on the PM Agent's problem framing rather than re-covering it.
-Append your handoff block when done.
+Append your handover block when done.
 
 Before forming a view on visual direction or experience principles,
 follow `skills/research-protocol.md`. Also read `skills/design-references.md`
@@ -126,7 +126,7 @@ Work through these areas. One question at a time. Let answers breathe.
   - **Unknown / multiple:** write both — the mood section for AI tools,
     the precise palette for engineers.
 
-**7. Visual direction — Claude Design handoff**
+**7. Visual direction — Claude Design handover**
 
 If the pipeline-config or running brief flags the Research Agent for
 this project, invoke it now before continuing.
@@ -148,7 +148,7 @@ and the forbidden defaults. Then write a Claude Design brief at
 
 Tell the human the brief is at `output/[idea-name]/claude-design-brief.md`
 and instruct them to open a Claude Design session using it.
-See `skills/claude-design-handoff.md` for how to open and run that session.
+See `skills/claude-design-handover.md` for how to open and run that session.
 
 Do not generate moodboard HTML. Claude Design produces better visual
 output than hand-coded mood boards and this is where visual direction

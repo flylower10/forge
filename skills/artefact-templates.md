@@ -6,9 +6,9 @@ placeholder comments with real content while preserving the structure exactly.
 
 ## Why consistent templates matter
 
-- The build team reads briefs, handoffs, and dashboards at the start of every
+- The build team reads briefs, handovers, and dashboards at the start of every
   session. Predictable structure means faster orientation.
-- The Delivery Manager reads handoff.html and pipeline-dashboard.html to resume
+- The Delivery Manager reads handover.html and pipeline-dashboard.html to resume
   state after a gap. Missing sections break re-entry.
 - Linear issues and acceptance criteria follow a predictable shape the Delivery
   Manager depends on — artefact consistency enforces that discipline upstream.
@@ -33,7 +33,7 @@ Agents write the `.md` source first — clean, human-editable content. Then gene
 Every `.md` output file **must** begin with a `---json` frontmatter block. This makes the file self-describing and lets the Forge viewer render it directly without an HTML wrapper. The frontmatter is **not** shown to the reader — it is metadata for the viewer renderer.
 
 Required fields:
-- `type` — artefact kind: `brief`, `personas`, `research-plan`, `handoff`, `running-brief`, `refinement-output`, `agent-output`
+- `type` — artefact kind: `brief`, `personas`, `research-plan`, `handover`, `running-brief`, `refinement-output`, `agent-output`
 - `file` — repo-relative path (e.g. `output/wc-sim-market/brief.md`)
 - `title` — the document title (matches the H1)
 - `tagline` — one sentence summary of what this document contains
@@ -117,9 +117,9 @@ _(Findings from The Researcher, appended chronologically.)_
 
 ---
 
-## Handoff log
+## Handover log
 
-_(Agent handoff blocks, newest first.)_
+_(Agent handover blocks, newest first.)_
 ```
 
 ---
@@ -139,7 +139,7 @@ _(Agent handoff blocks, newest first.)_
   "stats": [
     { "k": "Phase", "v": "Discovery", "phase": true },
     { "k": "Status", "v": "Complete" },
-    { "k": "North star", "v": "[metric]" },
+    { "k": "Lodestar", "v": "[metric]" },
     { "k": "Tournament", "v": "[event · date if applicable]" }
   ]
 }
@@ -315,10 +315,10 @@ references the prior one.
 **Revisit when:** [condition, or "—" if permanent]
 ```
 
-### `handoff.md`
+### `handover.md`
 
 ```markdown
-# Handoff — Burst [N] — [Date]
+# Handover — Heat [N] — [Date]
 
 ## Product state
 **Phase:** [current phase]  **Sprint:** [N]  **Status:** [On track / At risk / Blocked]
@@ -326,7 +326,7 @@ references the prior one.
 ### Key metrics
 - [metric]: [value]
 
-## Last burst — what shipped
+## Last heat — what shipped
 - [issue/task]: [brief description]
 
 ## Next 3 actions (priority order)
@@ -346,10 +346,10 @@ references the prior one.
 [project URL]
 ```
 
-### `breadboard.md`
+### `marking-out.md`
 
 ```markdown
-# [Product Name] — Breadboard
+# [Product Name] — Marking out
 
 ## Places
 | ID | Name | Description |
@@ -372,7 +372,7 @@ references the prior one.
 | S1 | P1 | [store name] | [what it holds] |
 
 ## Flagged unknowns
-| Mechanism | What is unknown | Spike needed? |
+| Mechanism | What is unknown | Proving needed? |
 |---|---|---|
 | [mechanism] | [question] | Yes / No |
 ```
@@ -456,8 +456,8 @@ references the prior one.
     <a class="forge-artefact-nav__item" href="research-plan.html">
       <span class="forge-artefact-nav__dot"></span>Research Plan
     </a>
-    <a class="forge-artefact-nav__item" href="handoff.html">
-      <span class="forge-artefact-nav__dot"></span>Handoff
+    <a class="forge-artefact-nav__item" href="handover.html">
+      <span class="forge-artefact-nav__dot"></span>Handover
     </a>
     <a class="forge-artefact-nav__item" href="pipeline-dashboard.html">
       <span class="forge-artefact-nav__dot"></span>Dashboard
@@ -536,8 +536,8 @@ references the prior one.
         </div>
 
         <div class="forge-card">
-          <div class="forge-card__title">North star metric</div>
-          <p><!-- [agent fills: north star metric and definition] --></p>
+          <div class="forge-card__title">Lodestar metric</div>
+          <p><!-- [agent fills: lodestar metric and definition] --></p>
         </div>
 
         <div class="forge-card">
@@ -750,8 +750,8 @@ references the prior one.
     <a class="forge-artefact-nav__item" href="research-plan.html">
       <span class="forge-artefact-nav__dot"></span>Research Plan
     </a>
-    <a class="forge-artefact-nav__item" href="handoff.html">
-      <span class="forge-artefact-nav__dot"></span>Handoff
+    <a class="forge-artefact-nav__item" href="handover.html">
+      <span class="forge-artefact-nav__dot"></span>Handover
     </a>
     <a class="forge-artefact-nav__item" href="pipeline-dashboard.html">
       <span class="forge-artefact-nav__dot"></span>Dashboard
@@ -952,8 +952,8 @@ references the prior one.
     <a class="forge-artefact-nav__item" href="research-plan.html">
       <span class="forge-artefact-nav__dot"></span>Research Plan
     </a>
-    <a class="forge-artefact-nav__item" href="handoff.html">
-      <span class="forge-artefact-nav__dot"></span>Handoff
+    <a class="forge-artefact-nav__item" href="handover.html">
+      <span class="forge-artefact-nav__dot"></span>Handover
     </a>
     <a class="forge-artefact-nav__item" href="pipeline-dashboard.html">
       <span class="forge-artefact-nav__dot"></span>Dashboard
@@ -1204,8 +1204,8 @@ references the prior one.
     <a class="forge-artefact-nav__item is-active file-exists" href="research-plan.html">
       <span class="forge-artefact-nav__dot"></span>Research Plan
     </a>
-    <a class="forge-artefact-nav__item" href="handoff.html">
-      <span class="forge-artefact-nav__dot"></span>Handoff
+    <a class="forge-artefact-nav__item" href="handover.html">
+      <span class="forge-artefact-nav__dot"></span>Handover
     </a>
     <a class="forge-artefact-nav__item" href="pipeline-dashboard.html">
       <span class="forge-artefact-nav__dot"></span>Dashboard
@@ -1348,7 +1348,7 @@ references the prior one.
 
 ---
 
-## Template 5 — `handoff.html`
+## Template 5 — `handover.html`
 
 ```html
 <!DOCTYPE html>
@@ -1356,12 +1356,12 @@ references the prior one.
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><!-- [agent fills: product name] --> — Handoff · Burst <!-- [agent fills: N] --></title>
+  <title><!-- [agent fills: product name] --> — Handover · Heat <!-- [agent fills: N] --></title>
   <style>
     /* PASTE CONTENTS OF skills/forge-styles.css HERE */
   </style>
   <style>
-    .forge-handoff-grid {
+    .forge-handover-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
@@ -1378,7 +1378,7 @@ references the prior one.
       <span class="forge-topbar__sep">/</span>
       <a href="pipeline-dashboard.html"><!-- [agent fills: idea slug] --></a>
       <span class="forge-topbar__sep">/</span>
-      <span class="forge-topbar__current">Handoff · Burst <!-- [agent fills: N] --></span>
+      <span class="forge-topbar__current">Handover · Heat <!-- [agent fills: N] --></span>
     </nav>
     <span class="forge-topbar__logo">Forge</span>
     <div class="forge-topbar__right">
@@ -1401,20 +1401,20 @@ references the prior one.
     <a class="forge-artefact-nav__item" href="research-plan.html">
       <span class="forge-artefact-nav__dot"></span>Research Plan
     </a>
-    <a class="forge-artefact-nav__item is-active file-exists" href="handoff.html">
-      <span class="forge-artefact-nav__dot"></span>Handoff
+    <a class="forge-artefact-nav__item is-active file-exists" href="handover.html">
+      <span class="forge-artefact-nav__dot"></span>Handover
     </a>
     <a class="forge-artefact-nav__item" href="pipeline-dashboard.html">
       <span class="forge-artefact-nav__dot"></span>Dashboard
     </a>
   </nav>
 
-  <!-- LAYOUT — full width, no sidebar needed for handoff -->
+  <!-- LAYOUT — full width, no sidebar needed for handover -->
   <div class="forge-layout">
     <aside class="forge-sidebar">
-      <p class="forge-sidebar__label">This burst</p>
+      <p class="forge-sidebar__label">This heat</p>
       <div style="padding: 0.3rem 0.6rem;">
-        <div style="font-size: 1.2rem; font-weight: 700; color: var(--text);">Burst <!-- [agent fills: N] --></div>
+        <div style="font-size: 1.2rem; font-weight: 700; color: var(--text);">Heat <!-- [agent fills: N] --></div>
         <div style="font-size: 0.72rem; color: var(--dim); margin-top: 0.2rem;"><!-- [agent fills: date range] --></div>
       </div>
 
@@ -1433,18 +1433,18 @@ references the prior one.
         Open project ↗
       </a>
 
-      <p class="forge-sidebar__label" style="margin-top: 1.5rem;">Previous bursts</p>
-      <!-- [agent fills: link to previous handoff files] -->
-      <a class="forge-sidebar__link" href="#">Burst <!-- [agent fills: N-1] --></a>
+      <p class="forge-sidebar__label" style="margin-top: 1.5rem;">Previous heats</p>
+      <!-- [agent fills: link to previous handover files] -->
+      <a class="forge-sidebar__link" href="#">Heat <!-- [agent fills: N-1] --></a>
     </aside>
 
     <main class="forge-main">
-      <h1>Handoff — Burst <!-- [agent fills: N] --></h1>
+      <h1>Handover — Heat <!-- [agent fills: N] --></h1>
       <p style="color: var(--dim); font-size: 0.78rem; margin-bottom: 1.5rem;">
         <!-- [agent fills: idea name] --> &nbsp;·&nbsp; <!-- [agent fills: date] -->
       </p>
 
-      <div class="forge-handoff-grid">
+      <div class="forge-handover-grid">
 
         <!-- LEFT COLUMN -->
         <div>
@@ -1457,7 +1457,7 @@ references the prior one.
             </div>
             <div class="forge-metrics" style="grid-template-columns: repeat(2, 1fr);">
               <div class="forge-metric forge-metric--green">
-                <div class="forge-metric__value"><!-- [agent fills: issues closed this burst] --></div>
+                <div class="forge-metric__value"><!-- [agent fills: issues closed this heat] --></div>
                 <div class="forge-metric__label">Issues closed</div>
               </div>
               <div class="forge-metric">
@@ -1468,9 +1468,9 @@ references the prior one.
             <p><!-- [agent fills: one sentence on product state — what is shipped and working] --></p>
           </div>
 
-          <!-- LAST BURST SUMMARY -->
+          <!-- LAST HEAT SUMMARY -->
           <div class="forge-card">
-            <div class="forge-card__title">What happened this burst</div>
+            <div class="forge-card__title">What happened this heat</div>
             <ul>
               <li><!-- [agent fills: key thing completed] --></li>
               <li><!-- [agent fills: key thing completed] --></li>
@@ -1526,11 +1526,11 @@ references the prior one.
           </div>
         </div>
 
-      </div><!-- /forge-handoff-grid -->
+      </div><!-- /forge-handover-grid -->
 
       <hr class="forge-divider">
 
-      <h2>Key decisions this burst</h2>
+      <h2>Key decisions this heat</h2>
       <p style="font-size: 0.78rem; color: var(--dim); margin-bottom: 0.75rem;">
         Decisions that changed direction, scope, or architecture. Full ADR log in
         <a href="../docs/decisions.md" class="forge-link">docs/decisions.md</a>.
@@ -1563,7 +1563,7 @@ references the prior one.
     /* PASTE CONTENTS OF skills/forge-styles.css HERE */
   </style>
   <style>
-    .forge-burst-block {
+    .forge-heat-block {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -1574,26 +1574,26 @@ references the prior one.
       gap: 1rem;
       align-items: start;
     }
-    .forge-burst-block__number {
+    .forge-heat-block__number {
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--dim);
     }
-    .forge-burst-block__date {
+    .forge-heat-block__date {
       font-size: 0.68rem;
       color: var(--dim);
       margin-top: 0.2rem;
     }
-    .forge-burst-block__decisions {
+    .forge-heat-block__decisions {
       font-size: 0.78rem;
       color: var(--dim);
       margin-top: 0.35rem;
     }
-    .forge-burst-block.is-current {
+    .forge-heat-block.is-current {
       border-color: var(--green-border);
       background: var(--green-surface-subtle);
     }
-    .forge-burst-block.is-current .forge-burst-block__number {
+    .forge-heat-block.is-current .forge-heat-block__number {
       color: var(--green);
     }
   </style>
@@ -1625,7 +1625,7 @@ references the prior one.
     </a>
     <span class="forge-pipeline-strip__sep">›</span>
     <a class="forge-pipeline-strip__item is-done" href="#">
-      <span class="forge-pipeline-strip__dot"></span>Breadboard
+      <span class="forge-pipeline-strip__dot"></span>Marking out
     </a>
     <span class="forge-pipeline-strip__sep">›</span>
     <a class="forge-pipeline-strip__item is-done" href="#">
@@ -1656,8 +1656,8 @@ references the prior one.
     <a class="forge-artefact-nav__item" href="research-plan.html">
       <span class="forge-artefact-nav__dot"></span>Research Plan
     </a>
-    <a class="forge-artefact-nav__item" href="handoff.html">
-      <span class="forge-artefact-nav__dot"></span>Handoff
+    <a class="forge-artefact-nav__item" href="handover.html">
+      <span class="forge-artefact-nav__dot"></span>Handover
     </a>
     <a class="forge-artefact-nav__item is-active file-exists" href="pipeline-dashboard.html">
       <span class="forge-artefact-nav__dot"></span>Dashboard
@@ -1672,7 +1672,7 @@ references the prior one.
       <p class="forge-sidebar__label">Project</p>
       <a class="forge-sidebar__link is-active" href="pipeline-dashboard.html">Dashboard</a>
       <a class="forge-sidebar__link" href="brief.html">Brief</a>
-      <a class="forge-sidebar__link" href="handoff.html">Latest handoff</a>
+      <a class="forge-sidebar__link" href="handover.html">Latest handover</a>
 
       <p class="forge-sidebar__label" style="margin-top: 1.5rem;">Artefacts</p>
       <a class="forge-sidebar__link" href="assumption-log.html">Assumption log</a>
@@ -1714,30 +1714,30 @@ references the prior one.
         </div>
         <p><!-- [agent fills: one sentence on what is actively being built right now] --></p>
         <p style="margin-top: 0.5rem;">
-          <a class="forge-artefact-ref file-exists" href="handoff.html">
-            <span class="forge-artefact-ref__dot"></span>Latest handoff
+          <a class="forge-artefact-ref file-exists" href="handover.html">
+            <span class="forge-artefact-ref__dot"></span>Latest handover
           </a>
         </p>
       </div>
 
-      <!-- BURST HISTORY — newest first, accumulates over time -->
-      <h2>Burst history</h2>
+      <!-- HEAT HISTORY — newest first, accumulates over time -->
+      <h2>Heat history</h2>
       <p style="font-size: 0.78rem; color: var(--dim); margin-bottom: 1rem;">
-        Each block is a completed burst. Agent updates this file after every handoff.
+        Each block is a completed heat. Agent updates this file after every handover.
       </p>
 
-      <!-- CURRENT BURST (in progress) -->
-      <div class="forge-burst-block is-current">
+      <!-- CURRENT HEAT (in progress) -->
+      <div class="forge-heat-block is-current">
         <div>
-          <div class="forge-burst-block__number"><!-- [agent fills: N] --></div>
-          <div class="forge-burst-block__date"><!-- [agent fills: date] --> · In progress</div>
+          <div class="forge-heat-block__number"><!-- [agent fills: N] --></div>
+          <div class="forge-heat-block__date"><!-- [agent fills: date] --> · In progress</div>
         </div>
         <div>
           <div style="font-size: 0.83rem; color: var(--text); margin-bottom: 0.35rem;">
-            <!-- [agent fills: brief title of what this burst is building] -->
+            <!-- [agent fills: brief title of what this heat is building] -->
           </div>
-          <div class="forge-burst-block__decisions">
-            <!-- [agent fills: key decisions or pivots in this burst, if any so far] -->
+          <div class="forge-heat-block__decisions">
+            <!-- [agent fills: key decisions or pivots in this heat, if any so far] -->
           </div>
         </div>
         <div>
@@ -1745,15 +1745,15 @@ references the prior one.
         </div>
       </div>
 
-      <!-- COMPLETED BURST — agent adds one block per completed burst, newest first -->
-      <div class="forge-burst-block">
+      <!-- COMPLETED HEAT — agent adds one block per completed heat, newest first -->
+      <div class="forge-heat-block">
         <div>
-          <div class="forge-burst-block__number"><!-- [agent fills: N-1] --></div>
-          <div class="forge-burst-block__date"><!-- [agent fills: date] --></div>
+          <div class="forge-heat-block__number"><!-- [agent fills: N-1] --></div>
+          <div class="forge-heat-block__date"><!-- [agent fills: date] --></div>
         </div>
         <div>
           <div style="font-size: 0.83rem; color: var(--text); margin-bottom: 0.35rem;">
-            <!-- [agent fills: burst summary, e.g. "Auth + onboarding shipped"] -->
+            <!-- [agent fills: heat summary, e.g. "Auth + onboarding shipped"] -->
           </div>
           <div class="forge-metrics" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 0.35rem;">
             <div class="forge-metric">
@@ -1761,18 +1761,18 @@ references the prior one.
               <div class="forge-metric__label">Issues closed</div>
             </div>
           </div>
-          <div class="forge-burst-block__decisions">
-            <!-- [agent fills: key decisions made this burst] -->
+          <div class="forge-heat-block__decisions">
+            <!-- [agent fills: key decisions made this heat] -->
           </div>
         </div>
         <div>
-          <a class="forge-artefact-ref file-exists" href="handoff-<!-- [agent fills: N-1] -->.html">
-            <span class="forge-artefact-ref__dot"></span>handoff-<!-- [agent fills: N-1] -->.html
+          <a class="forge-artefact-ref file-exists" href="handover-<!-- [agent fills: N-1] -->.html">
+            <span class="forge-artefact-ref__dot"></span>handover-<!-- [agent fills: N-1] -->.html
           </a>
         </div>
       </div>
 
-      <!-- [agent fills: add more burst blocks above as the project progresses, newest first] -->
+      <!-- [agent fills: add more heat blocks above as the project progresses, newest first] -->
 
       <hr class="forge-divider">
 
@@ -1930,7 +1930,7 @@ references the prior one.
         <h2>What this product is</h2>
         <p><!-- [agent fills: 2–3 sentences describing the product, the user, and the core problem it solves] --></p>
 
-        <h2>North star metric</h2>
+        <h2>Lodestar metric</h2>
         <p><!-- [agent fills: the one metric that indicates real value is being delivered] --></p>
 
         <h2>Current status</h2>
