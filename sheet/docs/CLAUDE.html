@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forge Sheet — CLAUDE.html</title>
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0d0d14; --surface: #14141f; --elevated: #1c1c2e; --border: #2a2a3d;
+  --text: #e8e8f0; --mid: #9090a8; --dim: #555568;
+  --blue: #5b8dee; --green: #4caf82; --amber: #e8a94d; --red: #e05c5c; --purple: #9b72cf;
+  --blue-surface: rgba(91,141,238,0.12); --green-surface: rgba(76,175,130,0.12);
+  --amber-surface: rgba(232,169,77,0.12); --red-surface: rgba(224,92,92,0.12);
+  --blue-border: rgba(91,141,238,0.20); --green-border: rgba(76,175,130,0.20);
+  --amber-border: rgba(232,169,77,0.20); --red-border: rgba(224,92,92,0.20);
+  --green-border-strong: rgba(76,175,130,0.30); --red-border-strong: rgba(224,92,92,0.25);
+  --blue-surface-subtle: rgba(91,141,238,0.06); --green-surface-subtle: rgba(76,175,130,0.06);
+  --amber-surface-subtle: rgba(232,169,77,0.06); --red-surface-subtle: rgba(224,92,92,0.06);
+  --topbar-h: 53px;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.forge-topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0.65rem 1.75rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.forge-topbar__breadcrumb { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+.forge-topbar__breadcrumb a { color: var(--dim); text-decoration: none; }
+.forge-topbar__sep { color: var(--border); }
+.forge-topbar__current { color: var(--mid); }
+.forge-topbar__logo { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.forge-topbar__right { display: flex; align-items: center; gap: 0.75rem; font-size: 0.72rem; color: var(--dim); }
+.forge-layout { display: grid; grid-template-columns: 240px 1fr; min-height: calc(100vh - var(--topbar-h)); }
+.forge-sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 1rem; position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h)); overflow-y: auto; scrollbar-width: thin; }
+.forge-sidebar__label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); margin: 1.25rem 0 0.5rem; }
+.forge-sidebar__label:first-child { margin-top: 0; }
+.forge-sidebar__link { display: block; padding: 0.3rem 0.6rem; font-size: 0.78rem; color: var(--mid); text-decoration: none; border-radius: 5px; margin-bottom: 0.1rem; transition: background 0.12s, color 0.12s; }
+.forge-sidebar__link:hover { background: var(--elevated); color: var(--text); }
+.forge-sidebar__link.is-active { background: var(--blue-surface); color: var(--blue); }
+.forge-main { padding: 2rem 2.5rem; max-width: 860px; }
+.forge-main h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.4rem; }
+.forge-main h2 { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2.5rem 0 1rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.forge-main h2:first-of-type { border-top: none; margin-top: 1.5rem; padding-top: 0; }
+.forge-main h3 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); margin: 1.25rem 0 0.65rem; }
+.forge-main p { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 0.85rem; }
+.forge-main p:last-child { margin-bottom: 0; }
+.forge-main a { color: var(--blue); text-decoration: none; }
+.forge-main a:hover { text-decoration: underline; }
+.forge-main code { font-family: 'SF Mono','Fira Code','Cascadia Code',monospace; font-size: 0.8rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.4rem; border-radius: 3px; }
+.forge-main pre { background: var(--elevated); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; overflow-x: auto; margin-bottom: 1rem; }
+.forge-main pre code { background: none; padding: 0; font-size: 0.8rem; color: var(--text); }
+.forge-main ul, .forge-main ol { padding-left: 1.5rem; margin-bottom: 0.85rem; color: var(--mid); font-size: 0.875rem; line-height: 1.75; }
+.forge-main li { margin-bottom: 0.2rem; }
+.forge-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.18rem 0.52rem; border-radius: 4px; white-space: nowrap; }
+.forge-badge--blue { background: var(--blue-surface); color: var(--blue); }
+.forge-badge--green { background: var(--green-surface); color: var(--green); }
+.forge-badge--amber { background: var(--amber-surface); color: var(--amber); }
+.forge-badge--red { background: var(--red-surface); color: var(--red); }
+.forge-badge--dim { background: rgba(144,144,168,0.12); color: var(--mid); }
+.forge-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+.forge-card__title { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--dim); margin-bottom: 0.75rem; }
+.forge-card--blue { background: var(--blue-surface-subtle); border-color: var(--blue-border); }
+.forge-card--green { background: var(--green-surface-subtle); border-color: var(--green-border); }
+.forge-card--amber { background: var(--amber-surface-subtle); border-color: var(--amber-border); }
+.forge-card--red { background: var(--red-surface-subtle); border-color: var(--red-border); }
+.forge-never-do { background: var(--red-surface-subtle); border: 1px solid var(--red-border-strong); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.forge-never-do__title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--red); margin-bottom: 0.75rem; }
+.forge-never-do__list { list-style: none; padding: 0; margin: 0; }
+.forge-never-do__item { display: flex; gap: 0.65rem; align-items: flex-start; padding: 0.45rem 0; border-bottom: 1px solid var(--red-surface); font-size: 0.83rem; color: var(--mid); line-height: 1.55; }
+.forge-never-do__item:last-child { border-bottom: none; padding-bottom: 0; }
+.forge-never-do__item::before { content: '✕'; color: var(--red); font-size: 0.7rem; flex-shrink: 0; padding-top: 0.15rem; }
+.forge-step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 0.65rem; display: grid; grid-template-columns: 40px 1fr; gap: 1rem; align-items: start; }
+.forge-step__num { font-size: 1.1rem; font-weight: 700; color: var(--dim); }
+.forge-step__title { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.35rem; }
+.forge-step__body { font-size: 0.8rem; color: var(--mid); line-height: 1.65; }
+.forge-step__body code { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.78rem; background: var(--elevated); color: var(--blue); padding: 0.1rem 0.35rem; border-radius: 3px; }
+.forge-step.is-proving { border-color: var(--amber-border); background: var(--amber-surface-subtle); }
+.forge-step.is-proving .forge-step__num { color: var(--amber); }
+.forge-divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  </style>
+</head>
+<body>
+
+  <header class="forge-topbar">
+    <nav class="forge-topbar__breadcrumb">
+      <span style="color: var(--dim);">sheet</span>
+      <span class="forge-topbar__sep">/</span>
+      <span style="color: var(--dim);">docs</span>
+      <span class="forge-topbar__sep">/</span>
+      <span class="forge-topbar__current">CLAUDE.html</span>
+    </nav>
+    <span class="forge-topbar__logo">Forge</span>
+    <div class="forge-topbar__right">
+      <span class="forge-badge forge-badge--green">Build team context</span>
+      <span>2026-07-31</span>
+    </div>
+  </header>
+
+  <div class="forge-layout">
+    <aside class="forge-sidebar">
+      <p class="forge-sidebar__label">Sections</p>
+      <a class="forge-sidebar__link is-active" href="#what">What this is</a>
+      <a class="forge-sidebar__link" href="#user">The user</a>
+      <a class="forge-sidebar__link" href="#architecture">Architecture</a>
+      <a class="forge-sidebar__link" href="#constraints">Key constraints</a>
+      <a class="forge-sidebar__link" href="#vocabulary">Design vocabulary</a>
+      <a class="forge-sidebar__link" href="#sequence">Build sequence</a>
+      <a class="forge-sidebar__link" href="#risks">Technical risks</a>
+      <a class="forge-sidebar__link" href="#done">What done looks like</a>
+      <a class="forge-sidebar__link" href="#open">Open decisions</a>
+
+      <p class="forge-sidebar__label" style="margin-top: 1.5rem;">Artefacts</p>
+      <a class="forge-sidebar__link" href="../../../output/forge-viewer/brief.html">Brief ↗</a>
+      <a class="forge-sidebar__link" href="../../../output/forge-viewer/assumption-log.html">Assumptions ↗</a>
+      <a class="forge-sidebar__link" href="../../../output/forge-viewer/pipeline-dashboard.html">Dashboard ↗</a>
+      <a class="forge-sidebar__link" href="decisions.html">ADR log</a>
+    </aside>
+
+    <main class="forge-main">
+      <h1 id="what">Forge Sheet</h1>
+      <p style="color: var(--dim); font-size: 0.78rem; margin-bottom: 0.5rem;">
+        <code>sheet/docs/CLAUDE.md</code> &nbsp;·&nbsp; Produced by Synthesis 2026-07-31
+      </p>
+      <p style="color: var(--dim); font-size: 0.78rem; margin-bottom: 2rem;">
+        This is what Claude Code reads at the start of every build session on Forge Sheet.
+      </p>
+
+      <div class="forge-card forge-card--blue">
+        <div class="forge-card__title">Lodestar</div>
+        <p>Never finish a session wondering what was decided.</p>
+      </div>
+
+      <p>A session companion for Forge: a browser page on the second monitor showing a continuously accreting "drafting sheet" per project — what agents are writing, which are active, what concerns are open — updated by Claude after each exchange during Forge sessions. Read-only: it renders session state, it never acts. The builder reads the sheet rather than the terminal during sessions; the terminal is the drill-down, not the primary view.</p>
+
+      <h2 id="user">The user</h2>
+      <p>A solo Forge builder (Aidan). Dark IDE primary screen, Claude Code in terminal, second monitor free. He runs complex multi-agent sessions and loses track of decisions as session complexity grows. He wants shared presence — in sync with Claude and agents without switching attention. Sole user today; shareability is a live ambition — no hardcoded personal paths or single-user assumptions in chrome or copy.</p>
+
+      <h2 id="architecture">Architecture</h2>
+
+      <div class="forge-card">
+        <div class="forge-card__title">Shell + state</div>
+        <p>One static HTML shell (the rev D drafting-sheet design, built once) plus one <code>state.json</code> per project that Claude edits during sessions. Claude never touches the shell in a session.</p>
+      </div>
+
+      <div class="forge-card">
+        <div class="forge-card__title">The page updates in place</div>
+        <p>Inline JS in the shell polls <code>state.json</code> (~1s) and patches only the DOM that changed. No page reloads — scroll, expanded sections, and animations survive every update.</p>
+      </div>
+
+      <div class="forge-card">
+        <div class="forge-card__title">Everything must remain inline-able</div>
+        <p>No runtime dependency that cannot later be embedded into a single page — this keeps the Anthropic Artifacts migration a one-step instruction change, not a rebuild.</p>
+      </div>
+
+      <div class="forge-card">
+        <div class="forge-card__title">One continuous document per project, accreting across sessions</div>
+        <p>Sessions are grouped; older sessions render collapsed. Earlier content retained, never deleted. Growth/collapse policy beyond session-level collapse is a Refinement decision.</p>
+      </div>
+
+      <h2 id="constraints">Key constraints</h2>
+      <ul>
+        <li>Served via <code>./forge serve</code> — a bare <code>file://</code> page cannot read the state file</li>
+        <li><strong>No backend, no build step, no framework.</strong> Plain HTML/CSS/JS.</li>
+        <li>Visual contract: rev D style tile at <code>output/forge-viewer/design-handoff/forge-viewer Style Tile rev D.dc.html</code>. Canonical design system in <code>output/forge-viewer/DESIGN.md</code>. Binding guardrails in <code>output/forge-viewer/design-handoff/design-guardrails.md</code>.</li>
+        <li><strong>Heat system (not fuchsine):</strong> ember #C22400 → cherry #E62E0F → furnace #FF7A1A → lemon #FFC940 (gradient cores only). Glow on marks ≤12px only. Quench = resolve (cool to warm-grey ramp).</li>
+        <li><strong>Type:</strong> Overpass (agent voice) + Overpass Mono (machine voice). Loaded from Google Fonts — must be embedded before any Artifacts migration.</li>
+        <li>Smoke alarm is two-tier: heuristic hook (always on) + semantic audit (independent Claude call, periodic or on demand).</li>
+        <li>Content-kind taxonomy: question / decision / correction / commitment / finding / context / musing + mandatory untyped fallback. Approved as first iteration; expect revision after two weeks of real sessions.</li>
+      </ul>
+
+      <h2 id="vocabulary">Design vocabulary</h2>
+      <p style="font-size: 0.78rem; color: var(--dim); margin-bottom: 0.75rem;">Use in code, copy, and comments:</p>
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1rem;">
+        <thead>
+          <tr>
+            <th style="text-align: left; padding: 0.45rem 0.7rem; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dim); border-bottom: 1px solid var(--border);">Use this</th>
+            <th style="text-align: left; padding: 0.45rem 0.7rem; font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dim); border-bottom: 1px solid var(--border);">Not this</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid);"><strong style="color: var(--text);">quenched</strong> — agent or concern work is complete</td>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--dim);">done, resolved, completed, closed</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid);"><strong style="color: var(--text);">at heat</strong> — active agent in the current session</td>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--dim);">active, running, in progress</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid);"><strong style="color: var(--text);">STRIKE</strong> — aged concern with ≥2 waves open</td>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--dim);">urgent, critical, escalated</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid);"><strong style="color: var(--text);">state.json</strong> — the state file Claude writes</td>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--dim);">data.json, session.json, the database</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--mid);"><strong style="color: var(--text);">passage detail</strong> — the drill-down view (P2)</td>
+            <td style="padding: 0.55rem 0.7rem; border-bottom: 1px solid rgba(42,42,61,0.4); color: var(--dim);">detail pane, expanded view, drill-down</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.55rem 0.7rem; color: var(--mid);"><strong style="color: var(--text);">smoke alarm</strong> — the two-tier coverage system</td>
+            <td style="padding: 0.55rem 0.7rem; color: var(--dim);">alert system, notification, warning</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="sequence">Build sequence</h2>
+      <p style="font-size: 0.78rem; color: var(--dim); margin-bottom: 1rem;">Three provings must complete before shell work begins.</p>
+
+      <div class="forge-step is-proving">
+        <div class="forge-step__num">P</div>
+        <div>
+          <div class="forge-step__title">Provings (before any shell work)</div>
+          <div class="forge-step__body">
+            <strong>1. Full-density storage:</strong> measure realistic per-session state sizes; decide inline vs reference<br>
+            <strong>2. Heuristic alarm:</strong> confirm hooks fire per exchange and can write a file mid-session<br>
+            <strong>3. Semantic audit:</strong> confirm independent Claude call can access conversation history; establish cadence and cost
+          </div>
+        </div>
+      </div>
+
+      <div class="forge-step">
+        <div class="forge-step__num">1</div>
+        <div>
+          <div class="forge-step__title">State format</div>
+          <div class="forge-step__body">Schema: <code>sessions[]</code> → <code>blocks[]</code> (id, kind, digest, fullContent?, state, attribution, concernRefs, sessionId), <code>agents[]</code> (name, role, state, minutesAtHeat), <code>concerns[]</code> (id, state, wavesOpen, closedBy?, anchorBlockId), <code>alerts[]</code> (type, state, detail), <code>handover</code>, <code>phase</code>. Growth/collapse policy is a Refinement decision — design for ~10–30 sessions.</div>
+        </div>
+      </div>
+
+      <div class="forge-step">
+        <div class="forge-step__num">2</div>
+        <div>
+          <div class="forge-step__title">The shell</div>
+          <div class="forge-step__body">Built from the rev D style tile, verified against fixtures of the four captured states (live/alarm, passage detail, at rest, no-state). Reference canvas 1180×720.</div>
+        </div>
+      </div>
+
+      <div class="forge-step">
+        <div class="forge-step__num">3</div>
+        <div>
+          <div class="forge-step__title">Poll-and-patch JS</div>
+          <div class="forge-step__body">~1s interval, diff before repaint, surviving motion spec (quench fade, status pip, halo). Nothing else moves.</div>
+        </div>
+      </div>
+
+      <div class="forge-step">
+        <div class="forge-step__num">4</div>
+        <div>
+          <div class="forge-step__title">Sheet-writing Forge skill</div>
+          <div class="forge-step__body">Per-exchange state discipline. Classify content by kind; write roster states, concerns, phase. Unclassifiable content → untyped block, never dropped.</div>
+        </div>
+      </div>
+
+      <div class="forge-step">
+        <div class="forge-step__num">5</div>
+        <div>
+          <div class="forge-step__title">Heuristic smoke alarm</div>
+          <div class="forge-step__body">Hook-based; writes an alert when exchanges pass without state updates; marks recovered when updates resume.</div>
+        </div>
+      </div>
+
+      <div class="forge-step">
+        <div class="forge-step__num">6</div>
+        <div>
+          <div class="forge-step__title">Click log</div>
+          <div class="forge-step__body">localStorage; every passage detail open logged with timestamp; powers the two-week usage test.</div>
+        </div>
+      </div>
+
+      <div class="forge-step">
+        <div class="forge-step__num">7</div>
+        <div>
+          <div class="forge-step__title">Semantic audit</div>
+          <div class="forge-step__body">After provings confirm feasibility. Independent Claude call comparing conversation vs sheet.</div>
+        </div>
+      </div>
+
+      <h2 id="risks">Known technical risks</h2>
+
+      <div class="forge-never-do">
+        <div class="forge-never-do__title">Watch for</div>
+        <ul class="forge-never-do__list">
+          <li class="forge-never-do__item"><strong>Skill discipline drift</strong> — the sheet is only as complete as the skill's habit; mitigated by the smoke alarm</li>
+          <li class="forge-never-do__item"><strong>State growth</strong> — months of accretion in one file; collapse/summarise policy is a design requirement</li>
+          <li class="forge-never-do__item"><strong>Font loading</strong> — Overpass from Google Fonts must be embedded before any Artifacts migration (CSP blocks external fonts)</li>
+          <li class="forge-never-do__item"><strong>Hooks API evolution</strong> — public interface, low risk, but the heuristic alarm depends on it</li>
+          <li class="forge-never-do__item"><strong>Full-density storage</strong> — unresolved until proving; do not build passage detail before the proving completes</li>
+        </ul>
+      </div>
+
+      <h2 id="done">What done looks like (v1)</h2>
+      <ul>
+        <li>Shell renders the four captured states faithfully from <code>state.json</code> fixtures</li>
+        <li>A Forge skill maintains <code>state.json</code> through a real session, updating after each exchange</li>
+        <li>The heuristic smoke alarm raises a visible banner when updates stall</li>
+        <li>A click log records every passage detail open</li>
+        <li>Reopening a week-old project shows prior sessions collapsed with the latest handover pinned</li>
+        <li>The two-week usage test can begin: click log wired, smoke alarm active</li>
+      </ul>
+
+      <h2 id="open">Open decisions for Refinement</h2>
+      <ul>
+        <li>YAML vs JSON frontmatter format</li>
+        <li>Growth/collapse policy beyond session-level collapse</li>
+        <li>Concurrent sessions (two sessions, one state file)</li>
+        <li>Search across the sheet (U14) — scope decision</li>
+        <li>Forge mark + favicon build-target status</li>
+      </ul>
+
+    </main>
+  </div>
+
+</body>
+</html>
