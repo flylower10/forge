@@ -145,6 +145,39 @@ filling in what you know, and proceed.
 
 ---
 
+## Heat handover (Banking the Fire)
+
+When a heat ends, the Delivery Manager appends a heat handover block to the running brief and writes the `handover` field in `state.json`. Use this template:
+
+```markdown
+### Heat handover · [date]
+
+**This heat:**
+- [What was shipped or completed]
+- [What was deferred and why]
+
+**State of the build:**
+[One sentence on where the product stands]
+
+**Next heat starts at:**
+[Specific issue or milestone — e.g. "FLY-78 (skill)" then "FLY-79 (alarm)"]
+
+**Forge Sheet self-report:**
+- Used the sheet for re-entry this heat? [yes / no / partial]
+- Drill-down count (run `forgeSheetLog()` in browser console): [N]
+- Sessions with zero drill-downs (wallpaper check): [N]
+- Untyped blocks this heat (if known): [N / total — should be <10%]
+
+**Open concerns:**
+- [Any concerns carried forward — or "None"]
+```
+
+**Two-week usage test:** Note the test start date in the first heat handover after the sheet goes live. At the two-week mark, run `forgeSheetLog()` in the browser console. Thresholds from the research plan:
+- Wallpaper: >5 consecutive sessions without drill-down → re-examine the product
+- Taxonomy: >15% untyped blocks across two weeks → improve the classification table in `skills/forge-sheet.md`
+
+---
+
 ## What the running brief is not
 
 - It is not a substitute for the full agent outputs. Those remain

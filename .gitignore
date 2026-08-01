@@ -1,3 +1,6 @@
+# Forge Sheet — live session state (transient, per-session)
+sheet/state/*.json
+
 # OS
 .DS_Store
 Thumbs.db

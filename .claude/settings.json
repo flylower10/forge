@@ -20,6 +20,16 @@
           }
         ]
       }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /Users/aidanmaughan/my-projects/forge/hooks/forge-sheet-alarm.sh"
+          }
+        ]
+      }
     ]
   }
 }

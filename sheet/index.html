@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1180">
+<title>Forge Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;500;600;700&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ─────────────────────────────────────────────────────────────── */
+:root {
+  /* heat ramp */
+  --ember:   #C22400; --ember-deep: #8F1A00;
+  --cherry:  #E62E0F;
+  --furnace: #FF7A1A;
+  --lemon:   #FFC940;
+  --white-heat: #E9F1FF;
+  /* warm neutrals */
+  --ink:        #1A1A17;
+  --prose-live: #3A3934;
+  --prose-body: #54534D;
+  --settled:    #8C8A80;
+  --attr:       #B3A99B;
+  --ring-done:  #CFC6BB;
+  --ring-pend:  #D6D6CF;
+  --graphite:   #6A7075; --graphite-text: #5B6066;
+  --machine:    #A7A498;
+  --desk:       #F6F5F1;
+  --sheet:      #FFFFFF;
+  --border-1:   #DEDCD2;
+  --border-2:   #E2E1D9;
+  --border-3:   #ECECE6;
+  /* chrome */
+  --chrome-h:   52px;
+  --alarm-h:    0px; /* updated by JS when alarm is active */
+}
+
+/* ── Reset + Base ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Overpass', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.78;
+  color: var(--ink);
+  background: var(--desk);
+}
+.mono { font-family: 'Overpass Mono', monospace; }
+
+/* ── Chrome ─────────────────────────────────────────────────────────────── */
+#chrome {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--chrome-h);
+  background: var(--sheet);
+  border-bottom: 1px solid var(--border-1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 200;
+}
+.chrome-left {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.wordmark {
+  font-family: 'Overpass', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: .2em;
+  color: var(--ink);
+}
+.wordmark-slash {
+  font-family: 'Overpass Mono', monospace;
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--machine);
+}
+.chrome-session-id {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 11px;
+  color: var(--machine);
+  margin-left: 8px;
+}
+.chrome-right {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+.phase-phrase {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 11px;
+  color: var(--ember);
+  text-transform: capitalize;
+}
+.chrome-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  color: var(--machine);
+}
+
+/* ── Alarm banner ───────────────────────────────────────────────────────── */
+#alarm-banner {
+  position: fixed;
+  top: var(--chrome-h);
+  left: 0; right: 0;
+  background: color-mix(in srgb, var(--ember) 10%, var(--sheet));
+  border-bottom: 1px solid color-mix(in srgb, var(--ember) 25%, var(--sheet));
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 190;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 11px;
+  color: var(--ember);
+}
+#alarm-banner.hidden { display: none; }
+.alarm-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ember);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ember) 20%, transparent),
+              0 0 6px color-mix(in srgb, var(--ember) 40%, transparent);
+  animation: pip 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pip {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .4; }
+}
+
+/* ── Desk ───────────────────────────────────────────────────────────────── */
+#desk {
+  position: fixed;
+  top: var(--chrome-h);
+  left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  padding: 32px 0 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#desk.with-alarm { top: calc(var(--chrome-h) + 37px); }
+
+/* ── Sheet container (3-column) ─────────────────────────────────────────── */
+#sheet-container {
+  display: grid;
+  grid-template-columns: 160px 700px 200px;
+  gap: 0;
+  width: 1060px;
+  align-items: start;
+}
+
+/* ── Roster (left margin) ───────────────────────────────────────────────── */
+#roster {
+  padding: 0 16px 0 0;
+  padding-top: 4px;
+}
+.roster-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .06em;
+  color: var(--machine);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.agent-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.agent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 4px;
+  flex-shrink: 0;
+  transition: background .6s, box-shadow .6s;
+}
+/* heat dot states */
+.agent-dot.ember {
+  background: var(--ember);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ember) 20%, transparent),
+              0 0 5px color-mix(in srgb, var(--ember) 35%, transparent);
+  animation: halo 2.6s ease-out infinite;
+}
+.agent-dot.cherry {
+  background: var(--cherry);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cherry) 20%, transparent),
+              0 0 5px color-mix(in srgb, var(--cherry) 35%, transparent);
+  animation: halo 2.6s ease-out infinite;
+}
+.agent-dot.furnace {
+  background: var(--furnace);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--furnace) 18%, transparent),
+              0 0 5px color-mix(in srgb, var(--furnace) 30%, transparent);
+  animation: halo 2.6s ease-out infinite;
+}
+.agent-dot.settled { background: var(--graphite); }
+.agent-dot.quenched { background: none; border: 1px solid var(--ring-done); }
+@keyframes halo {
+  0%   { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ember) 22%, transparent), 0 0 6px color-mix(in srgb, var(--ember) 40%, transparent); }
+  60%  { box-shadow: 0 0 0 5px color-mix(in srgb, var(--ember) 8%, transparent),  0 0 10px color-mix(in srgb, var(--ember) 20%, transparent); }
+  100% { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ember) 22%, transparent), 0 0 6px color-mix(in srgb, var(--ember) 40%, transparent); }
+}
+.agent-info { min-width: 0; }
+.agent-name {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--prose-body);
+  line-height: 1.3;
+}
+.agent-name.at-heat { color: var(--ink); }
+.agent-name.quenched { color: var(--settled); }
+.agent-role {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  color: var(--machine);
+  line-height: 1.3;
+}
+.agent-heat-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9px;
+  margin-top: 1px;
+}
+.agent-heat-label.ember  { color: var(--ember); }
+.agent-heat-label.cherry { color: var(--cherry); }
+.agent-heat-label.furnace{ color: var(--furnace); }
+
+/* ── Sheet (white) ──────────────────────────────────────────────────────── */
+#sheet {
+  background: var(--sheet);
+  border: 1px solid var(--border-2);
+  box-shadow: 0 2px 12px rgba(26,26,23,.07), 0 1px 3px rgba(26,26,23,.04);
+  border-radius: 0;
+  min-height: 600px;
+  padding: 32px 40px;
+}
+
+/* ── Sessions ───────────────────────────────────────────────────────────── */
+.session-collapsed {
+  border-bottom: 1px solid var(--border-3);
+  padding: 14px 0;
+  margin-bottom: 8px;
+}
+.session-collapsed-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.session-date {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  color: var(--machine);
+}
+.session-label {
+  font-size: 11.5px;
+  color: var(--settled);
+}
+.agent-digests {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.agent-digest-line {
+  font-size: 11.5px;
+  color: var(--settled);
+  padding-left: 12px;
+  border-left: 2px solid var(--border-3);
+}
+.agent-digest-name {
+  font-weight: 600;
+  color: var(--graphite-text);
+}
+.session-current {
+  padding-top: 8px;
+}
+
+/* ── Blocks ─────────────────────────────────────────────────────────────── */
+.block {
+  margin-bottom: 18px;
+  padding: 10px 12px 10px 14px;
+  position: relative;
+  border-radius: 2px;
+  transition: opacity 3s ease-out;
+}
+.block.settled { opacity: 1; }
+.block.quenched { opacity: .55; }
+
+/* tier 1: question */
+.block.kind-question {
+  border-left: 3px solid var(--ember);
+  background: color-mix(in srgb, var(--ember) 3%, var(--sheet));
+}
+.block.kind-question .block-digest { font-weight: 600; color: var(--ink); }
+.block.kind-question .kind-badge { color: var(--ember); }
+
+/* tier 2: decision / correction / commitment */
+.block.kind-decision,
+.block.kind-correction,
+.block.kind-commitment {
+  border-left: 2px solid var(--border-2);
+}
+.block.kind-decision    .kind-badge { color: var(--ember-deep); }
+.block.kind-correction  .kind-badge { color: var(--cherry); }
+.block.kind-commitment  .kind-badge { color: var(--ember-deep); }
+
+/* tier 3: finding / context / musing */
+.block.kind-finding,
+.block.kind-context,
+.block.kind-musing {
+  border-left: 2px solid var(--border-3);
+}
+.block.kind-finding .kind-badge,
+.block.kind-context .kind-badge,
+.block.kind-musing  .kind-badge { color: var(--machine); }
+
+/* untyped fallback */
+.block.kind-untyped {
+  border-left: 2px dashed var(--border-2);
+  background: color-mix(in srgb, var(--machine) 4%, var(--sheet));
+}
+.block.kind-untyped .kind-badge { color: var(--settled); font-style: italic; }
+
+/* live state: full ink */
+.block.state-live .block-digest { color: var(--prose-live); }
+
+/* settled state: muted */
+.block.state-settled .block-digest { color: var(--prose-body); }
+
+/* correction wash */
+.block.kind-correction {
+  background: linear-gradient(90deg, rgba(230,46,15,.05), transparent 80%);
+}
+
+/* block header row */
+.block-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.kind-badge {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.block-digest {
+  font-size: 13px;
+  line-height: 1.6;
+  flex: 1;
+}
+.block-attribution {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  color: var(--attr);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.concern-ref-indicator {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--ember);
+  margin-left: 4px;
+  vertical-align: middle;
+  box-shadow: 0 0 3px rgba(194,36,0,.4);
+}
+
+/* live block cursor */
+.live-cursor {
+  display: inline-block;
+  width: 7px; height: 13px;
+  background: var(--ember);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cursor-blink 1.05s steps(1) infinite;
+}
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Concerns (right margin) ────────────────────────────────────────────── */
+#concerns {
+  padding: 4px 0 0 16px;
+}
+.concerns-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .06em;
+  color: var(--machine);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.concern-card {
+  border: 1px solid var(--border-2);
+  border-radius: 5px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  background: var(--sheet);
+  position: relative;
+  transition: opacity 3s ease-out;
+}
+.concern-card.quenched {
+  opacity: .5;
+}
+.concern-card::before {
+  content: '';
+  position: absolute;
+  left: -17px;
+  top: 50%;
+  width: 16px;
+  height: 0;
+  border-top: 1px dashed var(--border-2);
+}
+.concern-title {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--prose-body);
+}
+.concern-title.heat-ember   { color: var(--ember); }
+.concern-title.heat-furnace { color: var(--furnace); }
+.concern-title.quenched-text { color: var(--settled); text-decoration: line-through; }
+.concern-meta {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9px;
+  color: var(--machine);
+  margin-top: 3px;
+}
+.strike-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9px;
+  color: var(--furnace);
+  font-weight: 500;
+}
+
+/* ── Status strip ───────────────────────────────────────────────────────── */
+#status-strip {
+  margin-top: 20px;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  color: var(--machine);
+  align-self: flex-start;
+  margin-left: calc((100vw - 1060px) / 2);
+}
+
+/* ── P4 No-state screen ─────────────────────────────────────────────────── */
+#no-state {
+  position: fixed;
+  top: var(--chrome-h);
+  left: 0; right: 0; bottom: 0;
+  background: var(--desk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 150;
+}
+#no-state.hidden { display: none; }
+.no-state-card {
+  background: var(--sheet);
+  border: 1px solid var(--border-2);
+  border-radius: 5px;
+  padding: 40px 48px;
+  max-width: 520px;
+  text-align: center;
+}
+.no-state-icon {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--settled);
+  margin: 0 auto 20px;
+}
+.no-state-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.no-state-message {
+  font-size: 12.5px;
+  color: var(--prose-body);
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+.no-state-fix {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 11px;
+  color: var(--machine);
+  line-height: 1.6;
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--border-3);
+  border-radius: 3px;
+  text-align: left;
+}
+
+/* ── Session-switched notice ────────────────────────────────────────────── */
+#session-notice {
+  position: fixed;
+  bottom: 20px;
+  right: 24px;
+  background: var(--sheet);
+  border: 1px solid var(--border-1);
+  border-radius: 4px;
+  padding: 8px 14px;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10.5px;
+  color: var(--graphite-text);
+  z-index: 180;
+  box-shadow: 0 2px 8px rgba(26,26,23,.08);
+  opacity: 0;
+  transition: opacity .3s;
+}
+#session-notice.visible { opacity: 1; }
+
+/* ── Handover block (P3 — pinned at top of sheet) ───────────────────────── */
+#handover-block {
+  border-left: 3px solid var(--border-1);
+  padding: 14px 16px;
+  margin-bottom: 24px;
+  background: color-mix(in srgb, var(--desk) 60%, var(--sheet));
+}
+#handover-block.hidden { display: none; }
+.handover-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--machine);
+  margin-bottom: 6px;
+}
+.handover-text {
+  font-size: 12.5px;
+  line-height: 1.72;
+  color: var(--prose-body);
+  white-space: pre-wrap;
+}
+
+/* ── Block clickable treatment ───────────────────────────────────────────── */
+.block {
+  cursor: pointer;
+}
+.block:hover {
+  background-color: color-mix(in srgb, var(--desk) 40%, transparent);
+}
+.block.kind-question:hover {
+  background: color-mix(in srgb, var(--ember) 5%, var(--sheet));
+}
+.block.kind-correction:hover {
+  background: linear-gradient(90deg, rgba(230,46,15,.08), transparent 80%);
+}
+.block.kind-untyped:hover {
+  background: color-mix(in srgb, var(--machine) 7%, var(--sheet));
+}
+
+/* ── P2 Passage overlay ──────────────────────────────────────────────────── */
+#passage-overlay {
+  position: fixed;
+  top: var(--chrome-h);
+  left: 0; right: 0; bottom: 0;
+  background: rgba(246,245,241,.92);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 40px 24px 60px;
+  z-index: 160;
+}
+#passage-overlay.hidden { display: none; }
+.passage-card {
+  background: var(--sheet);
+  border: 1px solid var(--border-2);
+  box-shadow: 0 4px 24px rgba(26,26,23,.10), 0 1px 4px rgba(26,26,23,.06);
+  border-radius: 0;
+  width: 100%;
+  max-width: 740px;
+  padding: 40px 48px;
+}
+.passage-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-3);
+}
+.passage-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.passage-close {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10.5px;
+  color: var(--machine);
+  background: none;
+  border: 1px solid var(--border-2);
+  border-radius: 3px;
+  padding: 3px 10px;
+  cursor: pointer;
+  line-height: 1.6;
+}
+.passage-close:hover { border-color: var(--border-1); color: var(--prose-body); }
+.passage-attribution {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  color: var(--attr);
+}
+.passage-arrived {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  color: var(--machine);
+}
+.passage-full-content {
+  font-size: 13.5px;
+  line-height: 1.82;
+  color: var(--prose-body);
+  white-space: pre-wrap;
+}
+/* passage kind badge colours (mirror block tier rules) */
+.passage-kind-question   { color: var(--ember); }
+.passage-kind-decision,
+.passage-kind-commitment { color: var(--ember-deep); }
+.passage-kind-correction { color: var(--cherry); }
+.passage-kind-finding,
+.passage-kind-context,
+.passage-kind-musing     { color: var(--machine); }
+.passage-kind-untyped    { color: var(--settled); font-style: italic; }
+
+.passage-hint {
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-3);
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  color: var(--machine);
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────── */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="alarm-banner" class="hidden">
+  <div class="alarm-dot"></div>
+  <span id="alarm-text"></span>
+</div>
+
+<header id="chrome">
+  <div class="chrome-left">
+    <span class="wordmark">FORGE</span>
+    <span class="wordmark-slash">/ sheet</span>
+    <span class="chrome-session-id" id="chrome-session-id"></span>
+  </div>
+  <div class="chrome-right">
+    <span class="phase-phrase" id="phase-phrase"></span>
+    <span class="chrome-label">renders session files · read-only</span>
+  </div>
+</header>
+
+<div id="no-state" class="hidden">
+  <div class="no-state-card">
+    <div class="no-state-icon"></div>
+    <div class="no-state-title" id="no-state-title">No session data</div>
+    <div class="no-state-message" id="no-state-message"></div>
+    <div class="no-state-fix" id="no-state-fix"></div>
+  </div>
+</div>
+
+<main id="desk">
+  <div id="sheet-container">
+    <aside id="roster">
+      <div class="roster-label">Agents</div>
+    </aside>
+    <div id="sheet">
+      <div id="handover-block" class="hidden">
+        <div class="handover-label">Latest handover</div>
+        <div class="handover-text" id="handover-text"></div>
+      </div>
+      <div id="sessions-container"></div>
+    </div>
+    <aside id="concerns">
+      <div class="concerns-label">Concerns</div>
+    </aside>
+  </div>
+  <div id="status-strip"></div>
+</main>
+
+<div id="passage-overlay" class="hidden">
+  <div class="passage-card">
+    <div class="passage-header">
+      <div class="passage-meta">
+        <span class="kind-badge mono" id="passage-kind"></span>
+        <span class="passage-attribution" id="passage-attribution"></span>
+        <span class="passage-arrived" id="passage-arrived"></span>
+      </div>
+      <button class="passage-close" id="passage-close-btn">close</button>
+    </div>
+    <div class="passage-full-content" id="passage-full-content"></div>
+    <div class="passage-hint">Esc to return · read-only</div>
+  </div>
+</div>
+
+<div id="session-notice"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Config ──────────────────────────────────────────────────────────────
+  const POLL_MS      = 1000;
+  const ALARM_AFTER  = 5;   // consecutive parse failures before P4
+
+  // ── State ───────────────────────────────────────────────────────────────
+  let lastHash       = null;
+  let errorCount     = 0;
+  let lastSessionId  = null;
+  let noticeTimer    = null;
+  let currentState   = null;
+  let savedScrollTop = 0;
+
+  // ── URL resolution ───────────────────────────────────────────────────────
+  function stateUrl() {
+    const p = new URLSearchParams(location.search);
+    const fixture = p.get('fixture');
+    const slug    = p.get('slug') || 'forge-sheet';
+    return fixture ? `./fixtures/${fixture}.json` : `./state/${slug}.json`;
+  }
+
+  // ── Simple hash for change detection ────────────────────────────────────
+  function hash(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+      h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+    }
+    return h;
+  }
+
+  // ── Poll ─────────────────────────────────────────────────────────────────
+  async function poll() {
+    try {
+      const resp = await fetch(stateUrl() + '?_t=' + Date.now(), { cache: 'no-store' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const text = await resp.text();
+      const h = hash(text);
+      if (h !== lastHash) {
+        const data = JSON.parse(text);
+        lastHash = h;
+        errorCount = 0;
+        applyState(data);
+      } else {
+        errorCount = 0;
+      }
+    } catch (e) {
+      errorCount++;
+      if (errorCount >= ALARM_AFTER) {
+        showP4({ errorKind: 'parse-error', errorMessage: 'state.json could not be read after ' + errorCount + ' attempts.' });
+      }
+    }
+  }
+
+  // ── Apply state ──────────────────────────────────────────────────────────
+  function applyState(data) {
+    if (data._noState) {
+      showP4(data);
+      return;
+    }
+    hideP4();
+    currentState = data;
+    updateChrome(data);
+    updateHandover(data.handover);
+    updateRoster(data.agents || []);
+    updateSessions(data.sessions || [], data.concerns || []);
+    updateConcerns(data.concerns || []);
+    updateAlarm(data.alerts || []);
+    updateStatus(data);
+    checkSessionSwitch(data);
+  }
+
+  // ── P4 ───────────────────────────────────────────────────────────────────
+  function showP4(data) {
+    const el = document.getElementById('no-state');
+    el.classList.remove('hidden');
+    const errorMap = {
+      'file-not-found':    { title: 'No session data', fix: data.fix || '' },
+      'parse-error':       { title: 'State file unreadable', fix: 'The file could not be parsed. It may be mid-write. The sheet will retry automatically.' },
+      'server-not-running':{ title: 'Server not running', fix: 'Run ./forge serve from the Forge repo root, then reload.' },
+    };
+    const kind  = data.errorKind || 'file-not-found';
+    const entry = errorMap[kind] || errorMap['file-not-found'];
+    document.getElementById('no-state-title').textContent   = entry.title;
+    document.getElementById('no-state-message').textContent = data.errorMessage || 'No session data found.';
+    document.getElementById('no-state-fix').textContent     = entry.fix;
+  }
+
+  function hideP4() {
+    document.getElementById('no-state').classList.add('hidden');
+  }
+
+  // ── Chrome ───────────────────────────────────────────────────────────────
+  function updateChrome(data) {
+    const sessions = data.sessions || [];
+    const current  = sessions.find(s => !s.collapsed) || sessions[sessions.length - 1];
+    const sessionId = current ? current.id : '—';
+    document.getElementById('chrome-session-id').textContent = sessionId;
+    document.getElementById('phase-phrase').textContent      = data.phase || '';
+  }
+
+  // ── Roster ───────────────────────────────────────────────────────────────
+  function updateRoster(agents) {
+    const sorted = [...agents].sort((a, b) => {
+      const order = { atHeat: 0, settled: 1, quenched: 2 };
+      if (order[a.state] !== order[b.state]) return order[a.state] - order[b.state];
+      return (b.minutesAtHeat || 0) - (a.minutesAtHeat || 0);
+    });
+
+    const container = document.getElementById('roster');
+    let html = '<div class="roster-label">Agents</div>';
+    for (const ag of sorted) {
+      const { dotClass, heatLabel } = heatLevel(ag);
+      html += `
+        <div class="agent-entry">
+          <div class="agent-dot ${dotClass}"></div>
+          <div class="agent-info">
+            <div class="agent-name ${ag.state === 'atHeat' ? 'at-heat' : ag.state}">${esc(ag.name)}</div>
+            <div class="agent-role mono">${esc(ag.role)}</div>
+            ${heatLabel ? `<div class="agent-heat-label ${dotClass}">${heatLabel}</div>` : ''}
+          </div>
+        </div>`;
+    }
+    container.innerHTML = html;
+  }
+
+  function heatLevel(ag) {
+    if (ag.state !== 'atHeat') {
+      return { dotClass: ag.state === 'settled' ? 'settled' : 'quenched', heatLabel: '' };
+    }
+    const m = ag.minutesAtHeat || 0;
+    if (m < 10) return { dotClass: 'ember',   heatLabel: 'just lit' };
+    if (m < 25) return { dotClass: 'cherry',  heatLabel: `${m} min` };
+    return       { dotClass: 'furnace', heatLabel: `${m} min` };
+  }
+
+  // ── Sessions + blocks ────────────────────────────────────────────────────
+  function updateSessions(sessions, concerns) {
+    const container = document.getElementById('sessions-container');
+    let html = '';
+
+    for (const sess of sessions) {
+      if (sess.collapsed) {
+        html += renderCollapsedSession(sess);
+      } else {
+        html += renderCurrentSession(sess, concerns);
+      }
+    }
+    container.innerHTML = html;
+  }
+
+  function renderCollapsedSession(sess) {
+    const digests = (sess.agentDigests || []).map(d =>
+      `<div class="agent-digest-line"><span class="agent-digest-name">${esc(d.agentName)}</span> — ${esc(d.established)}</div>`
+    ).join('');
+    return `
+      <div class="session-collapsed">
+        <div class="session-collapsed-header">
+          <span class="session-date mono">${esc(sess.date)}</span>
+          <span class="session-label">${esc(sess.label)}</span>
+        </div>
+        <div class="agent-digests">${digests || '<div class="agent-digest-line" style="color:var(--border-2)">no agent digests recorded</div>'}</div>
+      </div>`;
+  }
+
+  function renderCurrentSession(sess, concerns) {
+    const blocks = sess.blocks || [];
+    // Find the single live block (last one with state='live')
+    const liveIdx = blocks.reduce((last, b, i) => b.state === 'live' ? i : last, -1);
+
+    const blockHtml = blocks.map((b, i) => renderBlock(b, i === liveIdx, concerns)).join('');
+    return `<div class="session-current">${blockHtml}</div>`;
+  }
+
+  const KIND_LABELS = {
+    question:   'question',
+    decision:   'decision',
+    correction: 'correction',
+    commitment: 'commitment',
+    finding:    'finding',
+    context:    'context',
+    musing:     'musing',
+    untyped:    'untyped',
+  };
+
+  function renderBlock(block, isLive, concerns) {
+    const kind  = block.kind || 'untyped';
+    const state = block.state || 'settled';
+    const hasConcernRef = (block.concernRefs || []).length > 0;
+    const cursor = isLive ? '<span class="live-cursor"></span>' : '';
+    const concernDot = hasConcernRef ? '<span class="concern-ref-indicator"></span>' : '';
+
+    return `
+      <div class="block kind-${esc(kind)} state-${esc(state)}" data-block-id="${esc(block.id)}">
+        <div class="block-header">
+          <span class="kind-badge mono">${esc(KIND_LABELS[kind] || kind)}</span>
+        </div>
+        <div class="block-digest">${esc(block.digest)}${cursor}${concernDot}</div>
+        <div class="block-attribution mono">— ${esc(block.attribution || 'unknown')}${state !== 'live' ? ', ' + esc(state) : ''}</div>
+      </div>`;
+  }
+
+  // ── Concerns ─────────────────────────────────────────────────────────────
+  function updateConcerns(concerns) {
+    const sorted = [...concerns].sort((a, b) => {
+      // open before quenched, then hottest (most wavesOpen) first
+      if (a.state !== b.state) return a.state === 'open' ? -1 : 1;
+      return (b.wavesOpen || 0) - (a.wavesOpen || 0);
+    });
+
+    const container = document.getElementById('concerns');
+    let html = '<div class="concerns-label">Concerns</div>';
+
+    if (sorted.length === 0) {
+      html += `<div style="font-size:11px;color:var(--machine);">None</div>`;
+    } else {
+      for (const c of sorted) {
+        html += renderConcernCard(c);
+      }
+    }
+    container.innerHTML = html;
+  }
+
+  function renderConcernCard(c) {
+    const isQuenched = c.state === 'quenched';
+    const isStrike   = !isQuenched && (c.wavesOpen || 0) >= 2;
+    const heatClass  = isQuenched ? 'quenched-text' : (isStrike ? 'heat-furnace' : 'heat-ember');
+    const strikeEl   = isStrike ? `<span class="strike-label mono"> — STRIKE</span>` : '';
+    const wavesLabel = isQuenched
+      ? `resolved`
+      : `${c.wavesOpen || 1} session${(c.wavesOpen || 1) !== 1 ? 's' : ''} open`;
+
+    return `
+      <div class="concern-card ${isQuenched ? 'quenched' : ''}">
+        <div class="concern-title ${heatClass}">${esc(c.title || 'Untitled concern')}${strikeEl}</div>
+        <div class="concern-meta mono">${esc(wavesLabel)}</div>
+      </div>`;
+  }
+
+  // ── Alarm banner ─────────────────────────────────────────────────────────
+  function updateAlarm(alerts) {
+    const active = alerts.filter(a => a.state === 'active');
+    const banner = document.getElementById('alarm-banner');
+    const desk   = document.getElementById('desk');
+    if (active.length > 0) {
+      document.getElementById('alarm-text').textContent = active[0].detail;
+      banner.classList.remove('hidden');
+      desk.classList.add('with-alarm');
+    } else {
+      banner.classList.add('hidden');
+      desk.classList.remove('with-alarm');
+    }
+  }
+
+  // ── Status strip ─────────────────────────────────────────────────────────
+  function updateStatus(data) {
+    const agents   = data.agents || [];
+    const concerns = data.concerns || [];
+    const sessions = data.sessions || [];
+    const current  = sessions.find(s => !s.collapsed);
+    const blocks   = current ? (current.blocks || []) : [];
+
+    const atHeat      = agents.filter(a => a.state === 'atHeat').length;
+    const settled     = blocks.filter(b => b.state === 'settled').length;
+    const openConcerns= concerns.filter(c => c.state === 'open').length;
+
+    const parts = [];
+    if (atHeat > 0)      parts.push(`${atHeat} writing`);
+    if (settled > 0)     parts.push(`${settled} settled`);
+    if (openConcerns > 0) parts.push(`${openConcerns} concern${openConcerns !== 1 ? 's' : ''} open`);
+    if (parts.length === 0) parts.push('at rest');
+
+    document.getElementById('status-strip').textContent = parts.join(' · ');
+  }
+
+  // ── Session-switched notice ───────────────────────────────────────────────
+  function checkSessionSwitch(data) {
+    const sessions = data.sessions || [];
+    const current  = sessions.find(s => !s.collapsed);
+    const sid = current ? current.id : null;
+    if (lastSessionId && sid && sid !== lastSessionId) {
+      showNotice('session switched');
+    }
+    lastSessionId = sid;
+  }
+
+  function showNotice(text) {
+    const el = document.getElementById('session-notice');
+    el.textContent = text;
+    el.classList.add('visible');
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => el.classList.remove('visible'), 3500);
+  }
+
+  // ── Handover (P3) ────────────────────────────────────────────────────────
+  function updateHandover(handover) {
+    const block = document.getElementById('handover-block');
+    if (handover) {
+      document.getElementById('handover-text').textContent = handover;
+      block.classList.remove('hidden');
+    } else {
+      block.classList.add('hidden');
+    }
+  }
+
+  // ── Find block in state ───────────────────────────────────────────────────
+  function findBlock(blockId) {
+    if (!currentState) return null;
+    for (const sess of currentState.sessions || []) {
+      for (const b of sess.blocks || []) {
+        if (b.id === blockId) return { block: b, session: sess };
+      }
+    }
+    return null;
+  }
+
+  // ── P2 Passage detail ─────────────────────────────────────────────────────
+  function openPassage(blockId) {
+    const result = findBlock(blockId);
+    if (!result) return;
+    const { block, session } = result;
+
+    savedScrollTop = document.getElementById('desk').scrollTop;
+
+    const kind      = block.kind || 'untyped';
+    const arrived   = block.arrivedAt ? new Date(block.arrivedAt).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' }) : '';
+    const sessionId = block.sessionId || session.id || '';
+
+    const kindEl = document.getElementById('passage-kind');
+    kindEl.textContent = KIND_LABELS[kind] || kind;
+    kindEl.className   = 'kind-badge mono passage-kind-' + kind;
+    document.getElementById('passage-attribution').textContent  = '— ' + (block.attribution || 'unknown');
+    document.getElementById('passage-arrived').textContent      = arrived;
+    document.getElementById('passage-full-content').textContent = block.fullContent || block.digest || '';
+
+    document.getElementById('passage-overlay').classList.remove('hidden');
+    logPassageClick(blockId, sessionId, kind);
+  }
+
+  function closePassage() {
+    document.getElementById('passage-overlay').classList.add('hidden');
+    document.getElementById('desk').scrollTop = savedScrollTop;
+  }
+
+  // ── localStorage click log ────────────────────────────────────────────────
+  function logPassageClick(blockId, sessionId, kind) {
+    try {
+      const log = JSON.parse(localStorage.getItem('forge-sheet-click-log') || '[]');
+      log.push({ timestamp: new Date().toISOString(), sessionId, blockId, kind: kind || 'untyped' });
+      localStorage.setItem('forge-sheet-click-log', JSON.stringify(log));
+    } catch (_) {}
+  }
+
+  // ── Console utility (two-week usage test) ────────────────────────────────
+  window.forgeSheetLog = function () {
+    try {
+      const log = JSON.parse(localStorage.getItem('forge-sheet-click-log') || '[]');
+      if (log.length === 0) { console.log('No drill-downs recorded yet.'); return; }
+      const bySession = {};
+      log.forEach(e => {
+        if (!bySession[e.sessionId]) bySession[e.sessionId] = [];
+        bySession[e.sessionId].push(e);
+      });
+      console.group('Forge Sheet · Click log (' + log.length + ' total drill-downs)');
+      Object.keys(bySession).sort().forEach(sid => {
+        const entries = bySession[sid];
+        console.group(sid + ' — ' + entries.length + ' drill-down' + (entries.length !== 1 ? 's' : ''));
+        entries.forEach(e => console.log(e.timestamp.slice(0, 16) + '  ' + e.kind.padEnd(12) + '  ' + e.blockId));
+        console.groupEnd();
+      });
+      // Wallpaper check: consecutive sessions with zero drill-downs
+      const allSessions = Object.keys(bySession).sort();
+      let consecutiveZero = 0; let maxZero = 0;
+      // Note: sessions with zero drill-downs aren't in bySession — this checks known sessions only
+      console.log('Sessions with drill-downs: ' + allSessions.length);
+      console.log('To check wallpaper threshold: count sessions where you opened the sheet but drilled down 0 times.');
+      console.log('Threshold: >5 consecutive sessions without drill-down → re-examine the product.');
+      console.groupEnd();
+      return log;
+    } catch (e) { console.error('forgeSheetLog error:', e); }
+  };
+
+  // ── Escape ───────────────────────────────────────────────────────────────
+  function esc(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  // Block click → open P2
+  document.getElementById('sessions-container').addEventListener('click', function (e) {
+    const blockEl = e.target.closest('.block[data-block-id]');
+    if (blockEl) openPassage(blockEl.dataset.blockId);
+  });
+
+  // Close passage
+  document.getElementById('passage-close-btn').addEventListener('click', closePassage);
+  document.getElementById('passage-overlay').addEventListener('click', function (e) {
+    if (e.target === this) closePassage();
+  });
+
+  // Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closePassage();
+  });
+
+  poll();
+  setInterval(poll, POLL_MS);
+})();
+</script>
+</body>
+</html>
