@@ -1,0 +1,379 @@
+{
+  "sessions": [
+    {
+      "id": "sess-001",
+      "date": "2026-08-01",
+      "label": "Build kickoff \u2014 provings + refinement",
+      "blocks": [
+        {
+          "id": "blk-001",
+          "kind": "context",
+          "sessionId": "sess-001",
+          "digest": "Session opens on forge-viewer: an ambient second-monitor companion for Forge sessions. Sole user is the builder.",
+          "fullContent": "This session continues discovery on forge-viewer \u2014 a browser page on the second monitor that renders what Forge agents are writing during sessions. The builder is the sole user today. The lodestar established in Wave 1: never finish a session wondering what was decided. We're picking up at Wave 3 (Devil's Advocate + Tech Feasibility).",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-002",
+          "kind": "question",
+          "sessionId": "sess-001",
+          "digest": "Is building a custom viewer defensible when Anthropic Artifacts may make it redundant?",
+          "fullContent": "The Sceptic opens with the redundancy challenge: Anthropic Artifacts shipped to Pro and Max plans in July 2026 \u2014 the builder is on Pro. The native answer may already exist. Is committing 2\u20134 weeks to a custom React app defensible when the timeline to individual Artifacts access is weeks-to-months, not years?",
+          "state": "settled",
+          "attribution": "The Sceptic",
+          "concernRefs": [
+            "con-001"
+          ]
+        },
+        {
+          "id": "blk-003",
+          "kind": "finding",
+          "sessionId": "sess-001",
+          "digest": "Artifacts is on Pro/Max but not exposed in the builder's account today \u2014 rollout lag, cause unknown.",
+          "fullContent": "Research Agent confirms: Artifacts shipped to Pro and Max plans in July 2026. Fresh-session test run \u2014 the tool is not exposed in the builder's current account. Cause: rollout lag. Velocity from the Team\u2192Pro rollout was approximately 3 weeks. Redundancy window revised to weeks-to-months (high confidence). The prior claim that 'no access any time soon' was based on a false premise \u2014 Claude Code was not removed from Pro plans, the builder has been running it throughout.",
+          "state": "settled",
+          "attribution": "The Researcher",
+          "concernRefs": [
+            "con-001"
+          ]
+        },
+        {
+          "id": "blk-004",
+          "kind": "decision",
+          "sessionId": "sess-001",
+          "digest": "Option 3: Claude rewrites state.json per exchange; static HTML shell polls it. No custom app.",
+          "fullContent": "Decision (human, 2026-07-12): Option 3. No custom app. Claude writes a local state.json after each conversational exchange; a static HTML shell polls it at ~1s and patches only the DOM that changed. Because everything is inline-able by design, migrating to Anthropic Artifacts is one skill instruction change \u2014 republish to claude.ai instead of writing the local file. The full custom React estate (watcher + server + transcript parsing) is declared indefensible given the verified rollout trajectory.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": [
+            "con-001"
+          ]
+        },
+        {
+          "id": "blk-005",
+          "kind": "question",
+          "sessionId": "sess-001",
+          "digest": "Does the Option 3 architecture handle the comprehension inversion \u2014 sheet as primary, terminal as drill-down?",
+          "fullContent": "The Pragmatist asks: the comprehension inversion requires the sheet to be more legible than the terminal during active sessions. A static HTML file rewritten every exchange can do this \u2014 but the passage detail (P2) requires full-density content to be accessible on click. Does the Option 3 schema support P2 without a running server beyond ./forge serve?",
+          "state": "settled",
+          "attribution": "The Pragmatist",
+          "concernRefs": [
+            "con-002"
+          ]
+        },
+        {
+          "id": "blk-006",
+          "kind": "decision",
+          "sessionId": "sess-001",
+          "digest": "One continuous document per project, accreting across sessions. Sessions grouped; older sessions collapsed.",
+          "fullContent": "Decision (human, 2026-07-12): one state.json per project that accretes across all sessions. Sessions are grouped; older sessions render collapsed. Nothing is deleted. The free win: re-entry after a gap shows the accreted sheet plus the latest handover \u2014 the sheet becomes its own re-entry mechanism. Growth/collapse policy beyond session-level collapse is a design requirement from day one, not an afterthought.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-007",
+          "kind": "finding",
+          "sessionId": "sess-001",
+          "digest": "Two-tier smoke alarm required: heuristic hook (always on) + semantic audit (independent Claude call).",
+          "fullContent": "The sheet is only as complete as the skill's habit. A single detection mechanism sharing the writer's blind spots cannot catch them. Two independent tiers: Tier 1 (heuristic) is hook-based, always on \u2014 fires when exchanges pass without state updates, writes an alert to alerts[], marks recovered when updates resume. Tier 2 (semantic audit) is an independent Claude call that reads both the conversation and the current sheet, identifying omissions. Critical constraint: the audit must be independent of the sheet-writing skill.",
+          "state": "settled",
+          "attribution": "The Pragmatist",
+          "concernRefs": [
+            "con-003"
+          ]
+        },
+        {
+          "id": "blk-008",
+          "kind": "commitment",
+          "sessionId": "sess-001",
+          "digest": "Smoke alarm is v1 scope \u2014 not optional. Both tiers surface as a visible alarm banner on the sheet.",
+          "fullContent": "Commitment: the heuristic alarm is mandatory v1 scope. The semantic audit's v1 status depends on the proving (FLY-74) \u2014 if conversation history is accessible, it enters v1; if not, it is post-v1. Both tiers, when fired, surface as a visible alarm banner on the sheet.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-009",
+          "kind": "question",
+          "sessionId": "sess-001",
+          "digest": "What is the right content-kind taxonomy? Seven proposed kinds \u2014 does untyped need to be mandatory?",
+          "fullContent": "The Blueprint proposes seven kinds: question / decision / correction / commitment / finding / context / musing. The Sceptic challenges: is seven too fine-grained for a skill writing under time pressure? And the untyped fallback \u2014 should it be mandatory (presence invariant) or optional? If the skill omits a block rather than classifying it untyped, the sheet lies. The presence invariant must be enforced.",
+          "state": "settled",
+          "attribution": "The Sceptic",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-010",
+          "kind": "decision",
+          "sessionId": "sess-001",
+          "digest": "Taxonomy approved as first iteration: 7 kinds + mandatory untyped fallback. Revision trigger set.",
+          "fullContent": "Decision (human sign-off, 2026-07-13): seven named kinds plus mandatory untyped fallback. Untyped is the presence invariant \u2014 any block the skill cannot classify renders as untyped explicitly, never hidden, never dropped. Revision trigger: >15% untyped blocks across two weeks of real sessions, or a consistently misclassified content type identified. First iteration approved to unblock typed rendering in the build sequence.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-011",
+          "kind": "context",
+          "sessionId": "sess-001",
+          "digest": "The four places: P1 (live sheet), P2 (passage detail), P3 (sheet at rest), P4 (no-state).",
+          "fullContent": "The Tracer maps four places in the product. P1 is the live sheet \u2014 typed passages, agent roster at heat, concern cards in the right margin, alarm banner. P2 is passage detail \u2014 the drill-down view, opened by clicking any passage; one action returns the reader to their exact previous position. P3 is the sheet at rest \u2014 latest handover pinned at top, prior sessions collapsed with per-agent digests. P4 is the no-state screen \u2014 exact failure cause and fix instruction per failure mode.",
+          "state": "settled",
+          "attribution": "The Tracer",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-012",
+          "kind": "finding",
+          "sessionId": "sess-001",
+          "digest": "Poll-and-patch JS survives the rev D motion spec. Word-by-word streaming is dead \u2014 drop, don't simulate.",
+          "fullContent": "The Pragmatist's verdict on motion: everything in the rev C motion constitution survives the poll-and-patch model except word-by-word streaming. A rewritten-per-exchange static file cannot stream a live cursor. Recommendation: drop rather than fake \u2014 simulated streaming would be dishonest about what the product actually is. The design extension session (Wave 5) defined the arrival treatment as a replacement for the cursor.",
+          "state": "settled",
+          "attribution": "The Pragmatist",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-013",
+          "kind": "question",
+          "sessionId": "sess-001",
+          "digest": "Does state.json growth over 30 sessions remain manageable inline?",
+          "fullContent": "Tech Feasibility flags: if full passage content is stored inline in state.json (the simpler path), the file grows with every session. After 30 sessions \u2014 roughly six weeks of daily use \u2014 the file could be large enough that the 1s poll cycle becomes noticeable. Proving needed: measure realistic per-session state sizes before the schema decision locks. Do not build P2 before this resolves.",
+          "state": "live",
+          "attribution": "The Pragmatist",
+          "concernRefs": [
+            "con-002"
+          ]
+        },
+        {
+          "id": "blk-014",
+          "kind": "commitment",
+          "sessionId": "sess-001",
+          "digest": "Click log wired at build \u2014 not post-launch. Every passage detail open logged to localStorage.",
+          "fullContent": "Commitment from the Pragmatist: a one-line click log in the shell, wired at build. Every passage detail open (P2 drill-down) logs to localStorage: { timestamp, sessionId, blockId, kind }. This is the measurement instrument for the two-week usage test \u2014 if it is not wired at build, the test cannot run. No analytics platform \u2014 localStorage only.",
+          "state": "settled",
+          "attribution": "The Pragmatist",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-015",
+          "kind": "musing",
+          "sessionId": "sess-001",
+          "digest": "The comprehension inversion may take a week of sessions before the habit forms \u2014 threshold unknown.",
+          "fullContent": "Musing from the session: the shift from 'terminal as primary' to 'sheet as primary' is a behaviour change, not a feature switch. How long does the habit take to form? The two-week test will show whether the builder is drilling down (engaged) or not (wallpaper). But the formation curve itself \u2014 when the glance replaces the read \u2014 is unknown. Worth noting in the research plan.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-016",
+          "kind": "context",
+          "sessionId": "sess-001",
+          "digest": "The sheet is served via ./forge serve \u2014 a bare file:// page cannot read state.json.",
+          "fullContent": "Architectural constraint: the shell at sheet/index.html must be served via ./forge serve (port 8080). A bare file:// page cannot make the fetch() call to read state.json from disk \u2014 the browser blocks it. This is already the builder's habit (forge serve is how the existing viewer/ app runs). The shell URL: http://localhost:8080/sheet/index.html. State file: http://localhost:8080/sheet/state/[slug].json.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-017",
+          "kind": "finding",
+          "sessionId": "sess-001",
+          "digest": "Per-agent contribution digests in P3 assembled from existing handoff blocks \u2014 no new data structure needed.",
+          "fullContent": "The Tracer's finding on U13 (per-agent digests in the collapsed view): the digest structure is assembled from agents' existing handoff blocks, which are already written to the running brief. No new data structure is required \u2014 the sheet-writing skill reads the handoff block when a session ends and writes a condensed version (name \u00b7 established \u00b7 view \u00b7 open items) to the session's collapsed representation in state.json.",
+          "state": "settled",
+          "attribution": "The Tracer",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-018",
+          "kind": "correction",
+          "sessionId": "sess-001",
+          "digest": "The sheet breathes with exchanges, not saves. Revision to the rev C motion constitution.",
+          "fullContent": "Correction to the rev C motion spec: 'the sheet breathes with saves, not keystrokes' is wrong for Option 3. There are no saves in the traditional sense \u2014 Claude writes state.json once per conversational exchange (typically every 30s\u20133min). The correct formulation: 'the sheet breathes with exchanges.' This is amendment A1 to the design constitution. The re-render debounce (400ms) remains, but the trigger is the exchange completion, not a file save event.",
+          "state": "settled",
+          "attribution": "The Blueprint",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-019",
+          "kind": "commitment",
+          "sessionId": "sess-001",
+          "digest": "No pipeline visualisation beyond the chrome phase phrase. The tube-map instinct is explicitly wrong.",
+          "fullContent": "Design guardrail (binding): the only pipeline indicator in the product is the phase phrase in the chrome (e.g. 'Discovery' in ember, Overpass Mono 11px). No agent flow diagram, no step indicators, no progress bar. The tube-map instinct \u2014 the urge to make the pipeline visible \u2014 is explicitly and by name wrong for this product. The work is the hero; the pipeline is the metadata.",
+          "state": "settled",
+          "attribution": "The Narrator",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-020",
+          "kind": "question",
+          "sessionId": "sess-001",
+          "digest": "Can an independent Claude call access the current session's conversation history?",
+          "fullContent": "The semantic audit requires an independent Claude call \u2014 separate from the sheet-writing skill \u2014 that can read the full conversation of the current session and compare it against the current sheet. The question is whether this is technically possible: does Claude Code expose the conversation record to a subprocess or independent invocation? If not, the entire semantic audit design must change. This is proving FLY-74.",
+          "state": "live",
+          "attribution": "The Pragmatist",
+          "concernRefs": [
+            "con-003"
+          ]
+        },
+        {
+          "id": "blk-021",
+          "kind": "finding",
+          "sessionId": "sess-001",
+          "digest": "The Forge mark is inline CSS/SVG in the rev D style tile. No separate asset files needed.",
+          "fullContent": "Design review finding: the Forge mark produced in the rev D Claude Design session exists as inline CSS/SVG within the style tile HTML \u2014 there are no separate SVG or PNG asset files. The Engineer extracts or references the mark directly from the style tile when building the shell. Favicon set (SVG + PNG-ICO + apple-touch-icon + manifest icons) to be built as part of the shell work in FLY-76.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-022",
+          "kind": "musing",
+          "sessionId": "sess-001",
+          "digest": "The sheet may become the clearest record of what happened in a session \u2014 more than the transcript.",
+          "fullContent": "A musing from the session: if the skill is disciplined, the accreted sheet over 30 sessions will be a cleaner record of what was decided and why than the raw conversation transcript. The transcript is stream-of-consciousness; the sheet is typed and curated. This is an untested hypothesis \u2014 the two-week usage test will say something about it \u2014 but it points at a possible secondary value: the sheet as institutional memory, not just a session companion.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-023",
+          "kind": "context",
+          "sessionId": "sess-001",
+          "digest": "Heat system grounds in black-body incandescence \u2014 ember to lemon marks readiness like a smith reads metal.",
+          "fullContent": "The heat system is grounded in black-body incandescence: a smith reads whether metal is ready to work by its colour. The Forge Sheet accent follows the same ramp \u2014 ember #C22400 (just lit, text-safe) \u2192 cherry #E62E0F (sustained work, ~10 min) \u2192 furnace #FF7A1A (STRIKE \u2014 aged concerns, long at-heat, ~25 min; mark-only on white) \u2192 forging lemon #FFC940 (gradient cores only, never flat, never text). This replaces fuchsine, which carried no forge identity.",
+          "state": "settled",
+          "attribution": "The Narrator",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-024",
+          "kind": "commitment",
+          "sessionId": "sess-001",
+          "digest": "Overpass must be embedded (not fetched from Google Fonts) before any Anthropic Artifacts migration.",
+          "fullContent": "Known risk and commitment: Overpass is currently loaded from Google Fonts. Anthropic Artifacts CSP blocks all external requests \u2014 including external font loads. Before migrating to Artifacts, Overpass must be embedded in the shell as a base64 data URI or a self-hosted asset. This is not v1 work, but the shell must be built with this migration in mind: no hard dependency on the external font fetch for layout or rendering correctness.",
+          "state": "settled",
+          "attribution": "The Pragmatist",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-025",
+          "kind": "question",
+          "sessionId": "sess-001",
+          "digest": "Do Claude Code hooks fire reliably per exchange and can a hook write a file mid-session?",
+          "fullContent": "The heuristic smoke alarm depends entirely on a Claude Code hook firing after every conversational exchange. Proving FLY-73: which hook event maps to 'Claude finished a response'? Does it fire for every exchange without exception? And \u2014 critically \u2014 can a hook write a file to disk mid-session without interfering with the primary session's state? If hooks do not fire reliably, the entire heuristic alarm design must change.",
+          "state": "live",
+          "attribution": "The Pragmatist",
+          "concernRefs": [
+            "con-003"
+          ]
+        },
+        {
+          "id": "blk-026",
+          "kind": "decision",
+          "sessionId": "sess-001",
+          "digest": "Concurrent sessions: last-writer-wins + sessionId check. 'Session switched' notice on sessionId change.",
+          "fullContent": "Decision (Refinement Ceremony, 2026-08-01): concurrent sessions (two Claude Code windows writing the same project's state.json) resolve by last-writer-wins. Each write is stamped with a sessionId. If the shell detects a sessionId change mid-session, it surfaces a brief 'session switched' notice. No merge, no lock \u2014 the edge case is too rare for a sole user to warrant the complexity.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-027",
+          "kind": "finding",
+          "sessionId": "sess-001",
+          "digest": "Poll failure: silent retry on parse error; transition to P4 after 5 consecutive failures (~5s).",
+          "fullContent": "Refinement finding on poll failure behavior: when the shell's JSON.parse call throws (typically because Claude is mid-write and the file is partially written), the shell retries silently on the next poll cycle \u2014 a mid-write read clears within 1s. After 5 consecutive parse failures (~5s of sustained failure), the shell transitions to the P4 no-state screen with a 'state file unreadable' message and a fix prompt. This avoids both false alarms (option C) and invisible stuck states (option A).",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-028",
+          "kind": "musing",
+          "sessionId": "sess-001",
+          "digest": "The share ambition means the skill eventually needs a multi-user write protocol \u2014 not today's problem.",
+          "fullContent": "A musing on the shareability constraint: the live ambition to share Forge with others means that eventually, state.json may have multiple writers across multiple users. Last-writer-wins is acceptable for a sole user but would cause silent data loss in a shared context. Not a v1 problem \u2014 the builder is the only user today. But the schema should not foreclose a future locking or CRDT approach. Worth a note in the assumption log.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-029",
+          "kind": "context",
+          "sessionId": "sess-001",
+          "digest": "State file location: sheet/state/[project-slug].json. One file per project.",
+          "fullContent": "Refinement decision (2026-08-01): state files live at sheet/state/[project-slug].json within the Forge repo. Example: sheet/state/forge-sheet.json. One file per project. The sheet-writing skill writes to this path; the shell reads from this path via ./forge serve. Both must use this convention \u2014 any deviation means the shell renders nothing.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": []
+        },
+        {
+          "id": "blk-030",
+          "kind": "untyped",
+          "sessionId": "sess-001",
+          "digest": "Quick note on the agenda for next session \u2014 not classifiable as a named kind.",
+          "fullContent": "Unclassified exchange: brief note between human and Delivery Manager about the agenda for the next session (provings sequence, first task for the Engineer). Does not fit any of the seven named kinds \u2014 rendered as untyped. Presence invariant satisfied: the passage is retained and visible, not dropped. The skill correctly defaulted to untyped rather than forcing a classification.",
+          "state": "settled",
+          "attribution": "Human",
+          "concernRefs": []
+        }
+      ]
+    }
+  ],
+  "agents": [
+    {
+      "name": "The Scout",
+      "role": "Intake",
+      "state": "quenched",
+      "minutesAtHeat": 0
+    },
+    {
+      "name": "The Interrogator",
+      "role": "PM Agent",
+      "state": "quenched",
+      "minutesAtHeat": 0
+    },
+    {
+      "name": "The Narrator",
+      "role": "Design Agent",
+      "state": "quenched",
+      "minutesAtHeat": 0
+    },
+    {
+      "name": "The Sceptic",
+      "role": "Risk challenger",
+      "state": "quenched",
+      "minutesAtHeat": 0
+    }
+  ],
+  "concerns": [
+    {
+      "id": "con-001",
+      "state": "quenched",
+      "wavesOpen": 1,
+      "closedBy": "blk-004",
+      "anchorBlockId": "blk-002"
+    },
+    {
+      "id": "con-002",
+      "state": "open",
+      "wavesOpen": 1,
+      "closedBy": null,
+      "anchorBlockId": "blk-005"
+    },
+    {
+      "id": "con-003",
+      "state": "open",
+      "wavesOpen": 1,
+      "closedBy": null,
+      "anchorBlockId": "blk-007"
+    }
+  ],
+  "alerts": [],
+  "handover": "Refinement complete. Three provings begin: FLY-72 (full-density storage), FLY-73 (hook reliability), FLY-74 (semantic audit access). First Engineer task is FLY-72.",
+  "phase": "development"
+}
