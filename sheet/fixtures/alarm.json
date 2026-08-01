@@ -1,0 +1,83 @@
+{
+  "projectSlug": "forge-sheet",
+  "phase": "development",
+  "handover": null,
+  "sessions": [
+    {
+      "id": "sess-001",
+      "date": "2026-08-01",
+      "label": "Build kickoff — provings complete",
+      "collapsed": false,
+      "agentDigests": [],
+      "blocks": [
+        {
+          "id": "blk-001",
+          "kind": "context",
+          "digest": "Session opens on Forge Sheet build kickoff. All three provings are complete; state format is next.",
+          "fullContent": "Session opens on the Forge Sheet build kickoff. All three provings completed this heat: FLY-72 (inline storage decided), FLY-73 (Stop hook confirmed), FLY-74 (semantic audit v1 scope confirmed). FLY-75 (state format schema) is the active task.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:00:00Z"
+        },
+        {
+          "id": "blk-002",
+          "kind": "decision",
+          "digest": "Inline storage: fullContent is required in every block — not optional.",
+          "fullContent": "Decision from FLY-72: store fullContent inline in state.json as a required field. At 30 blocks per session, one session is 24.4 KB. At 30 sessions, 732 KB — JSON.parse completes in ~7ms. Reference storage rejected: adds complexity with no benefit at this scale.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:05:00Z"
+        },
+        {
+          "id": "blk-003",
+          "kind": "commitment",
+          "digest": "State schema is locked. FLY-76 (shell P1) can begin immediately after this task ships.",
+          "fullContent": "The state.json schema is now canonical and locked for v1. The four fixture files cover all four captured states. FLY-76 (shell P1 — live sheet) is unblocked and can begin.",
+          "state": "live",
+          "attribution": "The Conductor",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:22:00Z"
+        }
+      ]
+    }
+  ],
+  "agents": [
+    {
+      "name": "The Conductor",
+      "role": "Delivery Manager",
+      "state": "atHeat",
+      "minutesAtHeat": 22
+    },
+    {
+      "name": "Engineer",
+      "role": "Engineer",
+      "state": "atHeat",
+      "minutesAtHeat": 18
+    }
+  ],
+  "concerns": [
+    {
+      "id": "con-001",
+      "title": "Audit script needs projectSlug to locate state.json",
+      "state": "open",
+      "wavesOpen": 1,
+      "closedBy": null,
+      "anchorBlockId": "blk-002"
+    }
+  ],
+  "alerts": [
+    {
+      "id": "alert-001",
+      "type": "heuristic",
+      "state": "active",
+      "detail": "3 exchanges without a state update. The sheet may be falling behind the session.",
+      "firedAt": "2026-08-01T20:20:00Z",
+      "clearedAt": null
+    }
+  ]
+}

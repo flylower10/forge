@@ -1,0 +1,131 @@
+{
+  "projectSlug": "forge-sheet",
+  "phase": "development",
+  "handover": "Provings complete. All three confirmed viable. FLY-75 (state schema) shipped this heat. FLY-76 (shell P1) is next — build from the live.json fixture first, verify all six block kinds and untyped render correctly before wiring to state.json polling. Open concern: projectSlug schema field must be present in state.json for the audit script to locate the correct file — resolved by this schema.",
+  "sessions": [
+    {
+      "id": "sess-000",
+      "date": "2026-07-31",
+      "label": "Synthesis complete — artefacts committed",
+      "collapsed": true,
+      "agentDigests": [
+        {
+          "agentName": "Synthesis",
+          "role": "Synthesis",
+          "established": "All discovery artefacts written: brief.html, assumption-log.html, personas.html, research-plan.html, ost-decisions.html, pipeline-dashboard.html. GitHub docs placed at sheet/docs/. Linear project created with 5 epics and 9 issues.",
+          "view": "Forge Sheet is ready for Refinement. Five open decisions queued: state file path, poll failure behaviour, collapse policy, state format, concurrent sessions.",
+          "openItems": []
+        },
+        {
+          "agentName": "The Conductor",
+          "role": "Delivery Manager",
+          "established": "Refinement Ceremony complete. Five decisions resolved. DESIGN.md placed in sheet/docs/. Both Blueprint and Claude Design gates cleared. Three provings sequenced as first build work.",
+          "view": "Build sequence locked. Provings run first; shell and skill follow. First Engineer task: FLY-72.",
+          "openItems": ["Forge mark + favicon build-target status — resolve before FLY-76 begins"]
+        }
+      ],
+      "blocks": [
+        {
+          "id": "blk-s0-001",
+          "kind": "decision",
+          "digest": "Forge Sheet name chosen — separates the session companion from the existing viewer/ React app.",
+          "fullContent": "Synthesis decision (2026-07-31): the session companion is named Forge Sheet (slug: forge-sheet, build directory: sheet/). The existing viewer/ React app retains the name Forge Viewer. Name collision resolved. All artefacts, CLAUDE.md, and Linear project updated to use the new name.",
+          "state": "settled",
+          "attribution": "Synthesis",
+          "concernRefs": [],
+          "sessionId": "sess-000",
+          "arrivedAt": "2026-07-31T22:00:00Z"
+        },
+        {
+          "id": "blk-s0-002",
+          "kind": "commitment",
+          "digest": "Refinement Ceremony resolved five open decisions. Brief is build-ready.",
+          "fullContent": "Refinement Ceremony (2026-08-01): state file path (sheet/state/[slug].json), poll failure behaviour (silent retry; P4 after 5 consecutive failures), collapse policy (current session always expanded; prior sessions collapsed with per-agent digests), state format (pure JSON), concurrent sessions (last-writer-wins + sessionId notice). All five closed. Build sequence locked.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": [],
+          "sessionId": "sess-000",
+          "arrivedAt": "2026-08-01T19:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "sess-001",
+      "date": "2026-08-01",
+      "label": "Build heat 1 — provings + state schema",
+      "collapsed": false,
+      "agentDigests": [],
+      "blocks": [
+        {
+          "id": "blk-001",
+          "kind": "decision",
+          "digest": "Inline storage: fullContent is required in every block — not optional.",
+          "fullContent": "Decision from FLY-72: store fullContent inline in state.json as a required field. At 30 blocks per session, one session is 24.4 KB. At 30 sessions, 732 KB — JSON.parse completes in ~7ms. Reference storage rejected: adds complexity with no benefit at this scale.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:05:00Z"
+        },
+        {
+          "id": "blk-002",
+          "kind": "decision",
+          "digest": "Stop hook fires once per exchange. Sidecar heartbeat pattern for the heuristic alarm.",
+          "fullContent": "Decision from FLY-73: Stop hook fires exactly once per conversational exchange. Alarm design: Stop hook compares state.json mtime against a sidecar heartbeat file. Alert sidecar written when state.json not updated this exchange. Shell renders alarm banner when count ≥ 2.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:10:00Z"
+        },
+        {
+          "id": "blk-003",
+          "kind": "decision",
+          "digest": "Semantic audit is v1 scope. JSONL readable mid-session; Haiku at $0.003/audit.",
+          "fullContent": "Decision from FLY-74: semantic audit is v1 scope. Session JSONL readable mid-session. Independent claude haiku call correctly identifies omissions. Cost: $0.003/audit. Cadence: on demand + Banking the Fire.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:15:00Z"
+        },
+        {
+          "id": "blk-004",
+          "kind": "commitment",
+          "digest": "State schema locked. Four fixtures written. FLY-76 (shell P1) unblocked.",
+          "fullContent": "FLY-75 complete: state.json schema is canonical and locked for v1. Four fixture files written covering all four captured states. The schema adds projectSlug (top-level, for semantic audit) and arrivedAt (block-level, for arrival treatment timing). fullContent is required in every block. FLY-76 can begin.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T21:30:00Z"
+        }
+      ]
+    }
+  ],
+  "agents": [
+    {
+      "name": "The Conductor",
+      "role": "Delivery Manager",
+      "state": "quenched",
+      "minutesAtHeat": 0
+    },
+    {
+      "name": "Engineer",
+      "role": "Engineer",
+      "state": "quenched",
+      "minutesAtHeat": 0
+    }
+  ],
+  "concerns": [
+    {
+      "id": "con-001",
+      "title": "Audit script needs projectSlug to locate state.json",
+      "state": "quenched",
+      "wavesOpen": 1,
+      "closedBy": "blk-004",
+      "anchorBlockId": "blk-003"
+    }
+  ],
+  "alerts": []
+}

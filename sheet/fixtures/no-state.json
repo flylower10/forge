@@ -1,0 +1,23 @@
+{
+  "_noState": true,
+  "errorKind": "file-not-found",
+  "errorMessage": "No session data found for this project.",
+  "fix": "Open a Forge session and ensure the Forge Sheet skill is active. The skill writes sheet/state/[project-slug].json after each exchange.",
+  "troubleshooting": [
+    {
+      "kind": "file-not-found",
+      "label": "State file missing",
+      "detail": "sheet/state/[slug].json does not exist. Start a Forge session with the sheet-writing skill — it will create the file after the first exchange."
+    },
+    {
+      "kind": "parse-error",
+      "label": "State file unreadable",
+      "detail": "sheet/state/[slug].json exists but could not be parsed as JSON. This usually means the file was mid-write when last polled. The shell will retry — if this persists, check the file for corruption."
+    },
+    {
+      "kind": "server-not-running",
+      "label": "Server not running",
+      "detail": "The sheet is served via ./forge serve. Run that command from the Forge repo root, then reload this page."
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "projectSlug": "forge-sheet",
+  "phase": "development",
+  "handover": null,
+  "sessions": [
+    {
+      "id": "sess-001",
+      "date": "2026-08-01",
+      "label": "Build kickoff — provings complete",
+      "collapsed": false,
+      "agentDigests": [],
+      "blocks": [
+        {
+          "id": "blk-001",
+          "kind": "context",
+          "digest": "Session opens on Forge Sheet build kickoff. All three provings are complete; state format is next.",
+          "fullContent": "Session opens on the Forge Sheet build kickoff. All three provings completed this heat: FLY-72 (inline storage decided), FLY-73 (Stop hook confirmed), FLY-74 (semantic audit v1 scope confirmed). FLY-75 (state format schema) is the active task.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:00:00Z"
+        },
+        {
+          "id": "blk-002",
+          "kind": "decision",
+          "digest": "Inline storage: fullContent is required in every block — not optional.",
+          "fullContent": "Decision from FLY-72: store fullContent inline in state.json as a required field. At 30 blocks per session, one session is 24.4 KB. At 30 sessions, 732 KB — JSON.parse completes in ~7ms. Reference storage rejected: adds complexity with no benefit at this scale. P2 (passage detail) reads fullContent directly from state.json without a secondary fetch.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:05:00Z"
+        },
+        {
+          "id": "blk-003",
+          "kind": "decision",
+          "digest": "Stop hook fires once per exchange. Sidecar heartbeat pattern confirmed for the heuristic alarm.",
+          "fullContent": "Decision from FLY-73: the Stop Claude Code hook event fires exactly once per conversational exchange — after all tool calls within the turn complete. Empirically confirmed: one exchange with ~10 tool calls produced one Stop hook invocation. Alarm design: Stop hook compares state.json mtime against a sidecar heartbeat file. If state.json not updated this exchange, write an alert sidecar. Shell polls both; alarm banner renders when alert count ≥ 2.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:10:00Z"
+        },
+        {
+          "id": "blk-004",
+          "kind": "decision",
+          "digest": "Semantic audit is v1 scope. Session JSONL readable mid-session; Haiku at $0.003/audit.",
+          "fullContent": "Decision from FLY-74: semantic audit is v1 scope, not post-v1. The session JSONL at ~/.claude/projects/[dir]/[session-id].jsonl is readable mid-session without locking. An independent claude haiku -p call correctly identifies omissions from a mock conversation. Cost: ~$0.003/audit (~$1/year). Cadence: on demand + at session end (Banking the Fire). projectSlug must be a top-level field in state.json so the audit script can find the correct state file.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": ["con-001"],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:15:00Z"
+        },
+        {
+          "id": "blk-005",
+          "kind": "question",
+          "digest": "Does the state.json schema need a createdAt timestamp at the session level for the P3 collapse label?",
+          "fullContent": "Open question surfaced during schema design: P3 (sheet at rest) shows prior sessions collapsed with a date label. The schema has a 'date' field on each session (string, e.g. '2026-08-01'). Is that sufficient for the collapsed label, or does the shell need a more precise timestamp (e.g. to show '14 days ago')? The date string is sufficient for the initial build — relative time formatting can be added later without a schema change.",
+          "state": "settled",
+          "attribution": "The Conductor",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:18:00Z"
+        },
+        {
+          "id": "blk-006",
+          "kind": "commitment",
+          "digest": "State schema is locked. FLY-76 (shell P1) can begin immediately after this task ships.",
+          "fullContent": "The state.json schema is now canonical and locked for v1. The four fixture files cover all four captured states. FLY-76 (shell P1 — live sheet) is unblocked and can begin. The Engineer's first action in FLY-76: build the shell against the live.json fixture and verify all block kinds render with correct visual treatment.",
+          "state": "live",
+          "attribution": "The Conductor",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:22:00Z"
+        }
+      ]
+    }
+  ],
+  "agents": [
+    {
+      "name": "The Conductor",
+      "role": "Delivery Manager",
+      "state": "atHeat",
+      "minutesAtHeat": 22
+    },
+    {
+      "name": "Engineer",
+      "role": "Engineer",
+      "state": "atHeat",
+      "minutesAtHeat": 18
+    }
+  ],
+  "concerns": [
+    {
+      "id": "con-001",
+      "title": "Audit script needs projectSlug to locate state.json",
+      "state": "open",
+      "wavesOpen": 1,
+      "closedBy": null,
+      "anchorBlockId": "blk-004"
+    }
+  ],
+  "alerts": []
+}
