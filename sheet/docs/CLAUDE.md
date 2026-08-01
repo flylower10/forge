@@ -1,7 +1,7 @@
 # Forge Sheet — CLAUDE.md
 
-> Produced by Synthesis 2026-07-31. This is what Claude Code reads at the start
-> of every build session on Forge Sheet.
+> Produced by Synthesis 2026-07-31. Updated by Refinement Ceremony 2026-08-01.
+> This is what Claude Code reads at the start of every build session on Forge Sheet.
 
 ---
 
@@ -19,11 +19,17 @@ A solo Forge builder (Aidan). Dark IDE primary screen, Claude Code in terminal, 
 
 **Shell + state.** One static HTML shell (the rev D drafting-sheet design, built once) plus one `state.json` per project that Claude edits during sessions. Claude never touches the shell in a session.
 
+**State file location:** `sheet/state/[project-slug].json` — e.g. `sheet/state/forge-sheet.json`. One file per project. The skill writes it; the shell reads it. Both must use this path.
+
 **The page updates in place.** Inline JS in the shell polls `state.json` (~1s) and patches only the DOM that changed. No page reloads — scroll, expanded sections, and animations survive every update.
+
+**Poll failure behavior:** On a JSON parse error, the shell retries silently on the next poll — a mid-write read is the common cause and clears within 1s. After 5 consecutive parse failures (~5s), the shell transitions to P4 (no-state) with a "state file unreadable" error and fix prompt.
 
 **Everything must remain inline-able.** No runtime dependency that cannot later be embedded into a single page — this keeps the Anthropic Artifacts migration a one-step instruction change, not a rebuild.
 
-**One continuous document per project, accreting across sessions.** Sessions are grouped; older sessions render collapsed. Earlier content retained, never deleted. Growth/collapse policy beyond session-level collapse is a Refinement decision.
+**One continuous document per project, accreting across sessions.** Sessions are grouped; the current session is always expanded. All prior sessions render collapsed, showing date + per-agent contribution digests. Earlier content is retained, never deleted.
+
+**Concurrent sessions:** Last-writer-wins. Each write is stamped with a `sessionId`. If the shell detects a sessionId change mid-session, it surfaces a brief "session switched" notice on the sheet. No merge, no lock.
 
 ## Key constraints
 
@@ -52,7 +58,7 @@ A solo Forge builder (Aidan). Dark IDE primary screen, Claude Code in terminal, 
    - Heuristic alarm: confirm hooks fire per exchange and can write a file mid-session
    - Semantic audit: confirm independent Claude call can access conversation history; establish cadence and cost
 
-2. **State format** — schema: `sessions[]` → `blocks[]` (id, kind, digest, fullContent?, state, attribution, concernRefs, sessionId), `agents[]` (name, role, state, minutesAtHeat), `concerns[]` (id, state, wavesOpen, closedBy?, anchorBlockId), `alerts[]` (type, state, detail), `handover`, `phase`. Growth/collapse policy is a Refinement decision — design for ~10–30 sessions.
+2. **State format** — schema: `sessions[]` → `blocks[]` (id, kind, digest, fullContent?, state, attribution, concernRefs, sessionId), `agents[]` (name, role, state, minutesAtHeat), `concerns[]` (id, state, wavesOpen, closedBy?, anchorBlockId), `alerts[]` (type, state, detail), `handover`, `phase`. Design for ~10–30 sessions. Current session always expanded; prior sessions collapsed. Pure JSON throughout — no YAML, no frontmatter.
 
 3. **The shell** — built from the rev D style tile, verified against fixtures of the four captured states (live/alarm, passage detail, at rest, no-state). Reference canvas 1180×720.
 
@@ -83,13 +89,15 @@ A solo Forge builder (Aidan). Dark IDE primary screen, Claude Code in terminal, 
 - Reopening a week-old project shows prior sessions collapsed with the latest handover pinned
 - The two-week usage test can begin: click log wired, smoke alarm active
 
-## Open decisions for Refinement
+## Decisions from Refinement Ceremony (2026-08-01)
 
-- YAML vs JSON frontmatter format
-- Growth/collapse policy beyond session-level collapse
-- Concurrent sessions (two sessions, one state file)
-- Search across the sheet (U14) — scope decision
-- Forge mark + favicon build-target status
+- **State file path:** `sheet/state/[project-slug].json`
+- **Poll failure:** silent retry on parse error; P4 after 5 consecutive failures (~5s)
+- **Collapse policy:** current session always expanded; prior sessions collapsed showing date + per-agent digests
+- **State format:** pure JSON throughout — no YAML
+- **Concurrent sessions:** last-writer-wins + sessionId check; "session switched" notice on sessionId change
+- **Search (U14):** explicitly out of v1 — nice-to-have, no scope
+- **Forge mark + favicon:** to be confirmed by Delivery Manager at build kickoff; build-target status open
 
 ## Artefact locations
 
