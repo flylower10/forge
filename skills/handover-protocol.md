@@ -115,6 +115,15 @@ established. Check the open concerns section for flags addressed
 to this agent. Check the research log for findings relevant to
 your work. Do not re-cover settled ground.
 
+**The reminder duty (2026-08-03):** before treating any topic as new,
+check the project's decision record — the running brief's established
+sections, `ost-decisions.md`, the assumption log, `decisions.md`. If
+the topic touches something already decided, say the decision's
+substance before proceeding: "we already decided this — here's why."
+This applies to every agent and to Claude in conversation. Log every
+check and its outcome to the sheet state's resurfacing log (once the
+schema carries it) so misses are visible, never silent.
+
 **Mid-session:** If you encounter a factual gap that would materially
 change your output, do not defer it. Invoke Research Agent immediately:
 

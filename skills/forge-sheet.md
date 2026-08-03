@@ -75,6 +75,27 @@ that. Framework nouns (discovery, intake, refinement, wave) are
 internal vocabulary; on the sheet, say the plain thing they stand for.
 The sheet is always speaking to a human.
 
+**Enumerations are lists, never paragraphs.** Six items with
+"(1)...(6)" inline in a flowed paragraph is unreadable (ruled by the
+human, 2026-08-03). When content enumerates - decisions, options,
+steps - write one item per line, each item one short sentence, the
+choice or recommendation stated first. fullContent carries real line
+breaks; the shell renders them.
+
+**No metaphor that needs decoding.** "Building layer two before layer
+one has proven itself" reads as nothing to a tired reader (ruled by
+the human, 2026-08-03: "I don't know what this means"). If a metaphor
+needs its backstory, say the plain thing instead: "the dashboard bets
+the sheet works, and that bet is untested." One metaphor family is
+already licensed — the heat vocabulary — because the design teaches it
+visually. Everything else earns its place or stays out.
+
+**One question per question block.** A question block asks exactly
+one question — never two joined by "and", never a question with its
+follow-up riding along (ruled by the human, 2026-08-03: "two questions
+bundled and the second one is incomprehensible"). If a second question
+exists, it is a second block, or it waits for the first answer.
+
 **Digests are short sentences, not compressed summaries.** A digest
 that tries to cover everything invents compound phrases ("the
 two-moment decision failure") and stacks parentheticals until nothing

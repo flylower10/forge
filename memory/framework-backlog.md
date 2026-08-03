@@ -19,6 +19,11 @@ to the change.
 **Why it matters:** Forge's provings answer feasibility questions ("does the hook fire per exchange?"). This skill applies the same throwaway-code move to design-feel questions — a logic branch (small interactive terminal app to exercise a state model) and a UI branch (multiple variants behind a URL switcher) — with six disciplines worth adopting nearly verbatim: disposable by name and location, one command to run, in-memory state only, no tests or abstractions, visible state after every action, findings harvested then the prototype archived to a throwaway branch.
 **Before inclusion, two rulings needed:** (1) the boundary with Claude Design — Claude Design owns how it looks; a UI proving owns how it behaves in the real stack; draw the line explicitly. (2) Vocabulary — this lands as an extension of *proving* (the house term that replaced "spike"), not a parallel "prototype" concept. Shape: extend or create `skills/proving.md`, referenced by the Engineer and the Refinement Ceremony (provings are how unknowns are burned down before ACs lock).
 
+### Structural feedback loop — Observer reports strain, maintainer reviews in batches
+**Captured:** 2026-08-03 · ruled by the human during the dashboard discovery
+**Why it matters:** The human is both maintainer and user of Forge, and does not want to iterate on the framework endlessly — "I want to build products but I'm investing now in the hope that I will get returns on building later." Live sessions (especially product-building ones) should not stall to fix Forge.
+**Shape:** the Observer's remit extends — when usage strains the framework's structure (a rule that doesn't fit, a ceremony that costs more than it returns, a use case with no home), the Observer records the case here in the backlog quietly instead of interrupting. The maintainer reviews in batches, in sessions chosen for framework work. Relates to the Forge-on-Forge agent entry below — this is its reporting half arriving first.
+
 ### Repo hygiene check ("forge doctor")
 **Captured:** 2026-08-02 · Routed by The Arbiter, approved by the human
 **Why it matters:** A manual audit against a set of AGENTS.md-style
