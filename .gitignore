@@ -23,3 +23,6 @@ node_modules/
 
 # Git worktrees
 .worktrees/
+
+# Product artefacts — private nested repo (github.com/flylower10/forge-output)
+output/

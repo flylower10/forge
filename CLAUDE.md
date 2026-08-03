@@ -166,6 +166,14 @@ when genuinely persuaded but do not capitulate to social pressure.
 ## Output structure
 
 ### Local output folder (product artefacts — what you read)
+
+`output/` is a **private nested repository**
+(github.com/flylower10/forge-output), gitignored by this framework
+repo. Product thinking — briefs, running briefs, monetisation and
+go-to-market artefacts — is never committed to the framework repo,
+which is intended to be public. All paths below are unchanged; commit
+and push artefacts from inside `output/`.
+
 ```
 /output/[idea-name]/
   running-brief.md         ← live pipeline state, updated by every agent
@@ -413,6 +421,18 @@ and routes it to the appropriate process:
 - XL: back to Intake Agent — discovery-level question
 
 No feature enters the build queue without a triage note.
+
+### Corrections improve the framework, not the session
+
+When the human corrects behaviour, route the fix by one test: **would
+this apply in any Forge session, run by any user?** If yes, it lands
+in the framework — `skills/voice.md` for how agents speak, the
+relevant skill or agent file for process — and session memory keeps
+at most a pointer. Private memory is only for what is genuinely
+personal (accounts, paths, individual context with no framework
+surface). A correction saved only to memory improves one session and
+loses the framework improvement — the same failure mode as working
+outside the framework.
 
 ### Criticism is not a task assignment
 When product feedback or criticism is received during a session, invoke
