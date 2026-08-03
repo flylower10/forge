@@ -1,13 +1,15 @@
 # Design context: Forge Sheet
 
-> Canonical visual foundations live in
-> `output/forge-viewer/design-handoff/forge-viewer Style Tile rev D.dc.html` (rev D)
-> and `output/forge-viewer/design-handoff/forge-viewer Style Sheet.dc.html` — this file
-> summarises them for AI design and build tools. Binding guardrails:
-> `output/forge-viewer/design-handoff/design-guardrails.md`. High-fidelity screens: 4a / 5a / 5b in
-> `output/forge-viewer/design-handoff/forge-viewer.dc.html` (turns 4–5); turns 1–3 and 6–9 are
-> exploration record only. Last updated: 2026-07-31 (rev D — heat system).
-> Copied to sheet/docs/ by Delivery Manager, 2026-08-01.
+> Canonical visual foundations:
+> `output/forge-dashboard/design-handover/forge-viewer Style Tile rev E.dc.html`
+> (rev E, approved 2026-08-03 — G-B · D-A · H-C · S-B) and
+> `output/forge-dashboard/design-handover/forge-viewer Screens - Iteration 2.dc.html`
+> (P-A chosen), amending — not superseding — rev D
+> (`.../forge-viewer Style Tile rev D.dc.html` and the Style Sheet, in the
+> same folder). Binding guardrails: `design_handoff_forge_viewer/design-guardrails.md`
+> beside them. Rev D screens 4a / 5a / 5b remain lineage; turns 1–3 and 6–9
+> are exploration record only.
+> Last updated: 2026-08-03 (rev E — temperature, glyph family, direct address).
 
 ## What this product is
 
@@ -109,20 +111,68 @@ Agent roster heat steps: just lit → cherry ~10 min → furnace ~25 min.
 Concern heat steps per wave open: fresh = ember; aged ≥2 waves = furnace + glow
 + "— STRIKE" suffix. Margin sorts hottest first.
 
+**The temperature law (rev E).** The ≤5% mark budget stands for the
+record. While a state **demands the human** — a question open, a risk
+awaiting acceptance, the live exchange — its object may carry heat as
+a *field*: a full-ground wash, hairline frame (top+bottom or full box,
+never a left edge), display-scale type. Demanding fields together
+≤ ~15% of surface; hottest sits highest. Demand met → the field
+quenches exactly as marks do. At rest the sheet cools below rev D:
+near-monochrome, ≤2%.
+
 **Neutrals:** an all-warm ramp, no pure black or grey — ink #1A1A17,
 live prose #3A3934, body #54534D, settled #8C8A80, done #94897C /
 ring #CFC6BB / attribution #B3A99B, pending #ACACA3 / ring #D6D6CF,
 always-on graphite #6A7075 (#5B6066 text), machine-label #A7A498,
 desk #F6F5F1, sheet #FFFFFF, borders #DEDCD2 / #E2E1D9 / #ECECE6.
 
-**Radii:** sheet 0 · margin cards 5px · badges 3–4px. No other rounding.
+**Radii:** sheet 0 · margin cards 5px · badges 3–4px · stamp outlines 2px. No other rounding.
 
-**Motion (complete list — nothing else moves):** cursor blink 1.05s
-steps(1) · active-dot halo 2.6s ease-out · status pip 1.4s sine ·
-quench 3s ease-out (hold full opacity 45%, land at 50%; glow → 0;
-strikethrough appears at start) · re-render debounce 400ms ·
-agent heat steps: →cherry ~10 min, →furnace ~25 min ·
-concern heat steps per wave · revision wash cools over 24h.
+**The glyph family (stamped construction, G-B — rev E).** One family
+carries kinds, artefact things, and the mark: **a single Overpass Mono
+character, weight 600, inside a 17px stamp outline** (1.2px border,
+2px radius, white fill). Heat stamps (border + character in ember)
+only while their demand is open, then quench to grey in place; ink
+stamps never take colour. Glow lives on the character, never the box.
+Tier 3 kinds (finding, context, musing) carry no stamp — tag only.
+
+| Mark | Meaning | Colour |
+|---|---|---|
+| ? | question | ember while open |
+| ! | risk put to you | ember while awaiting |
+| ■ (6px square) | decision | ink; grey when settled/resurfaced |
+| ▲ | correction / changed passage | ink; superseded text takes the wash |
+| → | commitment | ink; ember "open" tag until kept |
+| ¶ | problem statement | ink |
+| ✓ | success test | ink |
+| ≈ | assumption | ink |
+| ◌ dotted | unclassified fallback | graphite |
+| ◆ | alarm record | cold-shut firing; graphite after |
+
+A glyph never appears without its word nearby at digest scale; at
+display scale (the hero) it may stand alone. Deviation named: 17px
+stamps bend the ≤12px mark law; watched against badge creep.
+
+**The Forge mark (rev E — resolved).** The mark is the writer's dot —
+radial gradient (lemon core → furnace → cherry) with glow. Favicon:
+inline SVG, static (never animated in the tab), legible at 16px; set
+per FLY-76 (SVG + 32/16 ICO + 180 apple-touch + 192/512 maskable).
+Clear space one dot-width; minimum 12px. The dot joins the wordmark
+in chrome at 12px; quenches to grey ramp when the session is at rest.
+
+**Motion (complete list — nothing else moves; rev E):** pour unchanged ·
+active-dot halo 2.6s ease-out · status pip 1.4s sine · quench 3s
+ease-out (hold full opacity 45%, land at 50%; glow → 0; strikethrough
+appears at start) · agent heat steps: →cherry ~10 min, →furnace
+~25 min · concern heat steps per wave · revision wash cools over 24h ·
+**the follow:** at the live edge, a new exchange eases in 700ms
+cubic-bezier(.22,.9,.28,1); away from the edge the pane holds, an
+ember ↓ "new below" mark sits at the pane foot, one click rejoins
+(400ms); only the stream pane scrolls · **field grant/quench:** fields
+arrive with the pour, quench 3s on resolution · **passage fold:**
+open/close ≤200ms ease-out · **glyphs never animate** — the
+open-question glow is a held state; the favicon never animates.
+Cursor blink and re-render debounce: removed (stay removed).
 
 Rejected during design (do not reintroduce): Space Grotesk (drifted
 into AI-startup default), fuchsine #C2185B (superseded — synthesis
@@ -131,34 +181,70 @@ teal #0A7A72 (inert), blue #33518E (drifts corporate).
 
 ## Key screens / surfaces
 
-One screen, three captured states (reference canvas 1180×720):
+Iteration 2's five (reference: `Screens - Iteration 2.dc.html`; rev D's
+three captured states remain lineage):
 
-- **The sheet (4a — discovery mid-session):** live prose with block
-  cursor, settled paragraphs with attributions, revised passages with
-  cherry wash, roster of active/quenched agents, two open concerns with
-  leader lines (sorted hottest first), one quenched.
-- **Mid-development (5a):** Engineer writing, Reviewer on diff, QA
-  queued (pending ring), discovery roster collapsed ("Discovery ✓ ×9"),
-  one concern marked "Blocks merge".
-- **Concern resolving (5b):** quench animation — strikethrough +
-  3s ease-out to 50% opacity, glow dies; the sheet records the closure
-  as a revised passage; the card stays in the margin permanently.
+- **Master (desk, three-column):** H-C hero pinned above a stream pane
+  that scrolls independently; roster left, concerns right; two heat
+  fields max in play, hottest in the hero.
+- **Master (~720, FLY-81):** roster folds to a horizontal strip under
+  chrome; concerns stack beneath the folded hero (leader lines retire —
+  the triangle carries the heat); hot-element type never shrinks below
+  glance scale.
+- **Passage detail:** P-A **inline expansion** — the block grows in
+  place; fold via header click, esc, or opening another block. Overlay
+  retired as the sheet's mechanism.
+- **Artefact review:** an artefact-carrying question's click-through
+  renders **the document itself** (P-B overlay shell — a document earns
+  a room of its own): real title, 13.5/1.8 measure, doc gutter with ▲
+  on changed passages, wash-only on new, margin notes in machine voice,
+  "sign off in the session" framing.
+- **At rest:** all dots quenched, pip static, phase phrase settled
+  grey, "Nothing needs you." as hero; carried concerns keep flat ember
+  triangles — no glow.
 
-Shared chrome: 52px white bar — FORGE wordmark (Overpass 700, 14px,
-letter-spacing .2em) · "/ sheet" (Overpass Mono 500 11px) · session id
-(Mono 11px) · current phase phrase in ember (Mono 11px — the only
-pipeline indicator). Right: "renders session files · read-only" (Mono 10px).
-Status strip bottom-left of the desk ("4 writing · 2 settled · 2 concerns open").
+**The hero (H-C).** Pinned outside the stream's scroll pane; the page
+never scrolls away from it. Frame (endeavour): project name in agent
+voice + phase phrase — answers "where are we". Hot element (attention):
+the single hottest open demand at 19px/600 with its stamp at 22–24px
+and a machine-voice "for you —" line — answers "what needs me". Foot:
+≤3 bullets, 11.5px. When nothing demands: the frame stands alone
+("Nothing needs you." at rest). Glance budget 3–5 points, a long
+tweet; glance layer ≥15px, readable without glasses — binding.
 
-**Forge mark:** the mark is inline CSS/SVG — no separate asset files.
-Extract from the rev D style tile when building the shell and favicon set.
-Favicon set required: SVG favicon + 32/16 PNG-ICO fallback + 180×180
-apple-touch-icon + 192/512 manifest icons (maskable variant).
-Build as part of FLY-76 (shell P1).
+**Chrome (rev E).** 52px white bar — FORGE wordmark + the writer's dot
+at 12px · identity is human, agent voice: `Forge Sheet — session 2 · 3 aug`
+(machine id demoted to hover title) · current phase phrase in ember
+(Mono 11px — still the only pipeline indicator). Right: **S-B recency** —
+pip + `updated 40s ago` (mono, graphite-text); goes cold-shut when
+stale — the alarm's front door. `renders session files · read-only`
+deleted; bottom-of-desk counts strip retired.
+
+**Digests (D-A).** True bullets, ink markers (▪), for multi-point
+digests; enumerated content in passage detail renders as structured
+lists (mono numerals), never flowed prose. Schema gains
+`digestPoints[]` alongside `digest`.
+
+**Direct address (component rules).** A question awaiting the human
+**is the question**, second person, 16px/600, ember field while open,
+machine-voice `for you — answer in the session · the sheet only
+records`. **Artefact-carrying question (tier 1+):** deeper wash + full
+hairline frame + artefact chip (stamp glyph + filename + `N passages
+changed since your last read`). **Risk object:** its own thing — `!`
+stamp, `RISK · HIGH · PUT TO YOU`, the stake stated (`if wrong — …`),
+`accept or reject in the session`. No buttons; read-only holds.
+
+**File references.** Machine-voice objects inside agent prose: mono
+12px in 13.5px prose, graphite-text, dotted ring-grey underline; hover
+ember-deep + solid underline + ↗; opens `vscode://file/<abs-path>:line`.
+Filename only at digest scale; full path in hover/detail.
 
 **Vocabulary of record:** agents are "quenched" (not "done"); resolution
 is a "quench"; concerns are "at heat" (not "active"); aged concerns
-earn "STRIKE" at ≥2 waves open.
+earn "STRIKE" at ≥2 waves open · **"put to you"** (a risk awaiting
+ruling) · **"carried"** (a demand outliving its session) · **"new
+below"** (the follow, held) · **"for you —"** (the address prefix,
+machine voice).
 
 ## What to avoid
 
@@ -180,3 +266,11 @@ Binding — audit every screen; state "clear" or name the deviation
 - Glow on text or containers — glow is only for marks ≤12px
 - Flat furnace colour on text — furnace (#FF7A1A) is mark-only on white;
   ember (#C22400) is the text-safe heat colour
+
+Rev E deviations, named and bounded (not new licence):
+- **Colour beyond marks** — permitted only as temperature-law fields,
+  granted by open demand, quenched on resolution
+- **17px stamps** — certification stamps, not badges; watched against
+  badge creep
+- **The artefact chip** — a file object, square-cornered, never
+  navigation
