@@ -9,6 +9,10 @@ Thumbs.db
 .env
 .env.*
 
+# Session scratch (superpowers brainstorm state) and test caches
+.superpowers/
+.pytest_cache/
+
 # Editor
 .cursor/
 .vscode/

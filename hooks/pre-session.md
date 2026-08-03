@@ -62,8 +62,7 @@ The Delivery Manager owns task assignment. No code is written until the
 Delivery Manager has formally handed the task to the Engineer. The human
 saying "yes" or "let's start" is not a Delivery Manager handover.
 
-**Re-entry check:** If the last handover note (`output/[idea-name]/handover.md`;
-projects begun before 2026-07-13 may have it as `handoff.md`)
+**Re-entry check:** If the last handover note (`output/[idea-name]/handover.md`)
 exists and is more than one day old, the Delivery Manager must run The Re-entry
 ceremony (defined in `product-team/08-heat-review.md`) before starting any
 new work. This orients the session after an idle gap without requiring the
@@ -77,5 +76,5 @@ Manager.
 
 If the human indicates they are done for this session ("I'm done", "let's
 stop here", "that's enough for today"), invoke the Delivery Manager to run
-Banking the Fire before closing. Banking the Fire writes `output/[idea-name]/handover.md`
+Heat handover before closing. Heat handover writes `output/[idea-name]/handover.md`
 and ensures the next heat can start immediately without reconstruction.
