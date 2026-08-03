@@ -99,7 +99,7 @@ DISCOVERY (configured per idea — agents below are available, not mandatory)
   │
   ▼
 MARKING OUT
-  └─ The Tracer             →  autonomous with review
+  └─ Marking-out Agent             →  autonomous with review
                                 → maps places, affordances, stores, wiring
                                 → flags unknowns as proving candidates
                                 → runs before Synthesis so the brief is
@@ -129,7 +129,7 @@ DEVELOPMENT + ITERATE
        │
        ▼
        08 · Heat Review
-            ├─ Banking the Fire    → state-of-world note; next heat starts here
+            ├─ Heat handover    → state-of-world note; next heat starts here
             └─ The Re-entry   → orient on return; check what changed
             │
             └─ Escalate → re-invoke relevant discovery agent
@@ -208,33 +208,33 @@ when genuinely persuaded but do not capitulate to social pressure.
 ### Discovery
 | File | Agent | Mode |
 |------|-------|------|
-| `product-team/00-intake.md` | The Scout | Conversation — always runs first |
-| `product-team/01-pm-agent.md` | The Interrogator | Conversation |
-| `product-team/02-design-agent.md` | The Narrator | Conversation |
-| `product-team/03-devils-advocate.md` | The Sceptic | Autonomous + 1 question |
-| `product-team/04-tech-feasibility.md` | The Pragmatist | Autonomous + 1 question |
-| `product-team/05-user-researcher.md` | The Advocate | Autonomous + 1 question |
+| `product-team/00-intake.md` | Intake Agent | Conversation — always runs first |
+| `product-team/01-pm-agent.md` | PM Agent | Conversation |
+| `product-team/02-design-agent.md` | Design Agent | Conversation |
+| `product-team/03-devils-advocate.md` | Devil's Advocate | Autonomous + 1 question |
+| `product-team/04-tech-feasibility.md` | Tech Feasibility Agent | Autonomous + 1 question |
+| `product-team/05-user-researcher.md` | User Researcher | Autonomous + 1 question |
 | `product-team/06-synthesis.md` | Synthesis | Fully autonomous |
 | `product-team/07-refinement.md` | Refinement Ceremony | Conversation |
-| `product-team/marking-out.md` | The Tracer | Autonomous with review — maps places, affordances, stores, and wiring; runs after Discovery waves and before Synthesis so the brief is built from a complete journey map |
-| `product-team/08-heat-review.md` | Heat Review (Banking the Fire + The Re-entry) | Lightweight — Handover when heat ends, Re-entry when returning after a gap |
-| `product-team/model-reviewer.md` | The Calibrator | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
-| `product-team/ux-agent.md` | The Blueprint | Autonomous with review — produces design briefs for Claude Design; runs once at build kickoff, consulted when new screens are added |
+| `product-team/marking-out.md` | Marking-out Agent | Autonomous with review — maps places, affordances, stores, and wiring; runs after Discovery waves and before Synthesis so the brief is built from a complete journey map |
+| `product-team/08-heat-review.md` | Heat Review (Heat handover + The Re-entry) | Lightweight — Handover when heat ends, Re-entry when returning after a gap |
+| `product-team/model-reviewer.md` | Model Reviewer | Autonomous + 1 question — domain-agnostic model architecture and calibration review |
+| `product-team/ux-agent.md` | UX Agent | Autonomous with review — produces design briefs for Claude Design; runs once at build kickoff, consulted when new screens are added |
 
 ### Marketing team
-Agents focused on commercialisation: pricing, go-to-market, acquisition, retention. Not bound to a specific pipeline phase — The Scout selects them when an idea requires commercial thinking, whether during discovery, refinement, or delivery.
+Agents focused on commercialisation: pricing, go-to-market, acquisition, retention. Not bound to a specific pipeline phase — Intake Agent selects them when an idea requires commercial thinking, whether during discovery, refinement, or delivery.
 
 | File | Agent | Mode |
 |------|-------|------|
-| `marketing-team/monetisation-agent.md` | The Merchant | Autonomous + 1 question — pricing model, free/paid split, trial strategy |
-| `marketing-team/gtm-agent.md` | The Campaigner | Autonomous + 1 question — acquisition channels, launch sequence, social proof, retention design |
+| `marketing-team/monetisation-agent.md` | Monetisation Agent | Autonomous + 1 question — pricing model, free/paid split, trial strategy |
+| `marketing-team/gtm-agent.md` | GTM Agent | Autonomous + 1 question — acquisition channels, launch sequence, social proof, retention design |
 
 ### Build team
 | File | Role | Mode |
 |------|------|------|
-| `build-team/delivery-manager.md` | The Conductor | Conversation |
-| `build-team/feedback-triage.md` | The Arbiter | Triggered — fires on product criticism before any action is taken |
-| `build-team/cartographer.md` | The Cartographer | Autonomous + 1 question — codebase documentation brief |
+| `build-team/delivery-manager.md` | Delivery Manager | Conversation |
+| `build-team/feedback-triage.md` | Feedback Triage | Triggered — fires on product criticism before any action is taken |
+| `build-team/cartographer.md` | Documentation Agent | Autonomous + 1 question — codebase documentation brief |
 | `build-team/architect.md` | Architect | Consulted only |
 | `build-team/engineer.md` | Engineer | Execution |
 | `build-team/reviewer.md` | Reviewer | Execution |
@@ -248,8 +248,8 @@ These agents are not part of any single phase. They run across the full pipeline
 
 | File | Agent | Mode |
 |------|-------|------|
-| `product-team/observer.md` | The Observer (The Witness) | Always on — fires after every handover and on demand. Critiques process, not outputs. Reports directly to human. |
-| `product-team/research-agent.md` | The Researcher | On demand — invoked mid-conversation by any agent to fill factual gaps. Returns structured findings to the invoking agent and appends to the running brief research log. |
+| `product-team/observer.md` | Observer | Always on — fires after every handover and on demand. Critiques process, not outputs. Reports directly to human. |
+| `product-team/research-agent.md` | Research Agent | On demand — invoked mid-conversation by any agent to fill factual gaps. Returns structured findings to the invoking agent and appends to the running brief research log. |
 
 **Trigger rule:** Any agent with a `triggers` field in its frontmatter fires automatically when its trigger condition is met. Agents without a `triggers` field require explicit invocation. Trigger conditions live in the agent file; this rule enforces the pattern, not the per-agent logic.
 
@@ -276,8 +276,8 @@ become available to all future ideas automatically.
 | `skills/linear-schema.md` | Epic and issue structure for Linear |
 | `skills/artefact-templates.md` | Standardised output formats |
 | `skills/design-md.md` | How to write a well-formed DESIGN.md |
-| `skills/design-references.md` | Benchmark products, designers, and platforms — used by The Narrator and UX Agent |
-| `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative. Used by The Researcher. |
+| `skills/design-references.md` | Benchmark products, designers, and platforms — used by Design Agent and UX Agent |
+| `skills/research-protocol.md` | How all agents fetch and synthesise current knowledge — breadth-first, anti-derivative. Used by Research Agent. |
 | `skills/model-improvement-loop.md` | Iterative model refinement process — hypothesis → implement → backtest → measure → decide |
 | `skills/prioritisation.md` | WSJF-based prioritisation for genuine opportunity cost decisions — invoked by the Delivery Manager, decision surfaced in Linear |
 | `skills/feature-triage.md` | Classification and routing for mid-project feature requests — invoked by the Delivery Manager before any feature enters the build queue |
@@ -285,7 +285,7 @@ become available to all future ideas automatically.
 | `skills/forge-styles.css` | Canonical design system — embed inline in every HTML output |
 | `skills/handover-protocol.md` | How every agent reads and appends to the running brief — the pipeline's shared memory. Followed at every handover |
 | `skills/intellectual-standards.md` | Behavioral baseline — all agents read before acting |
-| `skills/voice.md` | How Forge speaks to the human — anchor voices, banned list, house-term rulings. All agents read before writing human-facing output. Owner: The Narrator |
+| `skills/voice.md` | How Forge speaks to the human — anchor voices, banned list, house-term rulings. All agents read before writing human-facing output. Owner: Design Agent |
 
 ---
 
@@ -299,9 +299,16 @@ ADRs in `/docs/decisions.md`. Functional artefacts Claude Code needs
 at the start of every build session. Committed alongside the codebase.
 Discovery artefacts live in `/output/[idea-name]/` in this repo.
 
-**Linear — what gets built**
+**Linear — what gets built, above the session threshold**
 Sprint execution. Issues, acceptance criteria, progress, blockers.
 Nothing else. Managed by the Delivery Manager via MCP.
+
+Linear tracks work that outlives the session (threshold defined in
+`skills/feature-triage.md`): work crossing a session boundary
+unfinished, needing multi-issue sequencing, or constituting a planned
+heat. Session-scale XS/S fixes carry their AC in the heat handover
+instead and still run the full build pipeline. Unbuilt session-scale
+items graduate to Linear at Heat handover.
 
 ---
 
@@ -313,21 +320,24 @@ Nothing else. Managed by the Delivery Manager via MCP.
 - Product artefacts: `/output/[idea-name]/` in this repo
 - No local session state file — Linear and GitHub orient Claude Code
 
-## Forge Viewer
+## Forge Sheet
 
-Agent reference pages are served by the viewer — a React app at `viewer/`.
-There are no static per-agent HTML files.
+The live session companion — a served page at `sheet/` that renders
+per-exchange session state (`sheet/state/[slug].json`, written by
+`skills/forge-sheet.md`). Read-only; polls ~1s.
 
-**To browse agent pages:**
+**To open the sheet:**
 ```
-python3 -m http.server 8080   # from the Forge root
-open http://localhost:8080/viewer/
+./forge serve   # from the Forge root
+open http://localhost:8080/sheet/
 ```
 
-Keep the server running during active sessions. The viewer reads agent `.md`
-files directly — no HTML generation step.
+Keep the server running during active sessions. Agent definitions are
+plain `.md` files in `/product-team/`, `/build-team/`, and
+`/marketing-team/` — read them directly; there is no agent-page viewer.
+(The retired viewer app lives in git history; the "Forge knowledge
+browser" idea is its successor if browsing returns.)
 
-`viewer/forge-styles.css` — design system for agent pages (fg- prefix, phase colours)
 `skills/forge-styles.css` — design system for artefact HTML outputs (forge- prefix, dark theme)
 
 ## HTML output convention
@@ -351,7 +361,6 @@ will silently fail via `open <path>`:
 When unsure, grep the file for `fetch(`, `XMLHttpRequest`, or external
 `<script src=` — any hit means serve it.
 
-Agent pages are not HTML outputs — they are served by the viewer (see above).
 
 ### Skill overrides
 
@@ -382,7 +391,7 @@ to keep working ad-hoc.
 
 ### Prioritisation requires PM Agent + human sign-off
 Issue priority in Linear may only change when:
-1. The PM Agent (The Interrogator) has been consulted and has given
+1. The PM Agent (PM Agent) has been consulted and has given
    a view on the prioritisation decision, and
 2. The human has explicitly approved the change.
 
@@ -397,17 +406,18 @@ a build session, the Delivery Manager must invoke `skills/feature-triage.md`
 before any other action. The triage classifies the request (XS to XL)
 and routes it to the appropriate process:
 
-- XS/S: Delivery Manager writes AC, creates Linear issue, enters build queue
+- XS/S: Delivery Manager writes AC in the handover, enters build queue
+  this session; graduates to Linear at Heat handover if unbuilt
 - M: targeted agents close open questions, then build queue
 - L: mini-discovery, then build queue
-- XL: back to The Scout — discovery-level question
+- XL: back to Intake Agent — discovery-level question
 
 No feature enters the build queue without a triage note.
 
 ### Criticism is not a task assignment
 When product feedback or criticism is received during a session, invoke
-`build-team/feedback-triage.md` (The Arbiter) before taking any action.
-The Arbiter assesses the criticism, validates it against the codebase,
+`build-team/feedback-triage.md` (Feedback Triage) before taking any action.
+Feedback Triage assesses the criticism, validates it against the codebase,
 and recommends a route. Responding to a complaint by immediately writing
 code is a framework violation — even if the complaint is valid.
 

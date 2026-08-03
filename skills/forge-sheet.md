@@ -57,6 +57,24 @@ Do not create a block per sentence. Do not create a block per tool call. Create 
 
 **Classification bias:** err toward any kind over `untyped`. If a moment is borderline between decision and commitment, pick one — the distinction matters less than the presence.
 
+**Question blocks speak to the human directly.** When a question is
+for the human, the block *is* the question — plain words, second
+person, no preamble: "What is this thing, in a sentence?" Never a
+process report about a question ("Question 1 of 7 posed... awaiting
+confirm/correct"). The digest is the question itself, short enough to
+answer from the glance; fullContent carries the question plus only the
+context needed to answer it. This applies to every block kind: write
+for the human reading the sheet, not as a log of what the machine did.
+Pipeline mechanics (step numbers, protocol names, "awaiting X") are
+jargon on the sheet — leave them in the running brief.
+
+**The test:** would someone who has never heard of Forge's pipeline
+understand every word? "Before discovery configures itself" fails —
+it means "before we choose which specialists work on this", so write
+that. Framework nouns (discovery, intake, refinement, wave) are
+internal vocabulary; on the sheet, say the plain thing they stand for.
+The sheet is always speaking to a human.
+
 **3. Transition block states**
 
 Every block currently marked `state: "live"` becomes `state: "settled"`.
@@ -205,9 +223,9 @@ When a new session begins on an existing project:
 
 ---
 
-## Banking the Fire (heat end)
+## Heat handover (heat end)
 
-When a heat ends (Delivery Manager invokes Banking the Fire or the session is being wrapped up):
+When a heat ends (Delivery Manager invokes Heat handover or the session is being wrapped up):
 
 1. Write the handover text as `handover` at the top level — replace any previous value
 2. Collapse the current session (as per New session start steps 1–2)

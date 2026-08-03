@@ -89,3 +89,23 @@ Adjective-only voice guides change nothing; lists that name words do. This is th
 - Each product's DESIGN.md derives a Voice section from the standard; the forge-viewer design session is the first consumer
 - The banned list accretes from live winces — first entry: "gate" as a verb
 - Elicitation artefacts live at `skills/voice-specimens.html`
+
+---
+
+# ADR · The Linear threshold · 2026-08-03
+
+## Decision
+Linear tracks only work that outlives the session. An item enters Linear if it (1) will cross a session boundary unfinished, (2) needs sequencing across multiple issues or waves (e.g. implementing an updated design system), or (3) constitutes a planned heat. Session-scale XS/S work carries its AC in the heat handover (and the sheet), still runs Engineer → Reviewer → QA, and graduates to Linear at Banking the Fire if unbuilt. Codified in `skills/feature-triage.md` and CLAUDE.md tool ownership.
+
+## Rationale
+Evidence from Linear's own timestamps: forge-sheet's nine issues were batch-created in a two-minute window and all closed within 44 minutes the next evening, inside one session, with epics never updated — a ledger duplicating handover.md, not coordination. Three XS items in one session (responsive layout, favicon, cursor baseline) each forced a routing decision worth more than the work itself. The human named it: "there's a level of scope that makes it academic and busy work." Contrast wc-sim-market, where multi-week gaps make Linear the durable queue — the distinguishing variable is whether work survives the session, not project size.
+
+## Alternatives considered
+- **Keep Linear for everything**: consistency of a single ledger, but the ceremony cost recurs on every XS item and the record it produces is write-only.
+- **Drop Linear entirely**: loses the durable queue for multi-heat work, which is where it demonstrably earns its keep.
+
+## Consequences
+- The heat handover becomes the ledger of record for session-scale work — Banking the Fire must list completed session-scale items and graduate unbuilt ones
+- Feature-triage XS/S routes no longer create Linear issues by default
+- Epic-per-capability stops for single-heat projects
+- The framework-backlog "Linear value threshold" entry closes as resolved

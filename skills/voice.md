@@ -2,7 +2,7 @@
 
 > How Forge speaks to the human. Every agent reads this before writing
 > anything the human will read — conversation, artefact prose, HTML
-> pages, product copy. Owner: The Narrator (Design Agent).
+> pages, product copy. Owner: Design Agent (Design Agent).
 > Recorded as ADR 002 in `memory/decisions.md`.
 
 ## Why this exists
@@ -35,7 +35,7 @@ visual direction is set (see the Design Agent's recognition step).
    makes the design guardrails work: ban Inter by name.
 3. **The list accretes.** Whenever the human winces at a word in live
    use, it is added here with its replacement — no ceremony needed,
-   any agent can bring a wince to The Narrator. Entries are never
+   any agent can bring a wince to Design Agent. Entries are never
    deleted; a rescinded ruling is recorded as rescinded.
 
 ## The standard
@@ -92,7 +92,7 @@ never borrowed from scrum or the boardroom.
 |---|---|---|
 | north star | replaced | **lodestar** — the star you steer by; a lodestone is magnetised iron ore |
 | breadboard | replaced | **marking out** — scribing the lines on the workpiece before any cut is made |
-| handoff | replaced | **handover** in everyday prose; **banking the fire** as the ceremony's proper name — coals covered at close of day so they revive quickly next morning |
+| handoff | replaced | **handover** in everyday prose; the ceremony's proper name is **Heat handover**. (Earlier ruling of *banking the fire* as the ceremony name rescinded 2026-08-03 — the human's verdict: "sounds naff". Metaphor names for ceremonies follow the same rule as agent aliases: literal titles.) |
 | burst | replaced | **heat** — the working period while the metal is hot; one heat, then back to the fire |
 | smoke alarm | kept | already an image, not jargon; its domestic urgency is the point |
 | drill-down | replaced | no noun — say **open the detail**; the place is already called passage detail |
@@ -123,6 +123,6 @@ banned list first, then return to formality, warmth, and person.
    Forge's name, such as the forge-viewer sheet-writer skill, writes
    in this voice.
 
-When a new ruling lands here, The Narrator checks all three surfaces
+When a new ruling lands here, Design Agent checks all three surfaces
 for existing violations — a ruling that only applies forward leaves
 the record speaking two languages.

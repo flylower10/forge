@@ -52,13 +52,13 @@ Date started: [date]
 Format: [AGENT TAG] Description of concern
 Example: [TECH FEASIBILITY] No clean API for sourcing expected squads — fallback needed
 Example: [PM REVIEW] User journey reveals a second user type not in original framing
-Example: [RESEARCH] Competitive pricing data not available — The Researcher to fill before The Merchant runs]
+Example: [RESEARCH] Competitive pricing data not available — Research Agent to fill before Monetisation Agent runs]
 
 ---
 
 ## Research log
-[Findings from The Researcher, appended chronologically. Any agent may add a
-[RESEARCH REQUEST] mid-conversation; The Researcher fills the finding here.]
+[Findings from Research Agent, appended chronologically. Any agent may add a
+[RESEARCH REQUEST] mid-conversation; Research Agent fills the finding here.]
 
 ---
 
@@ -98,11 +98,11 @@ in the open concerns section and address any flags before proceeding.
 
 | Tag | Who acts on it |
 |-----|---------------|
-| `[TECH FEASIBILITY]` | Agent 04 · The Pragmatist |
-| `[PM REVIEW]` | Agent 01 · The Interrogator |
-| `[DESIGN REVIEW]` | Agent 02 · The Narrator |
-| `[USER RESEARCH]` | Agent 05 · The Advocate |
-| `[RESEARCH]` | The Researcher — fills immediately when invoked, or queued for async fill |
+| `[TECH FEASIBILITY]` | Agent 04 · Tech Feasibility Agent |
+| `[PM REVIEW]` | Agent 01 · PM Agent |
+| `[DESIGN REVIEW]` | Agent 02 · Design Agent |
+| `[USER RESEARCH]` | Agent 05 · User Researcher |
+| `[RESEARCH]` | Research Agent — fills immediately when invoked, or queued for async fill |
 | `[OPEN QUESTION]` | Human — surfaces in Synthesis for resolution |
 | `[REFINEMENT]` | Agent 07 · Refinement Ceremony |
 
@@ -116,7 +116,7 @@ to this agent. Check the research log for findings relevant to
 your work. Do not re-cover settled ground.
 
 **Mid-session:** If you encounter a factual gap that would materially
-change your output, do not defer it. Invoke The Researcher immediately:
+change your output, do not defer it. Invoke Research Agent immediately:
 
 ```
 [RESEARCH REQUEST]
@@ -125,12 +125,12 @@ Context: [what it feeds into and why it matters now]
 Depth: Surface / Deep
 ```
 
-The Researcher returns findings before you continue. If research
+Research Agent returns findings before you continue. If research
 is blocked, flag it as `[RESEARCH]` in open concerns and proceed.
 
 **At the end:** Append your handover block. If you have raised
 concerns that belong to another agent, flag them with the correct
-tag in the open concerns section. Then invoke The Observer
+tag in the open concerns section. Then invoke Observer
 (`product-team/observer.md`) — read its definition and deliver
 its note to the human before the next agent begins.
 
@@ -145,7 +145,7 @@ filling in what you know, and proceed.
 
 ---
 
-## Heat handover (Banking the Fire)
+## Heat handover
 
 When a heat ends, the Delivery Manager appends a heat handover block to the running brief and writes the `handover` field in `state.json`. Use this template:
 

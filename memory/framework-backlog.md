@@ -13,6 +13,39 @@ to the change.
 
 ## Open
 
+### Repo hygiene check ("forge doctor")
+**Captured:** 2026-08-02 · Routed by The Arbiter, approved by the human
+**Why it matters:** A manual audit against a set of AGENTS.md-style
+principles found sediment no Forge surface was scoped to catch: a
+backward-compatibility clause living in `hooks/pre-session.md`, a
+committed `.superpowers/` scratch directory, dead viewer test files,
+a duplicate pre-override plan file, and a stale serve instruction in
+CLAUDE.md (all cleaned 2026-08-02). The criticism "why didn't the
+viewer surface this" was triaged: rejected as a defect (neither the
+agent-pages viewer, Forge Sheet, nor the knowledge browser was scoped
+for repo health), re-entered here as a feature candidate.
+
+**Shape (rough):** a check, not a view — a `forge doctor`-style pass
+run by the `forge` script or pre-session hook. Candidate signals:
+tracked files matching scratch/cache patterns, `.md`/`.html` artefact
+pairs where one is orphaned, filename references that resolve to
+nothing, superseded-name residue after renames. The knowledge browser
+could later display findings, but the check is the feature. Needs
+intake (The Scout) before any build.
+
+### Adopt AGENTS.md-style build principles
+**Captured:** 2026-08-02
+**Why it matters:** The build team's definitions carry almost none of
+the discipline that prevents agent-typical failure modes. The Engineer
+has one line ("write the simplest code that satisfies the acceptance
+criterion"); nothing anywhere covers dependency discipline (check a
+library's docs before reimplementing), no-compatibility-layers,
+grow-in-layers, or no-stopgaps. The Reviewer is the natural
+enforcement point — it is positioned to catch a compatibility shim on
+its way in. Agreed direction: fold the principles into the Engineer
+and Reviewer definitions, with "remove backward compatibility paths"
+caveated for code with external consumers.
+
 ### Forge-on-Forge agent
 **Captured:** 2026-05-09
 **Why it matters:** Forge edits keep happening ad-hoc inside regular
@@ -135,6 +168,19 @@ agent above.
 ---
 
 ## Done
+
+### Linear value threshold · 2026-08-03
+Resolved same day it was captured. The human, after three XS items in
+one session each forcing a routing decision ("there's a level of scope
+that makes it academic and busy work"), adopted the heat-boundary
+threshold the Observer recommended: Linear only for work that outlives
+the session — crosses a boundary unfinished, needs multi-issue
+sequencing (e.g. implementing an updated design system), or is a
+planned heat. Session-scale XS/S work carries AC in the heat handover,
+runs the full pipeline, and graduates to Linear at Banking the Fire if
+unbuilt. Codified in `skills/feature-triage.md` (routing table +
+threshold), CLAUDE.md (tool ownership + governance), and an ADR in
+`memory/decisions.md`.
 
 ### Market signals capture · 2026-06-29
 Resolved by: (1) `skills/market-landscape.md` — methodology for identifying structural market gaps; (2) step 5a added to The Interrogator's discovery arc invoking the skill; (3) Market signals section added to the running-brief.md template in artefact-templates.md. Decision: skill over dedicated agent — the PM function already owns this lens, the skill distributes it without creating a new pipeline step.

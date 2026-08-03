@@ -54,14 +54,27 @@ the question.
 
 | Size | Route |
 |------|-------|
-| **XS** | DM writes AC → creates Linear issue → enters build queue |
-| **S** | DM writes AC → creates Linear issue → enters build queue |
+| **XS** | DM writes AC in the handover → enters build queue this session. Linear only if it survives the session (see threshold below) |
+| **S** | DM writes AC in the handover → enters build queue this session. Linear only if it survives the session (see threshold below) |
 | **M** | Identify targeted agents (Step 3) → run them → DM writes AC → creates Linear issue → enters build queue |
 | **L** | DM selects 2–4 agents for mini-discovery → agents run → DM writes AC → Linear issue → human approves before build queue |
-| **XL** | Present to human as a discovery-level question → human decides whether to re-enter via The Scout |
+| **XL** | Present to human as a discovery-level question → human decides whether to re-enter via Intake Agent |
 
-For XS and S: the Delivery Manager creates the Linear issue immediately.
-No human approval needed before the issue is created — but the DM
+**The Linear threshold (2026-08-03):** Linear tracks work that
+outlives the session. An item gets a Linear issue only if it:
+1. will cross a session boundary unfinished, or
+2. needs sequencing across multiple issues or waves (e.g. implementing
+   an updated design system), or
+3. constitutes a planned heat.
+
+Below the threshold, work is session-scale: the AC lives in the heat
+handover (and the sheet), the work still runs Engineer → Reviewer → QA,
+and it appears as one ledger line in the handover. If a session-scale
+item is *not* built before the session ends, it graduates — it now
+crosses a boundary, so the DM creates the Linear issue at Banking the
+Fire. Nothing is ever untracked; the question is only which ledger.
+
+For XS and S: no human approval needed before queueing — but the DM
 presents the triage note before routing to the Engineer.
 
 For M and above: present the triage note and wait for human confirmation
@@ -76,11 +89,11 @@ agent if their question is already answered by the request.
 
 | Open question | Agent to consult |
 |---------------|-----------------|
-| New or changed UI screen or interaction | The Blueprint (`product-team/ux-agent.md`) |
-| Pricing, entitlement, or access model | The Merchant (`marketing-team/monetisation-agent.md`) |
-| Data model, architecture, or new dependency | The Pragmatist (`product-team/04-tech-feasibility.md`) |
-| User experience arc or user behaviour | The Narrator (`product-team/02-design-agent.md`) |
-| Product assumption being challenged | The Sceptic (`product-team/03-devils-advocate.md`) |
+| New or changed UI screen or interaction | UX Agent (`product-team/ux-agent.md`) |
+| Pricing, entitlement, or access model | Monetisation Agent (`marketing-team/monetisation-agent.md`) |
+| Data model, architecture, or new dependency | Tech Feasibility Agent (`product-team/04-tech-feasibility.md`) |
+| User experience arc or user behaviour | Design Agent (`product-team/02-design-agent.md`) |
+| Product assumption being challenged | Devil's Advocate (`product-team/03-devils-advocate.md`) |
 
 When invoking a targeted agent for M/L triage, give them a specific
 question — not an open brief. Example: "Does adding X require a schema
