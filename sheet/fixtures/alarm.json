@@ -16,7 +16,7 @@
           "digest": "Session opens on Forge Sheet build kickoff. All three provings are complete; state format is next.",
           "fullContent": "Session opens on the Forge Sheet build kickoff. All three provings completed this heat: FLY-72 (inline storage decided), FLY-73 (Stop hook confirmed), FLY-74 (semantic audit v1 scope confirmed). FLY-75 (state format schema) is the active task.",
           "state": "settled",
-          "attribution": "The Conductor",
+          "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-001",
           "arrivedAt": "2026-08-01T20:00:00Z"
@@ -38,7 +38,7 @@
           "digest": "State schema is locked. FLY-76 (shell P1) can begin immediately after this task ships.",
           "fullContent": "The state.json schema is now canonical and locked for v1. The four fixture files cover all four captured states. FLY-76 (shell P1 — live sheet) is unblocked and can begin.",
           "state": "live",
-          "attribution": "The Conductor",
+          "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-001",
           "arrivedAt": "2026-08-01T20:22:00Z"
@@ -48,7 +48,7 @@
   ],
   "agents": [
     {
-      "name": "The Conductor",
+      "name": "Delivery Manager",
       "role": "Delivery Manager",
       "state": "atHeat",
       "minutesAtHeat": 22

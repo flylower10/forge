@@ -44,7 +44,7 @@ Required fields:
 
 ### `running-brief.md`
 
-Created by The Scout at intake. Updated by every agent as it completes. The live state
+Created by Intake Agent at intake. Updated by every agent as it completes. The live state
 of the pipeline — not a polished artefact, a working document.
 
 ```markdown
@@ -81,7 +81,7 @@ Date started: YYYY-MM-DD
 **Target platform:** [iOS / Android / Web / etc.]
 
 **Pipeline:**
-  Wave 1 (done): The Scout
+  Wave 1 (done): Intake Agent
   Wave 2 (parallel): [agents]
   ...
 
@@ -101,7 +101,7 @@ _(Commercial and market intelligence observations captured mid-discovery.
 Any participant — human or agent — may append. Not agent outputs, not risks —
 observations about structural gaps, data access, distribution, or timing that
 belong in view before the brief locks. Synthesis picks these up and routes them
-to The Merchant or relevant agents.)_
+to Monetisation Agent or relevant agents.)_
 
 ---
 
@@ -113,7 +113,7 @@ _(Flags raised by agents for downstream review.)_
 
 ## Research log
 
-_(Findings from The Researcher, appended chronologically.)_
+_(Findings from Research Agent, appended chronologically.)_
 
 ---
 
@@ -286,7 +286,7 @@ _Avoid:_ [alternative phrasings to reject — optional if no common confusions e
 - [Term A] and [Term B] are distinct — [why the distinction matters]
 ```
 
-**Constraint:** If an entry explains *how* something works rather than *what it is called*, it belongs in the brief or decisions log. The Observer flags violations.
+**Constraint:** If an entry explains *how* something works rather than *what it is called*, it belongs in the brief or decisions log. Observer flags violations.
 
 ### `ost-decisions.md`
 

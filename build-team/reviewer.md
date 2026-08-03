@@ -8,7 +8,6 @@
   "team": "Build Team",
   "mode": "Execution",
   "gate": "None",
-  "alias": "",
   "summary": "Checks every completed Engineer output before QA. Reviews correctness, consistency, quality, and completeness. Escalates product decisions.",
   "file": "build-team/reviewer.md",
   "constraints": [

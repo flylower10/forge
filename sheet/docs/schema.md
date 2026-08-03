@@ -59,7 +59,7 @@ Written when a session is collapsed. Assembled from the agents' handoff blocks f
 
 ```json
 {
-  "agentName": "The Interrogator",
+  "agentName": "PM Agent",
   "role": "PM Agent",
   "established": "1-2 sentences: what this agent established this session.",
   "view": "The agent's stance or recommendation.",
@@ -76,7 +76,7 @@ Written when a session is collapsed. Assembled from the agents' handoff blocks f
   "digest": "1-2 sentence summary shown on the sheet.",
   "fullContent": "Full text of the passage. Required — never omitted.",
   "state": "live",
-  "attribution": "The Interrogator",
+  "attribution": "PM Agent",
   "concernRefs": [],
   "sessionId": "sess-001",
   "arrivedAt": "2026-08-01T20:00:00Z"
@@ -122,7 +122,7 @@ One entry per agent that has participated in the project. Updated each session.
 
 ```json
 {
-  "name": "The Conductor",
+  "name": "Delivery Manager",
   "role": "Delivery Manager",
   "state": "atHeat",
   "minutesAtHeat": 22
@@ -131,7 +131,7 @@ One entry per agent that has participated in the project. Updated each session.
 
 | Field | Type | Required | Notes |
 |---|---|---|---|
-| `name` | string | yes | Agent name (e.g. `"The Conductor"`, `"Engineer"`, `"Human"`). |
+| `name` | string | yes | Agent name (e.g. `"Delivery Manager"`, `"Engineer"`, `"Human"`). |
 | `role` | string | yes | Plain function (e.g. `"Delivery Manager"`, `"PM Agent"`). |
 | `state` | string | yes | `"atHeat"` — currently writing this session; `"settled"` — wrote earlier in this session, no longer active; `"quenched"` — completed, not active in this session. |
 | `minutesAtHeat` | number | yes | Minutes the agent has been at heat in the current session. Set to `0` when `state` is not `"atHeat"`. Used for heat step transitions (→ cherry ~10 min, → furnace ~25 min). |

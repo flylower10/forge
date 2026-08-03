@@ -17,7 +17,7 @@
           "openItems": []
         },
         {
-          "agentName": "The Conductor",
+          "agentName": "Delivery Manager",
           "role": "Delivery Manager",
           "established": "Refinement Ceremony complete. Five decisions resolved. DESIGN.md placed in sheet/docs/. Both Blueprint and Claude Design gates cleared. Three provings sequenced as first build work.",
           "view": "Build sequence locked. Provings run first; shell and skill follow. First Engineer task: FLY-72.",
@@ -42,7 +42,7 @@
           "digest": "Refinement Ceremony resolved five open decisions. Brief is build-ready.",
           "fullContent": "Refinement Ceremony (2026-08-01): state file path (sheet/state/[slug].json), poll failure behaviour (silent retry; P4 after 5 consecutive failures), collapse policy (current session always expanded; prior sessions collapsed with per-agent digests), state format (pure JSON), concurrent sessions (last-writer-wins + sessionId notice). All five closed. Build sequence locked.",
           "state": "settled",
-          "attribution": "The Conductor",
+          "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-000",
           "arrivedAt": "2026-08-01T19:00:00Z"
@@ -95,7 +95,7 @@
           "digest": "State schema locked. Four fixtures written. FLY-76 (shell P1) unblocked.",
           "fullContent": "FLY-75 complete: state.json schema is canonical and locked for v1. Four fixture files written covering all four captured states. The schema adds projectSlug (top-level, for semantic audit) and arrivedAt (block-level, for arrival treatment timing). fullContent is required in every block. FLY-76 can begin.",
           "state": "settled",
-          "attribution": "The Conductor",
+          "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-001",
           "arrivedAt": "2026-08-01T21:30:00Z"
@@ -105,7 +105,7 @@
   ],
   "agents": [
     {
-      "name": "The Conductor",
+      "name": "Delivery Manager",
       "role": "Delivery Manager",
       "state": "quenched",
       "minutesAtHeat": 0

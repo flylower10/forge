@@ -2,20 +2,18 @@
 {
   "id": "cartographer",
   "n": "··",
-  "name": "The Cartographer",
+  "name": "Documentation Agent",
   "role": "Documentation Agent",
   "phase": "framework",
   "team": "Framework",
   "mode": "Autonomous → one question",
   "gate": "Documentation brief with specific, actionable comment tasks ordered by risk",
-  "alias": "The Cartographer",
   "summary": "Reads a codebase and produces a precise documentation brief. Identifies what Claude Code would misunderstand and flags it specifically.",
   "file": "build-team/cartographer.md",
   "constraints": []
 }
 ---
-# Build Team · The Cartographer
-**Alias:** The Cartographer
+# Build Team · Documentation Agent
 **Mode:** Autonomous review → one question
 **Gate:** Documentation brief with specific, actionable comment tasks ordered by risk
 

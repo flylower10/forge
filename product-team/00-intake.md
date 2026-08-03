@@ -2,19 +2,18 @@
 {
   "id": "00-intake",
   "n": "00",
-  "name": "The Scout",
+  "name": "Intake Agent",
   "role": "Intake Agent",
   "phase": "discovery",
   "team": "Product Team",
   "mode": "Conversation",
   "gate": "Pipeline configuration",
-  "alias": "",
   "summary": "Configures the right pipeline for each idea. Scans available agents, asks seven intake questions, proposes and confirms the pipeline before anything begins.",
   "file": "product-team/00-intake.md",
   "constraints": []
 }
 ---
-# Agent 00 · The Scout
+# Agent 00 · Intake Agent
 **Mode:** Conversation — runs before any other agent
 **Gate:** Pipeline configuration
 
@@ -185,12 +184,12 @@ Specialist agents needed:
   [Name] — [what it would do] — [Draft now / Add later / Not needed]
 
 Execution order:
-  Wave 1 (sequential): The Scout
+  Wave 1 (sequential): Intake Agent
   Wave 2 (parallel): [Agent A] + [Agent B]  — no dependency between them
   Wave 3 (parallel): [Agent C] + [Agent D] + [Agent E]  — all depend on Wave 2
   Wave 4 (sequential): Synthesis  — depends on all Wave 3 agents completing
 
-  Note: The Researcher may be invoked by any agent in any wave.
+  Note: Research Agent may be invoked by any agent in any wave.
   It does not have a fixed wave — it runs on demand and returns
   before the invoking agent continues.
 

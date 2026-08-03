@@ -8,7 +8,6 @@
   "team": "Product Team",
   "mode": "Conversation",
   "gate": "Discovery → Build",
-  "alias": "",
   "summary": "Bridges discovery and build. Resolves ambiguities, missing definitions, and foundational decisions the build team needs before the first line of code.",
   "file": "product-team/07-refinement.md",
   "constraints": []

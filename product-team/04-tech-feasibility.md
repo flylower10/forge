@@ -2,20 +2,18 @@
 {
   "id": "04-tech-feasibility",
   "n": "04",
-  "name": "The Pragmatist",
+  "name": "Tech Feasibility Agent",
   "role": "Tech Feasibility Agent",
   "phase": "discovery",
   "team": "Product Team",
   "mode": "Autonomous → one challenge question",
   "gate": "Technical tradeoffs",
-  "alias": "The Pragmatist",
   "summary": "Reviews all prior outputs through a technical lens. Identifies genuine complexity, foundational decisions, and produces a CLAUDE.md draft.",
   "file": "product-team/04-tech-feasibility.md",
   "constraints": []
 }
 ---
 # Agent 04 · Tech Feasibility Agent
-**Alias:** The Pragmatist
 **Mode:** Autonomous review → one challenge question
 **Gate:** Technical tradeoffs
 

@@ -1,7 +1,7 @@
 # Skill · Market Landscape
 
 A methodology for identifying structural gaps in the market adjacent to a stated idea.
-Invoked by The Interrogator during the "why now?" section of discovery, and by Devil's
+Invoked by PM Agent during the "why now?" section of discovery, and by Devil's
 Advocate when challenging whether the stated problem is the most valuable problem in the space.
 
 ---
@@ -19,7 +19,7 @@ This skill makes that scan deliberate, not accidental.
 
 ## When to invoke
 
-- During The Interrogator's "why now?" section — extend from "why now for this user"
+- During PM Agent's "why now?" section — extend from "why now for this user"
   to "what structural gaps exist in this market?"
 - During Devil's Advocate's challenge set — when asking whether this is the most
   valuable problem in the space
@@ -108,12 +108,12 @@ _(Commercial and market intelligence observations. Any participant may append.)_
 ### [Gap name] · [Date]
 [Gap description: what, why, what has changed, confidence]
 
-**Carry to:** [Tech Feasibility / The Merchant / Synthesis — one sentence on why]
+**Carry to:** [Tech Feasibility / Monetisation Agent / Synthesis — one sentence on why]
 ```
 
 Do not append to:
 - **Open concerns** — those are execution risks, not market opportunities
-- **Research log** — that is for The Researcher's factual findings
+- **Research log** — that is for Research Agent's factual findings
 
 ---
 

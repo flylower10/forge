@@ -2,20 +2,18 @@
 {
   "id": "03-devils-advocate",
   "n": "03",
-  "name": "The Sceptic",
+  "name": "Devil's Advocate",
   "role": "Devil's Advocate",
   "phase": "discovery",
   "team": "Product Team",
   "mode": "Autonomous → one challenge question",
   "gate": "Assumption stress-test",
-  "alias": "The Sceptic",
   "summary": "Reviews PM and Design outputs to find dangerous assumptions. Ranks by risk. Gets explicit sign-off on High items before proceeding.",
   "file": "product-team/03-devils-advocate.md",
   "constraints": []
 }
 ---
 # Agent 03 · Devil's Advocate
-**Alias:** The Sceptic
 **Mode:** Autonomous review → one challenge question
 **Gate:** Assumption stress-test
 
@@ -57,9 +55,9 @@ more than fifteen vague ones.
 
 ## Dependencies
 
-Runs after **both** The Interrogator and The Narrator have completed.
+Runs after **both** PM Agent and Design Agent have completed.
 Do not run on PM Agent output alone — the Design Agent's user framing
-is a required input. If The Narrator has not run, say so and wait.
+is a required input. If Design Agent has not run, say so and wait.
 
 ---
 

@@ -16,7 +16,7 @@
           "digest": "Session opens on Forge Sheet build kickoff. All three provings are complete; state format is next.",
           "fullContent": "Session opens on the Forge Sheet build kickoff. All three provings completed this heat: FLY-72 (inline storage decided), FLY-73 (Stop hook confirmed), FLY-74 (semantic audit v1 scope confirmed). FLY-75 (state format schema) is the active task.",
           "state": "settled",
-          "attribution": "The Conductor",
+          "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-001",
           "arrivedAt": "2026-08-01T20:00:00Z"
@@ -60,7 +60,7 @@
           "digest": "Does the state.json schema need a createdAt timestamp at the session level for the P3 collapse label?",
           "fullContent": "Open question surfaced during schema design: P3 (sheet at rest) shows prior sessions collapsed with a date label. The schema has a 'date' field on each session (string, e.g. '2026-08-01'). Is that sufficient for the collapsed label, or does the shell need a more precise timestamp (e.g. to show '14 days ago')? The date string is sufficient for the initial build — relative time formatting can be added later without a schema change.",
           "state": "settled",
-          "attribution": "The Conductor",
+          "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-001",
           "arrivedAt": "2026-08-01T20:18:00Z"
@@ -71,7 +71,7 @@
           "digest": "State schema is locked. FLY-76 (shell P1) can begin immediately after this task ships.",
           "fullContent": "The state.json schema is now canonical and locked for v1. The four fixture files cover all four captured states. FLY-76 (shell P1 — live sheet) is unblocked and can begin. The Engineer's first action in FLY-76: build the shell against the live.json fixture and verify all block kinds render with correct visual treatment.",
           "state": "live",
-          "attribution": "The Conductor",
+          "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-001",
           "arrivedAt": "2026-08-01T20:22:00Z"
@@ -81,7 +81,7 @@
   ],
   "agents": [
     {
-      "name": "The Conductor",
+      "name": "Delivery Manager",
       "role": "Delivery Manager",
       "state": "atHeat",
       "minutesAtHeat": 22

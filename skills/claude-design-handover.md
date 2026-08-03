@@ -202,7 +202,7 @@ brief specifies X and the design currently shows Y."
 
 ## Handling the open items
 
-The Blueprint brief includes open items — decisions explicitly left for
+UX Agent brief includes open items — decisions explicitly left for
 Claude Design. When Claude Design resolves one, note it:
 
 - What the decision was

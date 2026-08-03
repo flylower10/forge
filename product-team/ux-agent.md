@@ -2,13 +2,12 @@
 {
   "id": "ux-agent",
   "n": "··",
-  "name": "The Blueprint",
+  "name": "UX Agent",
   "role": "UX Agent",
   "phase": "build",
   "team": "Product Team",
   "mode": "Autonomous with review",
   "gate": "DESIGN.md exists and is approved",
-  "alias": "The Blueprint",
   "summary": "Produces UX and design briefs for Claude Design. Runs once at build kickoff; consulted when new screens are added.",
   "file": "product-team/ux-agent.md",
   "constraints": [
@@ -22,7 +21,6 @@
 }
 ---
 # Agent · UX Agent
-**Alias:** The Blueprint
 **Mode:** Autonomous with review — runs once at build kickoff, consulted when new screens are added
 **Gate:** DESIGN.md exists and is approved
 
@@ -214,7 +212,7 @@ verbatim. Do not paraphrase. Do not proceed to any other task.
 
 **Claude Design handover**
 
-The Blueprint brief is complete: `docs/design-brief.md`
+UX Agent brief is complete: `docs/design-brief.md`
 
 Before any frontend work enters the build pipeline, take this brief
 to Claude Design (or your visual design tool of choice).

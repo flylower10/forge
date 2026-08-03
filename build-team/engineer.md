@@ -8,7 +8,6 @@
   "team": "Build Team",
   "mode": "Execution",
   "gate": "None",
-  "alias": "",
   "summary": "Executes build tasks assigned by the Delivery Manager. Writes code to acceptance criteria, applies surgical changes, and hands to Reviewer when done.",
   "file": "build-team/engineer.md",
   "constraints": [

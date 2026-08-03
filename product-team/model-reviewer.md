@@ -2,20 +2,18 @@
 {
   "id": "model-reviewer",
   "n": "··",
-  "name": "The Calibrator",
+  "name": "Model Reviewer",
   "role": "Model Reviewer",
   "phase": "framework",
   "team": "Framework",
   "mode": "Autonomous → one challenge question",
   "gate": "Model assessment with architecture verdict, ranked improvements, and recommendation stated",
-  "alias": "The Calibrator",
   "summary": "Domain-agnostic review of analytical models. Assesses architecture, calibration, data quality, validation, and signal relationship.",
   "file": "product-team/model-reviewer.md",
   "constraints": []
 }
 ---
 # Agent · Model Reviewer
-**Alias:** The Calibrator
 **Mode:** Autonomous review → one challenge question
 **Gate:** Model assessment with architecture verdict, ranked improvements, and recommendation stated
 

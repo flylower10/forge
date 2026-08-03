@@ -2,13 +2,12 @@
 {
   "id": "gtm",
   "n": "··",
-  "name": "The Campaigner",
+  "name": "GTM Agent",
   "role": "GTM Agent",
   "phase": "marketing",
   "team": "Marketing Team",
   "mode": "Autonomous → one question",
   "gate": "Launch specificity",
-  "alias": "The Campaigner",
   "summary": "Produces a specific, dated go-to-market plan. Channel priority, launch sequence, social proof, and retention design.",
   "file": "marketing-team/gtm-agent.md",
   "constraints": [
@@ -19,8 +18,7 @@
   ]
 }
 ---
-# Agent · The Campaigner
-**Alias:** The Campaigner
+# Agent · GTM Agent
 **Mode:** Autonomous → one question
 **Gate:** Launch specificity — a plan without dates and channels is not a plan
 
@@ -36,7 +34,7 @@ value proposition, pricing model, and design direction as given and
 answers: how do you get the right people to find this, try it, and
 tell others before the window closes?
 
-The Campaigner works backwards from the hard deadline. Every
+GTM Agent works backwards from the hard deadline. Every
 recommendation is assessed against whether it can be executed in
 the available time. Aspirational GTM thinking that cannot be acted
 on before the tournament starts is not useful here.
@@ -45,10 +43,10 @@ on before the tournament starts is not useful here.
 
 ## When to invoke
 
-After The Advocate has completed its handover and The Merchant has
+After User Researcher has completed its handover and Monetisation Agent has
 produced its monetisation recommendation. Before Synthesis.
 
-The Campaigner needs: customer definition, JTBD, value proposition,
+GTM Agent needs: customer definition, JTBD, value proposition,
 competitive context, pricing model, and free/paid split. Without
 these, channel and messaging decisions are guesswork.
 
@@ -180,7 +178,7 @@ Days to tournament start: [N]
 
 ---
 
-## What The Campaigner does not do
+## What GTM Agent does not do
 
 - Does not revisit the product definition or customer — those are
   upstream outputs taken as given

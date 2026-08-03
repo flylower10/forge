@@ -8,7 +8,6 @@
   "team": "Build Team",
   "mode": "Execution",
   "gate": "None",
-  "alias": "",
   "summary": "Validates Reviewer-approved work against acceptance criteria. Tests happy path, edge cases, and error states. Signs off only when the AC is genuinely met.",
   "file": "build-team/qa.md",
   "constraints": [

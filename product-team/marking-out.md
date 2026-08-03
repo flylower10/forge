@@ -2,13 +2,12 @@
 {
   "id": "marking-out",
   "n": "··",
-  "name": "The Tracer",
+  "name": "Marking-out Agent",
   "role": "Marking-out Agent",
   "phase": "discovery",
   "team": "Product Team",
   "mode": "Autonomous with review",
   "gate": "Marking out reviewed and approved by human — places, affordances, stores, wiring, and flagged unknowns complete",
-  "alias": "The Tracer",
   "summary": "Maps places, affordances, stores, and wiring before code is written. Runs after Discovery waves and before Synthesis — gives Synthesis a complete journey map to build the brief from. Flags unknowns as proving candidates.",
   "file": "product-team/marking-out.md",
   "constraints": [
@@ -21,7 +20,6 @@
 }
 ---
 # Marking out
-**Alias:** The Tracer
 **Mode:** Autonomous with review
 **Gate:** Marking out reviewed and approved — places, affordances, stores, wiring, and flagged unknowns complete
 
@@ -35,14 +33,14 @@ Read and apply `skills/intellectual-standards.md` before producing any output.
 ## When to run
 
 After all Discovery waves have completed (PM Agent, Design Agent, Devil's Advocate,
-Tech Feasibility, User Researcher — whichever were configured by The Scout), and
+Tech Feasibility, User Researcher — whichever were configured by Intake Agent), and
 **before Synthesis**. The marking-out gives Synthesis a complete journey map to build
 the brief from. Without it, Synthesis works from Discovery outputs alone, which
 describes the problem and user but not the full capability surface of the product.
 
 Run this for any system with non-trivial behaviour: multiple surfaces, state that
 persists across actions, or interactions between more than two components. For simple,
-well-understood features, The Scout may mark it optional at intake.
+well-understood features, Intake Agent may mark it optional at intake.
 
 ---
 

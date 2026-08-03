@@ -8,7 +8,6 @@
   "team": "Product Team",
   "mode": "Lightweight — Delivery Manager facilitates",
   "gate": "Handover note written to output/[idea-name]/handover.md; re-entry briefing delivered and human confirmed ready to proceed",
-  "alias": "",
   "summary": "Ends each build heat with a handover note. Orients on return. Flags when build observations should trigger a return to discovery.",
   "file": "product-team/08-heat-review.md",
   "constraints": [
@@ -20,7 +19,7 @@
 }
 ---
 # Agent 08 · Heat Review
-**Two ceremonies: Banking the Fire + The Re-entry**
+**Two ceremonies: Heat handover + The Re-entry**
 **Mode:** Lightweight — Delivery Manager facilitates
 **Trigger:** Not cadence-based. Triggered by events, not a clock.
 
@@ -37,7 +36,7 @@ as long. There is no sprint cadence. There is no fixed review schedule.
 
 Two things are needed at the edges of a heat:
 
-**Banking the Fire** — when a heat ends. Captures the state of the world
+**Heat handover** — when a heat ends. Captures the state of the world
 so that re-entry after a gap costs nothing.
 
 **The Re-entry** — when returning after an idle period. Orients before
@@ -47,7 +46,7 @@ Both ceremonies are short. Neither is optional when the trigger fires.
 
 ---
 
-## Banking the Fire
+## Heat handover
 
 **When it fires:** The human says "I'm done for now", "let's stop here",
 or signals that the heat is ending. The Delivery Manager runs this

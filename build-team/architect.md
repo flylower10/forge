@@ -8,7 +8,6 @@
   "team": "Build Team",
   "mode": "Consulted only",
   "gate": "None",
-  "alias": "",
   "summary": "Makes foundational technical decisions. Consulted at the Refinement Ceremony and when a structural choice arises mid-build. Produces ADRs.",
   "file": "build-team/architect.md",
   "constraints": [

@@ -8,7 +8,6 @@
   "team": "Product Team",
   "mode": "Fully autonomous",
   "gate": "None",
-  "alias": "",
   "summary": "Consumes all discovery outputs and produces the canonical brief, assumption log, personas, research plan, and technical artefacts. Ends discovery.",
   "file": "product-team/06-synthesis.md",
   "constraints": []

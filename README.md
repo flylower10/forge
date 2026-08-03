@@ -23,11 +23,11 @@ The core pipeline:
 
 ```
 00 · Intake            Determines the right pipeline for this specific idea
-01 · PM Agent          The Interrogator — problem framing
-02 · Design Agent      The Narrator — empathy and experience
-03 · Devil's Advocate  The Sceptic — assumption stress-test
-04 · Tech Feasibility  The Pragmatist — tradeoffs and architecture
-05 · User Researcher   The Advocate — what to validate before building
+01 · PM Agent          PM Agent — problem framing
+02 · Design Agent      Design Agent — empathy and experience
+03 · Devil's Advocate  Devil's Advocate — assumption stress-test
+04 · Tech Feasibility  Tech Feasibility Agent — tradeoffs and architecture
+05 · User Researcher   User Researcher — what to validate before building
 06 · Synthesis         Assembles all outputs into a complete brief
 ```
 
@@ -56,7 +56,7 @@ A focused ceremony that bridges discovery and build. The brief is read through a
 A team of execution agents orchestrated by the Delivery Manager.
 
 ```
-Delivery Manager  The Conductor — orchestration, blockers, human interface
+Delivery Manager  Delivery Manager — orchestration, blockers, human interface
 Architect         Consulted at refinement and structural decisions only
 Cartographer      Documents an existing codebase on first contact
 Engineer          Writes code
@@ -64,7 +64,7 @@ Reviewer          Checks quality and consistency
 QA                Validates acceptance criteria
 ```
 
-Two triggered processes guard the queue. **Feedback Triage** (The Arbiter) fires before any action is taken on product criticism — criticism is not a task assignment. **Feature Triage** classifies and routes new feature requests so they enter the build queue with the right level of scoping.
+Two triggered processes guard the queue. **Feedback Triage** (Feedback Triage) fires before any action is taken on product criticism — criticism is not a task assignment. **Feature Triage** classifies and routes new feature requests so they enter the build queue with the right level of scoping.
 
 ### The loop
 

@@ -2,13 +2,12 @@
 {
   "id": "arbiter",
   "n": "··",
-  "name": "The Arbiter",
+  "name": "Feedback Triage",
   "role": "Feedback Triage",
   "phase": "framework",
   "team": "Framework",
   "mode": "Triggered",
   "gate": "Triage decision with route and rationale, pending human approval",
-  "alias": "The Arbiter",
   "summary": "Receives product criticism, assesses validity and severity, and recommends the right route. Fires before any action is taken on feedback.",
   "file": "build-team/feedback-triage.md",
   "constraints": [
@@ -20,8 +19,7 @@
   "triggers": ["on-product-criticism"]
 }
 ---
-# Build Agent · The Arbiter
-**Alias:** The Arbiter
+# Build Agent · Feedback Triage
 **Mode:** Triggered — fires when product criticism or feedback is received, before any action
 **Gate:** Triage decision with route and rationale, pending human approval
 
@@ -39,7 +37,7 @@ Then stops and waits for the human to approve the route.
 A complaint is not a task assignment. Acting immediately on criticism
 without assessment produces rushed, unreviewed work when the criticism
 is real — and wastes time when it is vague, exaggerated, or low priority.
-The Arbiter closes that gap.
+Feedback Triage closes that gap.
 
 ---
 
@@ -52,8 +50,8 @@ Invoke before any other action when the human:
 - Offers a design or UX critique
 
 Do not invoke for:
-- Feature requests (route to The Scout / intake)
-- Process concerns (route to The Observer)
+- Feature requests (route to Intake Agent / intake)
+- Process concerns (route to Observer)
 - Questions about how something works
 
 ---
@@ -140,7 +138,7 @@ taking any further action.
 
 ---
 
-## What The Arbiter does not do
+## What Feedback Triage does not do
 
 - Does not write code
 - Does not create tickets without approval
