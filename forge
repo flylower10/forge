@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # forge — Forge startup wrapper
 # Usage: ./forge serve
-# Generates output/manifest.json, then starts the HTTP server.
+# Serves the repo over HTTP for fetch-dependent pages (Forge Sheet, .dc.html bundles).
 
 set -e
 cd "$(dirname "$0")"
@@ -9,11 +9,7 @@ cd "$(dirname "$0")"
 COMMAND="${1:-serve}"
 
 if [[ "$COMMAND" == "serve" ]]; then
-  echo "==> Generating manifest..."
-  python3 generate-manifest.py
-
-  echo ""
-  echo "==> Starting server at http://localhost:8080/viewer/"
+  echo "==> Starting server at http://localhost:8080/sheet/"
   echo "    Press Ctrl+C to stop."
   echo ""
   python3 -m http.server 8080
