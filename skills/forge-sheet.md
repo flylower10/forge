@@ -75,6 +75,15 @@ that. Framework nouns (discovery, intake, refinement, wave) are
 internal vocabulary; on the sheet, say the plain thing they stand for.
 The sheet is always speaking to a human.
 
+**Digests are short sentences, not compressed summaries.** A digest
+that tries to cover everything invents compound phrases ("the
+two-moment decision failure") and stacks parentheticals until nothing
+lands — ruled awful by the human, 2026-08-03. Never coin a phrase to
+compress an idea; never gloss inside brackets. If the digest cannot be
+said plainly in one or two short sentences, the block covers too much:
+split it or cut detail. The reader gets it on the first pass or the
+digest has failed.
+
 **3. Transition block states**
 
 Every block currently marked `state: "live"` becomes `state: "settled"`.

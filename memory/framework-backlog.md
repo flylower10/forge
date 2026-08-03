@@ -13,6 +13,12 @@ to the change.
 
 ## Open
 
+### Extend provings with prototype discipline (Matt Pocock's skill)
+**Captured:** 2026-08-03 · flagged by the human as a side quest during the forge-dashboard discovery
+**Source:** github.com/mattpocock/skills — skills/engineering/prototype/SKILL.md. The human tends to agree with the intent.
+**Why it matters:** Forge's provings answer feasibility questions ("does the hook fire per exchange?"). This skill applies the same throwaway-code move to design-feel questions — a logic branch (small interactive terminal app to exercise a state model) and a UI branch (multiple variants behind a URL switcher) — with six disciplines worth adopting nearly verbatim: disposable by name and location, one command to run, in-memory state only, no tests or abstractions, visible state after every action, findings harvested then the prototype archived to a throwaway branch.
+**Before inclusion, two rulings needed:** (1) the boundary with Claude Design — Claude Design owns how it looks; a UI proving owns how it behaves in the real stack; draw the line explicitly. (2) Vocabulary — this lands as an extension of *proving* (the house term that replaced "spike"), not a parallel "prototype" concept. Shape: extend or create `skills/proving.md`, referenced by the Engineer and the Refinement Ceremony (provings are how unknowns are burned down before ACs lock).
+
 ### Repo hygiene check ("forge doctor")
 **Captured:** 2026-08-02 · Routed by The Arbiter, approved by the human
 **Why it matters:** A manual audit against a set of AGENTS.md-style

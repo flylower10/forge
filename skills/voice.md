@@ -107,6 +107,19 @@ config. Artefact filename conventions changed for future projects
 (`handover.md`, `marking-out.md`); existing project folders keep
 their old filenames as record.
 
+### Referring to the record — RULED 2026-08-03
+
+When any agent refers to a past decision, assumption, or artefact
+entry, it states the substance in place, in plain words: "we had
+already decided to build the sheet locally and migrate onto Artifacts
+later." Labels, index numbers, and dates ("assumption 2", "closed
+12 July") are the machine's handles, not the human's memory — they
+may trail the substance as detail but never replace it. Ruled by the
+human directly: "you're referring to a decision and a date that I
+have no idea on... just call out the decision." The whole
+forge-dashboard discovery exists because artefact content does not
+live in the human's head; citing by reference assumes the opposite.
+
 ### Register
 
 PARKED (human decision, 2026-07-13) — settle the anchors and the

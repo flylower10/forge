@@ -160,7 +160,15 @@ This is a conversation, not a sign-off. If they push back, engage
 with the substance. Update your understanding where they are right.
 Hold your framing where you believe it is accurate and explain why.
 
-Do not proceed to output until the human confirms the framing is right.
+**The gate reviews the artefact, not a paraphrase.** Once the
+conversation converges, write the actual problem-framing document and
+present its verbatim text for confirmation. A summary reviewed in
+chat is not a gate — approving a gloss of a document that doesn't
+exist yet is the wave-through failure this framework exists to
+prevent (ruled by the human, 2026-08-03). What the human confirms
+must be, word for word, what gets saved.
+
+Do not proceed until the human confirms the document itself.
 
 **Done when:** Human has confirmed the framing playback without substantive correction.
 
