@@ -24,6 +24,10 @@ to the change.
 **Why it matters:** The human is both maintainer and user of Forge, and does not want to iterate on the framework endlessly — "I want to build products but I'm investing now in the hope that I will get returns on building later." Live sessions (especially product-building ones) should not stall to fix Forge.
 **Shape:** the Observer's remit extends — when usage strains the framework's structure (a rule that doesn't fit, a ceremony that costs more than it returns, a use case with no home), the Observer records the case here in the backlog quietly instead of interrupting. The maintainer reviews in batches, in sessions chosen for framework work. Relates to the Forge-on-Forge agent entry below — this is its reporting half arriving first.
 
+### Do HTML artefact companions survive the artefact view?
+**Captured:** 2026-08-03 · deviation logged at heat close
+**Why it matters:** The post-session hook requires regenerating an .html companion for every changed .md artefact. Tonight's heat changed ~10 artefacts at midnight and the step was consciously skipped: the dashboard's artefact view renders .md directly and is these files' successor. Decide: retire the companion requirement once the artefact view ships (and amend the post-session hook), or keep companions for the interim. Relates to the "Artefact rendering fragmentation" entry in Done.
+
 ### Repo hygiene check ("forge doctor")
 **Captured:** 2026-08-02 · Routed by The Arbiter, approved by the human
 **Why it matters:** A manual audit against a set of AGENTS.md-style
