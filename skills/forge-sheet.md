@@ -264,6 +264,14 @@ Check the current pipeline phase (from the running brief or the Delivery Manager
 
 Write the complete updated JSON to `sheet/state/[projectSlug].json`. The write is always a full file replacement — no partial updates.
 
+**Apply the update with a script.** The state file accretes without
+bound; never pass its full content through the model's context to
+rewrite it. Read it programmatically, apply the changes (append blocks,
+transition states, update the roster), and write it back in the same
+script. Model tokens are spent on the new content only — the block
+prose being added — never on re-emitting what is already there.
+Cost ruling, 2026-08-04.
+
 ---
 
 ## Session initialisation (first exchange of a new project)

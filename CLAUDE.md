@@ -407,6 +407,8 @@ criterion. In practice:
   feature's verification suite; run the checks that touch the change
   class. The full pipeline keeps its roles at every size — what
   scales is the depth of each pass, never whether a pass happens.
+  Mechanics: the three gears in `build-team/delivery-manager.md`
+  ("Gears") — every assignment names one.
 - **State writes are surgical.** Never pass a whole accreting file
   through the model to append to it; script the append.
 - **Duplication across stores is a cost, not diligence.** Record a

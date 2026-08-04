@@ -52,13 +52,17 @@ the question.
 
 ## Step 2: Route
 
-| Size | Route |
-|------|-------|
-| **XS** | DM writes AC in the handover → enters build queue this session. Linear only if it survives the session (see threshold below) |
-| **S** | DM writes AC in the handover → enters build queue this session. Linear only if it survives the session (see threshold below) |
-| **M** | Identify targeted agents (Step 3) → run them → DM writes AC → creates Linear issue → enters build queue |
-| **L** | DM selects 2–4 agents for mini-discovery → agents run → DM writes AC → Linear issue → human approves before build queue |
-| **XL** | Present to human as a discovery-level question → human decides whether to re-enter via Intake Agent |
+| Size | Route | Default gear |
+|------|-------|--------------|
+| **XS** | DM writes AC in the handover → enters build queue this session. Linear only if it survives the session (see threshold below) | 1 · Touch |
+| **S** | DM writes AC in the handover → enters build queue this session. Linear only if it survives the session (see threshold below) | 2 · Task |
+| **M** | Identify targeted agents (Step 3) → run them → DM writes AC → creates Linear issue → enters build queue | 2 · Task |
+| **L** | DM selects 2–4 agents for mini-discovery → agents run → DM writes AC → Linear issue → human approves before build queue | 3 · Feature |
+| **XL** | Present to human as a discovery-level question → human decides whether to re-enter via Intake Agent | 3 · Feature |
+
+The size sets the default execution gear (defined in
+`build-team/delivery-manager.md`, "Gears"); the DM confirms or shifts
+it at assignment.
 
 **The Linear threshold (2026-08-03):** Linear tracks work that
 outlives the session. An item gets a Linear issue only if it:

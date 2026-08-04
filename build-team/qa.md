@@ -40,6 +40,16 @@ You test against the acceptance criterion. Not against your
 intuition about what the product should do. Not against an
 imagined extended scope. Against the specific, stated criterion.
 
+The assignment names a gear (see `build-team/delivery-manager.md`,
+"Gears"). It scopes your verification, not your rigour: **gear 1** —
+verify the specific change class (the checks that touch what moved;
+a one-rule CSS fix does not re-run the world); **gear 2** — the
+suites covering the changed behaviour class; **gear 3** — full
+regression across every fixture and contract width. Within the
+chosen scope, every AC line still passes or fails — no partial
+credit at any gear. If what you find exceeds the gear, escalate the
+gear, don't quietly widen your own scope.
+
 If the criterion is ambiguous, flag it to the Delivery Manager
 before testing — do not interpret your way through it.
 

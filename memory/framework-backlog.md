@@ -25,10 +25,6 @@ to the change.
 **Captured:** 2026-08-04 · from the same token-cost review
 **Why it matters:** 21KB auto-loaded every session. The pipeline is described twice (prose + diagram), the agent directory restates what agent frontmatter already holds, and the running brief overlaps the handover almost entirely once a heat closes. Shape: one description of the pipeline, directory table trimmed to file + one-line role, and a ruling on whether the running brief survives heat close or is superseded by the handover.
 
-### Proportional pipeline: an XS lane and proportional verification
-**Captured:** 2026-08-04 · human: "feels like we boil the ocean sometimes for things that are simple"
-**Why it matters:** The build pipeline applies in full "regardless of how small the task appears," and the framework's own escape clause ("if the pipeline is too slow for a class of task, improve the pipeline") has never been exercised. Evidence from the 2026-08-04 heat: a one-rule CSS fix (stamp optical centring) ran the full 51-check browser suite twice plus 3× screenshots; five one-line alignment fixes carried the same ceremony as a feature. Quality held — QA caught real defects the same morning — so the lane must keep the roles, not drop them. Shape: feature-triage's XS class gets a defined fast lane (Engineer fixes; Reviewer does the design audit on the touched surface only; QA verifies the specific change class, not the world); verification effort scales with blast radius by rule, not by mood.
-
 ### Cost and time instrumentation per heat
 **Captured:** 2026-08-04 · ruled by the human: token cost and time spent are KPIs alongside quality and accuracy
 **Why it matters:** The ruling is codified in CLAUDE.md governance (same date), but nothing measures it yet — today's costs were only visible because the human asked. Shape: the heat handover gains a small costs section (elapsed wall-clock per task, rough token weight of the session's heavy surfaces, deviations taken for cost reasons); the Observer watches for ceremony whose cost exceeds its return and files it here. Start crude — a number that exists beats a methodology that doesn't.
@@ -203,6 +199,17 @@ agent above.
 ---
 
 ## Done
+
+### Proportional pipeline — the three gears · 2026-08-04
+Captured and implemented same day, ruled by the human ("create the
+gears"). Gears defined in `build-team/delivery-manager.md` (1 Touch /
+2 Task / 3 Feature; named at assignment; roles never skipped, depth
+scales; no silent down-shift; data-model/entitlement/contract work
+never gear 1). Depth notes added to `reviewer.md` and `qa.md`; triage
+sizes map to default gears in `skills/feature-triage.md`; pointer in
+CLAUDE.md governance. The scripted-append half of the state-writes
+entry landed alongside (skills/forge-sheet.md step 10); its delta
+discipline and collapse policy remain open above.
 
 ### Linear value threshold · 2026-08-03
 Resolved same day it was captured. The human, after three XS items in

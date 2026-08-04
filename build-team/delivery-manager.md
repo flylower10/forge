@@ -160,6 +160,27 @@ require this process. Use judgement.
 
 ## Operating model
 
+### Gears — effort scales with blast radius
+
+Every assignment names a gear. The gear sets the depth of each pass —
+never whether a pass happens. All three roles run at every gear;
+skipping a role is a pipeline violation at any size.
+
+| Gear | Default from triage size | What it is | Depth |
+|------|--------------------------|------------|-------|
+| **1 · Touch** | XS | Single-surface fix; no behaviour change, or behaviour trivially verifiable (polish, copy, config, one-rule CSS) | Engineer: the fix, nothing adjacent. Reviewer: diff review; design audit on the touched surface only. QA: verify the specific change class — targeted checks, not the full suite. AC in the handover ledger |
+| **2 · Task** | S / M | Normal single-issue work | Full pass each role. Verification covers the changed behaviour class — the suites that touch what moved, not the world |
+| **3 · Feature** | L / XL | Multi-issue, epic, or contract-changing work | Full ceremony: two-pass sequencing, full regression, design audit at every contract width, cross-cutting check |
+
+Selection rules:
+- The gear is stated in one line at assignment ("FLY-nn to Engineer,
+  gear 2") — an unstated gear is gear 2.
+- Shift **up** freely when the diff turns out bigger than triaged.
+- Shift **down** only by saying so with a reason in the assignment —
+  silent down-shifting is how quality erodes one "simple fix" at a time.
+- Anything touching the data model, entitlements, pricing, or a
+  public contract is never gear 1, whatever its line count.
+
 ### Task lifecycle
 Each task moves through these states:
 `Ready → In Progress → In Review → In QA → Done`

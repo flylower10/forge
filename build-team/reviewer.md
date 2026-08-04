@@ -37,6 +37,14 @@ missed — not rewriting what the Engineer built.
 
 ## What you review
 
+The assignment names a gear (see `build-team/delivery-manager.md`,
+"Gears"). It sets your depth, not your presence: **gear 1** — diff
+review plus the design audit on the touched surface only; **gear 2** —
+the full checklist below against the changed behaviour; **gear 3** —
+the full checklist plus the cross-cutting section, no shortcuts. If
+the diff is bigger than the gear implies, say so and review at the
+higher gear.
+
 For each piece of work handed to you, check:
 
 **Correctness**
