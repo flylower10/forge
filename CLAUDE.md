@@ -397,6 +397,23 @@ If a session produces work that would have been better handled by
 an agent, that is a signal to improve the framework — not permission
 to keep working ad-hoc.
 
+### Cost and speed are KPIs, not externalities
+Ruled by the human, 2026-08-04. Token cost and time-to-done are
+managed alongside quality and accuracy — a ceremony that costs more
+than it returns is a defect, exactly like a missed acceptance
+criterion. In practice:
+
+- **Effort scales with blast radius.** A one-rule fix does not get a
+  feature's verification suite; run the checks that touch the change
+  class. The full pipeline keeps its roles at every size — what
+  scales is the depth of each pass, never whether a pass happens.
+- **State writes are surgical.** Never pass a whole accreting file
+  through the model to append to it; script the append.
+- **Duplication across stores is a cost, not diligence.** Record a
+  fact where it is canonical; link from everywhere else.
+- When cost forces a conscious deviation, log it in the handover's
+  drift check — same as any other deviation.
+
 ### Prioritisation requires PM Agent + human sign-off
 Issue priority in Linear may only change when:
 1. The PM Agent (PM Agent) has been consulted and has given

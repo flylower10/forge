@@ -13,6 +13,26 @@ to the change.
 
 ## Open
 
+### Sheet state writes: delta protocol, scripted appends codified
+**Captured:** 2026-08-04 · from the human's token-cost question at heat close
+**Why it matters:** `state.json` hit 157KB (97KB prose) after three sessions and `skills/forge-sheet.md` specifies a full-file read-and-rewrite per exchange. In practice the writer mitigated with scripted surgical appends (Python, never passing the whole file through the model) and batched writes — but neither mitigation is written down, so any other session pays the naive cost. Shape: amend the skill to mandate scripted appends over model-mediated rewrites, define a delta discipline (touch only the blocks/arrays that changed), and pull the collapse policy forward — cost scales with file size long before 50 sessions.
+
+### One fact, five stores — name the canonical store per fact class
+**Captured:** 2026-08-04 · from the same token-cost review
+**Why it matters:** A completed task today landed in a Linear comment, a sheet block, the resurfacing log, the handover, and (for rulings) framework files. Nothing says which store is canonical for what, so the safe behaviour is "write it everywhere." Shape: a short map in CLAUDE.md or the handover protocol — Linear owns task completion detail; the sheet owns the human-readable moment; the handover owns state-of-world; duplication beyond the map is a defect, not diligence.
+
+### CLAUDE.md diet
+**Captured:** 2026-08-04 · from the same token-cost review
+**Why it matters:** 21KB auto-loaded every session. The pipeline is described twice (prose + diagram), the agent directory restates what agent frontmatter already holds, and the running brief overlaps the handover almost entirely once a heat closes. Shape: one description of the pipeline, directory table trimmed to file + one-line role, and a ruling on whether the running brief survives heat close or is superseded by the handover.
+
+### Proportional pipeline: an XS lane and proportional verification
+**Captured:** 2026-08-04 · human: "feels like we boil the ocean sometimes for things that are simple"
+**Why it matters:** The build pipeline applies in full "regardless of how small the task appears," and the framework's own escape clause ("if the pipeline is too slow for a class of task, improve the pipeline") has never been exercised. Evidence from the 2026-08-04 heat: a one-rule CSS fix (stamp optical centring) ran the full 51-check browser suite twice plus 3× screenshots; five one-line alignment fixes carried the same ceremony as a feature. Quality held — QA caught real defects the same morning — so the lane must keep the roles, not drop them. Shape: feature-triage's XS class gets a defined fast lane (Engineer fixes; Reviewer does the design audit on the touched surface only; QA verifies the specific change class, not the world); verification effort scales with blast radius by rule, not by mood.
+
+### Cost and time instrumentation per heat
+**Captured:** 2026-08-04 · ruled by the human: token cost and time spent are KPIs alongside quality and accuracy
+**Why it matters:** The ruling is codified in CLAUDE.md governance (same date), but nothing measures it yet — today's costs were only visible because the human asked. Shape: the heat handover gains a small costs section (elapsed wall-clock per task, rough token weight of the session's heavy surfaces, deviations taken for cost reasons); the Observer watches for ceremony whose cost exceeds its return and files it here. Start crude — a number that exists beats a methodology that doesn't.
+
 ### Extend provings with prototype discipline (Matt Pocock's skill)
 **Captured:** 2026-08-03 · flagged by the human as a side quest during the forge-dashboard discovery
 **Source:** github.com/mattpocock/skills — skills/engineering/prototype/SKILL.md. The human tends to agree with the intent.
