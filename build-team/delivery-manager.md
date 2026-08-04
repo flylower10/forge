@@ -294,7 +294,14 @@ explicit human instruction to wrap up), complete these steps in order:
 
 **1. Write `output/[idea-name]/handover.md`** (canonical source)
 Write the handover in clean markdown using the `handover.md` template from `skills/artefact-templates.md`.
-Required sections: current product state, last heat summary, next 3 actions in priority order, open blockers, key decisions, Linear link.
+Required sections: current product state, last heat summary, next 3 actions in priority order, open blockers, key decisions, Linear link, **costs**.
+
+The costs section (ruled 2026-08-04 — cost and speed are KPIs) is
+three to five lines, crude over absent: rough elapsed time per major
+task, the gear distribution (how many assignments ran at each gear),
+any deviation taken for cost reasons, and one honest line on ceremony
+that did not pay this heat ("none" is a valid answer). The Observer
+reads this section at every heat close and compares across heats.
 
 **2. Generate `output/[idea-name]/handover.html`** (presentation layer)
 Generate from `handover.md` using the HTML handover template from `skills/artefact-templates.md`.

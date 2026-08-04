@@ -58,13 +58,12 @@ A solo Forge builder (Aidan). Dark IDE primary screen, Claude Code in terminal, 
    - Heuristic alarm: confirm hooks fire per exchange and can write a file mid-session
    - Semantic audit: confirm independent Claude call can access conversation history; establish cadence and cost
 
-2. **State format** — canonical schema locked by FLY-75. Full reference: `sheet/docs/schema.md`. Summary:
-   - Top level: `projectSlug` (required — used by audit script), `phase`, `handover`, `sessions[]`, `agents[]`, `concerns[]`, `alerts[]`
-   - `sessions[]`: id, date, label, `collapsed` (false = current; true = prior), `agentDigests[]` (written on collapse), `blocks[]`
-   - `blocks[]`: id, kind, digest, `fullContent` (required, not optional), state, attribution, concernRefs, sessionId, `arrivedAt`
-   - `agents[]`: name, role, state (atHeat / settled / quenched), minutesAtHeat
-   - `concerns[]`: id, title, state, wavesOpen, closedBy, anchorBlockId
-   - `alerts[]`: id, type (heuristic / semantic), state (active / cleared), detail, firedAt, clearedAt
+2. **State format** — `sheet/docs/schema.md` is the single source of
+   truth; read it, don't trust summaries. Locked by FLY-75, extended by
+   FLY-86 (artefact refs with review snapshots, risk objects, link
+   fields, `digestPoints[]`, the `carried` concern state, top-level
+   `resurfacingLog[]`). A field list previously duplicated here went
+   stale within two days of FLY-86 — that is why it is gone.
    - Design for ~10–30 sessions. Collapse policy at ~50–70 sessions (not a v1 constraint).
    - Fixtures in `sheet/fixtures/`: live.json (P1), alarm.json (P1 + alarm), at-rest.json (P3), no-state.json (P4)
 

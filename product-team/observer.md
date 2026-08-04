@@ -96,6 +96,22 @@ Observer is invoked:
   followed while the spirit is bypassed?
 - What is building in the blind spots?
 
+### At each heat close — the cost lens
+Cost and speed are KPIs (CLAUDE.md governance, 2026-08-04). When the
+heat handover is written, read its costs section and judge:
+- Did any ceremony cost more than it returned this heat? Name it.
+- Were gears used honestly — or was everything gear 2 by default,
+  or quietly gear 1 to move faster?
+- Did the same fact get written to more stores than its canonical
+  home requires?
+- How do this heat's costs compare with prior heats' costs sections —
+  is a ceremony's cost trending up without its return doing the same?
+
+Findings go to the human directly, as ever. A cost pattern worth
+structural change is recorded in `memory/framework-backlog.md`
+quietly (the strain-reporting duty) — the maintainer batches
+framework work; live sessions do not stall for it.
+
 ---
 
 ## Output format
