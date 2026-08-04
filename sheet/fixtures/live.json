@@ -25,6 +25,11 @@
           "id": "blk-002",
           "kind": "decision",
           "digest": "Inline storage: fullContent is required in every block — not optional.",
+          "digestPoints": [
+            "fullContent is stored inline and required in every block",
+            "one session is about 24 KB; thirty sessions parse in about 7 ms",
+            "reference storage rejected — complexity with no benefit at this scale"
+          ],
           "fullContent": "Decision from FLY-72: store fullContent inline in state.json as a required field. At 30 blocks per session, one session is 24.4 KB. At 30 sessions, 732 KB — JSON.parse completes in ~7ms. Reference storage rejected: adds complexity with no benefit at this scale. P2 (passage detail) reads fullContent directly from state.json without a secondary fetch.",
           "state": "settled",
           "attribution": "Engineer",
@@ -50,7 +55,9 @@
           "fullContent": "Decision from FLY-74: semantic audit is v1 scope, not post-v1. The session JSONL at ~/.claude/projects/[dir]/[session-id].jsonl is readable mid-session without locking. An independent claude haiku -p call correctly identifies omissions from a mock conversation. Cost: ~$0.003/audit (~$1/year). Cadence: on demand + at session end (Banking the Fire). projectSlug must be a top-level field in state.json so the audit script can find the correct state file.",
           "state": "settled",
           "attribution": "Engineer",
-          "concernRefs": ["con-001"],
+          "concernRefs": [
+            "con-001"
+          ],
           "sessionId": "sess-001",
           "arrivedAt": "2026-08-01T20:15:00Z"
         },
@@ -70,11 +77,136 @@
           "kind": "commitment",
           "digest": "State schema is locked. FLY-76 (shell P1) can begin immediately after this task ships.",
           "fullContent": "The state.json schema is now canonical and locked for v1. The four fixture files cover all four captured states. FLY-76 (shell P1 — live sheet) is unblocked and can begin. The Engineer's first action in FLY-76: build the shell against the live.json fixture and verify all block kinds render with correct visual treatment.",
+          "state": "settled",
+          "attribution": "Delivery Manager",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:22:00Z",
+          "linearUrl": "https://linear.app/flylower/issue/FLY-75/state-format-canonical-schema",
+          "mergeRequestUrl": "https://github.com/flylower10/forge/pull/12",
+          "fileRefs": [
+            {
+              "path": "sheet/docs/schema.md"
+            },
+            {
+              "path": "sheet/index.html",
+              "line": 904
+            }
+          ]
+        },
+        {
+          "id": "blk-007",
+          "kind": "decision",
+          "digest": "The resurfacing promise ships untested. Risk accepted — instrument it so a miss is visible, not silent.",
+          "fullContent": "The sheet promises to resurface settled decisions when a conversation touches them, and that ability is unproven. Put to the human as a High risk: if wrong, the builder delegates on the strength of a net that catches only sometimes. The human accepted the risk and chose to proceed without a proving. Condition of acceptance: resurfacing is instrumented from day one — every decision-record check is logged, so a miss is countable rather than silent.",
+          "state": "settled",
+          "attribution": "Delivery Manager",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:25:00Z",
+          "risk": {
+            "level": "high",
+            "stake": "if wrong — the builder trusts a net that catches only sometimes",
+            "state": "accepted",
+            "proposedBy": "Devil's Advocate",
+            "proposedAt": "2026-08-01T20:24:00Z",
+            "ruledBy": "Human",
+            "ruledAt": "2026-08-01T20:25:00Z"
+          }
+        },
+        {
+          "id": "blk-007r",
+          "kind": "question",
+          "digest": "The two-week trial could end without a single unprompted return. Accept that risk before the shell build continues?",
+          "fullContent": "Put to you before the shell build continues: the two-week usage trial may end without a single unprompted return to the sheet. If that happens, the shell work done in the meantime was built on an unvalidated habit. Accept the risk and continue, or hold the build until the first week reports.",
+          "state": "settled",
+          "attribution": "Devil's Advocate",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:25:15Z",
+          "risk": {
+            "level": "medium",
+            "stake": "if wrong — a fortnight of shell work leans on a habit that never formed",
+            "state": "proposed",
+            "proposedBy": "Devil's Advocate",
+            "proposedAt": "2026-08-01T20:25:15Z",
+            "ruledBy": null,
+            "ruledAt": null
+          }
+        },
+        {
+          "id": "blk-007a",
+          "kind": "correction",
+          "digest": "Correction: the audit cadence is on demand plus heat handover — not hourly, as earlier stated.",
+          "fullContent": "Correction to the earlier semantic audit note: the cadence decided in FLY-74 is on demand plus at heat handover. The 'hourly' figure mentioned in passing was wrong and is superseded.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:25:30Z"
+        },
+        {
+          "id": "blk-007b",
+          "kind": "finding",
+          "digest": "The session JSONL keeps growing mid-write but never locks — safe to read at any moment.",
+          "fullContent": "Empirical observation from the audit proving: the session JSONL at ~/.claude/projects/ grows while Claude writes but is never locked. Reading mid-session returned valid lines every time across twenty attempts.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:26:00Z"
+        },
+        {
+          "id": "blk-007c",
+          "kind": "musing",
+          "digest": "If the sheet ever renders for two people at once, whose glance does the hero serve?",
+          "fullContent": "Speculative: the sheet is designed for one builder, but Forge is open source. If two people ever watch the same session, the hero's 'what needs you' framing has two answers. Not a v1 question — noted so it isn't lost.",
+          "state": "settled",
+          "attribution": "Delivery Manager",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:26:30Z"
+        },
+        {
+          "id": "blk-007d",
+          "kind": "untyped",
+          "digest": "A half-formed note about favicon licensing that fits no category — kept rather than dropped.",
+          "fullContent": "The favicon exploration turned up a note about SVG favicon support in older Safari versions that is neither a finding nor a decision yet. Kept as untyped: an untyped block is always preferable to a dropped block.",
+          "state": "settled",
+          "attribution": "Engineer",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:27:00Z"
+        },
+        {
+          "id": "blk-007g",
+          "kind": "question",
+          "digest": "The glossary changed since you last signed it off — re-read the delta before the next term lands.",
+          "fullContent": "The domain glossary has moved since your last read: one definition reworded and a relationships section added. The room shows the document with the delta marked — read the changed and new passages, then confirm or flag in the session.",
+          "state": "settled",
+          "attribution": "Delivery Manager",
+          "concernRefs": [],
+          "sessionId": "sess-001",
+          "arrivedAt": "2026-08-01T20:27:30Z",
+          "artefactRef": {
+            "path": "sheet/docs/context.md",
+            "reviewSnapshot": "---json\n{\n  \"type\": \"context\",\n  \"file\": \"output/forge-viewer/context.md\",\n  \"title\": \"Context: Forge Sheet\",\n  \"tagline\": \"Domain glossary for Forge Sheet — definitions only, no implementation details.\",\n  \"phase\": \"discovery\",\n  \"status\": \"Active\",\n  \"lastEdit\": \"2026-07-31 · Synthesis\",\n  \"stats\": [\n    { \"k\": \"Phase\", \"v\": \"Discovery\", \"phase\": true },\n    { \"k\": \"Terms\", \"v\": \"10\" },\n    { \"k\": \"Maintained by\", \"v\": \"Synthesis + Delivery Manager\" }\n  ]\n}\n---\n# Context: Forge Sheet\nDomain glossary — pure definitions, no implementation details.\n\n## The sheet\n\nThe rendered page the builder reads on his second monitor. One continuous accreting document per project; all sessions grouped on it. \"The sheet\" refers to both the HTML shell when rendered and the metaphor it is built on (the physical drafting sheet a designer works on).\n_Avoid:_ \"the viewer\", \"the companion app\", \"the dashboard\".\n\n## state.json\n\nOne JSON file per project that Forge Sheet reads from. It is the sole source of truth the shell renders. Claude writes it during sessions; the shell polls it. It accretes across sessions.\n_Avoid:_ \"the database\", \"the data file\", \"session file\".\n\n## Content kind\n\nThe classification of a passage's role in the session. Seven named kinds plus a mandatory fallback. Determines how a passage renders on the sheet (its attention tier and visual treatment).\n_Avoid:_ \"content type\", \"message category\".\n\n## Untyped\n\nThe mandatory fallback content kind. Anything unclassifiable renders as untyped.\n\n## Quench / quenched\n\nResolution of an agent or concern. Agents are \"quenched\" when their work on the project is done; concerns are \"quenched\" when resolved. Quenched marks cool into the warm-grey ramp visually — they remain in the margin but visually recede.\n_Avoid:_ \"done\", \"resolved\", \"completed\", \"closed\" when referring to Forge Sheet states.\n\n## At heat\n\nAn agent currently writing in the active session. Heat increases with time at work — an agent that has been writing for 25 minutes is hotter than one that just started. The roster communicates this through the incandescence heat system.\n_Avoid:_ \"active\", \"running\", \"in progress\" when referring to the roster state.\n\n## Smoke alarm\n\nThe two-tier coverage system that detects when the sheet may be falling behind the session. Tier 1: heuristic (hook-based, always on — fires when exchanges pass without state updates). Tier 2: semantic audit (independent Claude call — compares conversation against sheet). When either tier fires, a banner appears on the sheet.\n\n## Semantic audit\n\nThe second tier of the smoke alarm. An independent Claude call that reads both the conversation record and the current sheet and identifies omissions. It is independent of the sheet-writing skill — a key constraint: an audit that shares the writer's blind spots cannot catch them.\n\n## Passage detail\n\nThe drill-down view (P2). Full-density content behind a single passage, opened by clicking the passage or its digest line. One action returns the reader to their exact previous position. The escape hatch that makes trusting the digest safe.\n_Avoid:_ \"drill-down view\", \"detail pane\", \"expanded view\".\n\n## Heat system\n\nThe colour system for Forge Sheet's accent. Grounded in black-body incandescence — a smith reads metal readiness by colour. Ember (#C22400) → cherry (#E62E0F) → furnace (#FF7A1A) → lemon (#FFC940). Heat = now and energy. Quench = resolve, marks cool to the warm-grey ramp.\n_Avoid:_ \"colour system\", \"accent system\", \"theme\".\n"
+          }
+        },
+        {
+          "id": "blk-008",
+          "kind": "question",
+          "digest": "Does the locked schema match how you think about a session? Read it once before the shell is built against it.",
+          "fullContent": "The schema is locked and the shell will be built against it. Before FLY-76 starts, read sheet/docs/schema.md once: does the block model — kinds, digests, states — match how you actually think about a session? Confirm or flag in the session; the sheet only records.",
           "state": "live",
           "attribution": "Delivery Manager",
           "concernRefs": [],
           "sessionId": "sess-001",
-          "arrivedAt": "2026-08-01T20:22:00Z"
+          "arrivedAt": "2026-08-01T20:28:00Z",
+          "artefactRef": {
+            "path": "sheet/docs/schema.md",
+            "reviewSnapshot": "sha256:6b0f0d3a91b7c2a8d54e9f1c73b2a6e8d90c4f512ab37e6d8b19c0a2f4e5d6c7"
+          }
         }
       ]
     }
@@ -103,5 +235,25 @@
       "anchorBlockId": "blk-004"
     }
   ],
-  "alerts": []
+  "alerts": [],
+  "resurfacingLog": [
+    {
+      "topic": "where a second project's state file should live",
+      "matchedDecision": "blk-004",
+      "surfaced": "yes",
+      "checkedAt": "2026-08-01T20:20:00Z"
+    },
+    {
+      "topic": "storing full text inline versus by reference",
+      "matchedDecision": "blk-002",
+      "surfaced": "no",
+      "checkedAt": "2026-08-01T20:25:00Z"
+    },
+    {
+      "topic": "fixture coverage for the shell build",
+      "matchedDecision": null,
+      "surfaced": "no",
+      "checkedAt": "2026-08-01T20:28:00Z"
+    }
+  ]
 }

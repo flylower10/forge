@@ -125,6 +125,14 @@
       "wavesOpen": 1,
       "closedBy": "blk-004",
       "anchorBlockId": "blk-003"
+    },
+    {
+      "id": "con-002",
+      "title": "Forge mark + favicon build-target status unresolved",
+      "state": "carried",
+      "wavesOpen": 2,
+      "closedBy": null,
+      "anchorBlockId": "blk-s0-002"
     }
   ],
   "alerts": []

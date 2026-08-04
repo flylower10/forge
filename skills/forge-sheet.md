@@ -105,7 +105,34 @@ said plainly in one or two short sentences, the block covers too much:
 split it or cut detail. The reader gets it on the first pass or the
 digest has failed.
 
-**3. Transition block states**
+**3. Check the decision record**
+
+Take each topic this exchange touched — anything discussed, proposed, or
+worked on — and check it against the decision blocks already on the sheet
+(every block with `kind: "decision"`, in any session). Ask: does this
+topic touch something already decided?
+
+**Every check writes an entry** to the top-level `resurfacingLog[]`,
+hit or miss:
+
+```json
+{
+  "topic": "[what the exchange touched, in plain words]",
+  "matchedDecision": "[block id, or null if no decision matched]",
+  "surfaced": "[yes | no]",
+  "checkedAt": "[ISO datetime now]"
+}
+```
+
+`surfaced: "yes"` means the decision was actually said aloud in the
+session when the topic arose — not that you noticed it now. If you find
+a match at write time that was not surfaced in the response, log it
+honestly as `surfaced: "no"` and raise it at the next opportunity. A
+match logged as unsurfaced is a countable miss — that is the point.
+Do not skip the check on quiet exchanges; a check that finds nothing
+writes `matchedDecision: null`. Never edit or prune old entries.
+
+**4. Transition block states**
 
 Every block currently marked `state: "live"` becomes `state: "settled"`.
 
@@ -113,7 +140,7 @@ New blocks for this exchange enter as `state: "live"`.
 
 A block becomes `state: "quenched"` when the concern it anchors is resolved — do this at the same step as quenching the concern.
 
-**4. Construct each block**
+**5. Construct each block**
 
 ```json
 {
@@ -135,7 +162,38 @@ A block becomes `state: "quenched"` when the concern it anchors is resolved — 
 
 `concernRefs`: if this block opens or closes a concern, add the concern's id here.
 
-**5. Update agent roster**
+**Optional block fields — write them when they are earned:**
+
+- `digestPoints[]` — when the digest's content enumerates (several
+  decisions, options, steps), write the points as an array of short
+  strings, one per line, alongside `digest`. The digest stays a plain
+  one-glance sentence; the points carry the enumeration. Never pack an
+  enumeration into the digest as flowed prose.
+
+- `artefactRef` — when the block puts a document to the human for review
+  (an artefact-carrying question), attach `{ "path": "[repo-relative
+  path]", "reviewSnapshot": "[the artefact's text right now, or
+  sha256:<hex> of it if the file is longer than ~4 KB]" }`. Capture the
+  snapshot at the moment you write the block — it is what the human is
+  signing off against, even if the file changes later. Paths are always
+  repo-relative, never absolute.
+
+- `risk` — when a risk is put to the human, the block carries
+  `{ "level": "high|medium|low", "stake": "[what happens if it lands —
+  the 'if wrong' line]", "state": "proposed", "proposedBy": "[agent]",
+  "proposedAt": "[now]", "ruledBy": null, "ruledAt": null }`. When the
+  human rules, write a new block for the ruling and update this risk's
+  `state` to `"accepted"` or `"rejected"` with `ruledBy` and `ruledAt`
+  filled in. The ruling happens in the session; the sheet only records.
+
+- `linearUrl` / `mergeRequestUrl` — when the block concerns a specific
+  Linear issue or merge request, carry its full URL.
+
+- `fileRefs[]` — when the block's prose refers to specific files, list
+  them as `{ "path": "[repo-relative]", "line": [number, optional] }`.
+  Repo-relative always — the shell builds the editor link itself.
+
+**6. Update agent roster**
 
 Agents active in this exchange: `state: "atHeat"`, increment `minutesAtHeat` by 2 (one exchange ≈ 2 minutes — rough but consistent).
 
@@ -150,7 +208,7 @@ Human counts as an agent if they drove significant content; otherwise omit.
 - `10–24` → cherry
 - `≥ 25` → furnace
 
-**6. Update concerns**
+**7. Update concerns**
 
 If a new concern was raised this exchange: create a concern entry:
 ```json
@@ -164,7 +222,7 @@ If a new concern was raised this exchange: create a concern entry:
 }
 ```
 
-If an existing open concern was resolved this exchange:
+If an existing open or carried concern was resolved this exchange:
 ```json
 {
   "state": "quenched",
@@ -176,7 +234,7 @@ If an existing open concern was resolved this exchange:
 
 A concern with `wavesOpen ≥ 2` earns STRIKE treatment in the shell — this happens automatically by the renderer. Nothing extra to write.
 
-**7. Update alerts**
+**8. Update alerts**
 
 If an active heuristic alert exists in `alerts[]` and the skill is now running (state is being updated): clear it.
 ```json
@@ -198,11 +256,11 @@ If the heuristic alarm sidecar (`sheet/state/[slug].alarm.json`) exists and cont
 }
 ```
 
-**8. Update phase**
+**9. Update phase**
 
 Check the current pipeline phase (from the running brief or the Delivery Manager's context). If it has changed since the last write, update the top-level `phase` field. Valid values: `"discovery"` / `"refinement"` / `"development"` / `"delivery"`.
 
-**9. Write the file**
+**10. Write the file**
 
 Write the complete updated JSON to `sheet/state/[projectSlug].json`. The write is always a full file replacement — no partial updates.
 
@@ -229,11 +287,16 @@ If no state.json exists, create it:
   ],
   "agents": [],
   "concerns": [],
-  "alerts": []
+  "alerts": [],
+  "resurfacingLog": []
 }
 ```
 
 Then apply the exchange update steps above.
+
+If an existing state file predates the resurfacing log, add
+`"resurfacingLog": []` at the top level on the next write — the log
+counts from the first day it exists.
 
 ---
 
@@ -247,7 +310,9 @@ When a new session begins on an existing project:
 
 1. Set the previous session's `collapsed: true`
 2. Write `agentDigests` for the collapsing session — one entry per agent that was active. Fields: `agentName`, `role`, `established` (1–2 sentences on what they established), `view` (their stance or recommendation), `openItems` (unresolved items handed forward)
-3. For all still-open concerns: increment `wavesOpen` by 1
+3. For all still-open concerns: increment `wavesOpen` by 1 and set
+   `state: "carried"` — an unresolved concern that outlives its session
+   is carried, and it stays carried until quenched
 4. Append a new session entry to `sessions[]` with `collapsed: false`, today's date, a label, and empty `blocks[]`
 5. Set all previous `atHeat` agents to `quenched`
 
@@ -274,6 +339,8 @@ Target ≥ 90% classification (≤ 10% untyped). Review: if more than 1 in 10 bl
 ## Failure modes to avoid
 
 - Writing only a summary block for a complex exchange — each distinct moment needs its own block
+- Skipping the decision-record check on a quiet exchange — every exchange logs a check, even one that finds nothing
+- Logging `surfaced: "yes"` for a decision you only noticed at write time — if it wasn't said aloud in the session, it is a miss; log it as one
 - Leaving `fullContent` abbreviated — write the actual exchange content
 - Forgetting to transition "live" → "settled" for previous blocks
 - Incrementing `wavesOpen` mid-session (it increments once per session start, not per exchange)

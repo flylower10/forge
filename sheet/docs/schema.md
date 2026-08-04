@@ -1,7 +1,11 @@
 # Forge Sheet · state.json schema
 
 Canonical schema for v1. Locked by FLY-75 (2026-08-01).
+Extended by FLY-86 (2026-08-04): artefact refs, risk objects, link fields,
+`digestPoints[]`, the `carried` concern state, and the top-level `resurfacingLog[]`.
 Both the shell (reader) and the sheet-writing skill (writer) must conform to this exactly.
+All FLY-86 block fields are optional — the shell ignores fields it does not know,
+so state written to this schema renders on the pre-FLY-86 shell without breakage.
 
 ---
 
@@ -15,7 +19,8 @@ Both the shell (reader) and the sheet-writing skill (writer) must conform to thi
   "sessions": [],
   "agents": [],
   "concerns": [],
-  "alerts": []
+  "alerts": [],
+  "resurfacingLog": []
 }
 ```
 
@@ -26,8 +31,9 @@ Both the shell (reader) and the sheet-writing skill (writer) must conform to thi
 | `handover` | string \| null | yes | Text of the most recent Banking the Fire handover. Pinned at the top of P3 (sheet at rest). Null until the first heat ends. |
 | `sessions` | array | yes | Ordered oldest-first. Never deleted — sessions accrete. |
 | `agents` | array | yes | Current roster across the whole project (not per-session). |
-| `concerns` | array | yes | All concerns, open and quenched. Never deleted. |
+| `concerns` | array | yes | All concerns, open, carried, and quenched. Never deleted. |
 | `alerts` | array | yes | Active and cleared smoke alarm alerts. |
+| `resurfacingLog` | array | no | One entry per decision-record check the writer performs. Append-only. Absent in pre-FLY-86 state files. See `resurfacingLog[]` below. |
 
 ---
 
@@ -88,12 +94,81 @@ Written when a session is collapsed. Assembled from the agents' handoff blocks f
 | `id` | string | yes | Unique block id within the project. Format: `blk-NNN` or `blk-[sess]-NNN`. |
 | `kind` | string | yes | One of: `question` / `decision` / `correction` / `commitment` / `finding` / `context` / `musing` / `untyped`. The skill must classify every block; `untyped` is the mandatory fallback — never omit a block. |
 | `digest` | string | yes | 1-2 sentence summary. This is what the sheet shows without drill-down. |
+| `digestPoints` | array | no | Structured bullets alongside `digest`, one short string per point. Written when the digest's content enumerates (D-A rendering: true bullets, never flowed prose). `digest` remains required and remains the one-glance sentence. |
 | `fullContent` | string | yes | Full text. Required — not optional. P2 (passage detail) reads this directly from state.json. |
 | `state` | string | yes | `"live"` — the most recent block(s) in the current session; `"settled"` — written and no longer the latest; `"quenched"` — a concern or question this block anchored has been resolved. |
 | `attribution` | string | yes | Agent name or `"Human"`. |
 | `concernRefs` | array | yes | Array of concern ids (`con-NNN`) this block is tied to. Empty array if none. |
 | `sessionId` | string | yes | Must match the parent session's `id`. |
 | `arrivedAt` | string | yes | ISO datetime when this block was written. Used for arrival treatment animation timing. |
+| `artefactRef` | object | no | Present on artefact-carrying blocks (typically a question putting a document to the human). See "Artefact references" below. |
+| `risk` | object | no | Present when the block puts a risk to the human or records its ruling. See "Risk objects" below. |
+| `linearUrl` | string | no | Full URL of the Linear issue this block concerns, when there is one. |
+| `mergeRequestUrl` | string | no | Full URL of the merge/pull request this block concerns, when there is one. |
+| `fileRefs` | array | no | Files this block's prose refers to. See "File references" below. |
+
+### Artefact references (`blocks[].artefactRef`)
+
+An artefact-carrying block ties the passage to a document under review.
+The snapshot is captured **at the moment review is requested** — it is what
+the human is signing off against, even if the file changes afterwards.
+
+```json
+{
+  "path": "output/forge-dashboard/brief.md",
+  "reviewSnapshot": "sha256:9f2c…"
+}
+```
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `path` | string | yes | Repo-relative path to the artefact. Never absolute — state files travel between machines. |
+| `reviewSnapshot` | string | yes | The artefact's text at the moment review was requested, or a content hash of it in the form `sha256:<hex>`. Use the full text when the artefact is short enough to carry inline (≲ 4 KB); use the hash above that — it still proves whether the file changed since review. |
+
+### Risk objects (`blocks[].risk`)
+
+A risk put to the human is its own thing on the sheet (`RISK · HIGH · PUT
+TO YOU`). The object records the stake, the ruling state, and who ruled when.
+
+```json
+{
+  "level": "high",
+  "stake": "if wrong — the builder delegates on the strength of a net that catches only sometimes",
+  "state": "proposed",
+  "proposedBy": "Devil's Advocate",
+  "proposedAt": "2026-08-03T20:00:00Z",
+  "ruledBy": null,
+  "ruledAt": null
+}
+```
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `level` | string | yes | `"high"` / `"medium"` / `"low"`. Rendered upper-case in the risk stamp. |
+| `stake` | string | yes | What happens if the risk lands, stated plainly — the "if wrong — …" line. |
+| `state` | string | yes | `"proposed"` — put to the human, awaiting ruling; `"accepted"` / `"rejected"` — ruled. Rulings happen in the session; the sheet only records. |
+| `proposedBy` | string | yes | Agent name (or `"Human"`) that raised the risk. |
+| `proposedAt` | string | yes | ISO datetime the risk was put. |
+| `ruledBy` | string \| null | yes | Who ruled — `"Human"` in practice. Null while `state` is `"proposed"`. |
+| `ruledAt` | string \| null | yes | ISO datetime of the ruling. Null while `state` is `"proposed"`. |
+
+### File references (`blocks[].fileRefs[]`)
+
+Machine-voice file objects inside agent prose. The shell composes the
+`vscode://file/…` link at render time from the repo root it is served from —
+state carries repo-relative paths only.
+
+```json
+{
+  "path": "sheet/index.html",
+  "line": 904
+}
+```
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `path` | string | yes | Repo-relative path. Filename only is shown at digest scale; the full path appears in hover/detail. |
+| `line` | number | no | Line number for the `vscode://` link. Omit when the reference is to the whole file. |
 
 **kind values and attention tiers:**
 
@@ -146,7 +221,7 @@ All concerns raised during the project. Never deleted — quenched concerns stay
 {
   "id": "con-001",
   "title": "Short concern title",
-  "state": "open",
+  "state": "carried",
   "wavesOpen": 2,
   "closedBy": null,
   "anchorBlockId": "blk-004"
@@ -157,9 +232,9 @@ All concerns raised during the project. Never deleted — quenched concerns stay
 |---|---|---|---|
 | `id` | string | yes | Unique concern id. Format: `con-NNN`. |
 | `title` | string | yes | Short concern title (1 line). Shown on the margin card. |
-| `state` | string | yes | `"open"` or `"quenched"`. |
-| `wavesOpen` | number | yes | Number of sessions this concern has been open. Incremented by the skill at each session start if still open. At `≥ 2`: STRIKE treatment (furnace + glow + `— STRIKE` suffix). |
-| `closedBy` | string \| null | yes | Block id of the block that resolved this concern. Null if open. |
+| `state` | string | yes | `"open"` — raised this session, unresolved; `"carried"` — unresolved and it has outlived the session that raised it (a demand outliving its session); `"quenched"` — resolved. The skill moves `open` → `carried` at session start, at the same step that increments `wavesOpen`. Carried concerns keep flat ember triangles at rest — no glow. |
+| `wavesOpen` | number | yes | Number of sessions this concern has been open. Incremented by the skill at each session start if still open. At `≥ 2`: STRIKE treatment (furnace + glow + `— STRIKE` suffix). A carried concern therefore always has `wavesOpen ≥ 2`. |
+| `closedBy` | string \| null | yes | Block id of the block that resolved this concern. Null if open or carried. |
 | `anchorBlockId` | string | yes | Block id this concern is visually tied to (leader line target). |
 
 ---
@@ -190,6 +265,34 @@ Smoke alarm events. Both tiers write here.
 
 ---
 
+## resurfacingLog[]
+
+The instrumentation for the resurfacing bet (accepted High risk, Challenge 3
+of `output/forge-dashboard/03-risk-review.md`): the writer checks every
+exchange against the decision record, and **every check writes an entry** —
+hit or miss. Misses are countable from the first day the log exists: a
+matched decision that was not surfaced is a recorded failure, and a topic
+later shown to have touched a decision with `matchedDecision: null` is a
+detection failure the semantic audit can find. Append-only; never pruned.
+
+```json
+{
+  "topic": "state file location for a second project",
+  "matchedDecision": "blk-004",
+  "surfaced": "yes",
+  "checkedAt": "2026-08-04T09:00:00Z"
+}
+```
+
+| Field | Type | Required | Notes |
+|---|---|---|---|
+| `topic` | string | yes | What the exchange touched, in plain words — specific enough that a later audit can judge whether the match was right. |
+| `matchedDecision` | string \| null | yes | Block id of the settled decision this topic touches, or null if the check found none. |
+| `surfaced` | string | yes | `"yes"` — the decision was said aloud in the session when the topic arose; `"no"` — it was not. A `matchedDecision` with `surfaced: "no"` is a countable miss. |
+| `checkedAt` | string | yes | ISO datetime of the check. This is what makes misses countable per day. |
+
+---
+
 ## No-state detection
 
 When the shell cannot load state.json (file missing or unreadable after 5 consecutive parse failures), it renders P4. The `no-state.json` fixture has a `_noState: true` top-level field — the shell detects this and renders P4 with the matching `errorKind` and troubleshooting entries.
@@ -212,7 +315,7 @@ Four fixture files in `sheet/fixtures/`:
 
 | File | Place | Description |
 |---|---|---|
-| `live.json` | P1 | Active session, two agents at heat, one open concern, no alarm |
+| `live.json` | P1 | Active session, two agents at heat, one open concern, no alarm. Exercises the FLY-86 block fields (`digestPoints`, `artefactRef`, `risk`, `linearUrl`, `mergeRequestUrl`, `fileRefs`) and the top-level `resurfacingLog[]` |
 | `alarm.json` | P1 | Same as live but with an active heuristic alarm in `alerts[]` |
-| `at-rest.json` | P3 | Two sessions: first collapsed with agentDigests, second settled; handover pinned |
+| `at-rest.json` | P3 | Two sessions: first collapsed with agentDigests, second settled; handover pinned. Exercises the `carried` concern state |
 | `no-state.json` | P4 | `_noState: true` with errorKind and troubleshooting entries |

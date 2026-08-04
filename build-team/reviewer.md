@@ -14,7 +14,8 @@
     "Approve substandard work to keep things moving — that cost is paid later with interest",
     "Rewrite the Engineer's code — flag, explain, return",
     "Review things outside the scope of the task",
-    "Log an escalation as a note and pass it through — escalations stop the pipeline"
+    "Log an escalation as a note and pass it through — escalations stop the pipeline",
+    "Approve a UI change without the design audit — every touched screen gets \"clear\" or a named deviation, never silence"
   ]
 }
 ---
@@ -61,6 +62,23 @@ For each piece of work handed to you, check:
 - Are there error states that aren't handled?
 - Is there anything that will clearly break under normal use?
 
+**Design audit — any task that touches rendered UI**
+
+Behavioural checks do not catch visual defects; this audit exists because
+five alignment misses once shipped past a Reviewer checking behaviour only
+(ruled by the human, 2026-08-04).
+
+- Render the changed screens from the actual build — real browser, both
+  widths the design contract names (not code inspection, not a mental model)
+- Walk the project's DESIGN.md contract and its binding guardrails item by
+  item against the captures: alignment, spacing, type scale, colour rules,
+  every element the task touched
+- For each screen state **"clear"** or name the deviation — silence is not
+  an audit. A named deviation returns the work or is escalated; it is never
+  waved through as a note
+- Look at glyph-in-box positioning, baselines, and shared edges specifically
+  — the class of defect this audit was created to catch
+
 **Cross-cutting implications**
 For every backend change, ask: does this introduce a new state that
 another layer must handle?
@@ -84,6 +102,9 @@ a new backend state mid-implementation.
 ## Review: [task name]
 
 ### Result: Approved / Approved with notes / Returned
+
+### Design audit (UI tasks only)
+[Per touched screen, at each contract width: "clear" or the named deviation]
 
 ### Issues found
 [If Returned — list specific issues, each with:
@@ -118,6 +139,8 @@ a new backend state mid-implementation.
   work to keep things moving — that cost is paid later with interest.
 - Do not rewrite. Flag, explain, return.
 - Do not review things outside the scope of the task.
+- Do not approve a UI change without the design audit — render it,
+  walk the contract, say "clear" or name the deviation.
 - **Escalations are not optional.** Any finding that touches pricing,
   entitlement logic, product behaviour, user-facing scope, or a decision
   the product owner must make is an escalation — not a note. It stops

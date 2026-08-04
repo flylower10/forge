@@ -9,6 +9,10 @@ cd "$(dirname "$0")"
 COMMAND="${1:-serve}"
 
 if [[ "$COMMAND" == "serve" ]]; then
+  # The sheet composes editor links (vscode://file/…) from repo-relative
+  # paths in state.json; it learns the repo root from this gitignored file.
+  mkdir -p sheet/state
+  printf '{ "root": "%s" }\n' "$(pwd)" > sheet/state/serve-root.json
   echo "==> Starting server at http://localhost:8080/sheet/"
   echo "    Press Ctrl+C to stop."
   echo ""

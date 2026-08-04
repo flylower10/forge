@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1180">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Forge Sheet</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/x-icon" href="favicon.ico" sizes="16x16 32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-180.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;500;600;700&family=Overpass+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -63,27 +67,42 @@ body {
 }
 .chrome-left {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
 }
 .wordmark {
   font-family: 'Overpass', sans-serif;
   font-weight: 700;
   font-size: 14px;
+  line-height: 1;
   letter-spacing: .2em;
   color: var(--ink);
 }
-.wordmark-slash {
-  font-family: 'Overpass Mono', monospace;
-  font-weight: 500;
-  font-size: 11px;
-  color: var(--machine);
+.writers-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  align-self: center;
+  background: radial-gradient(circle at 40% 35%, var(--lemon) 0%, var(--furnace) 45%, var(--cherry) 100%);
+  box-shadow: 0 0 5px color-mix(in srgb, var(--furnace) 40%, transparent),
+              0 0 0 2px color-mix(in srgb, var(--furnace) 14%, transparent);
 }
-.chrome-session-id {
-  font-family: 'Overpass Mono', monospace;
-  font-size: 11px;
-  color: var(--machine);
+.writers-dot.at-rest {
+  background: radial-gradient(circle at 40% 35%, var(--ring-done) 0%, var(--settled) 100%);
+  box-shadow: none;
+}
+.chrome-identity {
+  font-family: 'Overpass', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--prose-body);
   margin-left: 8px;
+}
+/* Overpass sets the space after · too tight — give the separator real room */
+.identity-sep {
+  color: var(--machine);
+  margin: 0 5px;
 }
 .chrome-right {
   display: flex;
@@ -96,11 +115,33 @@ body {
   color: var(--ember);
   text-transform: capitalize;
 }
-.chrome-label {
-  font-family: 'Overpass Mono', monospace;
-  font-size: 10px;
-  color: var(--machine);
+#recency {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
+.recency-pip {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--graphite);
+  animation: pip 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+#recency.cold-shut .recency-pip {
+  animation: none;
+  background: none;
+  border: 1px solid var(--ring-pend);
+}
+.recency-text {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10.5px;
+  color: var(--graphite-text);
+}
+#recency.cold-shut .recency-text { color: var(--machine); }
+
+/* At rest: phase phrase settles grey, pip static (rev E) */
+body.at-rest .phase-phrase { color: var(--settled); }
+body.at-rest .recency-pip  { animation: none; }
 
 /* ── Alarm banner ───────────────────────────────────────────────────────── */
 #alarm-banner {
@@ -134,25 +175,56 @@ body {
 }
 
 /* ── Desk ───────────────────────────────────────────────────────────────── */
+/* The page itself never scrolls — only the stream pane does (rev E). */
 #desk {
   position: fixed;
   top: var(--chrome-h);
   left: 0; right: 0; bottom: 0;
-  overflow-y: auto;
-  padding: 32px 0 48px;
+  overflow: hidden;
+  padding: 32px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 #desk.with-alarm { top: calc(var(--chrome-h) + 37px); }
 
-/* ── Sheet container (3-column) ─────────────────────────────────────────── */
+/* ── Sheet container: hero pinned above the stream, margins beside ──────── */
 #sheet-container {
   display: grid;
   grid-template-columns: 160px 700px 200px;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-areas:
+    "roster hero   concerns"
+    "roster stream concerns";
   gap: 0;
   width: 1060px;
-  align-items: start;
+  height: 100%;
+}
+#roster {
+  grid-area: roster;
+  max-height: 100%;
+  overflow-y: auto;
+}
+#concerns {
+  grid-area: concerns;
+  max-height: 100%;
+  overflow-y: auto;
+}
+#hero-slot {
+  grid-area: hero;
+  max-height: 34vh;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  min-width: 0;
+}
+#stream-pane {
+  grid-area: stream;
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  /* no blanket smooth scrolling: the follow animates explicitly, and
+     first-load + rejoin need instant, script-controlled positioning */
+  padding-bottom: 48px;
 }
 
 /* ── Roster (left margin) ───────────────────────────────────────────────── */
@@ -292,13 +364,131 @@ body {
 .block.settled { opacity: 1; }
 .block.quenched { opacity: .55; }
 
-/* tier 1: question */
-.block.kind-question {
-  border-left: 3px solid var(--ember);
-  background: color-mix(in srgb, var(--ember) 3%, var(--sheet));
-}
+/* tier 1: question — a heat field while the demand is open (rev E:
+   full-ground wash + hairline frame top+bottom, never a left edge) */
 .block.kind-question .block-digest { font-weight: 600; color: var(--ink); }
 .block.kind-question .kind-badge { color: var(--ember); }
+.block.kind-question.state-live {
+  background: color-mix(in srgb, var(--ember) 5%, var(--sheet));
+  border-top: 1px solid color-mix(in srgb, var(--ember) 30%, var(--sheet));
+  border-bottom: 1px solid color-mix(in srgb, var(--ember) 30%, var(--sheet));
+  border-radius: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+/* quenched demand: the field cools, the stamp greys */
+.block.kind-question.state-settled,
+.block.kind-question.state-quenched { background: none; }
+
+/* an open question IS the question: second person, display scale */
+.block.kind-question.state-live .block-digest {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+/* the address prefix, machine voice */
+.for-you {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .04em;
+  color: var(--ember-deep);
+  margin-top: 6px;
+}
+
+/* artefact-carrying question (tier 1+): deeper wash + full hairline frame */
+.block.kind-question.state-live.has-artefact {
+  background: color-mix(in srgb, var(--ember) 8%, var(--sheet));
+  border: 1px solid color-mix(in srgb, var(--ember) 35%, var(--sheet));
+}
+.artefact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 8px;
+  padding: 4px 10px 4px 6px;
+  border: 1px solid var(--border-1);
+  border-radius: 3px;
+  background: var(--sheet);
+}
+.artefact-chip .chip-stamp {
+  font-family: 'Overpass Mono', monospace;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--ink);
+  width: 17px; height: 17px;
+  border: 1.2px solid var(--ink);
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.artefact-chip .chip-file {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 11px;
+  color: var(--graphite-text);
+}
+
+/* ── Risk object: its own thing — put to you, no buttons ────────────────── */
+.risk-object {
+  margin-top: 8px;
+  padding: 9px 12px;
+  border-top: 1px solid color-mix(in srgb, var(--ember) 30%, var(--sheet));
+  border-bottom: 1px solid color-mix(in srgb, var(--ember) 30%, var(--sheet));
+  background: color-mix(in srgb, var(--ember) 5%, var(--sheet));
+}
+.risk-object.ruled {
+  border-color: var(--border-3);
+  background: none;
+}
+.risk-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: var(--ember);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.risk-object.ruled .risk-label { color: var(--settled); }
+.risk-stake {
+  font-size: 13px;
+  color: var(--prose-body);
+  margin-top: 5px;
+  line-height: 1.55;
+}
+.risk-hold {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  color: var(--ember-deep);
+  margin-top: 5px;
+}
+
+/* ── File + issue references: machine-voice objects ─────────────────────── */
+.block-refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 7px;
+}
+.file-ref, .ext-ref {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 12px;
+  color: var(--graphite-text);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--ring-done);
+  text-underline-offset: 3px;
+}
+.file-ref:hover, .ext-ref:hover {
+  color: var(--ember-deep);
+  text-decoration-style: solid;
+  text-decoration-color: var(--ember-deep);
+}
+.file-ref:hover::after, .ext-ref:hover::after {
+  content: ' ↗';
+  font-size: 11px;
+}
 
 /* tier 2: decision / correction / commitment */
 .block.kind-decision,
@@ -320,12 +510,68 @@ body {
 .block.kind-context .kind-badge,
 .block.kind-musing  .kind-badge { color: var(--machine); }
 
-/* untyped fallback */
+/* untyped fallback — dotted stamp carries the mark, no left edge */
 .block.kind-untyped {
-  border-left: 2px dashed var(--border-2);
   background: color-mix(in srgb, var(--machine) 4%, var(--sheet));
 }
 .block.kind-untyped .kind-badge { color: var(--settled); font-style: italic; }
+
+/* ── Glyph stamps (G-B): one mono character in a 17px stamp outline ─────── */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px; height: 17px;
+  border: 1.2px solid currentColor;
+  border-radius: 2px;
+  background: var(--sheet);
+  font-family: 'Overpass Mono', monospace;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1;
+  flex-shrink: 0;
+  align-self: center;
+}
+.stamp-ink      { color: var(--ink); }
+.stamp-grey     { color: var(--settled); }
+.stamp-graphite { color: var(--graphite); border-style: dotted; }
+.stamp-ember {
+  color: var(--ember);
+}
+/* glow lives on the character, never the box (held state — no animation) */
+.stamp-ember .stamp-char { text-shadow: 0 0 4px color-mix(in srgb, var(--ember) 45%, transparent); }
+/* Overpass Mono reserves descender space below the baseline; glyphs with
+   no descender (? ! ◌) ride high — nudge to the optical centre */
+.stamp-char {
+  display: inline-block;
+  transform: translateY(6%);
+}
+/* decision mark: a 6px filled square, not a text glyph */
+.stamp-square {
+  width: 6px; height: 6px;
+  background: currentColor;
+}
+
+/* ── Digest bullets (D-A): true bullets, ink markers ────────────────────── */
+.digest-points {
+  list-style: none;
+  margin-top: 5px;
+}
+.digest-points li {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--prose-body);
+  padding-left: 14px;
+  position: relative;
+  margin-bottom: 3px;
+}
+.digest-points li::before {
+  content: '▪';
+  position: absolute;
+  left: 0;
+  color: var(--ink);
+  font-size: 10px;
+}
 
 /* live state: full ink */
 .block.state-live .block-digest { color: var(--prose-live); }
@@ -341,7 +587,7 @@ body {
 /* block header row */
 .block-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 6px;
   margin-bottom: 4px;
 }
@@ -374,18 +620,10 @@ body {
   box-shadow: 0 0 3px rgba(194,36,0,.4);
 }
 
-/* live block cursor */
-.live-cursor {
-  display: inline-block;
-  width: 7px; height: 13px;
-  background: var(--ember);
-  margin-left: 2px;
-  vertical-align: text-bottom;
-  animation: cursor-blink 1.05s steps(1) infinite;
-}
-@keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+/* the live exchange carries a faint field (temperature law); the
+   cursor blink is removed per the rev E motion list and stays removed */
+.block.state-live:not(.kind-question) {
+  background: color-mix(in srgb, var(--ember) 2%, var(--sheet));
 }
 
 /* ── Concerns (right margin) ────────────────────────────────────────────── */
@@ -443,14 +681,45 @@ body {
   font-weight: 500;
 }
 
-/* ── Status strip ───────────────────────────────────────────────────────── */
-#status-strip {
-  margin-top: 20px;
-  font-family: 'Overpass Mono', monospace;
-  font-size: 10px;
-  color: var(--machine);
-  align-self: flex-start;
-  margin-left: calc((100vw - 1060px) / 2);
+/* ── Half-width collapse (~720px–1100px) — FLY-81 absorbed ──────────────── */
+@media (max-width: 1100px) {
+  #sheet-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 720px;
+    padding: 0 16px;
+    height: 100%;
+  }
+  /* roster folds to a horizontal strip under chrome */
+  #roster {
+    order: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 18px;
+    padding: 0 0 10px;
+    max-height: none;
+    overflow: visible;
+    flex-shrink: 0;
+  }
+  #roster .roster-label { margin-bottom: 0; width: 100%; }
+  .agent-entry { margin-bottom: 0; align-items: center; }
+  /* the 4px desk-layout compensation misaligns dots in the centred strip */
+  .agent-entry .agent-dot { margin-top: 0; }
+  .agent-role { display: none; }
+  .agent-heat-label { display: none; }
+  #hero-slot { order: 2; flex-shrink: 0; margin-bottom: 10px; }
+  /* concerns stack beneath the folded hero; leader lines retire */
+  #concerns {
+    order: 3;
+    padding: 0 0 10px;
+    max-height: none;
+    overflow: visible;
+    flex-shrink: 0;
+  }
+  .concern-card::before { display: none; }
+  #stream-pane { order: 4; flex: 1; min-height: 0; }
 }
 
 /* ── P4 No-state screen ─────────────────────────────────────────────────── */
@@ -522,12 +791,90 @@ body {
 }
 #session-notice.visible { opacity: 1; }
 
-/* ── Handover block (P3 — pinned at top of sheet) ───────────────────────── */
+/* ── The hero (H-C): frame · hot element · foot — pinned, never scrolls ── */
+/* Glance layer ≥15px, readable without glasses — binding (rev E). */
+#hero {
+  background: var(--sheet);
+  border: 1px solid var(--border-2);
+  border-left: none; border-right: none;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+}
+.hero-frame {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.hero-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.hero-phase {
+  font-size: 11px;
+  color: var(--ember);
+  text-transform: capitalize;
+}
+.at-rest .hero-phase { color: var(--settled); }
+#hero-hot {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 10px;
+}
+#hero-hot.hidden { display: none; }
+.hero-stamp {
+  width: 23px; height: 23px;
+  font-size: 15px;
+  margin-top: 2px;
+  /* top the first line of the demand — the base stamp self-centres */
+  align-self: flex-start;
+}
+.hero-hot-body { min-width: 0; }
+.hero-hot-text {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--ink);
+}
+#hero-rest {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--settled);
+  margin-top: 10px;
+}
+#hero-rest.hidden { display: none; }
+#hero-foot {
+  list-style: none;
+  /* share the hot element's text edge: stamp column 23px + 12px gap */
+  margin: 10px 0 0 35px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-3);
+}
+#hero-foot.hidden { display: none; }
+#hero-foot li {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--prose-body);
+  padding-left: 12px;
+  position: relative;
+  margin-bottom: 2px;
+}
+#hero-foot li::before {
+  content: '▪';
+  position: absolute;
+  left: 0;
+  color: var(--ink);
+  font-size: 9px;
+}
+
+/* ── Handover block (pinned beneath the hero at rest — P3) ──────────────── */
+/* Glance layer: hero text never drops below 15px (binding, rev E). */
 #handover-block {
-  border-left: 3px solid var(--border-1);
+  border: 1px solid var(--border-2);
+  border-left: none; border-right: none;
   padding: 14px 16px;
-  margin-bottom: 24px;
-  background: color-mix(in srgb, var(--desk) 60%, var(--sheet));
+  background: var(--sheet);
 }
 #handover-block.hidden { display: none; }
 .handover-label {
@@ -539,10 +886,89 @@ body {
   margin-bottom: 6px;
 }
 .handover-text {
-  font-size: 12.5px;
-  line-height: 1.72;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--prose-body);
   white-space: pre-wrap;
+}
+
+/* ── P-A inline expansion: the block grows in place ─────────────────────── */
+.block-expansion {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .2s ease-out;
+}
+.block.expanded .block-expansion { grid-template-rows: 1fr; }
+.block-expansion.instant { transition: none; }
+.expansion-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+.expansion-body {
+  padding: 12px 2px 4px;
+  border-top: 1px solid var(--border-3);
+  margin-top: 10px;
+}
+.expansion-full {
+  font-size: 13.5px;
+  line-height: 1.82;
+  color: var(--prose-body);
+  white-space: pre-wrap;
+}
+.expansion-meta {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 9.5px;
+  color: var(--machine);
+  margin-top: 10px;
+}
+/* enumerated content in detail: structured list, mono numerals (D-A) */
+.expansion-points {
+  list-style: none;
+  margin-bottom: 12px;
+}
+.expansion-points li {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--prose-body);
+  display: flex;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+.expansion-points .pt-num {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10.5px;
+  color: var(--machine);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+/* ── The follow: new content eases in; away from the edge, a held mark ──── */
+.block.pour-in {
+  animation: pour 700ms cubic-bezier(.22,.9,.28,1);
+}
+@keyframes pour {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+#new-below {
+  position: sticky;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+#new-below.hidden { display: none; }
+#new-below button {
+  pointer-events: auto;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10.5px;
+  color: var(--ember);
+  background: var(--sheet);
+  border: 1px solid color-mix(in srgb, var(--ember) 35%, var(--sheet));
+  border-radius: 3px;
+  padding: 4px 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(26,26,23,.08);
 }
 
 /* ── Block clickable treatment ───────────────────────────────────────────── */
@@ -562,44 +988,45 @@ body {
   background: color-mix(in srgb, var(--machine) 7%, var(--sheet));
 }
 
-/* ── P2 Passage overlay ──────────────────────────────────────────────────── */
-#passage-overlay {
+/* ── P-B artefact review room: a document earns a room of its own ───────── */
+#artefact-room {
   position: fixed;
   top: var(--chrome-h);
   left: 0; right: 0; bottom: 0;
-  background: rgba(246,245,241,.92);
+  background: rgba(246,245,241,.95);
   backdrop-filter: blur(3px);
   display: flex;
   align-items: flex-start;
   justify-content: center;
   overflow-y: auto;
-  padding: 40px 24px 60px;
-  z-index: 160;
+  padding: 36px 24px 64px;
+  z-index: 170;
 }
-#passage-overlay.hidden { display: none; }
-.passage-card {
+#artefact-room.hidden { display: none; }
+.doc-shell {
   background: var(--sheet);
   border: 1px solid var(--border-2);
   box-shadow: 0 4px 24px rgba(26,26,23,.10), 0 1px 4px rgba(26,26,23,.06);
-  border-radius: 0;
   width: 100%;
-  max-width: 740px;
-  padding: 40px 48px;
+  max-width: 780px;
+  padding: 36px 48px 48px;
 }
-.passage-header {
+.doc-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding-bottom: 14px;
+  gap: 16px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border-3);
 }
-.passage-meta {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
+.doc-head-meta {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10px;
+  color: var(--machine);
+  min-width: 0;
 }
-.passage-close {
+.doc-head-meta .doc-delta { color: var(--cherry); }
+.doc-close {
   font-family: 'Overpass Mono', monospace;
   font-size: 10.5px;
   color: var(--machine);
@@ -609,41 +1036,96 @@ body {
   padding: 3px 10px;
   cursor: pointer;
   line-height: 1.6;
+  flex-shrink: 0;
 }
-.passage-close:hover { border-color: var(--border-1); color: var(--prose-body); }
-.passage-attribution {
+.doc-close:hover { border-color: var(--border-1); color: var(--prose-body); }
+.doc-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 18px 0 4px;
+}
+.doc-sign {
   font-family: 'Overpass Mono', monospace;
   font-size: 10px;
-  color: var(--attr);
+  letter-spacing: .04em;
+  color: var(--ember-deep);
+  margin-bottom: 20px;
 }
-.passage-arrived {
-  font-family: 'Overpass Mono', monospace;
-  font-size: 10px;
-  color: var(--machine);
-}
-.passage-full-content {
+.doc-body {
   font-size: 13.5px;
-  line-height: 1.82;
+  line-height: 1.8;
   color: var(--prose-body);
-  white-space: pre-wrap;
 }
-/* passage kind badge colours (mirror block tier rules) */
-.passage-kind-question   { color: var(--ember); }
-.passage-kind-decision,
-.passage-kind-commitment { color: var(--ember-deep); }
-.passage-kind-correction { color: var(--cherry); }
-.passage-kind-finding,
-.passage-kind-context,
-.passage-kind-musing     { color: var(--machine); }
-.passage-kind-untyped    { color: var(--settled); font-style: italic; }
-
-.passage-hint {
-  margin-top: 24px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-3);
+.doc-para {
+  position: relative;
+  padding-left: 34px;
+  margin-bottom: 12px;
+}
+/* the doc gutter: ▲ on changed passages; new passages take the wash only */
+.doc-para.changed::before {
+  content: '▲';
+  position: absolute;
+  left: 9px;
+  top: 3px;
+  font-size: 10px;
+  color: var(--cherry);
+}
+.doc-para.new {
+  background: linear-gradient(90deg, rgba(230,46,15,.08), transparent 80%);
+}
+.doc-para h1 { font-size: 17px; font-weight: 600; color: var(--ink); }
+.doc-para h2 { font-size: 15px; font-weight: 600; color: var(--ink); }
+.doc-para h3, .doc-para h4 { font-size: 13.5px; font-weight: 600; color: var(--ink); }
+.doc-para ul, .doc-para ol { padding-left: 20px; }
+.doc-para li { margin-bottom: 3px; }
+.doc-para code {
   font-family: 'Overpass Mono', monospace;
-  font-size: 9.5px;
+  font-size: 12px;
+  background: var(--border-3);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+.doc-para pre {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  background: var(--border-3);
+  border-radius: 3px;
+  padding: 12px 14px;
+  overflow-x: auto;
+}
+.doc-para pre code { background: none; padding: 0; }
+.doc-para blockquote {
+  border-left: 2px solid var(--border-1);
+  padding-left: 12px;
+  color: var(--settled);
+}
+.doc-para table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.doc-para th, .doc-para td {
+  border: 1px solid var(--border-2);
+  padding: 5px 9px;
+  text-align: left;
+  vertical-align: top;
+}
+.doc-para th {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 10.5px;
+  color: var(--graphite-text);
+}
+.doc-para hr { border: none; border-top: 1px solid var(--border-2); }
+.doc-para a { color: var(--ember-deep); }
+.doc-notice {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 11px;
   color: var(--machine);
+  padding: 20px 0;
+}
+@media (max-width: 1100px) {
+  #artefact-room { padding: 16px 10px 40px; }
+  .doc-shell { padding: 24px 20px 32px; }
+  .doc-para { padding-left: 24px; }
+  .doc-para.changed::before { left: 4px; }
 }
 
 /* ── Utilities ──────────────────────────────────────────────────────────── */
@@ -660,12 +1142,15 @@ body {
 <header id="chrome">
   <div class="chrome-left">
     <span class="wordmark">FORGE</span>
-    <span class="wordmark-slash">/ sheet</span>
-    <span class="chrome-session-id" id="chrome-session-id"></span>
+    <span class="writers-dot" id="writers-dot"></span>
+    <span class="chrome-identity" id="chrome-identity"></span>
   </div>
   <div class="chrome-right">
     <span class="phase-phrase" id="phase-phrase"></span>
-    <span class="chrome-label">renders session files · read-only</span>
+    <span id="recency" class="hidden">
+      <span class="recency-pip"></span>
+      <span class="recency-text" id="recency-text"></span>
+    </span>
   </div>
 </header>
 
@@ -683,32 +1168,50 @@ body {
     <aside id="roster">
       <div class="roster-label">Agents</div>
     </aside>
-    <div id="sheet">
+    <div id="hero-slot">
+      <div id="hero">
+        <div class="hero-frame">
+          <span class="hero-name" id="hero-name"></span>
+          <span class="hero-phase mono" id="hero-phase"></span>
+        </div>
+        <div id="hero-hot" class="hidden">
+          <span class="stamp hero-stamp" id="hero-stamp"><span class="stamp-char" id="hero-stamp-char"></span></span>
+          <div class="hero-hot-body">
+            <div class="hero-hot-text" id="hero-hot-text"></div>
+            <div class="for-you" id="hero-for-you"></div>
+          </div>
+        </div>
+        <div id="hero-rest" class="hidden">Nothing needs you.</div>
+        <ul id="hero-foot" class="hidden"></ul>
+      </div>
       <div id="handover-block" class="hidden">
         <div class="handover-label">Latest handover</div>
         <div class="handover-text" id="handover-text"></div>
       </div>
-      <div id="sessions-container"></div>
+    </div>
+    <div id="stream-pane">
+      <div id="sheet">
+        <div id="sessions-container"></div>
+      </div>
+      <div id="new-below" class="hidden">
+        <button id="new-below-btn">↓ new below</button>
+      </div>
     </div>
     <aside id="concerns">
       <div class="concerns-label">Concerns</div>
     </aside>
   </div>
-  <div id="status-strip"></div>
 </main>
 
-<div id="passage-overlay" class="hidden">
-  <div class="passage-card">
-    <div class="passage-header">
-      <div class="passage-meta">
-        <span class="kind-badge mono" id="passage-kind"></span>
-        <span class="passage-attribution" id="passage-attribution"></span>
-        <span class="passage-arrived" id="passage-arrived"></span>
-      </div>
-      <button class="passage-close" id="passage-close-btn">close</button>
+<div id="artefact-room" class="hidden">
+  <div class="doc-shell">
+    <div class="doc-head">
+      <span class="doc-head-meta" id="doc-meta"></span>
+      <button class="doc-close" id="doc-close-btn">close</button>
     </div>
-    <div class="passage-full-content" id="passage-full-content"></div>
-    <div class="passage-hint">Esc to return · read-only</div>
+    <div class="doc-title" id="doc-title"></div>
+    <div class="doc-sign">sign off in the session · the sheet only records</div>
+    <div class="doc-body" id="doc-body"></div>
   </div>
 </div>
 
@@ -728,7 +1231,8 @@ body {
   let lastSessionId  = null;
   let noticeTimer    = null;
   let currentState   = null;
-  let savedScrollTop = 0;
+  let lastChangeAt   = null;   // when the state file last changed (S-B recency)
+  let repoRoot       = null;   // filesystem repo root, from serve-root.json — for editor links
 
   // ── URL resolution ───────────────────────────────────────────────────────
   function stateUrl() {
@@ -756,8 +1260,11 @@ body {
       const h = hash(text);
       if (h !== lastHash) {
         const data = JSON.parse(text);
+        const firstApply = lastHash === null;
         lastHash = h;
         errorCount = 0;
+        // On first load the change is the file's newest content, not "now".
+        lastChangeAt = firstApply ? (newestTimestamp(data) || Date.now()) : Date.now();
         applyState(data);
       } else {
         errorCount = 0;
@@ -768,6 +1275,22 @@ body {
         showP4({ errorKind: 'parse-error', errorMessage: 'state.json could not be read after ' + errorCount + ' attempts.' });
       }
     }
+    updateRecency();
+  }
+
+  function newestTimestamp(data) {
+    let max = 0;
+    for (const sess of data.sessions || []) {
+      for (const b of sess.blocks || []) {
+        const t = Date.parse(b.arrivedAt || '');
+        if (t > max) max = t;
+      }
+    }
+    for (const a of data.alerts || []) {
+      const t = Math.max(Date.parse(a.firedAt || '') || 0, Date.parse(a.clearedAt || '') || 0);
+      if (t > max) max = t;
+    }
+    return max || null;
   }
 
   // ── Apply state ──────────────────────────────────────────────────────────
@@ -779,12 +1302,12 @@ body {
     hideP4();
     currentState = data;
     updateChrome(data);
+    updateHero(data);
     updateHandover(data.handover);
     updateRoster(data.agents || []);
     updateSessions(data.sessions || [], data.concerns || []);
     updateConcerns(data.concerns || []);
     updateAlarm(data.alerts || []);
-    updateStatus(data);
     checkSessionSwitch(data);
   }
 
@@ -809,12 +1332,124 @@ body {
   }
 
   // ── Chrome ───────────────────────────────────────────────────────────────
+  // Identity is human, agent voice: "Forge Sheet — session 3 · 4 aug".
+  // The machine session id lives in the hover title only (rev E).
   function updateChrome(data) {
     const sessions = data.sessions || [];
     const current  = sessions.find(s => !s.collapsed) || sessions[sessions.length - 1];
-    const sessionId = current ? current.id : '—';
-    document.getElementById('chrome-session-id').textContent = sessionId;
-    document.getElementById('phase-phrase').textContent      = data.phase || '';
+    const ordinal  = current ? sessions.indexOf(current) + 1 : 0;
+    const dateStr  = current ? humanDate(current.date) : '';
+
+    const identity = document.getElementById('chrome-identity');
+    identity.innerHTML = esc(humanName(data.projectSlug))
+      + (ordinal ? esc(' — session ' + ordinal) : '')
+      + (dateStr ? '<span class="identity-sep">·</span>' + esc(dateStr) : '');
+    identity.title = (current ? current.id + ' · ' : '') + (data.projectSlug || '');
+
+    document.getElementById('phase-phrase').textContent = data.phase || '';
+
+    const atRest = !(data.agents || []).some(a => a.state === 'atHeat');
+    document.getElementById('writers-dot').classList.toggle('at-rest', atRest);
+  }
+
+  function humanName(slug) {
+    if (!slug) return 'Forge';
+    return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  }
+
+  const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+  function humanDate(iso) {
+    const parts = (iso || '').split('-').map(Number);
+    if (parts.length !== 3 || !parts[1] || !parts[2]) return '';
+    return parts[2] + ' ' + MONTHS[parts[1] - 1];
+  }
+
+  // ── The hero (H-C): where are we · what needs me · what just settled ─────
+  function updateHero(data) {
+    const sessions = data.sessions || [];
+    const current  = sessions.find(s => !s.collapsed);
+    const hot      = current ? hottestDemand(current) : null;
+    // At rest is a state of demand, not structure: nobody writing,
+    // nothing put to the human (rev E at-rest screen).
+    const anyHeat  = (data.agents || []).some(a => a.state === 'atHeat');
+    const atRest   = !hot && !anyHeat;
+    document.body.classList.toggle('at-rest', atRest);
+
+    document.getElementById('hero-name').textContent  = humanName(data.projectSlug);
+    document.getElementById('hero-phase').textContent = data.phase || '';
+    const hotEl  = document.getElementById('hero-hot');
+    const restEl = document.getElementById('hero-rest');
+    const footEl = document.getElementById('hero-foot');
+
+    if (hot) {
+      hotEl.classList.remove('hidden');
+      const stamp = document.getElementById('hero-stamp');
+      stamp.className = 'stamp hero-stamp ' + hot.stampCls;
+      document.getElementById('hero-stamp-char').textContent = hot.char;
+      document.getElementById('hero-hot-text').textContent   = hot.text;
+      document.getElementById('hero-for-you').textContent    = hot.forYou;
+    } else {
+      hotEl.classList.add('hidden');
+    }
+    restEl.classList.toggle('hidden', !atRest);   // the frame stands alone at rest
+
+    // foot: the last ≤3 state-changing moments of the current session
+    const foot = [];
+    if (current && !atRest) {
+      const tier2 = ['decision', 'commitment', 'correction'];
+      for (const b of (current.blocks || []).slice().reverse()) {
+        if (tier2.includes(b.kind)) {
+          foot.push(b.digest);
+          if (foot.length === 3) break;
+        }
+      }
+    }
+    if (foot.length) {
+      footEl.innerHTML = foot.map(t => '<li>' + esc(t) + '</li>').join('');
+      footEl.classList.remove('hidden');
+    } else {
+      footEl.classList.add('hidden');
+    }
+  }
+
+  // The single hottest open demand: proposed risks by level, then the open
+  // question; ties go to the newest arrival.
+  function hottestDemand(sess) {
+    let best = null;
+    for (const b of sess.blocks || []) {
+      let cand = null;
+      if (b.risk && b.risk.state === 'proposed') {
+        const w = { high: 40, medium: 30, low: 10 }[String(b.risk.level || 'high').toLowerCase()] || 40;
+        cand = { weight: w, at: b.arrivedAt || '', char: '!', stampCls: 'stamp-ember',
+                 text: b.digest, forYou: 'for you — accept or reject in the session' };
+      } else if ((b.kind || '') === 'question' && b.state === 'live') {
+        cand = { weight: 20, at: b.arrivedAt || '', char: '?', stampCls: 'stamp-ember',
+                 text: b.digest, forYou: 'for you — answer in the session · the sheet only records' };
+      }
+      if (cand && (!best || cand.weight > best.weight
+          || (cand.weight === best.weight && String(cand.at) > String(best.at)))) {
+        best = cand;
+      }
+    }
+    return best;
+  }
+
+  // ── S-B recency — the alarm's front door ─────────────────────────────────
+  function updateRecency() {
+    const el = document.getElementById('recency');
+    if (!currentState || currentState._noState) { el.classList.add('hidden'); return; }
+    el.classList.remove('hidden');
+    const txt = document.getElementById('recency-text');
+    if (lastChangeAt == null) { txt.textContent = 'reading project state…'; return; }
+    const s = Math.round((Date.now() - lastChangeAt) / 1000);
+    const label = s < 5    ? 'updated just now'
+                : s < 60   ? 'updated ' + s + 's ago'
+                : s < 3600 ? 'updated ' + Math.floor(s / 60) + 'm ago'
+                :            'updated ' + Math.floor(s / 3600) + 'h ago';
+    const cold = (currentState.alerts || []).some(a => a.state === 'active' && a.type === 'heuristic');
+    el.classList.toggle('cold-shut', cold);
+    txt.textContent = cold ? label + ' · cold-shut' : label;
+    el.title = cold ? 'the writer has stopped — see the alarm' : 'time since the state file last changed';
   }
 
   // ── Roster ───────────────────────────────────────────────────────────────
@@ -852,19 +1487,127 @@ body {
     return       { dotClass: 'furnace', heatLabel: `${m} min` };
   }
 
-  // ── Sessions + blocks ────────────────────────────────────────────────────
+  // ── Sessions + blocks — keyed reconciliation ─────────────────────────────
+  // Unchanged prose never repaints: nodes are replaced only when their
+  // rendered output changes, so expansion state and scroll survive polls.
+  let firstRender = true;
+
+  function htmlToEl(html) {
+    const t = document.createElement('template');
+    t.innerHTML = html.trim();
+    return t.content.firstElementChild;
+  }
+
+  function placeAfter(parent, el, prev) {
+    const want = prev ? prev.nextSibling : parent.firstChild;
+    if (el !== want) parent.insertBefore(el, want);
+  }
+
   function updateSessions(sessions, concerns) {
     const container = document.getElementById('sessions-container');
-    let html = '';
+    const pane = document.getElementById('stream-pane');
+    const nearEdge = firstRender ||
+      pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 80;
 
+    // Drop sessions that no longer exist
+    const ids = new Set(sessions.map(s => s.id));
+    [...container.children].forEach(el => {
+      if (!ids.has(el.dataset.sessKey)) el.remove();
+    });
+
+    let prev = null;
+    let newBlocks = [];
     for (const sess of sessions) {
+      let el = [...container.children].find(c => c.dataset.sessKey === sess.id);
       if (sess.collapsed) {
-        html += renderCollapsedSession(sess);
+        const html = renderCollapsedSession(sess);
+        const h = String(hash(html));
+        if (!el || el.dataset.kind !== 'collapsed' || el.dataset.htmlHash !== h) {
+          const n = htmlToEl(html);
+          n.dataset.sessKey = sess.id;
+          n.dataset.kind = 'collapsed';
+          n.dataset.htmlHash = h;
+          if (el) el.replaceWith(n); else placeAfter(container, n, prev);
+          el = n;
+        }
       } else {
-        html += renderCurrentSession(sess, concerns);
+        if (!el || el.dataset.kind !== 'current') {
+          const n = document.createElement('div');
+          n.className = 'session-current';
+          n.dataset.sessKey = sess.id;
+          n.dataset.kind = 'current';
+          if (el) el.replaceWith(n); else placeAfter(container, n, prev);
+          el = n;
+        }
+        newBlocks = newBlocks.concat(reconcileBlocks(el, sess, concerns));
       }
+      placeAfter(container, el, prev);
+      prev = el;
     }
-    container.innerHTML = html;
+
+    follow(pane, newBlocks, nearEdge);
+    firstRender = false;
+  }
+
+  function reconcileBlocks(sessEl, sess, concerns) {
+    const blocks = sess.blocks || [];
+    const ids = new Set(blocks.map(b => b.id));
+    [...sessEl.children].forEach(el => {
+      if (!ids.has(el.dataset.blockId)) el.remove();
+    });
+
+    let prev = null;
+    const fresh = [];
+    for (const b of blocks) {
+      const html = renderBlock(b, concerns);
+      const h = String(hash(html));
+      let el = [...sessEl.children].find(c => c.dataset.blockId === b.id);
+      if (!el) {
+        el = htmlToEl(html);
+        el.dataset.htmlHash = h;
+        placeAfter(sessEl, el, prev);
+        if (!firstRender) fresh.push(el);
+      } else if (el.dataset.htmlHash !== h) {
+        const wasExpanded = el.classList.contains('expanded');
+        const n = htmlToEl(html);
+        n.dataset.htmlHash = h;
+        el.replaceWith(n);
+        el = n;
+        if (wasExpanded) expandBlock(el, true);
+      }
+      placeAfter(sessEl, el, prev);
+      prev = el;
+    }
+    return fresh;
+  }
+
+  // ── The follow ───────────────────────────────────────────────────────────
+  function follow(pane, freshEls, nearEdge) {
+    if (firstRender) {
+      pane.scrollTop = pane.scrollHeight;   // open at the live edge, no motion
+      return;
+    }
+    if (freshEls.length === 0) return;
+    if (nearEdge) {
+      freshEls.forEach(el => el.classList.add('pour-in'));
+      pane.scrollTo({ top: pane.scrollHeight, behavior: 'smooth' });
+    } else {
+      document.getElementById('new-below').classList.remove('hidden');
+    }
+  }
+
+  function rejoinLiveEdge() {
+    const pane = document.getElementById('stream-pane');
+    const start = pane.scrollTop;
+    const dist  = pane.scrollHeight - pane.clientHeight - start;
+    const t0 = performance.now();
+    function step(t) {
+      const p = Math.min((t - t0) / 400, 1);            // 400ms rejoin
+      pane.scrollTop = start + dist * (1 - Math.pow(1 - p, 3));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    document.getElementById('new-below').classList.add('hidden');
   }
 
   function renderCollapsedSession(sess) {
@@ -881,15 +1624,6 @@ body {
       </div>`;
   }
 
-  function renderCurrentSession(sess, concerns) {
-    const blocks = sess.blocks || [];
-    // Find the single live block (last one with state='live')
-    const liveIdx = blocks.reduce((last, b, i) => b.state === 'live' ? i : last, -1);
-
-    const blockHtml = blocks.map((b, i) => renderBlock(b, i === liveIdx, concerns)).join('');
-    return `<div class="session-current">${blockHtml}</div>`;
-  }
-
   const KIND_LABELS = {
     question:   'question',
     decision:   'decision',
@@ -901,19 +1635,112 @@ body {
     untyped:    'untyped',
   };
 
-  function renderBlock(block, isLive, concerns) {
+  // G-B stamps: tier 1/2 kinds carry a mark; tier 3 is tag only.
+  // Heat stamps only while their demand is open; ink stamps never take colour.
+  function stampFor(kind, state) {
+    const settled = state !== 'live';
+    switch (kind) {
+      case 'question':   return { char: '?', cls: settled ? 'stamp-grey' : 'stamp-ember' };
+      case 'decision':   return { square: true, cls: settled ? 'stamp-grey' : 'stamp-ink' };
+      case 'correction': return { char: '▲', cls: 'stamp-ink' };
+      case 'commitment': return { char: '→', cls: 'stamp-ink' };
+      case 'untyped':    return { char: '◌', cls: 'stamp-graphite' };
+      default:           return null;
+    }
+  }
+
+  function renderStamp(kind, state) {
+    const s = stampFor(kind, state);
+    if (!s) return '';
+    const inner = s.square
+      ? '<span class="stamp-square"></span>'
+      : '<span class="stamp-char">' + esc(s.char) + '</span>';
+    return `<span class="stamp ${s.cls}">${inner}</span>`;
+  }
+
+  // A question awaiting the human is the question — the address line and
+  // artefact chip speak in machine voice; the sheet only records.
+  function renderDirectAddress(block, kind, state) {
+    if (kind !== 'question' || state !== 'live') return '';
+    let html = '';
+    if (block.artefactRef && block.artefactRef.path) {
+      const name = block.artefactRef.path.split('/').pop();
+      html += `
+        <span class="artefact-chip" title="${esc(block.artefactRef.path)}">
+          <span class="chip-stamp">¶</span>
+          <span class="chip-file">${esc(name)}</span>
+        </span>`;
+    }
+    html += '<div class="for-you">for you — answer in the session · the sheet only records</div>';
+    return html;
+  }
+
+  function renderRisk(risk) {
+    if (!risk) return '';
+    const proposed = risk.state === 'proposed';
+    const level = esc(String(risk.level || 'high').toUpperCase());
+    const ruling = proposed
+      ? 'PUT TO YOU'
+      : esc(String(risk.state || '').toUpperCase())
+        + (risk.ruledBy ? ' — ' + esc(risk.ruledBy) : '')
+        + (risk.ruledAt ? ', ' + humanDate((risk.ruledAt || '').slice(0, 10)) : '');
+    const hold = proposed ? '<div class="risk-hold">accept or reject in the session</div>' : '';
+    return `
+      <div class="risk-object${proposed ? '' : ' ruled'}">
+        <div class="risk-label">
+          <span class="stamp ${proposed ? 'stamp-ember' : 'stamp-grey'}"><span class="stamp-char">!</span></span>
+          RISK · ${level} · ${ruling}
+        </div>
+        <div class="risk-stake">${esc(risk.stake || '')}</div>
+        ${hold}
+      </div>`;
+  }
+
+  // Machine-voice references: filename only at digest scale, full path in
+  // hover; the editor link is composed from the served repo root.
+  function renderRefs(block) {
+    const parts = [];
+    for (const fr of block.fileRefs || []) {
+      if (!fr.path) continue;
+      const name  = fr.path.split('/').pop();
+      const spec  = fr.path + (fr.line ? ':' + fr.line : '');
+      const href  = repoRoot ? 'vscode://file/' + repoRoot + '/' + spec : '';
+      parts.push('<a class="file-ref"' + (href ? ' href="' + esc(href) + '"' : '')
+        + ' title="' + esc(spec) + '">' + esc(name) + '</a>');
+    }
+    if (block.linearUrl) {
+      const key = (block.linearUrl.match(/\/issue\/([A-Za-z]+-\d+)/) || [])[1] || 'linear issue';
+      parts.push('<a class="ext-ref" href="' + esc(block.linearUrl) + '" target="_blank" rel="noopener" title="'
+        + esc(block.linearUrl) + '">' + esc(key) + '</a>');
+    }
+    if (block.mergeRequestUrl) {
+      parts.push('<a class="ext-ref" href="' + esc(block.mergeRequestUrl) + '" target="_blank" rel="noopener" title="'
+        + esc(block.mergeRequestUrl) + '">merge request</a>');
+    }
+    return parts.length ? '<div class="block-refs">' + parts.join('') + '</div>' : '';
+  }
+
+  function renderBlock(block, concerns) {
     const kind  = block.kind || 'untyped';
     const state = block.state || 'settled';
     const hasConcernRef = (block.concernRefs || []).length > 0;
-    const cursor = isLive ? '<span class="live-cursor"></span>' : '';
     const concernDot = hasConcernRef ? '<span class="concern-ref-indicator"></span>' : '';
+    const hasArtefact = kind === 'question' && block.artefactRef ? ' has-artefact' : '';
+    const points = (block.digestPoints || []).length
+      ? '<ul class="digest-points">' + block.digestPoints.map(p => '<li>' + esc(p) + '</li>').join('') + '</ul>'
+      : '';
 
     return `
-      <div class="block kind-${esc(kind)} state-${esc(state)}" data-block-id="${esc(block.id)}">
+      <div class="block kind-${esc(kind)} state-${esc(state)}${hasArtefact}" data-block-id="${esc(block.id)}">
         <div class="block-header">
+          ${renderStamp(kind, state)}
           <span class="kind-badge mono">${esc(KIND_LABELS[kind] || kind)}</span>
         </div>
-        <div class="block-digest">${esc(block.digest)}${cursor}${concernDot}</div>
+        <div class="block-digest">${esc(block.digest)}${concernDot}</div>
+        ${points}
+        ${renderRisk(block.risk)}
+        ${renderDirectAddress(block, kind, state)}
+        ${renderRefs(block)}
         <div class="block-attribution mono">— ${esc(block.attribution || 'unknown')}${state !== 'live' ? ', ' + esc(state) : ''}</div>
       </div>`;
   }
@@ -941,7 +1768,9 @@ body {
 
   function renderConcernCard(c) {
     const isQuenched = c.state === 'quenched';
-    const isStrike   = !isQuenched && (c.wavesOpen || 0) >= 2;
+    // At rest, carried concerns keep flat ember — no furnace, no STRIKE (rev E)
+    const atRest     = document.body.classList.contains('at-rest');
+    const isStrike   = !isQuenched && !atRest && (c.wavesOpen || 0) >= 2;
     const heatClass  = isQuenched ? 'quenched-text' : (isStrike ? 'heat-furnace' : 'heat-ember');
     const strikeEl   = isStrike ? `<span class="strike-label mono"> — STRIKE</span>` : '';
     const wavesLabel = isQuenched
@@ -970,27 +1799,6 @@ body {
     }
   }
 
-  // ── Status strip ─────────────────────────────────────────────────────────
-  function updateStatus(data) {
-    const agents   = data.agents || [];
-    const concerns = data.concerns || [];
-    const sessions = data.sessions || [];
-    const current  = sessions.find(s => !s.collapsed);
-    const blocks   = current ? (current.blocks || []) : [];
-
-    const atHeat      = agents.filter(a => a.state === 'atHeat').length;
-    const settled     = blocks.filter(b => b.state === 'settled').length;
-    const openConcerns= concerns.filter(c => c.state === 'open').length;
-
-    const parts = [];
-    if (atHeat > 0)      parts.push(`${atHeat} writing`);
-    if (settled > 0)     parts.push(`${settled} settled`);
-    if (openConcerns > 0) parts.push(`${openConcerns} concern${openConcerns !== 1 ? 's' : ''} open`);
-    if (parts.length === 0) parts.push('at rest');
-
-    document.getElementById('status-strip').textContent = parts.join(' · ');
-  }
-
   // ── Session-switched notice ───────────────────────────────────────────────
   function checkSessionSwitch(data) {
     const sessions = data.sessions || [];
@@ -1010,10 +1818,11 @@ body {
     noticeTimer = setTimeout(() => el.classList.remove('visible'), 3500);
   }
 
-  // ── Handover (P3) ────────────────────────────────────────────────────────
+  // ── Handover — pinned beneath the hero at rest only (P3) ─────────────────
   function updateHandover(handover) {
     const block = document.getElementById('handover-block');
-    if (handover) {
+    const atRest = document.body.classList.contains('at-rest');
+    if (handover && atRest) {
       document.getElementById('handover-text').textContent = handover;
       block.classList.remove('hidden');
     } else {
@@ -1032,32 +1841,198 @@ body {
     return null;
   }
 
-  // ── P2 Passage detail ─────────────────────────────────────────────────────
-  function openPassage(blockId) {
-    const result = findBlock(blockId);
+  // ── P-A passage detail: inline expansion, the block grows in place ───────
+  function expandBlock(el, instant) {
+    const result = findBlock(el.dataset.blockId);
     if (!result) return;
     const { block, session } = result;
 
-    savedScrollTop = document.getElementById('desk').scrollTop;
+    const arrived = block.arrivedAt
+      ? new Date(block.arrivedAt).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' })
+      : '';
+    const pts = (block.digestPoints || []).length
+      ? '<ol class="expansion-points">' + block.digestPoints.map((p, i) =>
+          '<li><span class="pt-num">' + (i + 1) + '</span><span>' + esc(p) + '</span></li>').join('') + '</ol>'
+      : '';
 
-    const kind      = block.kind || 'untyped';
-    const arrived   = block.arrivedAt ? new Date(block.arrivedAt).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' }) : '';
-    const sessionId = block.sessionId || session.id || '';
+    let exp = el.querySelector(':scope > .block-expansion');
+    if (!exp) {
+      exp = htmlToEl(
+        '<div class="block-expansion' + (instant ? ' instant' : '') + '"><div class="expansion-inner">'
+        + '<div class="expansion-body">' + pts
+        + '<div class="expansion-full">' + esc(block.fullContent || block.digest || '') + '</div>'
+        + '<div class="expansion-meta">' + esc(arrived) + ' · fold: click the header or Esc · read-only</div>'
+        + '</div></div></div>');
+      el.appendChild(exp);
+    }
+    if (instant) exp.classList.add('instant');
+    else exp.classList.remove('instant');
 
-    const kindEl = document.getElementById('passage-kind');
-    kindEl.textContent = KIND_LABELS[kind] || kind;
-    kindEl.className   = 'kind-badge mono passage-kind-' + kind;
-    document.getElementById('passage-attribution').textContent  = '— ' + (block.attribution || 'unknown');
-    document.getElementById('passage-arrived').textContent      = arrived;
-    document.getElementById('passage-full-content').textContent = block.fullContent || block.digest || '';
-
-    document.getElementById('passage-overlay').classList.remove('hidden');
-    logPassageClick(blockId, sessionId, kind);
+    // force a frame so the grid-rows transition runs on expand
+    void exp.offsetHeight;
+    el.classList.add('expanded');
+    if (!instant) logPassageClick(block.id, block.sessionId || session.id || '', block.kind || 'untyped');
   }
 
-  function closePassage() {
-    document.getElementById('passage-overlay').classList.add('hidden');
-    document.getElementById('desk').scrollTop = savedScrollTop;
+  function collapseBlock(el) {
+    el.classList.remove('expanded');
+  }
+
+  function toggleBlock(el) {
+    if (el.classList.contains('expanded')) { collapseBlock(el); return; }
+    // opening another block folds the one that is open
+    document.querySelectorAll('.block.expanded').forEach(collapseBlock);
+    expandBlock(el, false);
+  }
+
+  // ── P-B artefact review room: the document itself, delta-marked ──────────
+  function stripFrontmatter(text) {
+    return text.replace(/^---json\r?\n[\s\S]*?\r?\n---\r?\n/, '')
+               .replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '');
+  }
+
+  // Split markdown into renderable segments; fenced code stays whole,
+  // contiguous table/list/quote lines stay together.
+  function mdSegments(text) {
+    const lines = text.split('\n');
+    const segs = [];
+    let buf = [];
+    let inFence = false;
+    const flush = () => { if (buf.length) { segs.push(buf.join('\n').trim()); buf = []; } };
+    for (const line of lines) {
+      if (/^```/.test(line.trim())) {
+        if (!inFence) flush();
+        buf.push(line);
+        if (inFence) flush();
+        inFence = !inFence;
+        continue;
+      }
+      if (inFence) { buf.push(line); continue; }
+      if (line.trim() === '') { flush(); continue; }
+      // a heading is always its own segment, blank line or not
+      if (/^#{1,6}\s/.test(line)) { flush(); segs.push(line.trim()); continue; }
+      buf.push(line);
+    }
+    flush();
+    return segs.filter(s => s.length);
+  }
+
+  function mdInline(escaped) {
+    return escaped
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>')
+      .replace(/_([^_\n]+)_/g, '<em>$1</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  }
+
+  function mdBlockHtml(seg) {
+    if (/^```/.test(seg)) {
+      const body = seg.replace(/^```[^\n]*\n?/, '').replace(/\n?```\s*$/, '');
+      return '<pre><code>' + esc(body) + '</code></pre>';
+    }
+    const h = seg.match(/^(#{1,6})\s+(.*)$/);
+    if (h && seg.indexOf('\n') === -1) {
+      const lvl = Math.min(h[1].length, 4);
+      return '<h' + lvl + '>' + mdInline(esc(h[2])) + '</h' + lvl + '>';
+    }
+    if (/^-{3,}$/.test(seg.trim())) return '<hr>';
+    const lines = seg.split('\n');
+    if (lines.every(l => /^\s*\|/.test(l))) {
+      const rows = lines.filter(l => !/^\s*\|[\s:|-]+\|?\s*$/.test(l));
+      return '<table>' + rows.map((r, i) => {
+        const cells = r.trim().replace(/^\|/, '').replace(/\|$/, '').split('|');
+        const tag = i === 0 ? 'th' : 'td';
+        return '<tr>' + cells.map(c => '<' + tag + '>' + mdInline(esc(c.trim())) + '</' + tag + '>').join('') + '</tr>';
+      }).join('') + '</table>';
+    }
+    if (lines.every(l => /^\s*([-*]|\d+\.)\s+/.test(l))) {
+      const ordered = /^\s*\d+\./.test(lines[0]);
+      const items = lines.map(l =>
+        '<li>' + mdInline(esc(l.replace(/^\s*([-*]|\d+\.)\s+/, ''))) + '</li>').join('');
+      return (ordered ? '<ol>' : '<ul>') + items + (ordered ? '</ol>' : '</ul>');
+    }
+    if (lines.every(l => /^\s*>/.test(l))) {
+      return '<blockquote>' + mdInline(esc(lines.map(l => l.replace(/^\s*>\s?/, '')).join('\n'))) + '</blockquote>';
+    }
+    return '<p>' + mdInline(esc(seg)) + '</p>';
+  }
+
+  function normalisePara(s) {
+    return s.replace(/\s+/g, ' ').trim();
+  }
+
+  async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function openArtefactRoom(block) {
+    const ref = block.artefactRef;
+    if (!ref || !ref.path) return;
+    const room = document.getElementById('artefact-room');
+    const body = document.getElementById('doc-body');
+    const meta = document.getElementById('doc-meta');
+    const titleEl = document.getElementById('doc-title');
+
+    room.classList.remove('hidden');
+    titleEl.textContent = ref.path.split('/').pop();
+    meta.textContent = ref.path;
+    body.innerHTML = '<div class="doc-notice">reading the document…</div>';
+
+    let raw;
+    try {
+      const resp = await fetch('../' + ref.path + '?_t=' + Date.now(), { cache: 'no-store' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      raw = await resp.text();
+    } catch (e) {
+      body.innerHTML = '<div class="doc-notice">the document could not be read — '
+        + esc(ref.path) + ' · is ./forge serve running?</div>';
+      return;
+    }
+
+    const doc = stripFrontmatter(raw);
+    const segs = mdSegments(doc);
+    const snap = ref.reviewSnapshot || '';
+    let deltaNote = '';
+    let classes = segs.map(() => '');
+
+    if (snap.startsWith('sha256:')) {
+      const hex = await sha256Hex(raw);
+      deltaNote = ('sha256:' + hex) === snap
+        ? 'unchanged since review was requested'
+        : 'the document has changed since review was requested';
+    } else if (snap) {
+      const snapSegs = mdSegments(stripFrontmatter(snap));
+      const snapSet = new Set(snapSegs.map(normalisePara));
+      const currentSet = new Set(segs.map(normalisePara));
+      const removedPrefixes = snapSegs.map(normalisePara)
+        .filter(n => !currentSet.has(n)).map(n => n.slice(0, 32));
+      let changed = 0, added = 0;
+      classes = segs.map(s => {
+        const n = normalisePara(s);
+        if (snapSet.has(n)) return '';
+        if (removedPrefixes.some(p => p && n.startsWith(p))) { changed++; return 'changed'; }
+        added++; return 'new';
+      });
+      deltaNote = (changed || added)
+        ? changed + ' passage' + (changed !== 1 ? 's' : '') + ' changed · ' + added + ' new since your last read'
+        : 'unchanged since your last read';
+    }
+
+    const firstHeading = segs.find(s => /^#\s+/.test(s));
+    if (firstHeading) titleEl.textContent = firstHeading.replace(/^#\s+/, '');
+
+    meta.innerHTML = esc(ref.path)
+      + (deltaNote ? ' · <span class="doc-delta">' + esc(deltaNote) + '</span>' : '');
+    body.innerHTML = segs.map((s, i) =>
+      '<div class="doc-para' + (classes[i] ? ' ' + classes[i] : '') + '">' + mdBlockHtml(s) + '</div>').join('');
+
+    logPassageClick(block.id, block.sessionId || '', block.kind || 'question');
+  }
+
+  function closeArtefactRoom() {
+    document.getElementById('artefact-room').classList.add('hidden');
   }
 
   // ── localStorage click log ────────────────────────────────────────────────
@@ -1109,21 +2084,48 @@ body {
   }
 
   // ── Boot ─────────────────────────────────────────────────────────────────
-  // Block click → open P2
+  // Block click → fold/unfold in place (links inside a block navigate);
+  // an artefact-carrying question opens the document itself (P-B).
   document.getElementById('sessions-container').addEventListener('click', function (e) {
+    if (e.target.closest('a')) return;
+    if (e.target.closest('.block-expansion')) return;   // reading isn't folding
     const blockEl = e.target.closest('.block[data-block-id]');
-    if (blockEl) openPassage(blockEl.dataset.blockId);
+    if (!blockEl) return;
+    if (blockEl.classList.contains('has-artefact')) {
+      const result = findBlock(blockEl.dataset.blockId);
+      if (result) { openArtefactRoom(result.block); return; }
+    }
+    toggleBlock(blockEl);
   });
 
-  // Close passage
-  document.getElementById('passage-close-btn').addEventListener('click', closePassage);
-  document.getElementById('passage-overlay').addEventListener('click', function (e) {
-    if (e.target === this) closePassage();
+  // Artefact room: close button, backdrop click
+  document.getElementById('doc-close-btn').addEventListener('click', closeArtefactRoom);
+  document.getElementById('artefact-room').addEventListener('click', function (e) {
+    if (e.target === this) closeArtefactRoom();
   });
 
-  // Escape key
+  // Learn the repo root for editor links; repaint once it arrives.
+  fetch('./state/serve-root.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : null)
+    .then(j => {
+      if (j && j.root) { repoRoot = j.root; lastHash = null; }
+    })
+    .catch(() => {});
+
+  // Escape closes the room first, then folds the open passage
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closePassage();
+    if (e.key !== 'Escape') return;
+    const room = document.getElementById('artefact-room');
+    if (!room.classList.contains('hidden')) { closeArtefactRoom(); return; }
+    document.querySelectorAll('.block.expanded').forEach(collapseBlock);
+  });
+
+  // Rejoin the live edge from the held mark; hide it on manual rejoin
+  document.getElementById('new-below-btn').addEventListener('click', rejoinLiveEdge);
+  document.getElementById('stream-pane').addEventListener('scroll', function () {
+    if (this.scrollTop + this.clientHeight >= this.scrollHeight - 40) {
+      document.getElementById('new-below').classList.add('hidden');
+    }
   });
 
   poll();
